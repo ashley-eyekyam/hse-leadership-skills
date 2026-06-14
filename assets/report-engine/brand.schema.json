@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ashley-eyekyam/hse-leadership-skills/assets/report-engine/brand.schema.json",
+  "title": "HSE Report Engine Brand Theme",
+  "description": "Schema for brand.yaml — the VISUAL theme (palette / fonts / images / layout) consumed by theme.py and both renderers. Organisation identity (name/tagline/cta) is NOT part of this schema; it lives in the A9 company-card.yaml (clean A4<->A9 boundary).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["palette", "fonts", "images", "layout"],
+  "$defs": {
+    "hexColor": {
+      "type": "string",
+      "pattern": "^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$"
+    },
+    "hexColorOrNull": {
+      "anyOf": [
+        { "$ref": "#/$defs/hexColor" },
+        { "type": "null" }
+      ]
+    }
+  },
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "hse-brand/v1"
+    },
+    "palette": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primary", "accent", "secondary", "text", "surface", "risk"],
+      "properties": {
+        "primary":   { "$ref": "#/$defs/hexColor" },
+        "accent":    { "$ref": "#/$defs/hexColor" },
+        "secondary": { "$ref": "#/$defs/hexColor" },
+        "text":      { "$ref": "#/$defs/hexColor" },
+        "surface":   { "$ref": "#/$defs/hexColor" },
+        "risk": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["low", "med", "high", "critical"],
+          "properties": {
+            "low":      { "$ref": "#/$defs/hexColor" },
+            "med":      { "$ref": "#/$defs/hexColor" },
+            "high":     { "$ref": "#/$defs/hexColor" },
+            "critical": { "$ref": "#/$defs/hexColor" }
+          }
+        }
+      }
+    },
+    "fonts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["heading", "body", "mono"],
+      "properties": {
+        "heading": { "type": "string", "minLength": 1 },
+        "body":    { "type": "string", "minLength": 1 },
+        "mono":    { "type": "string", "minLength": 1 }
+      }
+    },
+    "images": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["logo"],
+      "properties": {
+        "logo": {
+          "anyOf": [
+            { "type": "string", "minLength": 1 },
+            { "type": "null" }
+          ]
+        },
+        "cover_image": {
+          "anyOf": [
+            { "type": "string", "minLength": 1 },
+            { "type": "null" }
+          ]
+        },
+        "watermark": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "opacity"],
+          "properties": {
+            "path": {
+              "anyOf": [
+                { "type": "string", "minLength": 1 },
+                { "type": "null" }
+              ]
+            },
+            "opacity": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        }
+      }
+    },
+    "layout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["page_size", "cover", "toc", "page_numbers"],
+      "properties": {
+        "page_size":    { "type": "string", "enum": ["A4", "Letter"] },
+        "cover":        { "type": "boolean" },
+        "toc":          { "type": "boolean" },
+        "page_numbers": { "type": "boolean" }
+      }
+    }
+  }
+}

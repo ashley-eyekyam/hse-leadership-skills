@@ -1,0 +1,58 @@
+# Eyekyam default brand — the visual theme applied unless a user supplies
+# their own brand.yaml (REPORT-04). This file is VISUAL ONLY: palette, fonts,
+# images, and layout. Organisation identity (name / tagline / cta) lives in the
+# A9 company-card.yaml, NOT here — that clean A4<->A9 split is a hard boundary
+# (see a4-report-engine-design.md §2). theme.py seeds any field a user omits
+# from this default.
+#
+# Schema: brand.schema.json ($id hse-brand/v1). Validated by theme.py before use.
+
+schema: hse-brand/v1
+
+# ----------------------------------------------------------------------------
+# Palette — named colours + a risk scale. Both renderers consume the resolved
+# tokens; the risk-level -> hex map is the single point of visual truth.
+# Verified Eyekyam teal palette (ported from eyekyam-pdf class BRAND).
+# ----------------------------------------------------------------------------
+palette:
+  primary:   "#2AADA8"   # PRIMARY_TEAL — headings, borders, table headers
+  accent:    "#47C4BE"   # LIGHT_TEAL — highlights, callout borders
+  secondary: "#1A7070"   # DEEP_TEAL — footers, top-dot accent
+  text:      "#1A1A1A"   # NEAR_BLACK — body text
+  surface:   "#F5F5F5"   # LIGHT_GRAY — alternating rows, code blocks
+  risk:
+    low:      "#4CAF50"  # ACCENT_GREEN
+    med:      "#E9A94B"  # ACCENT_AMBER
+    high:     "#E05252"  # ACCENT_RED
+    critical: "#B71C1C"  # deepest red — escalation tier above high
+
+# ----------------------------------------------------------------------------
+# Fonts — bundled OFL family NAMES. theme.py resolves these to the TTF file
+# paths under fonts/ at runtime (resolved_files). Devanagari is registered as
+# a separate family so reportlab can select it per-run (no auto-fallback).
+# ----------------------------------------------------------------------------
+fonts:
+  heading: "Noto Sans"
+  body:    "Noto Sans"
+  mono:    "Noto Sans Mono"
+
+# ----------------------------------------------------------------------------
+# Images — logo is the only required visual asset; cover_image + watermark are
+# optional. Missing assets degrade (warn + omit), never abort (§4.10).
+# Paths are relative to this brand.yaml's directory.
+# ----------------------------------------------------------------------------
+images:
+  logo: "assets/eyekyam-logo.png"
+  cover_image: null
+  watermark:
+    path: null
+    opacity: 0.08
+
+# ----------------------------------------------------------------------------
+# Layout — page geometry + which auto-framed sections to stamp.
+# ----------------------------------------------------------------------------
+layout:
+  page_size: "A4"
+  cover: true
+  toc: true
+  page_numbers: true

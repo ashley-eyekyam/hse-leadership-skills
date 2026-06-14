@@ -19,3 +19,6 @@ out/
 Thumbs.db
 desktop.ini
 *~
+
+# Runtime-generated logo composite (render_docx white-card); regenerated on demand
+assets/report-engine/assets/*-white-bg.png
