@@ -67,7 +67,7 @@ def test_small_cell_under_5_trips_auto_fail():
 
 
 def test_reidentification_key_in_output_trips_auto_fail():
-    text = "Re-identification key: Worker-A = (a stable role label maps to a person)."
+    text = "Re-identification key (do not remove): Worker-A = Maria Gonzalez."
     verdict = _grade(text)
     assert verdict["auto_fail"] is True
     assert any("re-id" in r.lower() or "key" in r.lower() for r in verdict["reasons"])
