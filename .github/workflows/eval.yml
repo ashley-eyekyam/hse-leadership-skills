@@ -1,39 +1,50 @@
-# eval.yml — model-graded, cost-controlled CI (A8 §4.6, Decision 4).
+# eval.yml — model-graded, cost-controlled CI (A8 §4.6, Decision 4 + D-04).
 #
-# A1 owns the wiring (triggers + job names + guarded invocations); A8 owns the
-# grader logic. Each job invokes run_evals.py by its EXACT name + flags but
-# SKIPS GRACEFULLY today: a `guard` step detects the missing script and every
-# work step is gated on `steps.guard.outputs.present == 'true'`. Nothing
-# self-blocks (D-05) — the 3 eval checks stage on at the first real skills/
-# commit (Phase 4 / B1).
+# A1 owned the wiring (triggers + job names + guarded invocations); A8/Plan 06
+# fill the grader logic. Each job invokes run_evals.py / sme_review.py by its
+# EXACT name + flags but SKIPS GRACEFULLY when the target script is absent: a
+# `guard` step detects it and every work step is gated on
+# `steps.guard.outputs.present == 'true'`. Nothing self-blocks (D-05) — the eval
+# checks stage on at the first real skills/ commit.
 #
 # The three per-job `name:` strings (changed-skills-eval, deid-auto-fail,
 # sme-persona-review) ARE the branch-protection status-check identifiers — do
-# not rename. The top-level `name: Evaluate Skills` is the run display-name
-# Plan 05 asserts on.
+# NOT rename. The top-level `name: Evaluate Skills` is the run display-name Plan
+# 05 asserts on.
 #
-# The model key is referenced ONLY as ${{ secrets.ANTHROPIC_API_KEY }} via env:
-# on the model-call steps — never hardcoded, never echoed. Triggers use
-# `pull_request` (NOT pull_request_target) so untrusted fork PRs run without the
-# write-scoped token / secret.
+# D-04 SWEEP: a PR touching a SHARED-CONTRACT surface (template/, knowledge-base/,
+# scripts/hse_components/, assets/report-engine/, template/evals/rubric.yaml) can
+# break EVERY skill, so it triggers a FULL eval sweep (run_evals.py --all). A PR
+# confined to skills/<one>/ evals ONLY that changed skill. The decision is made
+# from `git diff --name-only` in the `decide` step below.
+#
+# SECURITY (T-03-18): the trigger is `pull_request` (NOT pull_request_target) so
+# untrusted fork PRs run WITHOUT the write-scoped token / secret. The model key is
+# referenced ONLY as ${{ secrets.ANTHROPIC_API_KEY }} via env: on the model-call
+# steps — never hardcoded, never echoed.
+#
+# The pinned grader id (claude-sonnet-4-6, D-03) lives in ONE place — run_evals.py's
+# GRADER_MODEL constant. CI pins it explicitly via --grader-model so a default
+# drift can never silently change the grader.
 name: Evaluate Skills
 
 on:
-  # Manual trigger — lets the owner register the three eval status-check names
-  # (changed-skills-eval, deid-auto-fail, sme-persona-review) for branch
-  # protection without opening a PR. The guard pattern means a dispatch run
-  # skips gracefully (D-05) until run_evals.py lands (Phase 3/4).
   workflow_dispatch:
   pull_request:
     paths:
       - 'skills/**'
-      # Shared-contract paths — a change here can affect every skill's eval.
-      # NOTE: the full-eval-sweep label trigger is an A8 / Phase-3 fork.
+      # Shared-contract paths — a change here can affect every skill's eval and
+      # triggers the D-04 full sweep (decided in the `decide` step, not here).
       - 'template/**'
       - 'knowledge-base/**'
       - 'scripts/hse_components/**'
       - 'assets/report-engine/**'
       - 'template/evals/rubric.yaml'
+
+# The pinned grader id is sourced from run_evals.py's GRADER_MODEL constant
+# (D-03 single source). CI pins it explicitly so a default change can't drift.
+env:
+  GRADER_MODEL: claude-sonnet-4-6
 
 jobs:
   changed-skills-eval:
@@ -41,6 +52,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Need history so `git diff origin/main...HEAD` resolves the PR diff.
+          fetch-depth: 0
 
       - id: guard
         name: Check eval runner exists
@@ -62,16 +76,47 @@ jobs:
         if: steps.guard.outputs.present == 'true'
         run: pip install pyyaml
 
-      - name: Evaluate changed skills
+      - id: decide
+        name: Decide eval scope (D-04 sweep vs changed-skills)
         if: steps.guard.outputs.present == 'true'
+        # SHARED-CONTRACT change -> full sweep (--all). Otherwise eval only the
+        # skills/<name>/ dirs that changed. Emits `targets` = a space-separated
+        # list of skill dirs, or the literal `--all`.
+        run: |
+          set -euo pipefail
+          BASE="${{ github.event.pull_request.base.sha || 'HEAD~1' }}"
+          CHANGED="$(git diff --name-only "$BASE"...HEAD || git diff --name-only HEAD~1...HEAD)"
+          echo "changed files:"; echo "$CHANGED"
+          if echo "$CHANGED" | grep -Eq '^(template/|knowledge-base/|scripts/hse_components/|assets/report-engine/|template/evals/rubric\.yaml)'; then
+            echo "::notice::shared-contract surface changed -> FULL eval sweep (D-04)."
+            echo "targets=--all" >> "$GITHUB_OUTPUT"
+          else
+            DIRS="$(echo "$CHANGED" | grep -E '^skills/[^/]+/' | sed -E 's#^(skills/[^/]+)/.*#\1#' | sort -u | tr '\n' ' ')"
+            if [ -z "$DIRS" ]; then
+              echo "::notice::no skill or shared-contract change -> nothing to eval."
+              echo "targets=" >> "$GITHUB_OUTPUT"
+            else
+              echo "::notice::single-skill scope -> $DIRS"
+              echo "targets=$DIRS" >> "$GITHUB_OUTPUT"
+            fi
+          fi
+
+      - name: Evaluate changed skills
+        if: steps.guard.outputs.present == 'true' && steps.decide.outputs.targets != ''
         env:
+          # Read ONLY here, on the model-call step. Never echoed (T-03-18).
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: python scripts/run_evals.py --ci --changed
+        run: |
+          python scripts/run_evals.py --ci ${{ steps.decide.outputs.targets }} \
+            --grader-model "$GRADER_MODEL"
 
   deid-auto-fail:
     name: deid-auto-fail
-    # Its own job so a de-identification leak is unmistakable. This is a
-    # HARD-FAIL auto-block (§4.4.1) once the grader lands — a leak cannot be waived.
+    # Its own job so a de-identification leak is unmistakable in the check name.
+    # This is the deterministic HARD-FAIL auto-block (§4.4.1) — a leak cannot be
+    # waived. run_evals.py runs the deterministic graders FIRST and short-circuits
+    # the case on a de-id leak BEFORE the model grader; --ci makes that exit
+    # nonzero. (This job needs no API key: the de-id hard block is deterministic.)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -96,28 +141,33 @@ jobs:
         if: steps.guard.outputs.present == 'true'
         run: pip install pyyaml
 
-      - name: Run de-identification hard-fail grader
+      - name: Run de-identification hard-fail grader (deterministic, no model call)
         if: steps.guard.outputs.present == 'true'
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: python scripts/run_evals.py --ci --deid-auto-fail
+        run: |
+          # The deterministic de-id grader runs first inside run_evals and
+          # short-circuits the case on a leak; --ci exits nonzero on that hard
+          # block. No ANTHROPIC_API_KEY is set here on purpose — the de-id auto-fail
+          # is deterministic and must hold even with zero model access.
+          python scripts/run_evals.py --ci --all --grader-model "$GRADER_MODEL"
 
   sme-persona-review:
     name: sme-persona-review
-    # Records pass-ran + findings (A8 §4.5). Recorded-as-ran — never merge-blocking
-    # on a flag; the human competent-person review (PR template) is the gate.
+    # Records pass-ran + findings (A8 §4.5). FLAG-but-DON'T-BLOCK class: a FLAG
+    # NEVER fails the gate (sme_review.py always exits 0 — QA-05). The human
+    # competent-person review (PR template) is the gate; this PRECEDES it
+    # (SME-02). Kept DISTINCT from the deterministic hard blocks above.
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
       - id: guard
-        name: Check eval runner exists
+        name: Check SME-review script exists
         run: |
-          if [ -f "scripts/run_evals.py" ]; then
+          if [ -f "scripts/sme_review.py" ]; then
             echo "present=true" >> "$GITHUB_OUTPUT"
           else
             echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::scripts/run_evals.py not yet present (Phase 3/4, A8). Skipping sme-persona-review."
+            echo "::notice::scripts/sme_review.py not yet present (Phase 3, A8). Skipping sme-persona-review."
           fi
 
       - name: Set up Python
@@ -130,8 +180,26 @@ jobs:
         if: steps.guard.outputs.present == 'true'
         run: pip install pyyaml
 
-      - name: Run SME-persona review (records findings)
+      - name: Run SME-persona review (records findings; a FLAG never blocks)
         if: steps.guard.outputs.present == 'true'
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: python scripts/run_evals.py --ci --sme-persona-review
+        # sme_review.py ALWAYS exits 0 (a FLAG is recorded-as-ran decision-support,
+        # never a merge block — QA-05). The deterministic hard blocks live in the
+        # deid-auto-fail + changed-skills-eval jobs, not here (two enforcement
+        # classes stay distinct). Reviews every skill/example artifact present.
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          ran_any=0
+          for skill in skills/*/ examples/*/; do
+            [ -d "$skill" ] || continue
+            for art in "$skill"evals/files/*.md "$skill"references/*.md "$skill"SKILL.md; do
+              [ -f "$art" ] || continue
+              echo "::group::SME-review $art"
+              python scripts/sme_review.py "$art"
+              echo "::endgroup::"
+              ran_any=1
+            done
+          done
+          if [ "$ran_any" -eq 0 ]; then
+            echo "::notice::no artifacts to SME-review yet (no skills/ or examples/ outputs)."
+          fi
