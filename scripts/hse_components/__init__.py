@@ -6,13 +6,15 @@ The barrel re-exports the public API of each engine so a consuming skill can do
 name. Each engine is pure-script / stdlib-only and deterministic: identical
 input yields byte-identical output.
 
-Engines (filled across Plans 03-02 and 03-03):
-  - risk_matrix   — L×S scoring with the D-02 LOCKED default bands (03-02)
+Engines (all five landed across Plans 03-02 and 03-03):
+  - risk_matrix    — L×S scoring with the D-02 LOCKED default bands (03-02)
   - incident_rates — TRIR/DART/LTIFR with LOCKED OSHA bases (03-02)
-  - controls / rca / smart_actions — added by Plan 03-03
+  - controls       — hierarchy-of-controls ranker + PPE/admin-only flag (03-03)
+  - rca            — 5-method causal scaffold + reaches_systemic validator (03-03)
+  - smart_actions  — SMART-action validator/tracker (03-03)
 
-This package is the single import surface the portability shim resolves; Plan
-03-03 extends ``__all__`` as it lands the remaining three engines.
+This package is the single import surface the portability shim (``_shim.py``)
+resolves with the per-skill symlink removed.
 """
 
 from .controls import (
@@ -22,6 +24,11 @@ from .controls import (
     classify,
     rank_controls,
     validate_treatment,
+)
+from .rca import (
+    METHODS,
+    scaffold,
+    validate,
 )
 from .incident_rates import (
     MILLION_BASE,
@@ -77,4 +84,8 @@ __all__ = [
     "validate_action",
     "validate_register",
     "days_until_due",
+    # rca
+    "METHODS",
+    "scaffold",
+    "validate",
 ]
