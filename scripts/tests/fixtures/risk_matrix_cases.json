@@ -1,0 +1,19 @@
+{
+  "schema": "hse-risk-matrix-cases/v1",
+  "notes": [
+    "D-02 LOCKED default 5x5 multiply calibration: score = likelihood * severity (1..25).",
+    "Bands: Low 1-4 / Medium 5-9 / High 10-15 / Critical 16-25.",
+    "Each case is a (likelihood, severity) cell with its expected multiply score + band.",
+    "Coverage: one in-band cell per band PLUS every band edge product (1,4,5,9,10,15,16,25)."
+  ],
+  "cases": [
+    { "likelihood": 1, "severity": 1, "expected_score": 1,  "expected_band": "Low",      "why": "Low lower edge (1)" },
+    { "likelihood": 2, "severity": 2, "expected_score": 4,  "expected_band": "Low",      "why": "Low upper edge (4)" },
+    { "likelihood": 1, "severity": 5, "expected_score": 5,  "expected_band": "Medium",   "why": "Medium lower edge (5)" },
+    { "likelihood": 3, "severity": 3, "expected_score": 9,  "expected_band": "Medium",   "why": "Medium upper edge (9)" },
+    { "likelihood": 2, "severity": 5, "expected_score": 10, "expected_band": "High",      "why": "High lower edge (10)" },
+    { "likelihood": 3, "severity": 5, "expected_score": 15, "expected_band": "High",      "why": "High upper edge (15)" },
+    { "likelihood": 4, "severity": 4, "expected_score": 16, "expected_band": "Critical",  "why": "Critical lower edge (16)" },
+    { "likelihood": 5, "severity": 5, "expected_score": 25, "expected_band": "Critical",  "why": "Critical upper edge (25)" }
+  ]
+}
