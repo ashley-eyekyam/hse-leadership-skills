@@ -74,3 +74,18 @@
   last_reviewed: 2026-06-13
   volatile: false
   supersedes: null
+
+- id: KB-SNIP-ARCHETYPES
+  file: subagent-archetypes.md
+  title: "Subagent archetype library — the reusable runtime fan-out roster menu"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [orchestration, subagent, archetype, sme-review, critic-qa]
+    audience: [M, C, F]
+  summary: "A6 §3.2 archetype menu skills draw rosters from: 7 core (Researcher, Regulatory-Checker, Risk-Scorer, Drafter, Critic/QA, De-identifier, Formatter) + 3 optional + the HSE-SME-Reviewer pre-human persona hook (decision-support, FLAG never blocks) + 5 named sector-persona slots; De-identifier placed verbatim from KB-SNIP-DEID-ARCHETYPE."
+  source: "A6 orchestration design spec §3.2"
+  year: 2026
+  last_reviewed: 2026-06-14
+  volatile: false
+  supersedes: null
