@@ -106,12 +106,18 @@ jobs:
 
       - id: guard
         name: Check pytest suite exists
+        # Stub-defect fix (research Pitfall 5): the guard pinned to scripts/tests/
+        # only and the work step ran `pytest scripts/tests/`, missing the ~216
+        # Phase-2/3 tests under assets/report-engine/tests, knowledge-base/tests,
+        # and tests/. The guard now treats the suite as present if ANY of the
+        # known test roots exist; the work step discovers from the repo root.
         run: |
-          if [ -d "scripts/tests/" ]; then
+          if [ -d "scripts/tests/" ] || [ -d "tests/" ] \
+             || [ -d "assets/report-engine/tests/" ] || [ -d "knowledge-base/tests/" ]; then
             echo "present=true" >> "$GITHUB_OUTPUT"
           else
             echo "present=false" >> "$GITHUB_OUTPUT"
-            echo "::notice::scripts/tests/ not yet present (Phase 3, A7). Skipping pytest."
+            echo "::notice::no test directories present yet (Phase 3, A7). Skipping pytest."
           fi
 
       - name: Set up Python
@@ -126,7 +132,17 @@ jobs:
 
       - name: Run pytest
         if: steps.guard.outputs.present == 'true'
-        run: pytest scripts/tests/
+        # Discover from the REPO ROOT so all suites run (scripts/tests,
+        # assets/report-engine/tests, knowledge-base/tests, tests/). Tolerate the
+        # pytest "no tests collected" exit-5 case so a not-yet-populated tree does
+        # not self-block the gate (D-05). Any real test FAILURE still blocks.
+        run: |
+          python -m pytest -q; rc=$?
+          if [ "$rc" -eq 5 ]; then
+            echo "::notice::pytest collected no tests (exit 5) — tolerated."
+            exit 0
+          fi
+          exit "$rc"
 
   marketplace:
     name: marketplace
@@ -186,4 +202,13 @@ jobs:
 
       - name: Smoke-render a sample report (docx + pdf)
         if: steps.guard.outputs.present == 'true'
-        run: python assets/report-engine/generate_report.py assets/report-engine/sample.report.json --pdf --docx
+        # Stub-defect fix (research Pitfall 6): the stub invoked a positional arg
+        # + `--pdf --docx` against a non-existent assets/report-engine/sample.report.json.
+        # The real A4 CLI is `--model <report.json> --formats <list> --out <dir>`
+        # (generate_report.py main() L432-447) and a real fixture ships at
+        # assets/report-engine/tests/fixtures/example_report.json.
+        run: |
+          python assets/report-engine/generate_report.py \
+            --model assets/report-engine/tests/fixtures/example_report.json \
+            --formats docx,pdf \
+            --out "$RUNNER_TEMP/report-smoke"
