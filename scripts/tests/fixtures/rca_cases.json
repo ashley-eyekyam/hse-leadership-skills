@@ -1,0 +1,140 @@
+{
+  "_doc": "Golden RCA fixtures (A7 §3.3 / §3.8). Per method: a POSITIVE analysis that reaches a systemic factor (valid True, reaches_systemic True) and a NEGATIVE analysis that stops at individual/sharp-end error (valid False, reaches_systemic False). The negatives encode the spec-locked traps: a 5-Whys terminating in an individual act, an ICAM with no Organisational Factor, a SCAT with no Basic Causes / Lack of Control, a Fishbone with every cause under Man only, and a Swiss-Cheese with active failures only (no organisational-influence latent layer).",
+  "cases": {
+    "5-whys": {
+      "positive": {
+        "label": "5-whys reaches a management-system cause",
+        "expect": { "valid": true, "reaches_systemic": true },
+        "analysis": {
+          "problem": "Operator slipped on a spill in the packing bay.",
+          "whys": [
+            "There was hydraulic oil on the walkway.",
+            "A coupling on the pallet wrapper was leaking.",
+            "The coupling seal had perished and was past its service interval.",
+            "Planned preventive maintenance on the wrapper had lapsed.",
+            "The maintenance scheduling system had no owner after a reorganisation, so PPM tasks were never raised."
+          ]
+        }
+      },
+      "negative": {
+        "label": "5-whys terminal why is still an individual act (no systemic reach)",
+        "expect": { "valid": false, "reaches_systemic": false },
+        "analysis": {
+          "problem": "Operator slipped on a spill in the packing bay.",
+          "whys": [
+            "There was hydraulic oil on the walkway.",
+            "The operator did not clean it up.",
+            "The operator was in a hurry.",
+            "The operator did not care about housekeeping.",
+            "The operator was careless and ignored the rules."
+          ]
+        }
+      }
+    },
+    "icam": {
+      "positive": {
+        "label": "icam with an organisational factor populated",
+        "expect": { "valid": true, "reaches_systemic": true },
+        "analysis": {
+          "absent_failed_defences": ["Machine guard interlock was bypassed and not detected by inspection."],
+          "individual_team_actions": ["Technician reached into the machine while it was running."],
+          "task_environmental_conditions": ["Guard interlock could be defeated with a single magnet; poor lighting at the access point."],
+          "organisational_factors": ["No interlock-integrity audit programme; production pressure tolerated bypassing to keep the line running."]
+        }
+      },
+      "negative": {
+        "label": "icam with no organisational factor (sharp-end only)",
+        "expect": { "valid": false, "reaches_systemic": false },
+        "analysis": {
+          "absent_failed_defences": ["Machine guard interlock was bypassed."],
+          "individual_team_actions": ["Technician reached into the machine while it was running."],
+          "task_environmental_conditions": ["The technician was inattentive."],
+          "organisational_factors": []
+        }
+      }
+    },
+    "scat": {
+      "positive": {
+        "label": "scat reaches basic causes and lack of control",
+        "expect": { "valid": true, "reaches_systemic": true },
+        "analysis": {
+          "loss": "Hand laceration requiring sutures.",
+          "contact": "Contact with an unguarded rotating shaft.",
+          "immediate_causes": ["Guard removed for cleaning and not refitted."],
+          "basic_causes": ["No documented guard-removal/refit procedure; inadequate training on lockout."],
+          "lack_of_control": ["Management system had no inspection step to confirm guards were refitted after cleaning."]
+        }
+      },
+      "negative": {
+        "label": "scat stops at immediate causes (no basic causes / lack of control)",
+        "expect": { "valid": false, "reaches_systemic": false },
+        "analysis": {
+          "loss": "Hand laceration requiring sutures.",
+          "contact": "Contact with an unguarded rotating shaft.",
+          "immediate_causes": ["Guard removed for cleaning and not refitted."],
+          "basic_causes": [],
+          "lack_of_control": []
+        }
+      }
+    },
+    "fishbone": {
+      "positive": {
+        "label": "fishbone with non-Man branches populated and evidenced",
+        "expect": { "valid": true, "reaches_systemic": true },
+        "analysis": {
+          "branches": {
+            "Man": [{ "cause": "Operator unfamiliar with the new SOP.", "evidence": "Training matrix shows no sign-off." }],
+            "Machine": [{ "cause": "Conveyor e-stop response was sluggish.", "evidence": "Maintenance log: e-stop test failed 12 May." }],
+            "Method": [{ "cause": "SOP omitted the isolation step.", "evidence": "SOP rev 3 reviewed; step absent." }],
+            "Material": [],
+            "Measurement": [],
+            "Environment": [{ "cause": "Glare obscured the warning light.", "evidence": "Photographs from the walk-down." }]
+          }
+        }
+      },
+      "negative": {
+        "label": "fishbone with every cause under Man only (individual-blame bias)",
+        "expect": { "valid": false, "reaches_systemic": false },
+        "analysis": {
+          "branches": {
+            "Man": [
+              { "cause": "Operator was careless.", "evidence": "Supervisor statement." },
+              { "cause": "Operator did not follow the SOP.", "evidence": "Supervisor statement." }
+            ],
+            "Machine": [],
+            "Method": [],
+            "Material": [],
+            "Measurement": [],
+            "Environment": []
+          }
+        }
+      }
+    },
+    "swiss-cheese": {
+      "positive": {
+        "label": "swiss-cheese with the organisational-influence latent layer populated",
+        "expect": { "valid": true, "reaches_systemic": true },
+        "analysis": {
+          "layers": {
+            "active_failures": [{ "failure": "Driver entered the exclusion zone.", "barrier": "Spotter / banksman absent." }],
+            "preconditions": [{ "failure": "Driver fatigued at end of double shift.", "barrier": "Fatigue-management check not performed." }],
+            "supervisory_factors": [{ "failure": "Shift supervisor authorised the double shift.", "barrier": "Shift-length limit not enforced." }],
+            "organisational_influences": [{ "failure": "Chronic understaffing drove routine double shifts.", "barrier": "Staffing-level standard absent from the management system." }]
+          }
+        }
+      },
+      "negative": {
+        "label": "swiss-cheese with active failures only (no latent organisational layer)",
+        "expect": { "valid": false, "reaches_systemic": false },
+        "analysis": {
+          "layers": {
+            "active_failures": [{ "failure": "Driver entered the exclusion zone.", "barrier": "Spotter / banksman absent." }],
+            "preconditions": [],
+            "supervisory_factors": [],
+            "organisational_influences": []
+          }
+        }
+      }
+    }
+  }
+}

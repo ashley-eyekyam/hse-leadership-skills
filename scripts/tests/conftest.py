@@ -45,3 +45,13 @@ def risk_matrix_cases_path() -> Path:
 @pytest.fixture
 def risk_matrix_cases(risk_matrix_cases_path) -> list:
     return json.loads(risk_matrix_cases_path.read_text(encoding="utf-8"))
+
+
+@pytest.fixture(scope="session")
+def rca_cases_path() -> Path:
+    return FIXTURES_DIR / "rca_cases.json"
+
+
+@pytest.fixture
+def rca_cases(rca_cases_path) -> dict:
+    return json.loads(rca_cases_path.read_text(encoding="utf-8"))
