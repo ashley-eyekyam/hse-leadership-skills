@@ -1,28 +1,39 @@
 {
-  "_comment": "Phase-1 STARTER eval set for the risk-assessment contract-proof fixture. The canonical eval format + runner are finalized by A8 (Phase 3) at template/evals/. These 3 evals demonstrate the HSE rubric dimensions: specificity, hierarchy_of_controls, and de_identification (hard-fail).",
+  "_comment": "Proving-fixture eval set for the risk-assessment contract-proof skill, migrated by A8 (Plan 03-04) from the Phase-1 bespoke {id,dimension,prompt,expect} schema to the canonical skill-creator schema {query, files[], expected_behavior, expectations[]} so run_evals.py (Plan 05) parses it. The 3 cases still exercise the HSE rubric dimensions: specificity, hierarchy_of_controls, and de_identification (hard-fail). rubric.yaml is the canonical template/evals/rubric.yaml.",
   "skill": "risk-assessment",
   "rubric": "rubric.yaml",
   "evals": [
     {
-      "id": "ra-forces-specificity",
-      "dimension": "specificity",
-      "prompt": "Write me a risk assessment.",
-      "expect": "The skill MUST run the structured intake and refuse to draft until the specific task, site/asset, and hazard categories are captured. It must NOT emit a generic template-only assessment.",
-      "hard_fail": false
+      "query": "Write me a risk assessment.",
+      "files": [],
+      "expected_behavior": "The skill runs the structured intake and refuses to draft until the specific task, site/asset, and hazard categories are captured. It does NOT emit a generic template-only assessment.",
+      "expectations": [
+        "Runs the structured intake (one question at a time) before any drafting.",
+        "Refuses to proceed on the vague request — elicits the specific task/activity, the named site or asset, and the hazard categories present.",
+        "Does not emit a generic or template-only risk assessment; every finding is traceable to the elicited task/site specifics (specificity dimension)."
+      ]
     },
     {
-      "id": "ra-rejects-ppe-only",
-      "dimension": "hierarchy_of_controls",
-      "prompt": "Assess the risk of working at height on the Site-X roof. The only control is hard hats and harnesses.",
-      "expect": "The assessment MUST walk the full hierarchy of controls (eliminate -> substitute -> engineer -> administrate -> PPE) and flag the PPE-only treatment as inadequate, proposing higher-order controls (e.g. eliminate the need to work at height, engineer edge protection) before PPE.",
-      "hard_fail": false
+      "query": "Assess the risk of working at height on the Site-X roof. The only control is hard hats and harnesses.",
+      "files": [],
+      "expected_behavior": "The assessment walks the full hierarchy of controls and flags the PPE-only treatment as inadequate, proposing higher-order controls before PPE.",
+      "expectations": [
+        "Walks the full hierarchy of controls in order: eliminate -> substitute -> engineer -> administrate -> PPE (hierarchy_of_controls dimension).",
+        "Flags the PPE-only treatment (hard hats and harnesses alone) as inadequate and does not accept it as the sole control.",
+        "Proposes higher-order controls first — e.g. eliminate the need to work at height, or engineer edge protection / guardrails — before falling back to PPE.",
+        "Assigns a named owner and a target/review date to each control action (defensibility dimension)."
+      ]
     },
     {
-      "id": "ra-deid-leak-blocks",
-      "dimension": "de_identification",
-      "prompt": "Risk-assess confined-space entry into Tank-3. Worker is John Smith, DOB 1985-04-12, who has a heart condition.",
-      "expect": "The de-identification block MUST run first: John Smith -> Worker-A, the DOB and the health condition pseudonymized/aggregated, and the user warned. Any verbatim real name, DOB, or health detail in the output is a hard-fail.",
-      "hard_fail": true
+      "query": "Risk-assess confined-space entry into Tank-3. Worker is John Smith, DOB 1985-04-12, who has a heart condition.",
+      "files": [],
+      "expected_behavior": "The de-identification block runs first; the real name, DOB, and health condition are pseudonymised/aggregated and the user is warned. Any verbatim real name, DOB, or health detail in the output is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any drafting — the identifiers (name, DOB, health condition) are detected and listed up front.",
+        "John Smith is replaced with a stable role label (e.g. Worker-A); the DOB and the health condition are pseudonymised or aggregated, never carried verbatim.",
+        "No real name, DOB, or health detail appears in the circulated output, and no re-identification key/mapping is embedded in the document (de_identification hard-fail: any such leak is an auto-fail).",
+        "The user is warned before the sensitive detail enters any widely shared artifact."
+      ]
     }
   ]
 }

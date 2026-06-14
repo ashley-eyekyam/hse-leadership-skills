@@ -1,0 +1,110 @@
+# template/evals/rubric.yaml — the CANONICAL HSE eval rubric (A8 §4.2, QA-02).
+#
+# Authored once here by A8; inherited byte-canonically by every skill's evals/
+# (the dimension set + weights + hard-fail gates are canonical and drift-checked
+# like a block; per-skill `expectations` differ). run_evals.py (Plan 05) loads
+# this; the deterministic graders (§4.4) override the model grader on the two
+# hard-fail dimensions.
+#
+# 5 dimensions, scored 1-5, weighted EQUALLY (0.20 each); the gate is
+# weighted_mean >= 4.0 AND no hard-fail.
+#   - de_identification: ANY leak = AUTO-FAIL (overrides the weighted mean).
+#   - regulatory_citation_accuracy: score < 4 = FAIL.
+# These two stay the distinct hard-fail dimensions (do not merge them).
+
+# The grader model is the most-capable-model ALIAS — run_evals.py resolves it to a
+# pinned Sonnet-class id at runtime (D-03); never hard-code a literal model id here.
+analyzer_model: most-capable-model
+
+gate:
+  weighted_mean_min: 4.0    # weighted mean must reach 4.0 AND no hard-fail trips
+
+dimensions:
+  - name: specificity
+    weight: 0.20
+    hard_fail: false
+    description: >
+      Rewards facts the output could only have if the structured intake elicited
+      them (named task/site/asset, quantities, concrete observable hazards) and
+      penalises any conclusion resting on an UN-FLAGGED assumption. An explicit
+      [ASSUMPTION]/[GAP] is honest (no penalty); a load-bearing fact stated as
+      known that the inputs did not supply caps specificity at 2 and docks
+      defensibility (Decision 2, §2.7).
+    anchors:
+      "5": >
+        Names the actual task/site/asset, quantities, concrete observable
+        hazards — facts only obtainable via the structured intake. No conclusion
+        rests on an un-flagged assumption.
+      "1": >
+        "Ensure safety"-style generic boilerplate; conclusions built on
+        invented or unstated facts presented as known.
+
+  - name: hierarchy_of_controls
+    weight: 0.20
+    hard_fail: false
+    description: >
+      Every control ranked Elim -> Sub -> Eng -> Admin -> PPE (matches
+      controls.py ranking); any PPE/admin-only treatment explicitly justified or
+      escalated.
+    anchors:
+      "5": >
+        Every control ranked through the full hierarchy; any PPE/admin-only
+        treatment explicitly justified or escalated to a higher-order control.
+      "1": >
+        Unranked controls, or PPE-only with no justification.
+
+  - name: defensibility
+    weight: 0.20
+    hard_fail: false
+    description: >
+      Every claim evidence-backed and attributable; named owners + dates + review
+      triggers; "would survive a regulator's challenge."
+    anchors:
+      "5": >
+        Every claim evidence-backed and attributable; named owners, dates, and
+        review triggers throughout; would survive a regulator's challenge.
+      "1": >
+        Unsupported assertions, anonymous actions, no review trigger.
+
+  - name: de_identification
+    weight: 0.20
+    hard_fail:
+      # ANY leak (A5 §3.5 four conditions) is a deterministic AUTO-FAIL that
+      # overrides the weighted mean and cannot be waived. The deterministic de-id
+      # grader (§4.4.1) decides this, not the model grader.
+      type: leak
+      auto_fail: true
+      overrides_weighted_mean: true
+      condition: "any leaked name/ID/address; un-pseudonymised; <5 injury/illness cell; re-id key in output"
+    description: >
+      No leaked name/ID/address; pseudonymised; no injury/illness cell of fewer
+      than 5; no re-identification key in the output. Must score 5; any leak is an
+      auto-fail (A5 §3.5).
+    anchors:
+      "5": >
+        No leaked name/ID/address; pseudonymised; no <5 injury/illness cell; no
+        re-id key in the output.
+      "1": >
+        Any leak (A5 §3.5 four conditions) — auto-fail.
+
+  - name: regulatory_citation_accuracy
+    weight: 0.20
+    hard_fail:
+      # A citation not resolvable to a KB fragment forces this dimension below 4,
+      # which fails the gate. The deterministic citation grader (§4.4.2) decides
+      # this; India citations must trace to KB-REG-IN-STATEFORMS for the resolved
+      # state (no hard-coded national form number).
+      type: below_4
+      fail_below: 4
+    description: >
+      Cited sections/forms match the KB exactly; no invented or
+      paraphrased-as-quote law; India state-form resolved via
+      KB-REG-IN-STATEFORMS. A fabricated or wrong-jurisdiction citation forces a
+      score below 4 = fail.
+    anchors:
+      "5": >
+        Cited sections/forms match the KB exactly; no invented or
+        paraphrased-as-quote law; India state-form resolved via
+        KB-REG-IN-STATEFORMS.
+      "1": >
+        A fabricated or wrong-jurisdiction citation.
