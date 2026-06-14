@@ -150,8 +150,7 @@ de-identification leak. Fix everything it raises before delivery.
 - Single-threaded by design — no subagents. (Replace with this skill's named
   fan-out jobs if the triage gate warrants them.)
 
-<!-- hse:block:report-output:start -->
-## Output format
+<!-- hse:block:report-output:start -->## Output format
 
 Assemble a `report.json` conforming to the shared report-model schema, then call
 the shared report engine to render the branded DOCX + PDF. The engine, brand
