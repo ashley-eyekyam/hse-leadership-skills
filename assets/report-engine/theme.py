@@ -260,14 +260,18 @@ def resolve_theme(
         else:
             _warn(f"brand file {brand_path} not found; using Eyekyam default")
 
-    # Validate a SUPPLIED brand.yaml before merge (V5 input validation). The
-    # default is trusted. A malformed palette must fail here.
+    merged = _deep_merge(default_cfg, user_cfg)
+
+    # Validate a SUPPLIED brand.yaml (V5 input validation). The default is
+    # trusted. Validation runs on the MERGED config so a PARTIAL user brand
+    # (e.g. just an overridden `palette.primary`, every other field blank) is
+    # seeded from the Eyekyam default first, then validated as a whole — a
+    # malformed value the user DID supply (e.g. a non-hex palette colour)
+    # survives the merge and still fails here.
     if user_cfg and _HAVE_JSONSCHEMA:
         schema = _load_schema()
         if schema is not None:
-            jsonschema.validate(user_cfg, schema)
-
-    merged = _deep_merge(default_cfg, user_cfg)
+            jsonschema.validate(merged, schema)
 
     palette = merged["palette"]
     fonts = _resolve_fonts(merged.get("fonts", {}))

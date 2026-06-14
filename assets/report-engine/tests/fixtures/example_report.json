@@ -1,0 +1,39 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Confined-Space Entry — Risk Assessment",
+    "subtitle": "Tank T-402 cleaning, Plant 3",
+    "author": "HSE Department",
+    "date": "2026-06-13",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "Entry to T-402 presents an IDLH atmosphere risk. Estimated permit cost ₹45,000; the receiving plant मुंबई कारखाना (Mumbai works) files Form 24 on a dangerous occurrence." },
+    { "type": "metrics", "metrics": [
+        { "label": "Residual risk", "value": "Medium", "caption": "after controls" },
+        { "label": "Critical controls", "value": "4", "caption": "all higher-order" } ] },
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "Oxygen deficiency", "risk_level": "High",
+          "description": "Nitrogen purge leaves <19.5% O2.", "evidence": "Gas log 2026-06-10" },
+        { "title": "Hot-work ignition", "risk_level": "Medium",
+          "description": "Residual hydrocarbon vapour in sludge.", "evidence": "LEL sample 2026-06-11" } ] },
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Eliminate entry — clean externally", "tier": "Elimination", "owner": "Process Eng" },
+        { "control": "Continuous forced-air ventilation", "tier": "Engineering", "owner": "Maintenance" },
+        { "control": "Entry permit + standby attendant", "tier": "Administrative", "owner": "HSE" } ] },
+    { "type": "heading", "level": 1, "text": "Recommendations" },
+    { "type": "recommendations", "rows": [
+        { "action": "Install fixed gas monitor", "priority": "P1", "owner": "J. Rao", "due": "2026-07-01" },
+        { "action": "Revise confined-space SOP", "priority": "P2", "owner": "HSE", "due": "2026-07-15" } ] },
+    { "type": "callout", "text": "Do not start hot work until LEL reads 0% on three consecutive samples.", "box_type": "warning" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": ["Factories Act (state) — confined-space rules", "ISO 45001 §8.1.2"] }
+  ]
+}

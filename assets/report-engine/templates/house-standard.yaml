@@ -1,0 +1,72 @@
+# house-standard.yaml — the canonical HSE report section order (A4 §4.7).
+#
+# Every report the pack emits follows this fixed house layout so deliverables
+# are consistent across the whole skill pack (decision 3). The engine
+# AUTO-STAMPS the four `auto` sections (cover, classification, toc,
+# limitations-deid-notice) from meta + this template; the skill fills the seven
+# `skill` sections via report.json blocks. The skill never hand-authors the
+# auto sections as blocks.
+#
+# `source: auto`  -> generate_report.py stamps it (the skill must NOT author it).
+# `source: skill` -> the skill authors it via report.json sections[].
+#
+# Order is load-bearing: cover -> classification -> toc -> [skill body] ->
+# limitations/de-id notice (the non-negotiable safety + de-id footer, last).
+
+template: house-standard
+
+sections:
+  - key: cover
+    title: Cover
+    source: auto
+    description: Logo, title, subtitle, date, classification banner.
+
+  - key: classification
+    title: Classification
+    source: auto
+    description: Classification notice stamped from meta.classification.
+
+  - key: toc
+    title: Table of Contents
+    source: auto
+    description: Auto-generated table of contents.
+
+  - key: executive-summary
+    title: Executive Summary
+    source: skill
+    description: High-level summary of the assessment and residual risk.
+
+  - key: scope-method
+    title: Scope & Method
+    source: skill
+    description: What was assessed, boundaries, and the method applied.
+
+  - key: key-findings
+    title: Key Findings
+    source: skill
+    description: Risk-rated finding cards (findings block).
+
+  - key: hierarchy-of-controls
+    title: Hierarchy of Controls
+    source: skill
+    description: Hierarchy-of-controls table (hoc_table block) — Elim -> Sub -> Eng -> Admin -> PPE.
+
+  - key: recommendations
+    title: Recommendations
+    source: skill
+    description: Prioritised actions with owner and due date (recommendations block).
+
+  - key: regulatory-basis
+    title: Regulatory Basis
+    source: skill
+    description: Cited regulatory and standards basis for the conclusions.
+
+  - key: appendices
+    title: Appendices
+    source: skill
+    description: Optional supporting material.
+
+  - key: limitations-deid-notice
+    title: Limitations & De-identification Notice
+    source: auto
+    description: Auto-stamped safety + de-identification footer (non-negotiable, always last).

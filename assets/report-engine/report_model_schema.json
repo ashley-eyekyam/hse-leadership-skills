@@ -1,0 +1,241 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ashley-eyekyam/hse-leadership-skills/assets/report-engine/report_model_schema.json",
+  "title": "HSE Report Model",
+  "description": "Schema for report.json — the renderer-agnostic typed-block document tree every HSE skill assembles and hands to generate_report.py (A4 §4.1). `meta` carries cover/classification/branding pointers; `sections[]` is an ordered list of tagged blocks switched on `type`. Both renderers walk the same sections via the shared DISPATCH table. The schema name token is hse-report-model/v1 (in properties.schema.const).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "meta", "sections"],
+  "properties": {
+    "schema": {
+      "type": "string",
+      "const": "hse-report-model/v1"
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title"],
+      "properties": {
+        "title":          { "type": "string", "minLength": 1 },
+        "subtitle":       { "type": "string" },
+        "author":         { "type": "string" },
+        "date":           { "type": "string" },
+        "classification": { "type": "string" },
+        "brand":          { "type": "string" },
+        "house_template": { "type": "string" },
+        "deid_notice":    { "type": "string" }
+      }
+    },
+    "sections": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/block" }
+    }
+  },
+  "$defs": {
+    "block": {
+      "type": "object",
+      "required": ["type"],
+      "oneOf": [
+        { "$ref": "#/$defs/heading" },
+        { "$ref": "#/$defs/paragraph" },
+        { "$ref": "#/$defs/bullets" },
+        { "$ref": "#/$defs/table" },
+        { "$ref": "#/$defs/metrics" },
+        { "$ref": "#/$defs/callout" },
+        { "$ref": "#/$defs/findings" },
+        { "$ref": "#/$defs/hoc_table" },
+        { "$ref": "#/$defs/recommendations" },
+        { "$ref": "#/$defs/divider" },
+        { "$ref": "#/$defs/page_break" },
+        { "$ref": "#/$defs/spacer" }
+      ]
+    },
+
+    "heading": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "text"],
+      "properties": {
+        "type":  { "const": "heading" },
+        "text":  { "type": "string", "minLength": 1 },
+        "level": { "type": "integer", "minimum": 1, "maximum": 3 }
+      }
+    },
+
+    "paragraph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "text"],
+      "properties": {
+        "type": { "const": "paragraph" },
+        "text": { "type": "string" }
+      }
+    },
+
+    "bullets": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "items"],
+      "properties": {
+        "type":  { "const": "bullets" },
+        "items": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "table": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "headers", "rows"],
+      "properties": {
+        "type":    { "const": "table" },
+        "headers": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": { "type": ["string", "number", "boolean", "null"] }
+          }
+        },
+        "risk_column": { "type": ["integer", "null"], "minimum": 0 },
+        "caption":     { "type": "string" }
+      }
+    },
+
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "metrics"],
+      "properties": {
+        "type": { "const": "metrics" },
+        "metrics": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["label", "value"],
+            "properties": {
+              "label":   { "type": "string" },
+              "value":   { "type": ["string", "number"] },
+              "caption": { "type": "string" },
+              "unit":    { "type": "string" },
+              "color":   { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+
+    "callout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "text"],
+      "properties": {
+        "type":     { "const": "callout" },
+        "text":     { "type": "string" },
+        "box_type": { "type": "string", "enum": ["info", "warning", "success", "critical", "tip"] }
+      }
+    },
+
+    "findings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "rows"],
+      "properties": {
+        "type": { "const": "findings" },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["title", "risk_level", "description"],
+            "properties": {
+              "title":       { "type": "string" },
+              "risk_level":  { "type": "string" },
+              "description": { "type": "string" },
+              "evidence":    { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+
+    "hoc_table": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "rows"],
+      "properties": {
+        "type": { "const": "hoc_table" },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["control", "tier"],
+            "properties": {
+              "control": { "type": "string" },
+              "tier":    { "type": "string" },
+              "owner":   { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+
+    "recommendations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "rows"],
+      "properties": {
+        "type": { "const": "recommendations" },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["action"],
+            "properties": {
+              "action":   { "type": "string" },
+              "priority": { "type": "string" },
+              "owner":    { "type": "string" },
+              "due":      { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+
+    "divider": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": { "const": "divider" }
+      }
+    },
+
+    "page_break": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": { "const": "page_break" }
+      }
+    },
+
+    "spacer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type":      { "const": "spacer" },
+        "height_cm": { "type": "number", "minimum": 0 }
+      }
+    }
+  }
+}
