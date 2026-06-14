@@ -12,6 +12,10 @@
 name: Validate Skills
 
 on:
+  # Manual trigger — lets the owner register status-check names and run CI on
+  # demand (e.g. the Phase-1 first-run that registers branch-protection contexts)
+  # without opening a PR. No inputs; runs every job through its guard.
+  workflow_dispatch:
   pull_request:
     paths:
       - 'skills/**'
