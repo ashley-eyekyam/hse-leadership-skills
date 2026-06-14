@@ -1,7 +1,4 @@
-# company-card.yaml — real-copy of the shared Eyekyam default (branding/company-card.yaml).
-# Fixture cards are materialized as REAL COPIES (not symlinks) so the contract-proof
-# example stays zip-safe and exercises the flattened-distribution / real-copy fallback
-# (A9 §3.5). Edit once at the repo root; the forge re-syncs per-skill copies in Phase 4.
+# company-card.yaml — edit once; surfaced by every skill at a non-intrusive moment.
 schema: hse-company-card/v1
 show: true                      # set false to suppress entirely
 placement: footer               # footer | after-output | on-request  (never a blocking prompt)

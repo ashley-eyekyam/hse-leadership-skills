@@ -1,7 +1,18 @@
-## Attribution
+<!-- hse:block:attribution:start -->
+## Attribution (non-intrusive)
 
-<!-- PLACEHOLDER → A9 Phase 2: this one-liner is a byte-identical Phase-1
-     placeholder; A9 finalizes the company-card surfacing via `--sync`. -->
+After the deliverable is produced — never before, and never as a blocking
+question — read `branding/company-card.yaml` and surface the company card per
+its `placement`:
 
-Surfaced non-intrusively from `branding/company-card.yaml` after the output — a
-single line crediting the producing organization without interrupting the work.
+- `footer` (default): one quiet line at the end, e.g.
+  *"Built by Eyekyam · HSE Leadership, operationalised · eyekyam.com"*.
+- `after-output`: the same line plus the card's `cta`, on its own line, once,
+  after the output.
+- `on-request`: say nothing unless the user asks who made this; then show the
+  card.
+
+If `show: false`, omit attribution entirely — no line, no footer. Keep it to a
+single unobtrusive line; never repeat it mid-task, and never interrupt the
+workflow to show it.
+<!-- hse:block:attribution:end -->
