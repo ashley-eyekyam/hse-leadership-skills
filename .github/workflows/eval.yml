@@ -1,0 +1,132 @@
+# eval.yml — model-graded, cost-controlled CI (A8 §4.6, Decision 4).
+#
+# A1 owns the wiring (triggers + job names + guarded invocations); A8 owns the
+# grader logic. Each job invokes run_evals.py by its EXACT name + flags but
+# SKIPS GRACEFULLY today: a `guard` step detects the missing script and every
+# work step is gated on `steps.guard.outputs.present == 'true'`. Nothing
+# self-blocks (D-05) — the 3 eval checks stage on at the first real skills/
+# commit (Phase 4 / B1).
+#
+# The three per-job `name:` strings (changed-skills-eval, deid-auto-fail,
+# sme-persona-review) ARE the branch-protection status-check identifiers — do
+# not rename. The top-level `name: Evaluate Skills` is the run display-name
+# Plan 05 asserts on.
+#
+# The model key is referenced ONLY as ${{ secrets.ANTHROPIC_API_KEY }} via env:
+# on the model-call steps — never hardcoded, never echoed. Triggers use
+# `pull_request` (NOT pull_request_target) so untrusted fork PRs run without the
+# write-scoped token / secret.
+name: Evaluate Skills
+
+on:
+  pull_request:
+    paths:
+      - 'skills/**'
+      # Shared-contract paths — a change here can affect every skill's eval.
+      # NOTE: the full-eval-sweep label trigger is an A8 / Phase-3 fork.
+      - 'template/**'
+      - 'knowledge-base/**'
+      - 'scripts/hse_components/**'
+      - 'assets/report-engine/**'
+      - 'template/evals/rubric.yaml'
+
+jobs:
+  changed-skills-eval:
+    name: changed-skills-eval
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: guard
+        name: Check eval runner exists
+        run: |
+          if [ -f "scripts/run_evals.py" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::scripts/run_evals.py not yet present (Phase 3/4, A8). Skipping changed-skills-eval."
+          fi
+
+      - name: Set up Python
+        if: steps.guard.outputs.present == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        if: steps.guard.outputs.present == 'true'
+        run: pip install pyyaml
+
+      - name: Evaluate changed skills
+        if: steps.guard.outputs.present == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/run_evals.py --ci --changed
+
+  deid-auto-fail:
+    name: deid-auto-fail
+    # Its own job so a de-identification leak is unmistakable. This is a
+    # HARD-FAIL auto-block (§4.4.1) once the grader lands — a leak cannot be waived.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: guard
+        name: Check eval runner exists
+        run: |
+          if [ -f "scripts/run_evals.py" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::scripts/run_evals.py not yet present (Phase 3/4, A8). Skipping deid-auto-fail."
+          fi
+
+      - name: Set up Python
+        if: steps.guard.outputs.present == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        if: steps.guard.outputs.present == 'true'
+        run: pip install pyyaml
+
+      - name: Run de-identification hard-fail grader
+        if: steps.guard.outputs.present == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/run_evals.py --ci --deid-auto-fail
+
+  sme-persona-review:
+    name: sme-persona-review
+    # Records pass-ran + findings (A8 §4.5). Recorded-as-ran — never merge-blocking
+    # on a flag; the human competent-person review (PR template) is the gate.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: guard
+        name: Check eval runner exists
+        run: |
+          if [ -f "scripts/run_evals.py" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::scripts/run_evals.py not yet present (Phase 3/4, A8). Skipping sme-persona-review."
+          fi
+
+      - name: Set up Python
+        if: steps.guard.outputs.present == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        if: steps.guard.outputs.present == 'true'
+        run: pip install pyyaml
+
+      - name: Run SME-persona review (records findings)
+        if: steps.guard.outputs.present == 'true'
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/run_evals.py --ci --sme-persona-review

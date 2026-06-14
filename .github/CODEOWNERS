@@ -1,0 +1,32 @@
+# CODEOWNERS — Decision 7 dual review (HSE accuracy vs code/format)
+#
+# Solo-build note (D-03): every path uses the live @ashley-eyekyam handle so
+# review is actually requested today (no other collaborators exist yet, and a
+# CODEOWNERS line that points at a non-existent team silently requests no one).
+# The intended team handles are kept as commented TODO placeholders — swap them
+# in (and demote @ashley-eyekyam) once reviewers join. The dual HSE-vs-code
+# path split itself is the locked spec structure and is preserved exactly.
+
+# ---------------------------------------------------------------------------
+# HSE competent-person reviewer — accuracy & defensibility
+# TODO: @ashley-eyekyam/hse-reviewers (swap in once HSE reviewers join)
+# ---------------------------------------------------------------------------
+/skills/                @ashley-eyekyam
+/knowledge-base/        @ashley-eyekyam
+/template/blocks/       @ashley-eyekyam
+/DISCLAIMER.md          @ashley-eyekyam
+
+# ---------------------------------------------------------------------------
+# Format / code reviewer — CI, scripts, schemas, rendering
+# TODO: @ashley-eyekyam/maintainers (swap in once maintainers join)
+# ---------------------------------------------------------------------------
+/scripts/                         @ashley-eyekyam
+/assets/report-engine/            @ashley-eyekyam
+/.github/                         @ashley-eyekyam
+/template/metadata.schema.json    @ashley-eyekyam
+/template/evals/                  @ashley-eyekyam
+
+# ---------------------------------------------------------------------------
+# Catch-all
+# ---------------------------------------------------------------------------
+*                       @ashley-eyekyam

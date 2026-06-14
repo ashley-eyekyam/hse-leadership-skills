@@ -1,0 +1,185 @@
+# validate-skills.yml — fast, deterministic CI (no model calls) — A8 §4.6.
+#
+# A1 owns the wiring (triggers + job names + guarded invocations); A8/A7/A4 own
+# the script logic. Each job invokes its future script by its EXACT name + flags
+# (so no rewrite when the script lands) but SKIPS GRACEFULLY today: a `guard`
+# step detects the missing target and every work step is gated on
+# `steps.guard.outputs.present == 'true'`. Nothing self-blocks (D-05).
+#
+# The five per-job `name:` strings (lint, standard-validate, pytest, marketplace,
+# report-smoke) ARE the branch-protection status-check identifiers — do not rename.
+# The top-level `name: Validate Skills` is the run display-name Plan 05 asserts on.
+name: Validate Skills
+
+on:
+  pull_request:
+    paths:
+      - 'skills/**'
+      - 'template/**'
+      - 'knowledge-base/**'
+      - 'scripts/**'
+      - 'assets/report-engine/**'
+      - 'branding/**'
+  push:
+    paths:
+      - 'skills/**'
+      - 'template/**'
+      - 'knowledge-base/**'
+      - 'scripts/**'
+      - 'assets/report-engine/**'
+      - 'branding/**'
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: guard
+        name: Check linter script exists
+        run: |
+          if [ -f "scripts/lint_skills.py" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::scripts/lint_skills.py not yet present (Phase 3, A8). Skipping lint."
+          fi
+
+      - name: Set up Python
+        if: steps.guard.outputs.present == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        if: steps.guard.outputs.present == 'true'
+        run: pip install pyyaml reportlab python-docx pytest
+
+      - name: Run linter
+        if: steps.guard.outputs.present == 'true'
+        run: python scripts/lint_skills.py --all
+
+  standard-validate:
+    name: standard-validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # NOTE: the Agent-Skills open-standard validation step. Whether this is an
+      # external agentskills.io validator or a rule folded into lint_skills.py is
+      # an A8 / Phase-3 decision — Phase 1 only stubs the job + guards on a
+      # placeholder script path.
+      - id: guard
+        name: Check standard-validator script exists
+        run: |
+          if [ -f "scripts/validate_standard.py" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::scripts/validate_standard.py not yet present (Phase 3, A8). Skipping standard-validate."
+          fi
+
+      - name: Set up Python
+        if: steps.guard.outputs.present == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        if: steps.guard.outputs.present == 'true'
+        run: pip install pyyaml
+
+      - name: Validate against the Agent Skills open standard
+        if: steps.guard.outputs.present == 'true'
+        run: python scripts/validate_standard.py --all
+
+  pytest:
+    name: pytest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: guard
+        name: Check pytest suite exists
+        run: |
+          if [ -d "scripts/tests/" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::scripts/tests/ not yet present (Phase 3, A7). Skipping pytest."
+          fi
+
+      - name: Set up Python
+        if: steps.guard.outputs.present == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        if: steps.guard.outputs.present == 'true'
+        run: pip install pyyaml reportlab python-docx pytest
+
+      - name: Run pytest
+        if: steps.guard.outputs.present == 'true'
+        run: pytest scripts/tests/
+
+  marketplace:
+    name: marketplace
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: guard
+        name: Check marketplace generator exists
+        run: |
+          if [ -f "scripts/gen_marketplace.py" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::scripts/gen_marketplace.py not yet present (Phase 3, A8). Skipping marketplace check."
+          fi
+
+      - name: Set up Python
+        if: steps.guard.outputs.present == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        if: steps.guard.outputs.present == 'true'
+        run: pip install pyyaml
+
+      - name: Check marketplace.json is in sync
+        if: steps.guard.outputs.present == 'true'
+        run: python scripts/gen_marketplace.py --check
+
+  report-smoke:
+    name: report-smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: guard
+        name: Check report engine exists
+        run: |
+          if [ -f "assets/report-engine/generate_report.py" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::assets/report-engine/generate_report.py not yet present (Phase 2, A4). Skipping report smoke test."
+          fi
+
+      - name: Set up Python
+        if: steps.guard.outputs.present == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        if: steps.guard.outputs.present == 'true'
+        run: pip install pyyaml reportlab python-docx
+
+      - name: Smoke-render a sample report (docx + pdf)
+        if: steps.guard.outputs.present == 'true'
+        run: python assets/report-engine/generate_report.py assets/report-engine/sample.report.json --pdf --docx

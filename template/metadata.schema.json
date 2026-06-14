@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ashley-eyekyam/hse-leadership-skills/template/metadata.schema.json",
+  "title": "HSE Skill Metadata",
+  "description": "Schema for the `metadata` frontmatter map of every skill (A2 §4). Enum values are the single source of truth in metadata-vocab.yaml; lint_skills.py (A8) imports that file and a future gen_schema.py may regenerate this schema from it.",
+  "type": "object",
+  "required": [
+    "author",
+    "version",
+    "category",
+    "tier",
+    "audience",
+    "industry",
+    "jurisdiction",
+    "status",
+    "plugin"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "author": { "type": "string" },
+    "version": { "type": "string" },
+    "category": {
+      "type": "string",
+      "enum": [
+        "risk-assessment",
+        "incident-management",
+        "compliance",
+        "training",
+        "contractor",
+        "emergency",
+        "culture",
+        "governance",
+        "performance",
+        "occ-health",
+        "psychosocial",
+        "process-safety",
+        "esg",
+        "ms-admin"
+      ]
+    },
+    "tier": { "type": "integer", "minimum": 1, "maximum": 4 },
+    "audience": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["M", "E", "F", "C"] },
+      "minItems": 1
+    },
+    "industry": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["All", "Gen", "Con", "O&G", "Chem", "Process", "Mfg", "Min", "Avi"]
+      },
+      "minItems": 1
+    },
+    "jurisdiction": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["All", "UK", "US", "IN", "EU"] },
+      "minItems": 1
+    },
+    "status": { "type": "string", "enum": ["stable", "beta", "assistive"] },
+    "plugin": { "type": "string" },
+    "hse_reviewed_by": { "type": "string" },
+    "hse_reviewed_date": { "type": "string" }
+  }
+}

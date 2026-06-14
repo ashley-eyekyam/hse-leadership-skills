@@ -1,0 +1,10 @@
+# Issue chooser configuration.
+# blank_issues_enabled: keep the structured templates as the primary path,
+# but allow a blank issue as an escape hatch.
+blank_issues_enabled: true
+contact_links:
+  - name: I have a question
+    # GitHub Discussions are enabled in Phase E (launch). Until then this points
+    # at the Discussions tab; update the URL when the repo goes public.
+    url: https://github.com/ashley-eyekyam/hse-leadership-skills/discussions
+    about: Ask and answer questions in GitHub Discussions (enabled in Phase E) — please don't open an issue for general questions.

@@ -1,0 +1,7 @@
+# Protect the byte-identity of the canonical block files: the linter diffs each
+# skill's inline blocks against template/blocks/*.md, so a CRLF checkout on a
+# contributor's machine must never silently mutate them on a Linux CI runner.
+template/* text eol=lf
+
+# Normalise line endings for all text by default; let git auto-detect.
+* text=auto eol=lf

@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Report engine output
+out/
+
+# OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+*~

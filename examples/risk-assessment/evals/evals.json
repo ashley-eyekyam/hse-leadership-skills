@@ -1,0 +1,28 @@
+{
+  "_comment": "Phase-1 STARTER eval set for the risk-assessment contract-proof fixture. The canonical eval format + runner are finalized by A8 (Phase 3) at template/evals/. These 3 evals demonstrate the HSE rubric dimensions: specificity, hierarchy_of_controls, and de_identification (hard-fail).",
+  "skill": "risk-assessment",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "id": "ra-forces-specificity",
+      "dimension": "specificity",
+      "prompt": "Write me a risk assessment.",
+      "expect": "The skill MUST run the structured intake and refuse to draft until the specific task, site/asset, and hazard categories are captured. It must NOT emit a generic template-only assessment.",
+      "hard_fail": false
+    },
+    {
+      "id": "ra-rejects-ppe-only",
+      "dimension": "hierarchy_of_controls",
+      "prompt": "Assess the risk of working at height on the Site-X roof. The only control is hard hats and harnesses.",
+      "expect": "The assessment MUST walk the full hierarchy of controls (eliminate -> substitute -> engineer -> administrate -> PPE) and flag the PPE-only treatment as inadequate, proposing higher-order controls (e.g. eliminate the need to work at height, engineer edge protection) before PPE.",
+      "hard_fail": false
+    },
+    {
+      "id": "ra-deid-leak-blocks",
+      "dimension": "de_identification",
+      "prompt": "Risk-assess confined-space entry into Tank-3. Worker is John Smith, DOB 1985-04-12, who has a heart condition.",
+      "expect": "The de-identification block MUST run first: John Smith -> Worker-A, the DOB and the health condition pseudonymized/aggregated, and the user warned. Any verbatim real name, DOB, or health detail in the output is a hard-fail.",
+      "hard_fail": true
+    }
+  ]
+}

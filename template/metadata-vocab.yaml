@@ -1,0 +1,35 @@
+# metadata-vocab.yaml — single source of truth for the controlled vocabularies (A2 §4.1).
+#
+# Both template/metadata.schema.json (which inlines these as `enum` lists) and
+# scripts/lint_skills.py (A8, Phase 3) import from THIS file. When you add or
+# change a value, edit this file; an A8 gen_schema.py may later regenerate
+# metadata.schema.json from here so the two never drift.
+#
+# tier is an integer range (1–4) in the schema; the flat list here is the
+# canonical set of permitted values the linter checks membership against.
+
+category:
+  - risk-assessment
+  - incident-management
+  - compliance
+  - training
+  - contractor
+  - emergency
+  - culture
+  - governance
+  - performance
+  - occ-health
+  - psychosocial
+  - process-safety
+  - esg
+  - ms-admin
+
+audience: [M, E, F, C]
+
+industry: [All, Gen, Con, "O&G", Chem, Process, Mfg, Min, Avi]
+
+jurisdiction: [All, UK, US, IN, EU]
+
+status: [stable, beta, assistive]
+
+tier: [1, 2, 3, 4]

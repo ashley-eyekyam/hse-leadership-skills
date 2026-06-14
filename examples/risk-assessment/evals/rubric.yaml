@@ -1,0 +1,22 @@
+# Phase-1 placeholder rubric for the risk-assessment contract-proof fixture.
+# The CANONICAL HSE eval rubric is authored by A8 in Phase 3 at template/evals/rubric.yaml;
+# lint_skills.py / run_evals.py import it. This placeholder names the rubric dimensions
+# so the contract's evals/ folder layout (A2 §3.4) is complete from Phase 1.
+rubric: hse-eval-placeholder
+weighted_pass_threshold: 4.0
+dimensions:
+  - name: specificity
+    weight: 1.0
+    hard_fail: false
+  - name: hierarchy_of_controls
+    weight: 1.0
+    hard_fail: false
+  - name: defensibility
+    weight: 1.0
+    hard_fail: false
+  - name: de_identification
+    weight: 1.0
+    hard_fail: true   # a de-id leak is an auto-fail and cannot be waived
+  - name: regulatory_citation_accuracy
+    weight: 1.0
+    hard_fail: true   # hard-fail if score < 4

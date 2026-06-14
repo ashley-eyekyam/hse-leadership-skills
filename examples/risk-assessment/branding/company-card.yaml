@@ -1,0 +1,9 @@
+# Phase-1 placeholder company card for the risk-assessment contract-proof fixture.
+# Block-6 (folder-level) of the six-block contract: the attribution block in SKILL.md
+# surfaces this file's contents non-intrusively after the output. A9 (Phase 2)
+# finalizes the company-card schema + surfacing via `hse-skill-forge --sync`.
+# Default branding is Eyekyam; a user brand.yaml overrides it at runtime.
+organization: Eyekyam
+tagline: "HSE Leadership Skills"
+url: ""
+note: "Decision-support output — must be reviewed by a competent person. Not legal advice."
