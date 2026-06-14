@@ -58,7 +58,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.guard.outputs.present == 'true'
-        run: pip install pyyaml reportlab python-docx pytest
+        run: pip install pyyaml jsonschema reportlab python-docx pytest
 
       - name: Run linter
         if: steps.guard.outputs.present == 'true'
@@ -128,7 +128,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.guard.outputs.present == 'true'
-        run: pip install pyyaml reportlab python-docx pytest
+        run: pip install pyyaml jsonschema reportlab python-docx pytest
 
       - name: Run pytest
         if: steps.guard.outputs.present == 'true'

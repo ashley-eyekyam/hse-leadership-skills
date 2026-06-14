@@ -74,7 +74,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.guard.outputs.present == 'true'
-        run: pip install pyyaml
+        run: pip install pyyaml jsonschema reportlab python-docx
 
       - id: decide
         name: Decide eval scope (D-04 sweep vs changed-skills)
@@ -91,7 +91,7 @@ jobs:
             echo "::notice::shared-contract surface changed -> FULL eval sweep (D-04)."
             echo "targets=--all" >> "$GITHUB_OUTPUT"
           else
-            DIRS="$(echo "$CHANGED" | grep -E '^skills/[^/]+/' | sed -E 's#^(skills/[^/]+)/.*#\1#' | sort -u | tr '\n' ' ')"
+            DIRS="$(echo "$CHANGED" | { grep -E '^skills/[^/]+/' || true; } | sed -E 's#^(skills/[^/]+)/.*#\1#' | sort -u | tr '\n' ' ')"
             if [ -z "$DIRS" ]; then
               echo "::notice::no skill or shared-contract change -> nothing to eval."
               echo "targets=" >> "$GITHUB_OUTPUT"
@@ -139,7 +139,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.guard.outputs.present == 'true'
-        run: pip install pyyaml
+        run: pip install pyyaml jsonschema reportlab python-docx
 
       - name: Run de-identification hard-fail grader (deterministic, no model call)
         if: steps.guard.outputs.present == 'true'
@@ -178,7 +178,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.guard.outputs.present == 'true'
-        run: pip install pyyaml
+        run: pip install pyyaml jsonschema reportlab python-docx
 
       - name: Run SME-persona review (records findings; a FLAG never blocks)
         if: steps.guard.outputs.present == 'true'
