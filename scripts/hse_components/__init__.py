@@ -15,6 +15,14 @@ This package is the single import surface the portability shim resolves; Plan
 03-03 extends ``__all__`` as it lands the remaining three engines.
 """
 
+from .controls import (
+    HIERARCHY,
+    NO_CONTROLS_FLAG,
+    PPE_ADMIN_ONLY_FLAG,
+    classify,
+    rank_controls,
+    validate_treatment,
+)
 from .incident_rates import (
     MILLION_BASE,
     OSHA_BASE,
@@ -23,6 +31,12 @@ from .incident_rates import (
     dart,
     ltifr,
     trir,
+)
+from .smart_actions import (
+    REQUIRED_FIELDS,
+    days_until_due,
+    validate_action,
+    validate_register,
 )
 from .risk_matrix import (
     DEFAULT_5X5,
@@ -51,4 +65,16 @@ __all__ = [
     "ltifr",
     "compute_all",
     "benchmark_delta",
+    # controls
+    "HIERARCHY",
+    "PPE_ADMIN_ONLY_FLAG",
+    "NO_CONTROLS_FLAG",
+    "classify",
+    "rank_controls",
+    "validate_treatment",
+    # smart_actions
+    "REQUIRED_FIELDS",
+    "validate_action",
+    "validate_register",
+    "days_until_due",
 ]
