@@ -59,3 +59,18 @@
   last_reviewed: 2026-05-15
   volatile: false
   supersedes: null
+
+- id: KB-SNIP-DEID-ARCHETYPE
+  file: deidentifier-archetype.md
+  title: "De-identifier subagent archetype — runs first, returns scrubbed text + key separately"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [de-identification, pseudonymization, re-identification-key, archetype, residual-risk]
+    audience: [M, C, F]
+  summary: "A5 §3.4 De-identifier role/prompt contract handed to A6: runs FIRST, no tools, returns (a) scrubbed role-labelled text and (b) a SEPARATE re-id key never merged into (a); flags [RESIDUAL-RISK] quasi-identifiers."
+  source: "A5 de-identification design spec §3.4 (master-plan §15 roster)"
+  year: 2026
+  last_reviewed: 2026-06-13
+  volatile: false
+  supersedes: null

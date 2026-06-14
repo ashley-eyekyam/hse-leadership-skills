@@ -40,23 +40,29 @@ always traceable to a real activity rather than a generic template.
 <!-- hse:block:deid:start -->
 ## Data Protection & De-identification (MANDATORY — apply before drafting)
 
-<!-- PLACEHOLDER → A5 Phase 2: this body is a byte-identical Phase-1 placeholder.
-     The detect → pseudonymize → aggregate → warn → minimize skeleton below is
-     finalized by A5 via `hse-skill-forge --sync`; the marker positions are FINAL. -->
+Apply this BEFORE you draft anything. Treat injury, illness, and any health
+detail as the highest sensitivity. Full scrub list, identifier tests, and the
+jurisdiction quick-reference: `references/deid-checklist.md`.
 
-Before drafting ANY output, de-identify the inputs. This block fires first and
-is non-waivable (a de-id leak is an eval hard-fail).
-
-1. **Detect** personal and sensitive data (names, contact details, IDs, exact
-   dates of birth, health data, and any GDPR Art. 9 / India DPDP / OSHA
-   privacy-case category) in the user's inputs.
-2. **Pseudonymize by default** — replace identifiers with stable role/seq tokens
-   (e.g. `Worker-A`, `Supervisor-1`, `Site-X`) and keep a private mapping out of
-   the artifact.
-3. **Aggregate** small-number cells that could re-identify an individual.
-4. **Warn** the user when input still carries identifiers and ask before
-   proceeding.
-5. **Minimize** — carry only the data the artifact actually needs.
+1. **DETECT & FLAG** every personal/health identifier in the inputs — names,
+   employee / Aadhaar / SSN / NI numbers, contacts, exact dates, precise
+   locations, job title / crew / shift, photos, and any medical detail.
+   **List what you found before drafting.** If unsure whether something is
+   identifying, treat it as identifying.
+2. **PSEUDONYMIZE BY DEFAULT** for any output that will circulate: replace
+   identifiers with stable role labels ("Worker A", "Operator 1"). Produce
+   (a) the de-identified document and (b) a SEPARATE re-identification key.
+   **Never put the key or any name↔label mapping in the document.** Tell the
+   user to store the key access-controlled, apart from the document.
+3. **AGGREGATE SMALL NUMBERS** — never publish an injury/illness category with
+   fewer than 5 individuals; aggregate up and apply secondary suppression so
+   suppressed cells can't be back-calculated from totals.
+4. **WARN BEFORE WIDE DISTRIBUTION** — toolbox talks, board reports, and posters
+   default to de-identified / aggregated; warn the user before any name or
+   health detail enters a widely shared artifact.
+5. **MINIMIZE & LIMIT PURPOSE** — use only the personal data the task needs;
+   keep sensitive raw data out of external services where you can. When in
+   doubt, ask before including it.
 <!-- hse:block:deid:end -->
 
 <!-- hse:block:kb-selection:start -->
