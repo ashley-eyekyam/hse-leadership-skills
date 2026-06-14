@@ -93,6 +93,7 @@
         "type":    { "const": "table" },
         "headers": {
           "type": "array",
+          "minItems": 1,
           "items": { "type": "string" }
         },
         "rows": {
@@ -115,6 +116,7 @@
         "type": { "const": "metrics" },
         "metrics": {
           "type": "array",
+          "minItems": 1,
           "items": {
             "type": "object",
             "additionalProperties": false,

@@ -57,7 +57,12 @@ _HERE = Path(__file__).resolve().parent
 _SCHEMA_PATH = _HERE / "report_model_schema.json"
 _HOUSE_TEMPLATE = _HERE / "templates" / "house-standard.yaml"
 _DEFAULT_BRAND = _HERE / "brand.yaml"
-_DEFAULT_CARD = _HERE / "branding" / "company-card.yaml"
+# The A9 company-card lives at the repo root (branding/company-card.yaml), two
+# levels up from this engine dir (assets/report-engine/). CR-01: the old
+# _HERE/"branding" path pointed at a directory that does not exist, so the
+# default-card identity was never read.
+_DEFAULT_CARD = _HERE.parent.parent / "branding" / "company-card.yaml"
+_CARD_SCHEMA_PATH = _HERE.parent.parent / "branding" / "company-card.schema.json"
 
 # Default limitations/de-id footer (auto-stamped when meta carries no override).
 _DEFAULT_LIMITATIONS = (
@@ -253,26 +258,71 @@ def validate_model(report: Dict[str, Any]) -> None:
     jsonschema.validate(report, schema)
 
 
+def _confine_out_dir(out: str) -> Path:
+    """WR-05 / threat T-02-06-02: reject a path-escaping --out.
+
+    Skills call this engine programmatically and the output base may be
+    user-influenced (`meta.title` flows in elsewhere). Reject any `..` traversal
+    component so a forwarded value cannot climb out of its intended directory
+    (e.g. `--out ../../etc`). A clean absolute path (the operator's own temp/
+    output dir) is still allowed — only `..`-bearing paths are refused. Raises
+    ValueError (mapped to a clean nonzero exit in main) on an escaping path."""
+    parts = Path(out).parts
+    if ".." in parts:
+        raise ValueError(
+            f"--out {out!r} contains a '..' path-escape component; refusing to write"
+        )
+    return Path(out)
+
+
 def _slugify(title: str) -> str:
     slug = re.sub(r"[^\w\s-]", "", title.lower()).strip()
     slug = re.sub(r"[\s_-]+", "-", slug)
     return slug or "report"
 
 
-def _read_card_flag(card_path: Optional[str]) -> Tuple[bool, Optional[Dict[str, Any]]]:
-    """Read ONLY report_branding_default (+ return the card for the footer org
-    line). Missing/unreadable card -> (True, None): default branding ON (the
-    Eyekyam default applies), which is the safe, branded path."""
+def _load_card_schema() -> Optional[dict]:
+    try:
+        return json.loads(_CARD_SCHEMA_PATH.read_text(encoding="utf-8"))
+    except Exception as exc:  # pragma: no cover - schema ships with the repo
+        _warn(f"could not load company-card.schema.json ({exc}); skipping card validation")
+        return None
+
+
+def _read_card_flag(
+    card_path: Optional[str], *, is_default: bool = False
+) -> Tuple[bool, Optional[Dict[str, Any]]]:
+    """Read report_branding_default + return the card for the footer org line.
+    Missing/unreadable card -> (True, None): default branding ON (the Eyekyam
+    default applies), which is the safe, branded path.
+
+    WR-03: a SUPPLIED --card (is_default=False) is validated against
+    company-card.schema.json; a validation failure is named on stderr before
+    falling back (branding stays ON — the rejection is visible, not silent)."""
     path = Path(card_path) if card_path else _DEFAULT_CARD
     if not path.exists():
         return True, None
     try:
         card = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
-        flag = card.get("report_branding_default", True)
-        return bool(flag), card
     except Exception as exc:
         _warn(f"could not read company card {path} ({exc}); defaulting branding ON")
         return True, None
+
+    # Validate a user-SUPPLIED card; the bundled default is trusted.
+    if not is_default and _HAVE_JSONSCHEMA:
+        schema = _load_card_schema()
+        if schema is not None:
+            try:
+                jsonschema.validate(card, schema)
+            except jsonschema.ValidationError as exc:
+                _warn(
+                    f"company card {path} failed validation ({exc.message}); "
+                    "ignoring card, defaulting branding ON"
+                )
+                return True, None
+
+    flag = card.get("report_branding_default", True)
+    return bool(flag), card
 
 
 # ──────────────────────────────────────────────────────────────────────────
@@ -323,23 +373,44 @@ def generate(model_path: str, *, brand: Optional[str] = None,
         jsonschema.ValidationError: on a schema-invalid model.
         OSError: on an unwritable --out directory.
     """
-    report = json.loads(Path(model_path).read_text(encoding="utf-8"))
+    model_file = Path(model_path)
+    report = json.loads(model_file.read_text(encoding="utf-8"))
     validate_model(report)   # exit nonzero on invalid (caller converts)
 
-    # --out must be writable (exit nonzero on failure — do not partially render).
-    out_dir = Path(out)
+    # --out must be confined (WR-05) AND writable (exit nonzero on failure —
+    # do not partially render).
+    out_dir = _confine_out_dir(out)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    branding_default, _card = _read_card_flag(card)
+    # CR-01: keep the read card (don't discard it) so its company block can be
+    # threaded into the theme as the footer/cover org identity.
+    branding_default, card_data = _read_card_flag(card, is_default=card is None)
 
-    # Resolve the theme: explicit --brand, else the Eyekyam default when the
-    # card's report_branding_default is true (§2 bridge), else a neutral default.
+    org_overlay = None
+    if card_data:
+        company = card_data.get("company", {}) or {}
+        org_overlay = {
+            "name": company.get("name"),
+            "footer": company.get("tagline") or company.get("blurb"),
+        }
+
+    # WR-01: honour meta.brand as a fallback when --brand is absent, resolved
+    # relative to the model file's directory (the silently-dropped dead field).
+    if not brand:
+        meta_brand = report.get("meta", {}).get("brand")
+        if meta_brand:
+            brand = str((model_file.resolve().parent / meta_brand))
+
+    # Resolve the theme: explicit --brand (or meta.brand), else the Eyekyam
+    # default when the card's report_branding_default is true (§2 bridge), else a
+    # neutral default. The card org identity overlays the footer/cover in EVERY
+    # branch (CR-01).
     if brand:
-        theme = resolve_theme(brand)
+        theme = resolve_theme(brand, org=org_overlay)
     elif branding_default:
-        theme = resolve_theme(str(_DEFAULT_BRAND))
+        theme = resolve_theme(str(_DEFAULT_BRAND), org=org_overlay)
     else:
-        theme = resolve_theme()  # neutral built-in (still the bundled default)
+        theme = resolve_theme(org=org_overlay)  # neutral built-in
 
     meta = report.get("meta", {})
     slug = _slugify(meta.get("title", "report"))
@@ -395,6 +466,10 @@ def main(argv: Optional[List[str]] = None) -> int:
         )
     except FileNotFoundError as exc:
         print(f"model not found: {exc}", file=sys.stderr)
+        return 2
+    except ValueError as exc:
+        # WR-05: an --out that escapes the workspace.
+        print(f"refused output path: {exc}", file=sys.stderr)
         return 2
     except OSError as exc:
         print(f"unwritable output: {exc}", file=sys.stderr)

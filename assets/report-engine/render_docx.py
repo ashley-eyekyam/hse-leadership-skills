@@ -686,6 +686,10 @@ class EyekyamDOCX:
         font = self.DEFAULT_FONT
         self._ensure_chrome()
         n = len(headers)
+        # CR-02 §4.10: a schema-valid model can carry an empty table; skip
+        # rather than ZeroDivisionError (mirrors the PDF add_table guard).
+        if n == 0:
+            return
         POINTS_PER_CM = 28.346456692913385
         if not col_widths:
             widths_cm = [self._usable_w_cm / n] * n

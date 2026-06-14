@@ -33,6 +33,25 @@ def test_rejects_missing_required_meta(report_schema, example_model):
         jsonschema.validate(bad, report_schema)
 
 
+def test_rejects_empty_table_headers(report_schema, example_model):
+    """CR-02 belt-and-suspenders: an empty `table.headers` is rejected at
+    validation (minItems:1) so an empty table exits cleanly (exit 2) rather than
+    reaching the renderer."""
+    bad = copy.deepcopy(example_model)
+    bad["sections"].append({"type": "table", "headers": [], "rows": []})
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(bad, report_schema)
+
+
+def test_rejects_empty_metrics(report_schema, example_model):
+    """CR-02 belt-and-suspenders: an empty `metrics.metrics` is rejected at
+    validation (minItems:1)."""
+    bad = copy.deepcopy(example_model)
+    bad["sections"].append({"type": "metrics", "metrics": []})
+    with pytest.raises(jsonschema.ValidationError):
+        jsonschema.validate(bad, report_schema)
+
+
 def test_rejects_undefined_block_type(report_schema, example_model):
     """A block with a type not in the schema is rejected."""
     bad = copy.deepcopy(example_model)

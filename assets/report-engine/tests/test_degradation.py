@@ -147,3 +147,88 @@ def test_invalid_block_does_not_raise_in_generate(tmp_path):
     docx = EyekyamDOCX(str(tmp_path / "x.docx"), title="T", theme=theme)
     generate_report.render(report, theme, docx)  # must not raise
     docx.build()
+
+
+# ── CR-02: schema-valid models that previously crashed the PDF renderer ──────
+# These three inputs PASS report_model_schema.json (modulo the new minItems
+# belt-and-suspenders) yet aborted EyekyamPDF with IndexError / ZeroDivisionError,
+# violating §4.10 "warn, never abort" and breaking AC3 parity (DOCX survived the
+# risk_col case, PDF did not). Each must now WARN+skip the bad block and still
+# produce a valid document in BOTH renderers — PDF now matches DOCX (AC3).
+
+import pytest as _pytest  # noqa: E402  (local alias, keep import block above tidy)
+
+
+@_pytest.mark.parametrize("renderer_cls,ext", [(EyekyamPDF, "pdf"), (EyekyamDOCX, "docx")])
+def test_risk_col_out_of_range_does_not_crash(tmp_path, renderer_cls, ext):
+    """CR-02: risk_column past the header count must not IndexError in EITHER
+    renderer (AC3 parity — PDF previously crashed, DOCX did not)."""
+    theme = resolve_theme()
+    out = tmp_path / f"oor.{ext}"
+    r = renderer_cls(str(out), title="OOR", theme=theme)
+    r.add_table(["A", "B"], [["x", "high"], ["y", "low"]], risk_col=5)
+    r.add_text("after")
+    r.build()
+    assert out.exists() and out.stat().st_size > 1000
+
+
+@_pytest.mark.parametrize("renderer_cls,ext", [(EyekyamPDF, "pdf"), (EyekyamDOCX, "docx")])
+def test_risk_col_short_row_does_not_crash(tmp_path, renderer_cls, ext):
+    """CR-02: a row shorter than risk_col must not IndexError (per-row skip)."""
+    theme = resolve_theme()
+    out = tmp_path / f"short.{ext}"
+    r = renderer_cls(str(out), title="Short", theme=theme)
+    r.add_table(["A", "B"], [["only-one"]], risk_col=1)
+    r.add_text("after")
+    r.build()
+    assert out.exists() and out.stat().st_size > 1000
+
+
+@_pytest.mark.parametrize("renderer_cls,ext", [(EyekyamPDF, "pdf"), (EyekyamDOCX, "docx")])
+def test_empty_headers_does_not_crash(tmp_path, renderer_cls, ext):
+    """CR-02: an empty-headers table must WARN+skip, not ZeroDivisionError, in
+    BOTH renderers (PDF and DOCX previously both crashed here)."""
+    theme = resolve_theme()
+    out = tmp_path / f"empty-headers.{ext}"
+    r = renderer_cls(str(out), title="Empty headers", theme=theme)
+    r.add_table([], [], risk_col=None)
+    r.add_text("after")
+    r.build()
+    assert out.exists() and out.stat().st_size > 1000
+
+
+@_pytest.mark.parametrize("renderer_cls,ext", [(EyekyamPDF, "pdf"), (EyekyamDOCX, "docx")])
+def test_empty_metrics_does_not_crash(tmp_path, renderer_cls, ext):
+    """CR-02: an empty metrics row must skip, not ZeroDivisionError (DOCX
+    already guarded; PDF now matches — AC3 parity)."""
+    theme = resolve_theme()
+    out = tmp_path / f"empty-metrics.{ext}"
+    r = renderer_cls(str(out), title="Empty metrics", theme=theme)
+    r.add_metrics_row([])
+    r.add_text("after")
+    r.build()
+    assert out.exists() and out.stat().st_size > 1000
+
+
+def test_cr02_inputs_via_render_walk_do_not_crash(tmp_path):
+    """CR-02 / AC3: the SAME report tree carrying all three pathological blocks
+    walks BOTH renderers via the shared DISPATCH without raising — PDF now
+    behaves identically to DOCX on these inputs."""
+    theme = resolve_theme()
+    report = {
+        "schema": "hse-report-model/v1",
+        "meta": {"title": "CR-02"},
+        "sections": [
+            {"type": "table", "headers": ["A", "B"],
+             "rows": [["x", "high"], ["y"]], "risk_column": 5},
+            {"type": "table", "headers": [], "rows": []},
+            {"type": "metrics", "metrics": []},
+            {"type": "paragraph", "text": "survives"},
+        ],
+    }
+    for cls, ext in [(EyekyamPDF, "pdf"), (EyekyamDOCX, "docx")]:
+        out = tmp_path / f"walk.{ext}"
+        r = cls(str(out), title="CR-02", theme=theme)
+        generate_report.render(report, theme, r)  # must not raise in either
+        r.build()
+        assert out.exists() and out.stat().st_size > 1000

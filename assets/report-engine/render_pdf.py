@@ -526,6 +526,10 @@ class EyekyamPDF:
         PAGE_W, MARGIN = self.PAGE_W, self.MARGIN
         usable_w = PAGE_W - 2 * MARGIN
         n = len(headers)
+        # CR-02 §4.10: a schema-valid model can carry an empty table; skip
+        # rather than ZeroDivisionError. Mirrors the DOCX add_metrics_row guard.
+        if n == 0:
+            return
         if not col_widths:
             col_widths = [usable_w / n] * n
         else:
@@ -572,7 +576,11 @@ class EyekyamPDF:
             ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
         ])
 
-        if risk_col is not None:
+        # CR-02 §4.10 / AC3 parity: only apply risk colouring when risk_col is in
+        # range; per-row skip short rows. A schema-valid model may carry a
+        # risk_column past the header count or rows shorter than risk_col —
+        # neither should IndexError (DOCX survives both; PDF now matches).
+        if risk_col is not None and 0 <= risk_col < n:
             risk_map = {
                 "high": BRAND.HIGH_RISK,
                 "medium": BRAND.MED_RISK,
@@ -581,6 +589,8 @@ class EyekyamPDF:
                 "critical": BRAND.CRITICAL_RISK,
             }
             for i, row in enumerate(rows, start=1):
+                if risk_col >= len(row):
+                    continue
                 val = str(row[risk_col]).strip().lower()
                 color = risk_map.get(val)
                 if color:
@@ -602,6 +612,10 @@ class EyekyamPDF:
         """Render 2–4 KPI boxes in a horizontal row."""
         PAGE_W, MARGIN = self.PAGE_W, self.MARGIN
         n = len(metrics)
+        # CR-02 §4.10: an empty metrics row would ZeroDivisionError; skip it
+        # (mirrors the DOCX add_metrics_row `if n == 0: return` guard).
+        if n == 0:
+            return
         usable_w = PAGE_W - 2 * MARGIN
         cell_w = (usable_w - (n - 1) * 0.3 * cm) / n
         box_h = 2.4 * cm
