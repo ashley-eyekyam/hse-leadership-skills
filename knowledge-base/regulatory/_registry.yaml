@@ -1,0 +1,76 @@
+# knowledge-base/regulatory/_registry.yaml
+# Statutory jurisdiction fragments. India is legacy-first + mandatory state detection.
+- id: KB-REG-IN-FACTORIES
+  file: in-factories-act.md
+  title: "India — Factories Act, 1948 (statutory OH&S framing, legacy-first)"
+  facets:
+    jurisdiction: [IN]
+    industry: [All]
+    topics: [factories-act, general-duties, returns, accident-notice, registers, osh-code-transition]
+    audience: [M, C]
+  summary: "Federal Factories-Act framing; state forms/due/portal resolved via KB-REG-IN-STATEFORMS after state detection. Legacy-first; OSH-Code transition flagged."
+  source: "Factories Act, 1948 + state Factory Rules (per-state cite in KB-REG-IN-STATEFORMS)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-IN-STATEFORMS
+  file: in-state-forms.md
+  title: "India — Factories Act state-form lookup (legacy-first)"
+  facets:
+    jurisdiction: [IN]
+    industry: [All]
+    topics: [annual-return, half-yearly-return, accident-notice, registers, license, state-detection]
+    audience: [M, C]
+  summary: "(law, state, obligation) → {form, rule, due, portal, osh_transition}; TN/KA/MH/DL + BOCW seeded; Mines/PESO/MSIHC module slots; OSH-Code transition note. No nationwide form number."
+  source: "State Factory Rules (TN 1950, KA 1969, MH 1963, Delhi/central) + BOCW Rules — see fragment body for per-row cite."
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-UK-HSWA
+  file: uk-hswa.md
+  title: "United Kingdom — Health & Safety at Work etc. Act 1974 + MHSWR 1999"
+  facets:
+    jurisdiction: [UK]
+    industry: [All]
+    topics: [general-duties, risk-assessment, principles-of-prevention, riddor, sfairp]
+    audience: [M, C]
+  summary: "HSWA s.2/s.3 duties; MHSWR reg.3 suitable & sufficient risk assessment; principles of prevention (HOC); RIDDOR; reasonably-practicable test."
+  source: "Health and Safety at Work etc. Act 1974; Management of Health and Safety at Work Regulations 1999"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
+
+- id: KB-REG-US-OSHA
+  file: us-osha.md
+  title: "United States — OSHA (OSH Act / 29 CFR 1910/1926/1904)"
+  facets:
+    jurisdiction: [US]
+    industry: [All]
+    topics: [general-duty-clause, general-industry, construction, recordkeeping, reporting]
+    audience: [M, C]
+  summary: "General Duty Clause; 29 CFR 1910/1926 standards; 1904 injury/illness recordkeeping (drives TRIR/DART); 1904.29 privacy-case (de-id)."
+  source: "Occupational Safety and Health Act of 1970; 29 CFR 1910/1926/1904"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
+
+- id: KB-REG-EU-OSH
+  file: eu-osh.md
+  title: "European Union — OSH Framework Directive 89/391/EEC"
+  facets:
+    jurisdiction: [EU]
+    industry: [All]
+    topics: [general-obligation, principles-of-prevention, information-consultation, daughter-directives]
+    audience: [M, C]
+  summary: "Framework Directive Art.5/6 (employer duty; general principles of prevention = HOC); Arts.10-12 information/consultation; cite member-state transposition for binding forms."
+  source: "Council Directive 89/391/EEC and its individual directives"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null

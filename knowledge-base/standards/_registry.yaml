@@ -1,0 +1,47 @@
+# knowledge-base/standards/_registry.yaml
+# International management-system standards — jurisdiction-independent (jurisdiction: [All]).
+# Copyright-safe clause->artifact maps; never the standard text. volatile: false (multi-year cycle).
+- id: KB-STD-ISO45001
+  file: iso-45001.md
+  title: "ISO 45001:2018 — OH&S management systems (clause→artifact map)"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [ohsms, hira, hierarchy-of-controls, audit, incident, management-review, pdca]
+    audience: [M, C]
+  summary: "OH&S clause map; 6.1.2 HIRA core; 8.1.2→KB-SNIP-HOC; 9.2 audit; 10.2 incident/CAPA. Structural reference, not the standard text."
+  source: "ISO 45001:2018 (clause structure; user holds the licensed standard)"
+  year: 2018
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
+
+- id: KB-STD-ISO14001
+  file: iso-14001.md
+  title: "ISO 14001:2015 — Environmental management systems (clause→artifact map)"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [ems, environmental-aspects, compliance-obligations, lifecycle, pdca]
+    audience: [M, C]
+  summary: "Annex-SL-aligned clause map; 6.1.2 environmental aspects/impacts register; 8.1 lifecycle; compliance evaluation. Structural reference, not the standard text."
+  source: "ISO 14001:2015 (clause structure; user holds the licensed standard)"
+  year: 2015
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
+
+- id: KB-STD-ISO45003
+  file: iso-45003.md
+  title: "ISO 45003:2021 — Psychosocial risk management (clause→artifact map)"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [psychosocial, work-design-controls, mental-health, monitoring]
+    audience: [M, C]
+  summary: "Psychosocial guidance extending 45001; work-design controls (not resilience-only); psychosocial hazard ID/RA/monitoring. Structural reference, not the standard text."
+  source: "ISO 45003:2021 (clause/topic structure; user holds the licensed standard)"
+  year: 2021
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null

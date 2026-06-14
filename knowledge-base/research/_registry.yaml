@@ -1,0 +1,31 @@
+# knowledge-base/research/_registry.yaml
+# Background reference fragments (non-statutory, non-figure). volatile: false.
+- id: KB-RES-PSYCHOSOCIAL
+  file: psychosocial-hazards.md
+  title: "Psychosocial hazards — background reference"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [psychosocial, work-design, mental-health]
+    audience: [M, C]
+  summary: "Psychosocial hazard categories (work-organisation lens); work-design control discipline; pairs with KB-STD-ISO45003."
+  source: "ISO 45003:2021 hazard categories + recognised psychosocial risk literature"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
+
+- id: KB-RES-SAFETY-CULTURE
+  file: safety-culture-models.md
+  title: "Safety culture & maturity models — background reference"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [safety-culture, maturity-model, just-culture, systemic-models]
+    audience: [M, C]
+  summary: "Named safety-culture/maturity models (maturity ladder, Just Culture, accident-pyramid + critique, Swiss-cheese) for audit/board/incident framing; frame, don't substitute for evidence."
+  source: "Recognised safety-culture / maturity-model literature"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null

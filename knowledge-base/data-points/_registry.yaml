@@ -1,0 +1,47 @@
+# knowledge-base/data-points/_registry.yaml
+# Benchmark / figure fragments. EVERY entry carries non-empty source + year (§3.9, never bare).
+# Time-sensitive => volatile: true with last_reviewed (180-day window, D-05).
+- id: KB-DATA-TRIR-BENCHMARKS
+  file: incident-rates-benchmarks.md
+  title: "Incident-rate benchmarks (TRIR / DART / LTIFR)"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [trir, dart, ltifr, benchmarks, recordkeeping]
+    audience: [M, C]
+  summary: "Rate formulae (stable) + the publishing bodies (BLS SOII / UK HSE / ILO) to resolve current-year sector figures; quote body+year+sector, never a bare number."
+  source: "OSHA 29 CFR 1904 (formulae); BLS SOII / UK HSE / ILO (rate publications)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: true
+  supersedes: null
+
+- id: KB-DATA-EXPOSURE-LIMITS
+  file: exposure-limits.md
+  title: "Occupational exposure limits (OELs) — resolution map"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [oel, twa, stel, ceiling, exposure]
+    audience: [C]
+  summary: "TWA/STEL/ceiling concepts + the jurisdiction authority to resolve binding limits (OSHA PEL / NIOSH REL / ACGIH TLV / UK EH40 WEL / EU OEL); present value+unit+authority+year."
+  source: "OSHA 29 CFR 1910.1000 / NIOSH / ACGIH / UK HSE EH40 / EU OEL Directives"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: true
+  supersedes: null
+
+- id: KB-DATA-PPE-STANDARDS
+  file: ppe-standards.md
+  title: "PPE conformity standards reference"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [ppe, conformity-standards, selection]
+    audience: [C, F]
+  summary: "PPE-last selection rule + EN/ANSI-ISEA/NIOSH/ASTM conformity standards by category; cite standard+year, never assert protection without the standard."
+  source: "EN / ANSI-ISEA / NIOSH 42 CFR 84 / ASTM PPE conformity standards"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: true
+  supersedes: null

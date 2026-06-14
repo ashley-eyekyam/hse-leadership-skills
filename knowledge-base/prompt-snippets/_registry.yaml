@@ -1,0 +1,61 @@
+# knowledge-base/prompt-snippets/_registry.yaml
+# Reusable prompt instructions applied across skills. All jurisdiction: [All], volatile: false.
+- id: KB-SNIP-HOC
+  file: hierarchy-of-controls.md
+  title: "Hierarchy of controls — canonical control-ranking instruction"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [hierarchy-of-controls, control-selection, ppe-flag]
+    audience: [M, C, F]
+  summary: "Forces E→S→Eng→Admin→PPE ranking; names the specific hazard; flags PPE/admin-only as lower-order (justify-or-escalate). Prompt text, not a generator."
+  source: "Hierarchy of controls (ISO 45001 8.1.2 / NIOSH / EU general principles of prevention)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-INTAKE
+  file: intake-interview.md
+  title: "Structured intake interview — canonical elicitation pattern"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [intake, elicitation, mcq, state-detection, echo-confirm, no-vague]
+    audience: [M, C, F]
+  summary: "Multi-step one-at-a-time interview; MCQ where enumerable, free-text where open; branch (India→state→KB-REG-IN-STATEFORMS), echo before analysis, never proceed on vague; platform-neutral."
+  source: "Master-plan §2.7 structured-intake convention"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-AUDIENCE
+  file: audience-calibration.md
+  title: "Audience calibration — pitch the artifact to its reader"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [audience, calibration, tone]
+    audience: [M, C, F]
+  summary: "Calibrates depth/language/emphasis to M (leadership), C (consultant), F (frontline); keeps controls ranked and figures sourced across all."
+  source: "Master-plan audience model"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-DEFENSIBILITY
+  file: defensibility-framing.md
+  title: "Defensibility framing — survive a regulator's challenge"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [defensibility, specificity, evidence-trail, accountability]
+    audience: [M, C]
+  summary: "Six-point check: specificity, ranked controls, evidence trail (source+year), proportionality, named owners+dates, surfaced assumptions."
+  source: "Project core value (CLAUDE.md) + reasonably-practicable / SFAIRP doctrine"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
