@@ -95,7 +95,15 @@ REGISTERED_BUNDLES = {
 }
 
 # Regexes.
-ID_RE = re.compile(r"KB-[A-Z0-9]+-[A-Z0-9-]+")
+# KB id: KB-<PREFIX>-<suffix...>. The PREFIX (folder selector) stays upper/digit;
+# suffix tokens may carry mixed case (e.g. KB-STD-ISO45001-AnnexA) and there may be
+# several hyphen-joined tokens. The old `KB-[A-Z0-9]+-[A-Z0-9-]+` excluded
+# lowercase, so it truncated `KB-STD-ISO45001-AnnexA` to `KB-STD-ISO45001-A` and
+# the citation grader then resolved the WRONG id (WR-02). We anchor on a word
+# boundary at both ends and allow alnum suffix tokens of either case so the WHOLE
+# id is captured; resolve_kb_id treats any non-registry id as unresolved so a
+# malformed id cannot silently alias onto a shorter registered one.
+ID_RE = re.compile(r"\bKB-[A-Z0-9]+(?:-[A-Za-z0-9]+)+\b")
 REF_PATH_RE = re.compile(r"references/[A-Za-z0-9_./-]+\.md")
 KB_PATH_RE = re.compile(r"(\.\./)+knowledge-base/[A-Za-z0-9_./-]+\.md")
 FIRST_PERSON_RE = re.compile(r"\b(I|we|my|our|us|me)\b", re.IGNORECASE)
