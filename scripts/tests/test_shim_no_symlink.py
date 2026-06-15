@@ -24,6 +24,9 @@ import pytest
 # scripts/tests/test_shim_no_symlink.py -> scripts/hse_components
 COMPONENTS_DIR = Path(__file__).resolve().parent.parent / "hse_components"
 SHIM_PATH = COMPONENTS_DIR / "_shim.py"
+REPO = Path(__file__).resolve().parent.parent.parent
+SCRIPTS_DIR = REPO / "scripts"                 # holds hse_components/ AND lint_skills.py
+FORGE_SHIM = REPO / "skills" / "hse-skill-forge" / "scripts" / "_shim.py"
 
 
 def test_shim_py_exists_and_uses_sys_path():
@@ -91,3 +94,62 @@ def test_import_resolves_with_symlink_removed(tmp_path):
         f"STDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}"
     )
     assert "SHIM_OK" in result.stdout
+
+
+def test_forge_resolves_lint_skills_with_symlink_removed(tmp_path):
+    """A10 / FORGE-03 symlink-removed trap: the forge's verbatim _shim.py must put the
+    repo `scripts/` dir on sys.path so a consumer at skills/hse-skill-forge/scripts/
+    resolves BOTH `import hse_components` AND `from lint_skills import validate_skill`
+    with NO symlink anywhere — `scripts/` holds both the package and lint_skills.py.
+
+    Materialise a repo-shaped tree (real copies, no symlinks): <root>/scripts/
+    {hse_components/, lint_skills.py, + lint_skills' template/vocab deps are not needed
+    for an import} and <root>/skills/hse-skill-forge/scripts/{_shim.py, helper.py}. Run
+    the helper in a CLEAN subprocess so the test process's sys.path can't mask failure.
+    """
+    root = tmp_path / "flat-forge-distribution"
+    scripts = root / "scripts"
+    scripts.mkdir(parents=True)
+    shutil.copytree(COMPONENTS_DIR, scripts / "hse_components")
+    # lint_skills.py imports yaml + reads template/metadata-vocab.yaml lazily (only on
+    # registered_bundles()/validate); a bare `from lint_skills import validate_skill`
+    # needs only the module file on sys.path.
+    shutil.copyfile(SCRIPTS_DIR / "lint_skills.py", scripts / "lint_skills.py")
+
+    forge_scripts = root / "skills" / "hse-skill-forge" / "scripts"
+    forge_scripts.mkdir(parents=True)
+    shutil.copyfile(FORGE_SHIM, forge_scripts / "_shim.py")
+
+    assert not any(p.is_symlink() for p in forge_scripts.parents if p != p.parent)
+    assert not (scripts / "hse_components").is_symlink()
+
+    helper = forge_scripts / "helper.py"
+    helper.write_text(
+        "from _shim import ensure_hse_components\n"
+        "ensure_hse_components(__file__)\n"
+        "import hse_components\n"
+        "from lint_skills import validate_skill, registered_bundles\n"
+        "assert callable(validate_skill)\n"
+        "assert callable(registered_bundles)\n"
+        "print('FORGE_SHIM_OK')\n",
+        encoding="utf-8",
+    )
+
+    env = dict(os.environ)
+    env.pop("PYTHONPATH", None)
+    # Bootstrap only enough to import _shim (it lives in forge_scripts); the shim then
+    # puts the repo scripts/ dir on sys.path so BOTH imports resolve without a symlink.
+    env["PYTHONPATH"] = str(forge_scripts)
+
+    result = subprocess.run(
+        [sys.executable, str(helper)],
+        cwd=str(forge_scripts),
+        env=env,
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0, (
+        f"forge helper failed (symlink-removed lint_skills self-import did not resolve):\n"
+        f"STDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}"
+    )
+    assert "FORGE_SHIM_OK" in result.stdout
