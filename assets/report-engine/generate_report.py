@@ -55,7 +55,9 @@ from theme import resolve_theme
 
 _HERE = Path(__file__).resolve().parent
 _SCHEMA_PATH = _HERE / "report_model_schema.json"
-_HOUSE_TEMPLATE = _HERE / "templates" / "house-standard.yaml"
+_TEMPLATES_DIR = _HERE / "templates"
+_DEFAULT_HOUSE_TEMPLATE = "house-standard"
+_HOUSE_TEMPLATE = _TEMPLATES_DIR / f"{_DEFAULT_HOUSE_TEMPLATE}.yaml"
 _DEFAULT_BRAND = _HERE / "brand.yaml"
 # The A9 company-card lives at the repo root (branding/company-card.yaml), two
 # levels up from this engine dir (assets/report-engine/). CR-01: the old
@@ -178,9 +180,27 @@ def render(report: Dict[str, Any], theme, renderer, *,
 # House framing — auto-stamp cover / classification / TOC (before body) and the
 # limitations/de-id notice (after body). The skill never authors these as blocks.
 # ──────────────────────────────────────────────────────────────────────────
-def _load_house_template() -> Dict[str, Any]:
+def _load_house_template(name: str = _DEFAULT_HOUSE_TEMPLATE) -> Dict[str, Any]:
+    """Load the named house template from templates/<name>.yaml (WR-02).
+
+    `meta.house_template` selects the layout. The name is resolved ONLY against the
+    bundled templates/ dir (a bare stem; any path component or `.yaml` suffix is
+    stripped so a forwarded value cannot traverse out — T-04-12). A missing or
+    unreadable named template falls back to the built-in house-standard with a
+    visible `_warn` (never silently); the field is no longer inert."""
+    stem = Path(str(name or _DEFAULT_HOUSE_TEMPLATE)).name
+    if stem.endswith(".yaml"):
+        stem = stem[: -len(".yaml")]
+    path = _TEMPLATES_DIR / f"{stem}.yaml"
+    if not path.exists():
+        if stem != _DEFAULT_HOUSE_TEMPLATE:
+            _warn(
+                f"house template {stem!r} not found in templates/; "
+                f"falling back to {_DEFAULT_HOUSE_TEMPLATE!r}"
+            )
+        path = _HOUSE_TEMPLATE
     try:
-        return yaml.safe_load(_HOUSE_TEMPLATE.read_text(encoding="utf-8")) or {}
+        return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
     except Exception as exc:  # pragma: no cover
         _warn(f"could not load house template ({exc}); using built-in order")
         return {"sections": []}
@@ -333,7 +353,9 @@ def _build_one(fmt: str, report: Dict[str, Any], theme, out_path: Path) -> Optio
     and build. Returns the output path, or None if the renderer is unavailable
     on this host (single-format degradation, §4.10)."""
     meta = report.get("meta", {})
-    house = _load_house_template()
+    # WR-02: meta.house_template selects the layout (resolved within templates/ only,
+    # falling back to house-standard with a warning). Previously this field was inert.
+    house = _load_house_template(meta.get("house_template", _DEFAULT_HOUSE_TEMPLATE))
     layout = theme.layout or {}
     title = meta.get("title", "Report")
 
@@ -475,8 +497,14 @@ def main(argv: Optional[List[str]] = None) -> int:
         print(f"unwritable output: {exc}", file=sys.stderr)
         return 2
     except Exception as exc:
-        # jsonschema.ValidationError and any other model error -> nonzero.
-        print(f"invalid model: {exc}", file=sys.stderr)
+        # IN-03: distinguish a schema-invalid model from a renderer/engine bug.
+        # Only a jsonschema.ValidationError is genuinely an "invalid model"; any
+        # other exception is an engine/render error and must be labelled as such so
+        # a renderer bug is not silently mis-attributed to the user's report.json.
+        if _HAVE_JSONSCHEMA and isinstance(exc, jsonschema.ValidationError):
+            print(f"invalid model: {exc}", file=sys.stderr)
+        else:
+            print(f"render error: {exc}", file=sys.stderr)
         return 2
 
     for path in written:

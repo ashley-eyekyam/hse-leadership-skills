@@ -1,0 +1,69 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Risk Assessment (HIRA) — Confined-Space Entry, Tank T-402",
+    "subtitle": "Plant 3, Maharashtra — own workers + contractors",
+    "author": "HSE Department",
+    "date": "2026-06-15",
+    "classification": "Internal — competent-person review required",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "HIRA for confined-space entry to clean tank T-402 (isolate -> purge -> gas-test -> enter -> clean -> exit) at Plant 3, scored on the org 5x5 matrix per ISO 45001 6.1.2. An ISO 14001 6.1.2 environmental-aspects assessment of the associated solvent degreasing line was run in the same pass (Q0 = Both)." },
+    { "type": "metrics", "metrics": [
+        { "label": "Residual risk", "value": "Medium", "caption": "after controls" },
+        { "label": "Higher-order controls", "value": "3", "caption": "Elimination/Engineering" } ] },
+
+    { "type": "heading", "level": 1, "text": "Scope & method" },
+    { "type": "bullets", "items": [
+        "Task: confined-space entry to clean tank T-402 (6 steps)",
+        "Site: Plant 3, Maharashtra; exposed: own workers + contractors",
+        "Scored on the org 5x5 matrix (multiply; Low 1-4 / Medium 5-9 / High 10-15 / Critical 16-25)",
+        "Standards: ISO 45001 6.1.2 (HIRA) + 8.1.2 (hierarchy of controls); ISO 14001 6.1.2 (environmental aspects) for the environmental branch" ] },
+
+    { "type": "heading", "level": 1, "text": "Key findings — risk register" },
+    { "type": "findings", "rows": [
+        { "title": "Oxygen deficiency on entry", "risk_level": "High",
+          "description": "Step 'enter': nitrogen purge can leave <19.5% O2 in T-402.", "evidence": "Gas-test log; ISO 45001 6.1.2 hazard ident" },
+        { "title": "Residual hydrocarbon vapour (fire/IDLH)", "risk_level": "High",
+          "description": "Step 'clean': sludge off-gasses flammable/toxic vapour.", "evidence": "LEL/PID sample baseline" },
+        { "title": "Engulfment by residual sludge", "risk_level": "Medium",
+          "description": "Step 'clean': unstable sludge in the tank base.", "evidence": "Prior-job pattern" } ] },
+
+    { "type": "heading", "level": 1, "text": "Environmental aspects & impacts register" },
+    { "type": "findings", "rows": [
+        { "title": "VOC emissions to air (solvent vapour)", "risk_level": "High",
+          "description": "Aspect: solvent vapour from the spray step -> impact: air quality / VOC. Operating condition: normal + abnormal (drain-down). Significance scored on the SAME 5x5 matrix (environmental consequence descriptors).", "evidence": "ISO 14001 6.1.2; consent limit Q-E5" },
+        { "title": "Spent solvent released to water", "risk_level": "Medium",
+          "description": "Aspect: spent solvent at the drain step -> impact: water contamination. Operating condition: abnormal (maintenance drain-down).", "evidence": "ISO 14001 6.1.2; discharge consent Q-E5" } ] },
+
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Eliminate entry — clean externally via CIP where feasible", "tier": "Elimination", "owner": "Process Eng" },
+        { "control": "Continuous forced-air ventilation + continuous gas monitoring", "tier": "Engineering", "owner": "Maintenance" },
+        { "control": "Entry permit + standby attendant + rescue plan", "tier": "Administrative", "owner": "HSE" },
+        { "control": "Substitute the chlorinated solvent with an aqueous degreaser (env aspect)", "tier": "Substitution", "owner": "Process Eng" },
+        { "control": "Enclose the degreasing line + carbon-capture the VOC (env aspect)", "tier": "Engineering", "owner": "Maintenance" } ] },
+
+    { "type": "heading", "level": 1, "text": "Residual risk" },
+    { "type": "metrics", "metrics": [
+        { "label": "Oxygen deficiency", "value": "Medium", "caption": "High -> Medium (delta -1 band)" },
+        { "label": "VOC to air", "value": "Low", "caption": "High -> Low after substitution + capture" } ] },
+
+    { "type": "heading", "level": 1, "text": "Recommendations" },
+    { "type": "recommendations", "rows": [
+        { "action": "Install a fixed continuous gas monitor on T-402 with interlock", "priority": "P1", "owner": "Maintenance Lead", "due": "2026-07-01" },
+        { "action": "Trial and qualify an aqueous degreaser to substitute the solvent", "priority": "P1", "owner": "Process Eng", "due": "2026-07-15" },
+        { "action": "Revise the confined-space entry SOP + rescue plan", "priority": "P2", "owner": "HSE", "due": "2026-07-20" } ] },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": [
+        "ISO 45001 clause 6.1.2 (hazard identification & assessment of risks) + 8.1.2 (hierarchy of controls)",
+        "Maharashtra — the resolved state accident/dangerous-occurrence form via KB-REG-IN-STATEFORMS (state confirmed; never a national form number)",
+        "ISO 14001 clause 6.1.2 (environmental aspects & impacts) — environmental branch",
+        "Environmental compliance obligations (Q-E5): VOC emission limit + spent-solvent discharge consent" ] }
+  ]
+}
