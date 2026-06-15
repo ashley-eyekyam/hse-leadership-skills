@@ -1,0 +1,17 @@
+{
+  "_comment": "Forge probe answers (04-01). A born-conformant scaffold input: single-thread roster, no A7 components. Used by test_scaffold.py and the plan's standalone-fallback acceptance command.",
+  "description": "Produce a task- and site-specific probe artifact that forces specificity and the hierarchy of controls. Use when a manager or consultant needs a defensible probe output for a concrete task, site, or asset — never for generic or template-only output.",
+  "roster": "single-thread",
+  "kb_ids": ["KB-STD-ISO45001", "KB-SNIP-HOC", "KB-SNIP-INTAKE"],
+  "metadata": {
+    "author": "eyekyam",
+    "version": "1.0",
+    "category": "risk-assessment",
+    "tier": 1,
+    "audience": ["M", "C", "F"],
+    "industry": ["All"],
+    "jurisdiction": ["All"],
+    "status": "stable",
+    "plugin": "hse-core"
+  }
+}
