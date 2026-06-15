@@ -1,0 +1,19 @@
+{
+  "_comment": "B5 incident-investigation author-interview answers (04-05). roster=flagship-b5 pre-seeds the FULL §3.8 4-agent roster (De-identifier-first -> Evidence/Timeline + RCA-analyst + Regulatory-Checker + Corrective-Action-Drafter -> mandatory Critic/QA) verbatim below orchestration:end. a7_components=[rca,smart_actions,controls,incident_rates] -> scripts/ symlink + verbatim _shim.py. category=incident-management, audience=[M,C], jurisdiction=[All] (India noted -> KB-REG-IN-STATEFORMS).",
+  "description": "Investigates an HSE incident — injury, illness, near-miss, property or environmental loss — and produces a defensible, de-identified investigation report: timeline, evidence log, root-cause analysis (5-Whys / ICAM / SCAT / Fishbone / Swiss-Cheese), root and contributing causes traced to evidence, a hierarchy-of-controls corrective-action plan with named owners and due dates, and the jurisdiction's reporting/notification requirements. Use it to investigate an accident, conduct a root-cause analysis / RCA, write up an incident, build a CAPA from an event, or determine whether an incident is reportable (RIDDOR / OSHA 29 CFR 1904 / India state accident form). Decision-support only; a competent person must review the output.",
+  "author": "eyekyam",
+  "roster": "flagship-b5",
+  "a7_components": ["rca", "smart_actions", "controls", "incident_rates"],
+  "kb_ids": ["KB-STD-ISO45001", "KB-SNIP-HOC", "KB-SNIP-INTAKE", "KB-SNIP-ARCHETYPES", "KB-REG-IN-STATEFORMS", "KB-REG-IN-FACTORIES", "KB-REG-UK-HSWA", "KB-REG-US-OSHA", "KB-REG-EU-OSH"],
+  "metadata": {
+    "author": "eyekyam",
+    "version": "1.0",
+    "category": "incident-management",
+    "tier": 1,
+    "audience": ["M", "C"],
+    "industry": ["All"],
+    "jurisdiction": ["All"],
+    "status": "stable",
+    "plugin": "hse-core"
+  }
+}
