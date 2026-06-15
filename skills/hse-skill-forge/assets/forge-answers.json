@@ -1,0 +1,18 @@
+{
+  "_comment": "The forge's OWN author-interview answers — the forge dogfoods scaffold.py to generate its own born-conformant skeleton (A10 AC#8 / D-01). category=ms-admin, plugin=hse-systems, audience=[C], status=stable; single-thread roster (the forge itself drives BUILD-TIME fan-out, not a runtime A6 fan-out); no A7 components (the forge calls no risk/rca engines). The SKILL.md body is then authored over the seeded skeleton to add the build-time framing + the author-interview Workflow.",
+  "description": "Scaffold a new, contract-conformant HSE Leadership skill at build time: this build-time authoring tool runs an author-interview, then emits a born-conformant skills/<name>/ with the five inline blocks byte-matching template/blocks/*, the folder skeleton, vocab-validated metadata, the seeded runtime intake step, and an A8-shaped evals skeleton. It is for skill authors and maintainers extending the pack, not an HSE-advice skill — it produces no risk assessment, talk, or investigation.",
+  "author": "eyekyam",
+  "roster": "single-thread",
+  "kb_ids": ["KB-SNIP-ARCHETYPES", "KB-SNIP-INTAKE"],
+  "metadata": {
+    "author": "eyekyam",
+    "version": "1.0",
+    "category": "ms-admin",
+    "tier": 1,
+    "audience": ["C"],
+    "industry": ["All"],
+    "jurisdiction": ["All"],
+    "status": "stable",
+    "plugin": "hse-systems"
+  }
+}
