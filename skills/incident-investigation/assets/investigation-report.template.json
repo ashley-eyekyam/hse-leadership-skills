@@ -1,0 +1,81 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Incident Investigation — Lost-Time Injury, Press Shop, Line 4",
+    "subtitle": "Plant 3, Maharashtra — de-identified; competent-person review required",
+    "author": "HSE Department",
+    "date": "2026-06-15",
+    "classification": "Internal — competent-person review required",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. Identifiers were pseudonymised before any analysis; the re-identification key is held separately, access-controlled, and is not part of this document. No injury/illness cell of fewer than 5 individuals is published."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "On the incident date, Worker A sustained a lost-time hand injury at the Line-4 power press (Plant 3) when the fixed guard had been removed to clear a jam under production pressure. The single most important systemic cause is an organisational one: an ambiguous jam-clearance procedure combined with a lapsed refresher-training cycle that left guard-removal an accepted informal practice. Assessed against the Maharashtra accident-notice duty, the event is REPORTABLE — a state accident notice (Form 24) is due within 24 hours. This report is de-identified throughout; the re-identification key is held separately." },
+
+    { "type": "metrics", "metrics": [
+        { "label": "Severity", "value": "Lost-time injury", "caption": "1 person; days lost recorded internally" },
+        { "label": "Reportability", "value": "Reportable", "caption": "Maharashtra Form 24 — within 24h" },
+        { "label": "Systemic cause reached", "value": "Yes", "caption": "organisational (procedure + training)" } ] },
+
+    { "type": "heading", "level": 1, "text": "Timeline" },
+    { "type": "table",
+      "headers": ["Seq", "Time", "Event (scrubbed)", "Evidence"],
+      "rows": [
+        ["1", "T-00:15", "Line 4 press jams on a mis-fed blank during the run.", "E-1"],
+        ["2", "T-00:12", "Worker A removes the fixed guard to clear the jam (no isolation).", "E-2, E-3"],
+        ["3", "T-00:00", "Press cycles on residual stored energy; Worker A's hand is struck.", "E-1, E-4"],
+        ["4", "T+00:05", "Standby (W-1) raises the alarm; first aid administered.", "E-5"] ] },
+
+    { "type": "heading", "level": 1, "text": "Evidence log" },
+    { "type": "table",
+      "headers": ["E-n", "Type", "Summary (scrubbed)", "Flags"],
+      "rows": [
+        ["E-1", "statement", "Worker A account: jam, then guard removed to clear it.", ""],
+        ["E-2", "photo-ref", "Guard found detached at the scene; fixings loose.", ""],
+        ["E-3", "document", "Jam-clearance procedure does not state 'isolate before guard removal'.", "[GAP] no isolation step"],
+        ["E-4", "log", "Press controls show a cycle initiated during the clearance window.", ""],
+        ["E-5", "statement", "Witness W-1 confirms guard was off and the line was under output pressure.", ""],
+        ["E-6", "document", "Training records: guard-safety refresher lapsed beyond its cycle for the crew.", ""] ] },
+
+    { "type": "heading", "level": 1, "text": "Root-cause analysis (ICAM)" },
+    { "type": "paragraph", "text": "Method: ICAM (systems-based — chosen for a serious, high-potential event). The analysis runs the four ICAM categories and reaches the organisational layer; rca.validate(method='icam', analysis) returns reaches_systemic = true (>=1 Organisational Factor populated). The systemic factor is highlighted: the ambiguous procedure (E-3) and the lapsed training cycle (E-6) made informal guard removal an accepted practice under production pressure — not an isolated individual error." },
+    { "type": "table",
+      "headers": ["ICAM category", "Finding (scrubbed)", "Evidence"],
+      "rows": [
+        ["Absent/failed defences", "Fixed guard defeated; no isolation step enforced.", "E-2, E-3"],
+        ["Individual/team actions", "Guard removed to clear the jam without isolation.", "E-1, E-2"],
+        ["Task/environmental conditions", "Output pressure; jam-prone mis-feed on the run.", "E-1, E-5"],
+        ["Organisational factors", "Ambiguous jam-clearance procedure; lapsed guard-safety refresher cycle.", "E-3, E-6"] ] },
+
+    { "type": "heading", "level": 1, "text": "Root & contributing causes" },
+    { "type": "findings", "rows": [
+        { "title": "RC-1 (root)", "risk_level": "High",
+          "description": "Organisational: the jam-clearance procedure omits an isolate-before-guard-removal step, and the guard-safety refresher cycle had lapsed — informal guard removal became accepted under output pressure.", "evidence": "E-3, E-6" },
+        { "title": "RC-2 (contributing)", "risk_level": "High",
+          "description": "Engineering: the press allowed a cycle to initiate with the fixed guard removed (no guard-interlock).", "evidence": "E-2, E-4" },
+        { "title": "RC-3 (immediate)", "risk_level": "Medium",
+          "description": "The guard was removed to clear a jam without isolating stored energy.", "evidence": "E-1, E-2" } ] },
+
+    { "type": "heading", "level": 1, "text": "Corrective & preventive actions (CAPA)" },
+    { "type": "recommendations", "rows": [
+        { "action": "Fit a guard-interlock so the press cannot cycle with the fixed guard removed (RC-2).", "priority": "P1", "owner": "Maintenance Lead", "due": "2026-07-10" },
+        { "action": "Rewrite the jam-clearance procedure to mandate isolation before any guard removal; brief the crew (RC-1).", "priority": "P1", "owner": "HSE Manager", "due": "2026-07-05" },
+        { "action": "Reinstate and complete the lapsed guard-safety refresher for the press crew (RC-1).", "priority": "P2", "owner": "Training Lead", "due": "2026-07-20" } ] },
+
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Guard-interlock so the press cannot cycle with the guard removed", "tier": "Engineering", "owner": "Maintenance Lead" },
+        { "control": "Reduce mis-feed jams at source (feed-alignment fix) to remove the clearance task", "tier": "Elimination", "owner": "Process Eng" },
+        { "control": "Isolate-before-guard-removal mandated in the rewritten procedure", "tier": "Administrative", "owner": "HSE Manager" },
+        { "control": "Guard-safety refresher training reinstated", "tier": "Administrative", "owner": "Training Lead" } ] },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis (reporting / notification)" },
+    { "type": "bullets", "items": [
+        "ISO 45001 clause 10.2 (incident, nonconformity & corrective action) — the management-system basis for this investigation and its CAPA.",
+        "Maharashtra — REPORTABLE: the state accident-notice form (Form 24, within 24h) resolved via KB-REG-IN-STATEFORMS with the state confirmed; never a national form number.",
+        "OSH-Code transition note: the accident-notice duty is retained under the OSH Code; Maharashtra has not yet notified — file under the legacy state form.",
+        "Re-identification key held separately; no injury/illness cell of fewer than 5 individuals is published in this circulated report." ] }
+  ]
+}

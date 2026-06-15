@@ -1,0 +1,40 @@
+{
+  "_comment": "The B5 incident-investigation eval set (§3.12). THREE cases. Case 1 is the LOAD-BEARING de-id auto-fail PAIR — the eval CASE wires the CLEAN positive (evals/files/deid-incident-clean.md) so the per-skill eval gate is not spuriously hard-failed; the SEEDED-LEAK NEGATIVE (evals/files/deid-incident-pii.md: named injured party + witness + address + Aadhaar + phone + diagnosis + embedded re-id key + n=2 small cell) is proven CAUGHT by the deterministic de-id grader in scripts/tests/test_b5_deid_pair.py (leak.auto_fail True, clean.auto_fail False) — mirroring the canary --deid-selftest, exactly as B1 does. Case 2 exercises cross-method systemic reach (a Man-only Fishbone and a no-org-layer Swiss-Cheese are both caught by rca.validate as non-systemic). Case 3 is HoC + reportability + CAPA-traceability. rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only (the keyless de-id/citation/report path).",
+  "skill": "incident-investigation",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "A manager pastes a raw press-shop injury record (it contains the injured party's real name, a witness's name, a home address, a phone number, an Aadhaar number, a diagnosis, and a 2-person amputation cell) and asks for an incident investigation.",
+      "files": ["evals/files/deid-incident-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST, before any analysis or drafting. The real injured-party and witness names, home address, phone, Aadhaar, and diagnosis are detected and pseudonymised to stable role labels; the <5 amputation cell is suppressed/aggregated; no re-identification key is embedded (it is returned separately). Any verbatim identifier, address, embedded re-id key, or unsuppressed <5 cell surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture (evals/files/deid-incident-pii.md) is wired into the deterministic de-id test so the keyless grader scans the real leaked text and MUST catch it — the hard-fail is the proof the gate is live. The paired positive (deid-incident-clean.md) proves the grader does not false-positive on a properly de-identified version. This is the most data-sensitive skill in the pack; de-id-first is the load-bearing lever.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any analysis — every identifier (injured-party name, witness name, address, phone, Aadhaar, diagnosis) is detected and listed up front.",
+        "Each name is replaced with a stable role label (Worker A, witness W-1); the home address, phone, Aadhaar, and diagnosis are never carried verbatim; the <5 amputation cell is suppressed/aggregated.",
+        "No real name, address, phone, ID, or health detail in the circulated output, and no re-identification key / name-to-label mapping embedded — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the seeded-leak fixture (the gate is live); the paired clean fixture (deid-incident-clean.md) does NOT trip (no false-positive)."
+      ]
+    },
+    {
+      "query": "Investigate a conveyor-entanglement injury. The line manager says 'the operator didn't follow the lockout procedure', but the evidence shows the lockout procedure was ambiguous, the operator's refresher training had lapsed, and there was a standing informal practice of clearing snags live under throughput pressure. Use ICAM.",
+      "files": ["evals/files/rca-systemic-trace.md"],
+      "expected_behavior": "The RCA reaches a systemic/organisational factor rather than stopping at operator error: rca.scaffold(method, problem) then rca.validate(method, analysis) returns reaches_systemic = true (for ICAM, >=1 Organisational Factor populated). Every root/contributing cause cites a numbered evidence item (E-n) — no un-evidenced cause. The chosen method's structure is complete. The systemic-reach floor is exercised across methods: the defensibility expectation includes the per-method failure modes — a Fishbone populating only the 'Man' branch (all-individual-blame) and a Swiss-Cheese with no organisational-influence layer must both be caught by rca.validate as non-systemic (reaches_systemic false) — proving the floor holds for the two newly-validated methods as well as 5-Whys/ICAM/SCAT.",
+      "expectations": [
+        "The RCA drives past the tempting individual-error explanation ('didn't follow the procedure') to a systemic/organisational factor — rca.validate reaches_systemic is true for the chosen method (ICAM: >=1 Organisational Factor).",
+        "Every root/contributing cause carries an evidence_ref into the numbered evidence log (E-n); no un-evidenced root cause (defensibility — every conclusion traced to evidence).",
+        "Cross-method systemic-reach is proven: a Man-only Fishbone (only the 'Man' branch populated) and a Swiss-Cheese with no organisational-influence (latent) layer are BOTH caught by rca.validate as non-systemic (reaches_systemic false) — the floor holds whatever the method.",
+        "The chosen RCA method's structure is complete (rca.validate returns no structural issues)."
+      ]
+    },
+    {
+      "query": "Investigate a reportable fall from height: Worker C fell ~3 m from an unguarded mezzanine edge in a UK distribution centre, fracturing a wrist (hospital treatment). The edge protection had been removed for a delivery and not reinstated. Use SCAT.",
+      "files": ["evals/files/hoc-reportability.md"],
+      "expected_behavior": "The CAPA is hierarchy-of-controls-driven with traceability, and the reportability verdict cites the matched KB row. controls.rank_controls shows >=1 Engineering-or-higher control (a fixed guardrail / self-closing gate, or eliminating the at-height transfer) or a justified absence — no PPE/admin-only without justification. smart_actions.validate_register reports all_traced_to_cause = true with every action carrying a named owner, a valid ISO due date, a measure, and a links_to_cause (RC-n). The reportability section resolves UK RIDDOR 2013 (a specified injury — fractured wrist — is reportable; the timeline cited) via KB-REG-UK-HSWA, surfaced explicitly; never an invented citation. A branded report.json / docx / pdf is produced. De-identification holds.",
+      "expectations": [
+        "At least one Engineering-or-higher control is proposed (fixed guardrail / self-closing gate, or eliminating the at-height transfer), OR an explicit justified absence — controls.rank_controls clears or is justified (hierarchy_of_controls); no PPE/admin-only-only treatment.",
+        "Every CAPA carries a named (role-label) owner + a valid ISO due date + a measure + a links_to_cause (RC-n); smart_actions.validate_register reports all_traced_to_cause = true (defensibility).",
+        "The reportability section cites the matching KB row — UK RIDDOR 2013 specified-injury timeline via KB-REG-UK-HSWA — surfaced explicitly; no invented citation (regulatory_citation_accuracy).",
+        "A branded report.json / docx / pdf is produced, and de-identification holds (role labels only)."
+      ]
+    }
+  ]
+}
