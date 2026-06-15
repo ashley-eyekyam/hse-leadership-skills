@@ -144,11 +144,15 @@ jobs:
       - name: Run de-identification hard-fail grader (deterministic, no model call)
         if: steps.guard.outputs.present == 'true'
         run: |
-          # The deterministic de-id grader runs first inside run_evals and
-          # short-circuits the case on a leak; --ci exits nonzero on that hard
-          # block. No ANTHROPIC_API_KEY is set here on purpose — the de-id auto-fail
-          # is deterministic and must hold even with zero model access.
-          python scripts/run_evals.py --ci --all --grader-model "$GRADER_MODEL"
+          # CR-01 FIX: this keyless job formerly ran `run_evals.py --ci --all`,
+          # but with no ANTHROPIC_API_KEY the executor returns "" — the de-id
+          # grader then scanned empty text and the job passed UNCONDITIONALLY,
+          # making the named hard block inert. It now runs --deid-selftest, which
+          # grades the captured control artifacts under examples/deid-canary/ and
+          # exits nonzero unless the seeded leak (leak.md) auto-fails AND the clean
+          # report (clean.md) passes. The de-id hard block is thus itself tested
+          # with ZERO model access — exactly what this job's name promises.
+          python scripts/run_evals.py --deid-selftest
 
   sme-persona-review:
     name: sme-persona-review

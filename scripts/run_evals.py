@@ -28,8 +28,14 @@ Stdlib + pyyaml only. The model-graded path needs ANTHROPIC_API_KEY (CI only); t
 deterministic graders + the wiring run with ZERO model calls (and ZERO key).
 
 CLI:
-    python run_evals.py <skill-dir>... | --all   [--ci] [--changed] [--matrix]
-                        [--model M] [--grader-model M] [--out benchmark.json]
+    python run_evals.py <skill-dir>... | --all | --changed [--base REF]
+                        [--ci] [--matrix] [--model M] [--grader-model M]
+                        [--out benchmark.json]
+
+--changed (D-04, WR-06): classify the diff against --base; a change to a
+shared-contract surface (template/, knowledge-base/, scripts/hse_components/,
+assets/report-engine/) escalates to a full sweep, otherwise only the changed
+skills run. The classification is testable Python (classify_changed_targets).
 """
 
 from __future__ import annotations
@@ -100,12 +106,50 @@ def gate_threshold(rubric: Dict[str, Any]) -> float:
 
 # --- executor ------------------------------------------------------------------
 
-def run_skill(skill_dir: Path, query: str, model: Optional[str]) -> str:
-    """Execute the skill against `query` via `claude -p` and return the output
-    text. Returns "" when the CLI/key is unavailable (the deterministic graders
-    still run on whatever the case carries; CI supplies the key)."""
+def _load_case_artifact_text(skill_dir: Path, case: Dict[str, Any]) -> str:
+    """Return the case's CAPTURED artifact text for the keyless deterministic path
+    (CR-01).
+
+    Without an ANTHROPIC_API_KEY the executor cannot produce live output, so the
+    deterministic de-id / citation graders would scan "" and ALWAYS pass — making
+    the dedicated deid-auto-fail CI job inert. Instead, when no key is present we
+    grade the case's own on-disk / inline artifact:
+      - `case["output"]` / `case["fixture_text"]`: inline text in evals.json; or
+      - each path in `case["files"]`: a file relative to the skill dir (e.g.
+        evals/files/<case>.md) whose contents are concatenated.
+    A case that declares no artifact contributes no text (nothing to scan), which
+    is correct — there is nothing captured to leak. The seeded-leak fixture under
+    examples/ carries a `files`/`output` artifact so the keyless job has real text
+    to hard-fail on, and a CI assertion proves the job exits nonzero."""
+    parts: List[str] = []
+    inline = case.get("output") or case.get("fixture_text")
+    if isinstance(inline, str) and inline.strip():
+        parts.append(inline)
+    for rel in case.get("files", []) or []:
+        candidate = (skill_dir / rel).resolve()
+        try:
+            if candidate.is_file():
+                parts.append(candidate.read_text(encoding="utf-8"))
+        except OSError as exc:  # pragma: no cover - host/fs dependent
+            print(f"WARN: could not read case artifact {candidate} ({exc})",
+                  file=sys.stderr)
+    return "\n".join(parts)
+
+
+def run_skill(skill_dir: Path, case: Dict[str, Any], model: Optional[str]) -> str:
+    """Execute the skill against the case's query via `claude -p` and return the
+    output text.
+
+    With NO ANTHROPIC_API_KEY (the deid-auto-fail CI job, by design) the executor
+    cannot run, so we fall back to the case's CAPTURED artifact text rather than ""
+    (CR-01) — that keeps the deterministic de-id / citation hard blocks live in the
+    keyless deterministic job. With a key, the live skill output is graded as
+    before; the captured artifact is appended so a seeded leak in a fixture still
+    trips even if the live model happened to behave."""
+    query = case.get("query", "")
+    captured = _load_case_artifact_text(skill_dir, case)
     if not os.environ.get("ANTHROPIC_API_KEY"):
-        return ""
+        return captured
     cmd = ["claude", "-p", query, "--output-format", "text"]
     if model:
         cmd.extend(["--model", model])
@@ -115,10 +159,11 @@ def run_skill(skill_dir: Path, query: str, model: Optional[str]) -> str:
             cmd, cwd=str(skill_dir), env=env,
             capture_output=True, text=True, timeout=300,
         )
-        return proc.stdout or ""
+        live = proc.stdout or ""
     except Exception as exc:  # pragma: no cover - host/CLI dependent
         print(f"WARN: executor failed ({exc})", file=sys.stderr)
-        return ""
+        live = ""
+    return "\n".join(p for p in (live, captured) if p)
 
 
 # --- deterministic graders (run FIRST, short-circuit) --------------------------
@@ -187,7 +232,7 @@ def grade_case(
 ) -> Dict[str, Any]:
     """Run one eval case through executor -> deterministic graders -> model grader
     (short-circuit on a deterministic hard-fail)."""
-    output_text = run_skill(skill_dir, case.get("query", ""), exec_model)
+    output_text = run_skill(skill_dir, case, exec_model)
 
     deterministic = run_deterministic(output_text)
     record: Dict[str, Any] = {
@@ -251,19 +296,144 @@ def _iter_skill_dirs(repo: Path) -> List[Path]:
     return found
 
 
+# --- D-04 changed-vs-sweep scope selection (WR-06) -----------------------------
+# A change under any SHARED-CONTRACT surface can break EVERY skill, so it triggers
+# a FULL sweep (--all). A change confined to skills/<one>/ evals only that skill.
+# This logic was previously ONLY in eval.yml's shell `decide` step (untestable);
+# it now lives here as importable, unit-testable Python (the regex source of truth
+# for the sweep trigger). Keep this list in lockstep with eval.yml's path filter
+# and the rubric's shared-contract path list.
+SHARED_CONTRACT_PREFIXES = (
+    "template/",
+    "knowledge-base/",
+    "scripts/hse_components/",
+    "assets/report-engine/",
+)
+# A precise file under template/ that is also a shared-contract surface in its own
+# right (kept for parity with eval.yml; already covered by the template/ prefix).
+SHARED_CONTRACT_FILES = ("template/evals/rubric.yaml",)
+
+# Sentinel: a shared-contract change -> run every skill.
+SWEEP = "--all"
+
+
+def classify_changed_targets(changed_paths: List[str], repo: Path = REPO):
+    """Map a list of changed repo-relative paths to an eval scope (WR-06).
+
+    Returns the SWEEP sentinel ('--all') when any shared-contract surface changed;
+    otherwise a sorted list of the changed skill dirs (Path) that actually carry an
+    evals/evals.json. An empty list means "nothing to eval"."""
+    for path in changed_paths:
+        norm = path.strip()
+        if not norm:
+            continue
+        if norm in SHARED_CONTRACT_FILES or norm.startswith(SHARED_CONTRACT_PREFIXES):
+            return SWEEP
+
+    skill_dirs = set()
+    for path in changed_paths:
+        norm = path.strip()
+        parts = norm.split("/")
+        if len(parts) >= 2 and parts[0] in ("skills", "examples"):
+            cand = repo / parts[0] / parts[1]
+            if (cand / "evals" / "evals.json").is_file():
+                skill_dirs.add(cand)
+    return sorted(skill_dirs)
+
+
+def _git_changed_files(base: str, repo: Path = REPO) -> List[str]:
+    """`git diff --name-only <base>...HEAD` repo-relative paths (best-effort)."""
+    try:
+        proc = subprocess.run(
+            ["git", "diff", "--name-only", f"{base}...HEAD"],
+            cwd=str(repo), capture_output=True, text=True, timeout=60,
+        )
+        if proc.returncode != 0:
+            proc = subprocess.run(
+                ["git", "diff", "--name-only", "HEAD~1...HEAD"],
+                cwd=str(repo), capture_output=True, text=True, timeout=60,
+            )
+        return [ln for ln in proc.stdout.splitlines() if ln.strip()]
+    except Exception as exc:  # pragma: no cover - host/git dependent
+        print(f"WARN: git diff failed ({exc})", file=sys.stderr)
+        return []
+
+
+# --- CR-01: the deterministic de-id self-test --------------------------------
+# The deid-auto-fail CI job is keyless on purpose, so it cannot re-execute a skill;
+# without this it graded "" and passed unconditionally. This self-test grades two
+# captured control artifacts and proves the hard block both FIRES on a leak and
+# does NOT false-positive on a clean report — so the gate is itself tested.
+DEID_CANARY = REPO / "examples" / "deid-canary"
+
+
+def run_deid_selftest(canary_dir: Path = DEID_CANARY) -> int:
+    """Assert the deterministic de-id hard block against captured control
+    artifacts (CR-01). Returns 0 iff leak.md auto-fails AND clean.md passes;
+    nonzero (with a diagnostic) otherwise, so the keyless CI job actually
+    enforces something."""
+    leak_path = canary_dir / "leak.md"
+    clean_path = canary_dir / "clean.md"
+    if not leak_path.is_file() or not clean_path.is_file():
+        print(f"ERROR: de-id self-test fixtures missing under {canary_dir}",
+              file=sys.stderr)
+        return 1
+
+    leak_verdict = grade_deid(leak_path.read_text(encoding="utf-8"))
+    clean_verdict = grade_deid(clean_path.read_text(encoding="utf-8"))
+
+    ok = True
+    if not leak_verdict["auto_fail"]:
+        print("FAIL: de-id self-test — seeded leak (leak.md) did NOT auto-fail; "
+              "the de-id hard block is not enforcing.", file=sys.stderr)
+        ok = False
+    if clean_verdict["auto_fail"]:
+        print("FAIL: de-id self-test — clean report (clean.md) wrongly auto-failed; "
+              f"reasons: {clean_verdict['reasons']}", file=sys.stderr)
+        ok = False
+    if ok:
+        print("OK: de-id hard block enforces (leak.md auto-fails, clean.md passes).")
+        return 0
+    return 1
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     p = argparse.ArgumentParser(description="Run HSE skill evals (A8 §4.3).")
     p.add_argument("skills", nargs="*", help="skill dir(s) with evals/evals.json")
     p.add_argument("--all", action="store_true", help="run every skill in the repo")
     p.add_argument("--ci", action="store_true", help="CI mode (pinned grader; nonzero on any fail)")
-    p.add_argument("--changed", action="store_true", help="(reserved) only changed skills — wired in Plan 06")
+    p.add_argument("--deid-selftest", action="store_true",
+                   help="CR-01: assert the deterministic de-id hard block against "
+                        "the examples/deid-canary control artifacts (keyless; the "
+                        "deid-auto-fail CI job's enforcement test). Exits nonzero "
+                        "unless the seeded leak auto-fails and the clean report "
+                        "passes.")
+    p.add_argument("--changed", action="store_true",
+                   help="eval only the skills changed since --base (D-04: a "
+                        "shared-contract change escalates to a full --all sweep)")
+    p.add_argument("--base", default="origin/main",
+                   help="base ref for --changed (default origin/main)")
     p.add_argument("--matrix", action="store_true", help="(local) Haiku/Sonnet/Opus matrix — developer aid only")
     p.add_argument("--model", default=None, help="executor model for the skill-under-test")
     p.add_argument("--grader-model", default=None, help=f"override the pinned grader (default {GRADER_MODEL})")
     p.add_argument("--out", default=None, help="write the benchmark.json here")
     args = p.parse_args(argv)
 
-    if args.all:
+    if args.deid_selftest:
+        return run_deid_selftest()
+
+    if args.changed:
+        scope = classify_changed_targets(_git_changed_files(args.base), REPO)
+        if scope == SWEEP:
+            print("shared-contract surface changed -> FULL eval sweep (D-04).")
+            targets = _iter_skill_dirs(REPO)
+        elif scope:
+            print(f"single-skill scope (D-04) -> {[str(d) for d in scope]}")
+            targets = list(scope)
+        else:
+            print("no skill or shared-contract change -> nothing to eval (D-04).")
+            return 0
+    elif args.all:
         targets = _iter_skill_dirs(REPO)
     else:
         targets = [Path(s) for s in args.skills]
