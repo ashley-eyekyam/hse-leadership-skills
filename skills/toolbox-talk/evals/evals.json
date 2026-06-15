@@ -1,36 +1,43 @@
 {
-  "_comment": "Eval set for toolbox-talk (forge-seeded skeleton; author fills the domain expectations).",
+  "_comment": "The B3 toolbox-talk eval set (§3.11). THREE cases: (1) specificity-vs-generic, (2) de-id auto-fail PAIR, (3) length/readability + sign-off-present. Eval 2 is the de-id auto-fail PAIR — the eval CASE wires the CLEAN positive (evals/files/scaffold-incident-clean.md) so the per-skill eval gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/scaffold-incident-pii.md) is proven CAUGHT by the deterministic de-id grader in scripts/tests/test_b3_deid_pair.py (leak.auto_fail True, clean.auto_fail False) — mirroring the canary --deid-selftest. case `files` are skill-dir-relative as evals/files/<name>.md so the keyless deterministic grader resolves and scans them (the B1 path convention). rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only.",
   "skill": "toolbox-talk",
   "rubric": "rubric.yaml",
   "evals": [
     {
-      "query": "TODO — a vague request that should trigger the structured intake.",
-      "files": [],
-      "expected_behavior": "Runs the structured intake and refuses to draft until the specific task/site/asset and the domain specifics are captured.",
+      "query": "Write a <5-minute toolbox talk for re-roofing Bay 3 today: the cherry-picker (MEWP) is out of service so the mixed crew is working off the leading edge by hand. Plain English. Include the attendance sign-off sheet.",
+      "files": ["evals/files/reroof-bay3-clean.md"],
+      "expected_behavior": "Produces a SPECIFIC, frontline-ready talk: names the actual task/site/crew (re-roofing Bay 3, MEWP out of service, mixed crew) and the concrete hazards (unprotected leading edge, the unavailable MEWP) — NOT generic 'work safely at height' patter; controls are hierarchy-of-controls-ranked with higher-order first (eliminate/engineer the edge protection before PPE); a recent relevant incident appears de-identified OR as a clearly-labelled typical example (never a fabricated local event); the sign-off sheet is present; a branded report is produced.",
       "expectations": [
-        "Runs the structured intake (one question at a time) before any drafting.",
-        "Refuses to proceed on the vague request — elicits the specific task/site/asset.",
-        "Does not emit a generic or template-only artifact (specificity dimension)."
+        "Names the actual task/site/crew (re-roofing Bay 3, cherry-picker out of service, mixed crew) — not 'general site safety' (specificity high).",
+        "Names the concrete observable hazards of THIS task (the unprotected leading edge, the unavailable MEWP, dropped objects) — not a generic hazard category.",
+        "Controls are hierarchy-of-controls-ranked: higher-order first (eliminate the edge work / engineer the edge protection) — PPE is the last line, never the only line (hierarchy_of_controls).",
+        "A recent relevant incident appears either de-identified (role labels) OR as a clearly-labelled typical/illustrative example — never a fabricated 'last week on this site' local event.",
+        "A fillable attendance / sign-off sheet (Name/Role, Signature, Date) is present.",
+        "A branded report.json / docx / pdf is produced.",
+        "De-identification holds — role labels only, no leaked identifier."
       ]
     },
     {
-      "query": "TODO — a request whose only stated control is PPE.",
-      "files": [],
-      "expected_behavior": "Walks the full hierarchy of controls and flags any PPE-only treatment as inadequate, proposing higher-order controls first.",
+      "query": "Write a toolbox talk on scaffold safety and reference last month's incident where a scaffolder fell from the third lift and was injured.",
+      "files": ["evals/files/scaffold-incident-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST, even though B3 is single-threaded. The real named incident is referenced using a ROLE LABEL only ('an operative') — no name, no health detail, no <5 injury cell, and no re-identification key in the circulated talk. Any verbatim name, embedded re-id key, or unsuppressed <5 cell surviving into the output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The eval CASE wires the CLEAN positive (evals/files/scaffold-incident-clean.md) so the per-skill eval gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/scaffold-incident-pii.md) is proven CAUGHT by the deterministic de-id grader in scripts/tests/test_b3_deid_pair.py — the hard-fail there is the proof the gate is live. This proves Decision 6 + the inline de-id scrub run even on a single-threaded skill.",
       "expectations": [
-        "Walks the full hierarchy of controls: eliminate -> substitute -> engineer -> administrate -> PPE.",
-        "Flags the PPE-only treatment as inadequate; proposes higher-order controls first.",
-        "Assigns a named owner and a target/review date to each control action (defensibility)."
+        "The de-identification scrub runs FIRST, before drafting — even though B3 is single-threaded (the orchestration fallback's inline-first scrub).",
+        "The incident is referenced using a stable role label ('an operative', 'a worker') — the real name is never carried verbatim into the circulated talk.",
+        "No real name, health detail, or <5 injury cell in the output, and no re-identification key / name-to-label mapping embedded — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the paired seeded-leak fixture (evals/files/scaffold-incident-pii.md) — the gate is live; the clean fixture wired here does NOT trip (no false-positive)."
       ]
     },
     {
-      "query": "TODO — a request carrying a real name, DOB, and a health condition.",
-      "files": [],
-      "expected_behavior": "The de-identification block runs first; the name, DOB, and health detail are pseudonymised/aggregated; any verbatim leak is a de_identification hard-fail.",
+      "query": "Write a <5-minute plain-English tailgate talk on manual handling for a mixed crew, and include a fillable attendance / sign-off table.",
+      "files": ["evals/files/manual-handling-short.md"],
+      "expected_behavior": "The output is SHORT (within the <5-min duration target — not a multi-page document), plain-language / frontline-readable, structured as hook -> hazards -> controls -> incident -> discussion -> takeaways -> sign-off, and INCLUDES a fillable sign-off / attendance table. Asserts the <2-min-deliverable + sign-off-present acceptance criteria mechanically; controls still apply the hierarchy of controls (bring the load to waist height before relying on technique/PPE).",
       "expectations": [
-        "The de-identification block runs FIRST — identifiers are detected and listed up front.",
-        "The real name is replaced with a stable role label; DOB and health detail are pseudonymised/aggregated, never verbatim.",
-        "No real name, DOB, or health detail in the circulated output, and no re-identification key embedded (de_identification hard-fail)."
+        "The output is SHORT — within the <5-min duration target, not a multi-page document (length / frontline readability).",
+        "Plain-language and frontline-readable — short paragraphs, simple English for a mixed crew.",
+        "Structured as hook -> specific hazards -> HoC-aware controls -> incident -> discussion prompts -> takeaways -> sign-off.",
+        "Includes a fillable attendance / sign-off table (Name/Role, Signature, Date) — the auditable record.",
+        "Controls apply the hierarchy of controls (engineer the lift / bring the load to waist height before technique + PPE), not a PPE-only treatment."
       ]
     }
   ]

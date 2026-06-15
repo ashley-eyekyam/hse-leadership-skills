@@ -1,0 +1,62 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Toolbox Talk — Working at Height: Re-roofing Bay 3",
+    "subtitle": "Mixed crew · cherry-picker out of service · <5 min",
+    "author": "Site Supervisor",
+    "date": "2026-06-15",
+    "classification": "Internal — pre-task safety briefing",
+    "house_template": "house-standard",
+    "deid_notice": "Any referenced incident is de-identified — personnel are referred to by role label only; no names, no small (<5) injury cells, and no re-identification key appear in this talk."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Why this matters today" },
+    { "type": "paragraph", "text": "We are re-roofing Bay 3 this shift and the cherry-picker is out of service, so the crew is working off the leading edge by hand. A fall from this roof is a life-changing or fatal injury — this five-minute talk is about keeping everyone off that edge unprotected and home tonight." },
+
+    { "type": "heading", "level": 1, "text": "The specific hazards on this task" },
+    { "type": "bullets", "items": [
+        "Unprotected leading edge on the Bay 3 roof — fall from height (~6 m to the slab).",
+        "The cherry-picker (MEWP) is out of service, so the planned safe access is unavailable — work is being improvised at height.",
+        "Mixed crew — not everyone has worked this roof profile before; differing familiarity with the edge-protection layout.",
+        "Materials and tools at the edge — dropped-object risk to anyone below." ] },
+
+    { "type": "heading", "level": 1, "text": "Key controls (higher-order first)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Eliminate the leading-edge work — pre-assemble roof sections at ground level and lift them up as units where the task allows", "tier": "Elimination", "owner": "Site Supervisor" },
+        { "control": "Install a temporary edge-protection guardrail / scaffold edge run along the Bay 3 working edge before anyone goes near it", "tier": "Engineering", "owner": "Scaffold Lead" },
+        { "control": "While the MEWP is down, restrict the work to inside the guardrail; anchored harness + running line for any task that must reach the edge", "tier": "Engineering", "owner": "Working-at-Height Supervisor" },
+        { "control": "Permit-to-work + a briefed exclusion zone below; toe-boards / tethered tools for dropped-object control", "tier": "Administrative", "owner": "Supervisor" },
+        { "control": "Hard hats + harnesses worn and inspected — the LAST line, never the only line", "tier": "PPE", "owner": "Each crew member" } ] },
+
+    { "type": "callout", "box_type": "info", "text": "Learn from this: on a similar re-roofing job elsewhere, a worker stepped back toward an unguarded edge while carrying a sheet and was only stopped by a co-worker's shout. (Illustrative / typical example — not a specific local incident.) The lesson: edge protection goes up BEFORE the work starts, not after the first near-miss." },
+
+    { "type": "heading", "level": 1, "text": "Let's talk it through" },
+    { "type": "bullets", "items": [
+        "With the MEWP out of service, what is OUR safe way to reach the edge today — and what should we NOT attempt?",
+        "Where exactly is the edge protection going, and who checks it before we start?",
+        "If something feels wrong up there, what do you do — and who do you tell?" ] },
+
+    { "type": "heading", "level": 1, "text": "Take these away" },
+    { "type": "bullets", "items": [
+        "No one approaches the Bay 3 edge until the guardrail is up and checked.",
+        "MEWP is down — if a task needs the edge, it is harness + running line, or it waits.",
+        "Tools tethered, materials back from the edge, exclusion zone below kept clear.",
+        "See a hazard, stop the job and speak up — every one of us has stop-work authority." ] },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Attendance & sign-off" },
+    { "type": "paragraph", "text": "By signing, each crew member confirms they attended this briefing, understood the hazards and controls, and had the chance to raise concerns." },
+    { "type": "table",
+      "headers": ["Name / Role", "Signature", "Date"],
+      "rows": [
+        ["", "", ""],
+        ["", "", ""],
+        ["", "", ""],
+        ["", "", ""],
+        ["", "", ""],
+        ["", "", ""],
+        ["", "", ""],
+        ["", "", ""] ],
+      "caption": "Toolbox-talk attendance / sign-off sheet — one row per attendee; the auditable record that the briefing happened." }
+  ]
+}
