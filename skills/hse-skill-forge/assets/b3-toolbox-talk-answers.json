@@ -1,0 +1,18 @@
+{
+  "_comment": "B3 toolbox-talk author-interview answers (04-04). SINGLE-THREAD roster; NO a7_components (so the forge creates NO scripts/ dir — the B3 divergence). category=training (D-06). kb_ids lean: ISO 45001 7.4/5.4 + HOC + INTAKE.",
+  "description": "Produces a short, ready-to-deliver toolbox talk (a pre-task safety briefing / tailgate / pre-start / take-5 / safety moment) plus a sign-off / attendance sheet for a specific crew, task, and site. It runs a quick structured intake, grounds the talk in the named task's real hazards and the hierarchy of controls, references a recent relevant incident or near-miss (de-identified, or a clearly-labelled typical example — never a fabricated local event), and gives the supervisor discussion prompts and key takeaways the crew can act on today. Use it for daily / shift safety briefings, tailgate talks, pre-job briefs, and topic safety moments — not for full risk assessments or incident investigations. Decision-support only; a competent person must review the output.",
+  "author": "eyekyam",
+  "roster": "single-thread",
+  "kb_ids": ["KB-STD-ISO45001", "KB-SNIP-HOC", "KB-SNIP-INTAKE"],
+  "metadata": {
+    "author": "eyekyam",
+    "version": "1.0",
+    "category": "training",
+    "tier": 1,
+    "audience": ["F", "M"],
+    "industry": ["All"],
+    "jurisdiction": ["All"],
+    "status": "stable",
+    "plugin": "hse-core"
+  }
+}
