@@ -33,3 +33,17 @@ jurisdiction: [All, UK, US, IN, EU]
 status: [stable, beta, assistive]
 
 tier: [1, 2, 3, 4]
+
+# plugin — the registered marketplace bundle a skill's metadata.plugin may name
+# (A2 §4.2). SINGLE SOURCE OF TRUTH for the bundle set: the architecture is
+# hse-core + the 5 sector packs (CLAUDE.md / v1.0 master plan §1.1). The linter's
+# rule-6 bundle check derives REGISTERED_BUNDLES from THIS list, and
+# gen_marketplace.build_manifest derives the manifest's plugin entries from each
+# skill's metadata.plugin — both ultimately agree on this vocabulary (WR-05).
+plugin:
+  - hse-core
+  - hse-process
+  - hse-chemicals
+  - hse-india
+  - hse-aviation
+  - hse-mining

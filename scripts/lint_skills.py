@@ -88,11 +88,14 @@ REQUIRED_META_KEYS = [
 SCALAR_VOCAB_KEYS = ["category", "status", "tier"]
 LIST_VOCAB_KEYS = ["audience", "industry", "jurisdiction"]
 
-# Marketplace bundles a `plugin` may name (A2 §4.2 — the registered bundle table).
-REGISTERED_BUNDLES = {
-    "hse-core", "hse-operations", "hse-systems",
-    "hse-process", "hse-chemicals", "hse-india", "hse-aviation", "hse-mining",
-}
+# Marketplace bundles a `plugin` may name (A2 §4.2). SINGLE SOURCE OF TRUTH:
+# template/metadata-vocab.yaml's `plugin:` list, the same file every other
+# controlled vocab is read from. The old hand-maintained literal here included
+# hse-operations / hse-systems, which are NOT in the architecture's bundle set
+# (hse-core + 5 sector packs) and are never produced by
+# gen_marketplace.build_manifest — a second source of truth that could let a skill
+# name a phantom bundle, pass the linter, yet never appear as a plugin (WR-05).
+# Derived lazily via registered_bundles() so it always tracks the vocab file.
 
 # Regexes.
 # KB id: KB-<PREFIX>-<suffix...>. The PREFIX (folder selector) stays upper/digit;
@@ -188,6 +191,16 @@ def _split_frontmatter(text: str) -> tuple:
 
 def _load_vocab() -> dict:
     return yaml.safe_load(_read(VOCAB_FILE))
+
+
+def registered_bundles(vocab: Optional[dict] = None) -> set:
+    """The registered marketplace bundle set (rule-6 `metadata.plugin` check),
+    derived from template/metadata-vocab.yaml's `plugin:` list — the SINGLE source
+    of truth, so the linter never drifts from gen_marketplace / the architecture
+    (WR-05)."""
+    if vocab is None:
+        vocab = _load_vocab()
+    return set(vocab.get("plugin", []))
 
 
 def _registry_ids(folder: str, repo: Path) -> set:
@@ -317,7 +330,7 @@ def _rule6_metadata(report: Report, fm: dict) -> None:
                 if val not in vocab.get(key, []):
                     report.error(f"rule 6: metadata.{key} value '{val}' not in controlled vocab")
     plugin = meta.get("plugin")
-    if plugin and plugin not in REGISTERED_BUNDLES:
+    if plugin and plugin not in registered_bundles(vocab):
         report.error(f"rule 6: metadata.plugin '{plugin}' not a registered marketplace bundle")
 
 
