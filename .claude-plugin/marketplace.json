@@ -7,5 +7,20 @@
     "name": "Eyekyam",
     "email": "ashley@eyekyam.com"
   },
-  "plugins": []
+  "plugins": [
+    {
+      "name": "hse-core",
+      "skills": [
+        "incident-investigation",
+        "risk-assessment",
+        "toolbox-talk"
+      ]
+    },
+    {
+      "name": "hse-systems",
+      "skills": [
+        "hse-skill-forge"
+      ]
+    }
+  ]
 }
