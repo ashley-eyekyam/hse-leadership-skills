@@ -1,0 +1,42 @@
+{
+  "_comment": "forge-handoff.template.json — the hand-off the forge emits after scaffolding a born-conformant skill (A10 §3.7). It enumerates the seeded TODOs the author must fill to turn the contract-clean skeleton into a finished skill. The scaffolder produces a copy of this stub populated with the new skill's name and the resolved roster/components; the author works the `todos` list, then runs the A8 eval gate locally before pushing.",
+  "schema": "hse-forge-handoff/v1",
+  "skill": "<scaffolded-skill-name>",
+  "scaffolded_clean": true,
+  "lint": "lint_skills.py passed with zero hand-edits (born-conformant)",
+  "inherited_blocks": ["deid", "kb-selection", "orchestration", "report-output", "attribution"],
+  "roster": "<single-thread | moderate | flagship-b5>",
+  "a7_components": [],
+  "todos": [
+    {
+      "id": "domain-body",
+      "file": "references/METHODOLOGY.md",
+      "what": "Author the domain method: the analysis steps, the standards/figures it grounds in, and how each conclusion traces to evidence with a named owner and date."
+    },
+    {
+      "id": "intake-values",
+      "file": "SKILL.md (Workflow intake STEP)",
+      "what": "Replace the seeded <!-- TODO: author this skill's intake question set --> with this skill's DOMAIN question VALUES. This is the §2.7 RUNTIME intake — categorically distinct from the forge's author-interview (A10 D4)."
+    },
+    {
+      "id": "kb-rows",
+      "file": "SKILL.md (kb-selection rows) + references/_skill-kb.md",
+      "what": "Refine the jurisdiction rows + the KB manifest for the jurisdictions/fragments this skill actually serves; every KB-... id must resolve in its folder's _registry.yaml (rule 9)."
+    },
+    {
+      "id": "quality-gate",
+      "file": "references/QUALITY_CHECKLIST.md",
+      "what": "Author the skill's pre-output validation gate (every finding traced to evidence; named owner + date on every action; de-id pass complete before drafting)."
+    },
+    {
+      "id": "eval-expectations",
+      "file": "evals/evals.json",
+      "what": "Replace the seeded TODO cases with >=3 real cases (specificity + hierarchy-of-controls + a de_identification hard-fail case wiring evals/files/deid-leak.md). Run evals/run_evals.py locally (model-graded >=4.0, no hard-fail) before pushing."
+    },
+    {
+      "id": "competent-review",
+      "file": "SKILL.md (metadata.hse_reviewed_by / hse_reviewed_date)",
+      "what": "Obtain the competent-person review + the SME-persona pass before merge (the durable quality lever)."
+    }
+  ]
+}

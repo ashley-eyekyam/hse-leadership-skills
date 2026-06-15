@@ -7,8 +7,8 @@
 > `hse-skill-forge --sync` heals any in-marker drift back to it.
 
 Every skill in the pack — the forge included — carries the **same six mandatory
-blocks**. Five are **inline** in `SKILL.md` (marked by `<!-- hse:block:<name>:start -->`
-… `<!-- hse:block:<name>:end -->`); the sixth is **folder-level** (`evals/` +
+blocks**. Five are **inline** in `SKILL.md` (each fenced by a paired
+`hse:block:<name>` start/end HTML comment marker); the sixth is **folder-level** (`evals/` +
 `branding/company-card.yaml`). The block text is **invariant by contract** (A10
 D7): legitimate per-skill variation lives *outside* the markers (the kb-selection
 jurisdiction rows; the orchestration roster), never inside them.

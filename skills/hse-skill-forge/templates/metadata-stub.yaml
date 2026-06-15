@@ -1,0 +1,22 @@
+# metadata-stub.yaml — the standalone-fallback metadata starter (A10 §3.3).
+#
+# scaffold.py builds a new skill's frontmatter from the author-interview answers.json
+# and vocab-validates every controlled key against template/metadata-vocab.yaml BEFORE
+# writing, so rule 6 passes born-clean. This stub is the human-readable reference for
+# the nine required keys + the controlled vocabularies, for the standalone path where
+# an author hand-edits the frontmatter rather than running the interview.
+#
+# All controlled values MUST come from template/metadata-vocab.yaml (the single source
+# of truth). The placeholders below are illustrative — replace each with a real value.
+
+author: eyekyam                 # the skill author/owner
+version: "1.0"                  # semantic version string
+category: risk-assessment       # one of the metadata-vocab `category` values
+tier: 1                         # 1-4 (criticality tier)
+audience: [M, C, F]             # subset of M (manager) / E (exec) / F (frontline) / C (consultant)
+industry: [All]                 # subset of the `industry` vocab (All, Con, Chem, Min, Avi, ...)
+jurisdiction: [All]             # subset of All / UK / US / IN / EU
+status: stable                  # stable | beta | assistive
+plugin: hse-core                # a REGISTERED marketplace bundle (hse-core + 5 sector packs + hse-systems)
+hse_reviewed_by: ""             # competent-person reviewer (filled at merge time)
+hse_reviewed_date: ""           # YYYY-MM-DD of the competent-person review
