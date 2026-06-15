@@ -4,10 +4,11 @@ Two enforcement-surface behaviours the code review flagged as untested:
 
   CR-01: the keyless `deid-auto-fail` job must actually enforce the de-id hard
          block. It now grades captured control artifacts (examples/deid-canary/)
-         via `run_deid_selftest` / a keyless `run_skill` fallback, instead of
-         re-executing the skill (which returns "" with no API key and made the
-         gate inert). These tests prove the self-test fires on a leak, passes a
-         clean report, and that the keyless executor falls back to captured text.
+         via `run_deid_selftest` / a CLI-less `run_skill` fallback, instead of
+         re-executing the skill (which returns "" with no Claude CLI on the runner
+         and made the gate inert). These tests prove the self-test fires on a leak,
+         passes a clean report, and that the CLI-less executor falls back to
+         captured text (forced via `_model_available` -> False).
 
   WR-06: the D-04 changed-vs-sweep classification used to live only in eval.yml's
          shell `decide` step. It now lives in `classify_changed_targets` — these
@@ -63,14 +64,14 @@ def test_deid_selftest_missing_fixtures_is_nonzero(tmp_path):
 # --- CR-01: keyless run_skill grades captured artifact text, not "" ------------
 
 def test_run_skill_keyless_returns_captured_inline_output(monkeypatch):
-    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    monkeypatch.setattr(run_evals, "_model_available", lambda: False)
     case = {"query": "q", "output": "Worker John Smith leaked here."}
     text = run_evals.run_skill(REPO / "examples" / "risk-assessment", case, None)
     assert "John Smith" in text  # NOT "" — the deterministic graders get real text
 
 
 def test_run_skill_keyless_reads_case_files(monkeypatch, tmp_path):
-    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    monkeypatch.setattr(run_evals, "_model_available", lambda: False)
     artifact = tmp_path / "evals" / "files"
     artifact.mkdir(parents=True)
     (artifact / "case1.md").write_text("Phone 555-867-5309 leaked.")
@@ -80,7 +81,7 @@ def test_run_skill_keyless_reads_case_files(monkeypatch, tmp_path):
 
 
 def test_run_skill_keyless_no_artifact_is_empty(monkeypatch):
-    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    monkeypatch.setattr(run_evals, "_model_available", lambda: False)
     case = {"query": "q", "files": []}
     text = run_evals.run_skill(REPO / "examples" / "risk-assessment", case, None)
     assert text == ""  # nothing captured -> nothing to scan (correct)

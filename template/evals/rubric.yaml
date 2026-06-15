@@ -12,8 +12,9 @@
 #   - regulatory_citation_accuracy: score < 4 = FAIL.
 # These two stay the distinct hard-fail dimensions (do not merge them).
 
-# The grader model is the most-capable-model ALIAS — run_evals.py resolves it to a
-# pinned Sonnet-class id at runtime (D-03); never hard-code a literal model id here.
+# The grader model is the most-capable-model ALIAS — run_evals.py resolves it to the
+# pinned Sonnet-class grader id at runtime (D-03: the alias -> claude-sonnet-4-6, run
+# locally via `claude -p` on the subscription); never hard-code a literal model id here.
 analyzer_model: most-capable-model
 
 gate:

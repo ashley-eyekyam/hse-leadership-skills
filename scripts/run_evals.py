@@ -12,20 +12,30 @@ case BEFORE the model grader is ever invoked — a stochastic judge never gets t
 weighted mean.
 
 The model grader scores ONLY the judgement dimensions (specificity,
-hierarchy_of_controls, defensibility) via the `claude -p --model GRADER_MODEL`
-executor pattern. It is NOT skill-creator's run_eval.py (that is a description
+hierarchy_of_controls, defensibility) by shelling out to the local Claude CLI
+(`claude -p`), which runs on the developer's Claude SUBSCRIPTION — no API key, no
+per-token API bill. It is NOT skill-creator's run_eval.py (that is a description
 *trigger* evaluator, not a rubric grader — research Pitfall 4); we reuse only the
 benchmark.json output field names so skill-creator's eval-viewer opens our output.
 
-GRADER_MODEL — the single pinned Sonnet-class id (D-03). Defined ONCE here; the
-rubric's `analyzer_model: most-capable-model` alias resolves to it. Re-verified at
-build time via the claude-api skill (`shared/models.md`: claude-sonnet-4-6 Active,
-the "sonnet"/"balanced" alias; bare id, NEVER a date suffix). Override with
---grader-model or the GRADER_MODEL env var so CI can pin it explicitly and it can
-be re-resolved at any future build without a code edit.
+WHERE the model grader runs (D-03, 2026-06-15 owner decision):
+  * LOCAL dev (this is the intended path): the `claude` CLI is on PATH and authed
+    by your subscription, so `claude -p` grades on the subscription. Run every
+    skill's evals right from the repo, free under the subscription.
+  * HEADLESS CI (GitHub Actions): no CLI, no subscription, no key on purpose — so
+    the model grader is SKIPPED and CI enforces ONLY the deterministic gate (de-id
+    leak / invented citation / report-produced + lint + tests). The non-waivable
+    hard blocks still run; the ≥4.0 model-graded bar is enforced by the dev's local
+    run before pushing. (This is why eval.yml carries NO model key/secret.)
 
-Stdlib + pyyaml only. The model-graded path needs ANTHROPIC_API_KEY (CI only); the
-deterministic graders + the wiring run with ZERO model calls (and ZERO key).
+GRADER_MODEL — the single pinned grader id (D-03). Defined ONCE here; the rubric's
+`analyzer_model: most-capable-model` alias resolves to it. Pinned to the
+Sonnet-class id `claude-sonnet-4-6` (current bare Sonnet id; subscription model
+access). Override with --grader-model or the GRADER_MODEL env var.
+
+Stdlib + pyyaml only (the grader shells `claude -p` — no SDK). The model-graded
+path needs only the local Claude CLI; the deterministic graders + the wiring run
+with ZERO model calls (and ZERO CLI).
 
 CLI:
     python run_evals.py <skill-dir>... | --all | --changed [--base REF]
@@ -43,6 +53,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -60,9 +71,10 @@ if str(SCRIPTS) not in sys.path:
 from graders import grade_deid, grade_citation, grade_report_produced  # noqa: E402
 
 # --- D-03: the ONE pinned grader-model constant --------------------------------
-# Bare id, no date suffix (claude-api skill rule). Re-verified at build time:
-# claude-api shared/models.md L65 — `claude-sonnet-4-6` Active; L123 the
-# "sonnet"/"balanced" alias resolves to it.
+# The eval grader runs on the local Claude SUBSCRIPTION via `claude -p` (2026-06-15
+# owner decision — no API key, no per-token bill). Pinned to the Sonnet-class bare
+# id `claude-sonnet-4-6` (current Sonnet; a deliberate non-Opus default per D-03).
+# Override via --grader-model or the GRADER_MODEL env var.
 GRADER_MODEL = os.environ.get("GRADER_MODEL", "claude-sonnet-4-6")
 
 # The rubric alias that resolves to GRADER_MODEL (A8 §4.3 indirection — one place
@@ -74,6 +86,65 @@ MOST_CAPABLE_ALIAS = "most-capable-model"
 MODEL_GRADED_DIMS = ("specificity", "hierarchy_of_controls", "defensibility")
 
 DEFAULT_GATE = 4.0
+
+
+# --- model provider: local Claude CLI on the subscription ----------------------
+# The grader + executor are the ONLY model users, and they reach the model by
+# shelling `claude -p` — which runs on the developer's Claude subscription (no API
+# key). The deterministic graders need NEITHER the CLI NOR any key (the CR-01
+# keyless path stays intact). Stdlib only (subprocess) — no SDK.
+_MODEL_TIMEOUT = 300
+
+
+def _model_available() -> bool:
+    """True when the Claude CLI is on PATH — i.e. this is a subscription-authed
+    environment that can run `claude -p`. False in headless CI (no CLI), where the
+    model-graded path is skipped and ONLY the deterministic gate runs."""
+    return shutil.which("claude") is not None
+
+
+def call_model(prompt: str, model: Optional[str], *, cwd: Optional[Path] = None,
+               timeout: int = _MODEL_TIMEOUT) -> str:
+    """One `claude -p` invocation on the local Claude subscription (no API key).
+
+    Returns the printed text, or '' when the CLI is unavailable (headless CI — the
+    keyless deterministic path stands) or the call fails (fail-soft: the
+    deterministic verdict still stands, the model dims are simply left unscored). A
+    nested call inside a Claude Code session works because we drop CLAUDECODE from
+    the child env."""
+    if not _model_available():
+        return ""
+    cmd = ["claude", "-p", prompt, "--output-format", "text"]
+    if model:
+        cmd.extend(["--model", model])
+    env = {k: v for k, v in os.environ.items() if k != "CLAUDECODE"}
+    try:
+        proc = subprocess.run(
+            cmd, cwd=(str(cwd) if cwd else None), env=env,
+            capture_output=True, text=True, timeout=timeout,
+        )
+        return proc.stdout or ""
+    except Exception as exc:  # pragma: no cover - host/CLI dependent
+        print(f"WARN: claude -p call failed ({exc})", file=sys.stderr)
+        return ""
+
+
+def _extract_json_obj(text: str) -> Dict[str, Any]:
+    """Parse a JSON object from model output, tolerating ```json code fences or a
+    little prose around it (the grader asks for pure JSON, but a model may wrap it)."""
+    text = text.strip()
+    if text.startswith("```"):
+        text = text[3:]
+        if "\n" in text:
+            text = text.split("\n", 1)[1]
+        text = text.rsplit("```", 1)[0].strip()
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        start, end = text.find("{"), text.rfind("}")
+        if start != -1 and end > start:
+            return json.loads(text[start:end + 1])
+        raise
 
 
 # --- rubric loading ------------------------------------------------------------
@@ -110,8 +181,8 @@ def _load_case_artifact_text(skill_dir: Path, case: Dict[str, Any]) -> str:
     """Return the case's CAPTURED artifact text for the keyless deterministic path
     (CR-01).
 
-    Without an ANTHROPIC_API_KEY the executor cannot produce live output, so the
-    deterministic de-id / citation graders would scan "" and ALWAYS pass — making
+    When the Claude CLI is unavailable the executor cannot produce live output, so
+    the deterministic de-id / citation graders would scan "" and ALWAYS pass — making
     the dedicated deid-auto-fail CI job inert. Instead, when no key is present we
     grade the case's own on-disk / inline artifact:
       - `case["output"]` / `case["fixture_text"]`: inline text in evals.json; or
@@ -137,32 +208,20 @@ def _load_case_artifact_text(skill_dir: Path, case: Dict[str, Any]) -> str:
 
 
 def run_skill(skill_dir: Path, case: Dict[str, Any], model: Optional[str]) -> str:
-    """Execute the skill against the case's query via `claude -p` and return the
-    output text.
+    """Execute the skill against the case's query via `claude -p` (run from the skill
+    dir, on the local subscription) and return the output text.
 
-    With NO ANTHROPIC_API_KEY (the deid-auto-fail CI job, by design) the executor
+    With NO Claude CLI (the headless deid-auto-fail CI job, by design) the executor
     cannot run, so we fall back to the case's CAPTURED artifact text rather than ""
     (CR-01) — that keeps the deterministic de-id / citation hard blocks live in the
-    keyless deterministic job. With a key, the live skill output is graded as
-    before; the captured artifact is appended so a seeded leak in a fixture still
-    trips even if the live model happened to behave."""
+    keyless deterministic job. With the CLI, the live skill output is graded; the
+    captured artifact is appended so a seeded leak in a fixture still trips even if
+    the live model happened to behave."""
     query = case.get("query", "")
     captured = _load_case_artifact_text(skill_dir, case)
-    if not os.environ.get("ANTHROPIC_API_KEY"):
+    if not _model_available():
         return captured
-    cmd = ["claude", "-p", query, "--output-format", "text"]
-    if model:
-        cmd.extend(["--model", model])
-    env = {k: v for k, v in os.environ.items() if k != "CLAUDECODE"}
-    try:
-        proc = subprocess.run(
-            cmd, cwd=str(skill_dir), env=env,
-            capture_output=True, text=True, timeout=300,
-        )
-        live = proc.stdout or ""
-    except Exception as exc:  # pragma: no cover - host/CLI dependent
-        print(f"WARN: executor failed ({exc})", file=sys.stderr)
-        live = ""
+    live = call_model(query, model, cwd=skill_dir)
     return "\n".join(p for p in (live, captured) if p)
 
 
@@ -190,16 +249,17 @@ def run_deterministic(output_text: str) -> Dict[str, Any]:
     }
 
 
-# --- model grader (judgement dims only; needs the key) -------------------------
+# --- model grader (judgement dims only; needs the local Claude CLI) ------------
 
 def run_model_grader(
     skill_dir: Path, case: Dict[str, Any], output_text: str,
     rubric: Dict[str, Any], grader_model: str,
 ) -> Dict[str, Any]:
-    """Score the judgement dimensions with the pinned GRADER_MODEL. A no-op
-    (scores omitted) when no key/CLI is present — the deterministic verdict still
-    stands. Only invoked when the deterministic layer did NOT hard-fail."""
-    if not os.environ.get("ANTHROPIC_API_KEY"):
+    """Score the judgement dimensions with the pinned GRADER_MODEL via `claude -p`
+    on the subscription. A no-op (scores omitted) when the Claude CLI is absent
+    (headless CI) — the deterministic verdict still stands. Only invoked when the
+    deterministic layer did NOT hard-fail."""
+    if not _model_available():
         return {"scored": False, "model": grader_model, "scores": {}}
 
     rubric_dims = {d["name"]: d for d in rubric.get("dimensions", [])}
@@ -212,14 +272,14 @@ def run_model_grader(
         f"EXPECTATIONS:\n{json.dumps(case.get('expectations', []))}\n\n"
         f"SKILL OUTPUT:\n{output_text}\n"
     )
-    cmd = ["claude", "-p", prompt, "--model", grader_model, "--output-format", "text"]
-    env = {k: v for k, v in os.environ.items() if k != "CLAUDECODE"}
+    raw = call_model(prompt, grader_model)
+    if not raw:
+        return {"scored": False, "model": grader_model, "scores": {}}
     try:
-        proc = subprocess.run(cmd, env=env, capture_output=True, text=True, timeout=300)
-        scores = json.loads(proc.stdout.strip())
+        scores = _extract_json_obj(raw)
         scores = {k: int(v) for k, v in scores.items() if k in MODEL_GRADED_DIMS}
-    except Exception as exc:  # pragma: no cover - host/model dependent
-        print(f"WARN: model grader failed ({exc})", file=sys.stderr)
+    except Exception as exc:  # pragma: no cover - model output dependent
+        print(f"WARN: model grader parse failed ({exc})", file=sys.stderr)
         return {"scored": False, "model": grader_model, "scores": {}}
     return {"scored": True, "model": grader_model, "scores": scores}
 
@@ -413,7 +473,7 @@ def main(argv: Optional[List[str]] = None) -> int:
                         "shared-contract change escalates to a full --all sweep)")
     p.add_argument("--base", default="origin/main",
                    help="base ref for --changed (default origin/main)")
-    p.add_argument("--matrix", action="store_true", help="(local) Haiku/Sonnet/Opus matrix — developer aid only")
+    p.add_argument("--matrix", action="store_true", help="(local) multi-model grader matrix — developer aid only")
     p.add_argument("--model", default=None, help="executor model for the skill-under-test")
     p.add_argument("--grader-model", default=None, help=f"override the pinned grader (default {GRADER_MODEL})")
     p.add_argument("--out", default=None, help="write the benchmark.json here")

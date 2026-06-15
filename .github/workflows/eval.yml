@@ -1,4 +1,13 @@
-# eval.yml — model-graded, cost-controlled CI (A8 §4.6, Decision 4 + D-04).
+# eval.yml — the DETERMINISTIC, keyless eval gate (A8 §4.6, Decision 4 + D-04).
+#
+# D-03 (2026-06-15 owner decision): the MODEL-graded score runs LOCALLY on the
+# developer's Claude subscription (run_evals.py shells `claude -p`) — NOT in CI.
+# GitHub Actions runners are headless (no Claude CLI, no subscription, no API key
+# on purpose), so here the model grader self-skips and CI enforces ONLY the
+# NON-WAIVABLE deterministic gate: a de-id leak, an invented citation, a
+# missing-report — plus lint/tests in validate-skills.yml. The ≥4.0 model-graded
+# bar is enforced by the dev's local run before pushing. There is NO model API key
+# / secret anywhere in this workflow.
 #
 # A1 owned the wiring (triggers + job names + guarded invocations); A8/Plan 06
 # fill the grader logic. Each job invokes run_evals.py / sme_review.py by its
@@ -16,16 +25,11 @@
 # scripts/hse_components/, assets/report-engine/, template/evals/rubric.yaml) can
 # break EVERY skill, so it triggers a FULL eval sweep (run_evals.py --all). A PR
 # confined to skills/<one>/ evals ONLY that changed skill. The decision is made
-# from `git diff --name-only` in the `decide` step below.
+# from `git diff --name-only` in the `decide` step below. (In CI every case runs
+# deterministic-only — the model grader is a no-op without the CLI.)
 #
-# SECURITY (T-03-18): the trigger is `pull_request` (NOT pull_request_target) so
-# untrusted fork PRs run WITHOUT the write-scoped token / secret. The model key is
-# referenced ONLY as ${{ secrets.ANTHROPIC_API_KEY }} via env: on the model-call
-# steps — never hardcoded, never echoed.
-#
-# The pinned grader id (claude-sonnet-4-6, D-03) lives in ONE place — run_evals.py's
-# GRADER_MODEL constant. CI pins it explicitly via --grader-model so a default
-# drift can never silently change the grader.
+# SECURITY (T-03-18): the trigger is `pull_request` (NOT pull_request_target). No
+# model key is referenced anywhere — the model-graded path simply does not run in CI.
 name: Evaluate Skills
 
 on:
@@ -40,11 +44,6 @@ on:
       - 'scripts/hse_components/**'
       - 'assets/report-engine/**'
       - 'template/evals/rubric.yaml'
-
-# The pinned grader id is sourced from run_evals.py's GRADER_MODEL constant
-# (D-03 single source). CI pins it explicitly so a default change can't drift.
-env:
-  GRADER_MODEL: claude-sonnet-4-6
 
 jobs:
   changed-skills-eval:
@@ -101,14 +100,14 @@ jobs:
             fi
           fi
 
-      - name: Evaluate changed skills
+      - name: Evaluate changed skills (deterministic gate; model grader self-skips in CI)
         if: steps.guard.outputs.present == 'true' && steps.decide.outputs.targets != ''
-        env:
-          # Read ONLY here, on the model-call step. Never echoed (T-03-18).
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        # No model key in CI (D-03): with no Claude CLI on the runner the model
+        # grader is a no-op, so this enforces the deterministic hard blocks (de-id
+        # leak / invented citation / missing report) over the changed skills and
+        # exits nonzero on any of them. The model-graded ≥4.0 bar is a LOCAL check.
         run: |
-          python scripts/run_evals.py --ci ${{ steps.decide.outputs.targets }} \
-            --grader-model "$GRADER_MODEL"
+          python scripts/run_evals.py --ci ${{ steps.decide.outputs.targets }}
 
   deid-auto-fail:
     name: deid-auto-fail
@@ -145,7 +144,7 @@ jobs:
         if: steps.guard.outputs.present == 'true'
         run: |
           # CR-01 FIX: this keyless job formerly ran `run_evals.py --ci --all`,
-          # but with no ANTHROPIC_API_KEY the executor returns "" — the de-id
+          # but with no DEEPSEEK_API_KEY the executor returns "" — the de-id
           # grader then scanned empty text and the job passed UNCONDITIONALLY,
           # making the named hard block inert. It now runs --deid-selftest, which
           # grades the captured control artifacts under examples/deid-canary/ and
