@@ -105,15 +105,59 @@ per skill or per deployment.
 
 ## 7. Local eval / lint commands + the quality gate
 
-Run the same checks CI runs, locally, before opening a PR:
+Run these locally **before opening a PR** — the model-graded evals are run here, on
+your machine, not in CI (see below):
 
 ```bash
-python scripts/lint_skills.py --all
-python scripts/run_evals.py --changed
+python3 scripts/lint_skills.py --all                     # the 10-rule contract linter
+python3 scripts/run_evals.py --changed                   # evals for skills changed vs origin/main
+python3 scripts/run_evals.py skills/hse-core/risk-assessment   # …or a specific skill
+python3 scripts/run_evals.py --all                       # …or every skill in the repo
+```
+
+Each run prints a `passed/total` line per skill and the grader id; a non-zero exit
+under `--ci` means a hard-fail or a below-gate score.
+
+### How the eval grader runs — and why you run evals locally
+
+`run_evals.py` grades each case in **two layers**:
+
+- **Deterministic hard blocks** (de-identification leak · invented/unverifiable
+  regulatory citation · missing report) — pure Python, **no model**. A hit is a
+  **non-waivable auto-fail** and short-circuits the case before the model grader.
+- **Model-graded dimensions** (specificity · hierarchy-of-controls · defensibility,
+  scored 1–5 against `evals/rubric.yaml`) — these call a model through the **local
+  Claude CLI (`claude -p`), which runs on your Claude subscription — no API key
+  needed.**
+
+Because the model grader needs the Claude CLI, it runs **only locally**:
+
+| Context | Model-graded score | Deterministic hard blocks |
+|---|---|---|
+| **Your machine** — `claude` CLI on PATH, signed into your subscription | ✅ runs on your subscription | ✅ |
+| **GitHub Actions CI** — headless, no CLI / no key | ⏭️ skipped | ✅ enforced |
+
+So **CI does not re-check the weighted ≥4.0 score** — it enforces only the
+deterministic gate plus lint/tests. **Confirming the ≥4.0 model-graded bar is your
+job, locally, before you push:** run `run_evals.py`, read each skill's `passed/total`
+line, and fix anything below gate before opening the PR.
+
+**Prerequisites**
+- Python 3 + `pyyaml` (`pip install pyyaml`).
+- For the model-graded pass: the **Claude CLI signed into your subscription**
+  (`claude` on PATH). No API key, no repo secret.
+
+**Grader model** — pinned to `claude-sonnet-4-6` (Sonnet-class). Override per run for
+a heavier judge:
+
+```bash
+python3 scripts/run_evals.py --all --grader-model claude-opus-4-8
+# or: GRADER_MODEL=claude-opus-4-8 python3 scripts/run_evals.py --all
 ```
 
 A PR merges only when the linter is green, ≥3 evals pass weighted ≥4.0 with no
-hard-fail, the SME-persona pass ran, and a competent person approved.
+hard-fail (**confirmed locally**), the SME-persona pass ran, and a competent person
+approved.
 
 ### The ten linter rules (the machine contract)
 

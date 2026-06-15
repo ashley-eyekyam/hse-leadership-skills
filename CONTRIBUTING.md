@@ -16,6 +16,11 @@ Every skill PR is gated. A change merges only when, in order:
    **invented / unverifiable regulatory citation is a fail**.
 3. A **competent person** completes the HSE-accuracy review.
 
+Run evals **locally before you push** — the model-graded score runs on your Claude
+subscription via `python3 scripts/run_evals.py --changed` (CI enforces only the
+deterministic hard-blocks + lint, not the ≥4.0 score). Commands and the local-vs-CI
+split are in [`docs/AUTHORING_GUIDE.md` §7](./docs/AUTHORING_GUIDE.md#7-local-eval--lint-commands--the-quality-gate).
+
 The full rule detail (the linter rule list, the per-skill folder layout, the six-block
 contract) lives in [`docs/AUTHORING_GUIDE.md`](./docs/AUTHORING_GUIDE.md) — read it before
 authoring. This file does not duplicate those rules.
