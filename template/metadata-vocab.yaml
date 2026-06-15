@@ -47,3 +47,9 @@ plugin:
   - hse-india
   - hse-aviation
   - hse-mining
+  # hse-systems — the build-time bundle that carries the meta/tooling skill
+  # hse-skill-forge (A10). Registered here so the forge's own metadata.plugin
+  # resolves under lint rule 6 and gen_marketplace.build_manifest can mint it
+  # (Phase-4 04-01 Wave-0 blocker fix). Framing is build-time tooling, not a
+  # consultant artifact bundle (D-01).
+  - hse-systems
