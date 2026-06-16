@@ -1,0 +1,412 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "RAMS — Erect Mobile Tower & Replace South-Elevation Cladding, Levels 2–4",
+    "subtitle": "Riverside House refurbishment — occupied building, public footpath alongside — UK / principal contractor",
+    "author": "HSE Department",
+    "date": "2026-06-16",
+    "classification": "Internal — competent-person review required",
+    "house_template": "house-standard",
+    "deid_notice": "Input personnel are referred to by role label; identifiers were pseudonymised before drafting and the re-identification key is held separately. The named competent persons in the sign-off record are the duty-holders the client deliberately assigned for this RAMS (not leaked PII). The briefing/acknowledgement table ships with empty signature rows for the crew to complete on site."
+  },
+  "sections": [
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Executive summary"
+    },
+    {
+      "type": "paragraph",
+      "text": "RAMS for erecting a mobile access tower to replace south-elevation cladding panels on levels 2-4 of an occupied building with an adjacent public footpath, scored on the org 5x5 matrix per ISO 45001 6.1.2, with the method statement sequenced over 8 steps (mobilise -> clear-down) and every step cross-referenced to the risk assessment. UK / principal contractor: CDM 2015 Reg 13."
+    },
+    {
+      "type": "metrics",
+      "metrics": [
+        {
+          "label": "Residual risk",
+          "value": "Medium",
+          "caption": "after controls"
+        },
+        {
+          "label": "Higher-order controls",
+          "value": "3",
+          "caption": "Engineering/Elimination"
+        },
+        {
+          "label": "Permits required",
+          "value": "1",
+          "caption": "working at height / suspended access"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Project & duty-holder information"
+    },
+    {
+      "type": "table",
+      "rows": [
+        [
+          "Project / site",
+          "Riverside House refurbishment, south elevation — occupied building, public footpath alongside"
+        ],
+        [
+          "Principal contractor (CDM 2015 Reg 13)",
+          "[named at Q6 — duty-holder]"
+        ],
+        [
+          "Principal designer",
+          "[named at Q6 if supplied]"
+        ],
+        [
+          "Contractor",
+          "[the contractor preparing this RAMS]"
+        ],
+        [
+          "Activity dates",
+          "[start - completion]"
+        ],
+        [
+          "Document ref / revision",
+          "RAMS-001 rev A"
+        ]
+      ],
+      "headers": [
+        "Item",
+        "Detail"
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Scope & method"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "Activity: erect a mobile tower + MEWP to replace south-elevation cladding panels, levels 2-4 (8-step sequence)",
+        "Site: occupied building, adjacent public footpath, other trades on site; exposed: own operatives + other trades + the public",
+        "Scored on the org 5x5 matrix (multiply; Low 1-4 / Medium 5-9 / High 10-15 / Critical 16-25)",
+        "Standards & law: ISO 45001 6.1.2 (RA) + 8.1.2 (hierarchy of controls); CDM 2015 Reg 13 (principal-contractor duties), Reg 15 (contractor duties), Construction Phase Plan linkage"
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Key findings — risk assessment register"
+    },
+    {
+      "type": "findings",
+      "rows": [
+        {
+          "title": "RA-01 Fall from height during tower erection / dismantle",
+          "risk_level": "High",
+          "description": "Steps 'erect tower' / 'dismantle': fall of an operative from the working platform or during build/strike. Exposed: own operatives.",
+          "evidence": "ISO 45001 6.1.2 hazard ident; PASMA tower-erection guidance"
+        },
+        {
+          "title": "RA-02 Falling materials onto the public footpath",
+          "risk_level": "High",
+          "description": "Steps 'remove old panels' / 'transfer materials': panel or tool dropped onto the adjacent public footpath. Exposed: the public + other trades.",
+          "evidence": "Site layout; CDM 2015 Reg 13 site-management duty"
+        },
+        {
+          "title": "RA-03 MEWP / pedestrian & traffic interface",
+          "risk_level": "Medium",
+          "description": "Step 'fit new panels': MEWP positioning near the occupied building access and footpath. Exposed: the public + own operatives.",
+          "evidence": "IPAF operating guidance"
+        },
+        {
+          "title": "RA-04 Manual handling of cladding panels",
+          "risk_level": "Medium",
+          "description": "Steps 'transfer materials' / 'remove' / 'fit': awkward/heavy panel handling at height. Exposed: own operatives.",
+          "evidence": "Panel weight data Q-P"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Hierarchy of controls"
+    },
+    {
+      "type": "hoc_table",
+      "rows": [
+        {
+          "control": "Use a MEWP for panel fitting where the tower cannot safely reach (engineered working platform, not a harness alone)",
+          "tier": "Engineering",
+          "owner": "Site Manager"
+        },
+        {
+          "control": "Edge protection + toe boards on the tower platform; tool tethers; debris netting over the footpath",
+          "tier": "Engineering",
+          "owner": "Works Supervisor"
+        },
+        {
+          "control": "Exclusion zone + banksman on the public footpath during lifting/removal steps",
+          "tier": "Engineering",
+          "owner": "Works Supervisor"
+        },
+        {
+          "control": "PASMA-trained erectors; IPAF-certified MEWP operators; tower inspected & tagged before use",
+          "tier": "Administrative",
+          "owner": "HSE"
+        },
+        {
+          "control": "Working-at-height / suspended-access permit gating the at-height steps",
+          "tier": "Administrative",
+          "owner": "HSE"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Residual risk"
+    },
+    {
+      "type": "metrics",
+      "metrics": [
+        {
+          "label": "Fall from height (RA-01)",
+          "value": "Medium",
+          "caption": "High -> Medium after edge protection + MEWP"
+        },
+        {
+          "label": "Falling materials (RA-02)",
+          "value": "Low",
+          "caption": "High -> Low after exclusion zone + netting"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Method statement — sequenced safe system of work"
+    },
+    {
+      "type": "table",
+      "rows": [
+        [
+          "1",
+          "Mobilise & set up exclusion zone on the footpath",
+          "Barriers, signage",
+          "Site supervisor (SSSTS/SMSTS)",
+          "-",
+          "Banksman; signed exclusion zone; public diversion",
+          "RA-02"
+        ],
+        [
+          "2",
+          "Inspect & erect the mobile tower",
+          "Mobile alloy tower",
+          "PASMA tower erector",
+          "Working at height",
+          "PASMA 3T/AGR method; inspect & tag; edge protection fitted",
+          "RA-01"
+        ],
+        [
+          "3",
+          "Transfer materials to the work level",
+          "Tower, gin wheel / hoist",
+          "PASMA operative",
+          "Working at height",
+          "Tool tethers; debris netting; manual-handling assessment",
+          "RA-01, RA-02, RA-04"
+        ],
+        [
+          "4",
+          "Remove old cladding panels",
+          "Hand tools",
+          "Competent cladding operative",
+          "Working at height",
+          "Exclusion zone live; netting; controlled lowering of panels",
+          "RA-01, RA-02, RA-04"
+        ],
+        [
+          "5",
+          "Position MEWP & fit new panels",
+          "MEWP (boom/scissor)",
+          "IPAF-certified MEWP operator",
+          "Working at height / suspended access",
+          "MEWP rescue plan; banksman; harness in basket per IPAF",
+          "RA-01, RA-03, RA-04"
+        ],
+        [
+          "6",
+          "Inspect the completed work",
+          "-",
+          "Works supervisor",
+          "-",
+          "Sign-off of fixings; visual inspection",
+          "RA-01"
+        ],
+        [
+          "7",
+          "Dismantle the tower",
+          "Mobile alloy tower",
+          "PASMA tower erector",
+          "Working at height",
+          "PASMA dismantle sequence; edge protection retained until last",
+          "RA-01"
+        ],
+        [
+          "8",
+          "Clear site & stand down exclusion zone",
+          "Barriers, signage",
+          "Site supervisor",
+          "-",
+          "Confirm footpath clear & safe before re-opening",
+          "RA-02"
+        ]
+      ],
+      "headers": [
+        "Step",
+        "Work step",
+        "Plant / equipment",
+        "Competencies / cards",
+        "Permits",
+        "Step controls",
+        "RA-refs"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Cross-reference check (bidirectional): every method step above carries its RA-refs, and every RA row (RA-01..RA-04) is addressed by at least one step (RA-01: steps 2-7; RA-02: steps 1,3,4,8; RA-03: step 5; RA-04: steps 3-5). No orphan hazard; no step whose hazards are absent from the RA."
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Emergency & rescue arrangements"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "MEWP rescue plan: ground-level emergency-lowering controls briefed; a trained ground person able to lower the platform; no lone working in the basket.",
+        "Tower / at-height rescue: a rescue method for an injured operative on the platform; nearest refuge and lowering route identified.",
+        "First aid: a trained first-aider on site each shift; first-aid kit location briefed; nearest A&E identified.",
+        "Emergency contacts & RV point: site emergency number + the agreed muster/RV point briefed at the toolbox talk.",
+        "Dropped-object / public-area incident: stop work, secure the exclusion zone, account for the public, escalate to the principal contractor."
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Recommendations — action tracker"
+    },
+    {
+      "type": "recommendations",
+      "rows": [
+        {
+          "action": "Confirm the MEWP rescue plan and brief the emergency-lowering procedure to all operators",
+          "priority": "P1",
+          "owner": "Site Manager",
+          "due": "2026-06-23"
+        },
+        {
+          "action": "Erect debris netting over the public footpath and sign the exclusion zone before step 1",
+          "priority": "P1",
+          "owner": "Works Supervisor",
+          "due": "2026-06-23"
+        },
+        {
+          "action": "Verify PASMA + IPAF certification currency for all named operatives",
+          "priority": "P2",
+          "owner": "HSE",
+          "due": "2026-06-25"
+        }
+      ]
+    },
+    {
+      "type": "divider"
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Regulatory basis (cited)"
+    },
+    {
+      "type": "bullets",
+      "items": [
+        "ISO 45001 clause 6.1.2 (hazard identification & risk assessment) + 8.1.2 (hierarchy of controls)",
+        "CDM 2015 Reg 13 — principal-contractor duties (plan, manage & monitor the construction phase); Reg 15 — contractor duties",
+        "CDM 2015 Construction Phase Plan (Reg 12 / Reg 15(4)) — this RAMS feeds into the CPP",
+        "Permit-to-work: working at height / suspended access for the at-height and MEWP steps"
+      ]
+    },
+    {
+      "type": "heading",
+      "level": 1,
+      "text": "Sign-off & briefing record"
+    },
+    {
+      "type": "table",
+      "rows": [
+        [
+          "RAMS author",
+          "[user-supplied at Q-C]",
+          "",
+          ""
+        ],
+        [
+          "Approver (principal contractor)",
+          "[user-supplied at Q-C]",
+          "",
+          ""
+        ],
+        [
+          "Appointed competent person (at-height)",
+          "[user-supplied at Q-C]",
+          "",
+          ""
+        ]
+      ],
+      "headers": [
+        "Role",
+        "Named competent person",
+        "Signature",
+        "Date"
+      ]
+    },
+    {
+      "type": "paragraph",
+      "text": "Briefing / acknowledgement — every operative briefed on this RAMS signs below before work starts (empty rows ship with the document; the crew completes them on site; operative names are NOT pre-populated):"
+    },
+    {
+      "type": "table",
+      "rows": [
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ],
+        [
+          "",
+          "",
+          "",
+          ""
+        ]
+      ],
+      "headers": [
+        "Name",
+        "Role",
+        "Signature",
+        "Date"
+      ]
+    }
+  ]
+}
