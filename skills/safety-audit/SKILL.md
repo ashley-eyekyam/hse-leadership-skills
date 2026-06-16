@@ -32,13 +32,20 @@ metadata:
   hse_reviewed_date: ''
 ---
 
-# Safety Audit
+# Safety Audit (conformity assessment against a standard or checklist)
 
-A consultant-grade HSE skill that produces a specific, defensible safety audit for a named task, site, or asset. It forces the single lever that separates a defensible artifact from copy-paste paperwork: task/site specificity plus the full hierarchy of controls — never a vague, PPE-only treatment.
+A consultant-grade HSE skill that audits a **specific** site, system, or process against a defined standard or checklist and produces a **clause-by-clause audit report**. It grounds the audit method in ISO 45001 clause 9.2 (internal audit), traces **every finding to objective evidence**, risk-rates each nonconformity, and drives corrective actions through the **full hierarchy of controls** — the single lever that separates a defensible audit from copy-paste paperwork. An audit finding with no evidence trail is, by definition, indefensible; this skill refuses to produce one.
 
 ## When to use this skill
 
-Use this skill when the user needs a safety audit for a concrete task, site, or asset. List the trigger scenarios that reinforce the `description` so the host routes here rather than to a generic answer. If the request is vague, the Workflow intake below forces the specifics before any drafting.
+Use this skill whenever a user asks to:
+
+- Run a **safety audit, inspection, compliance audit, management-system audit, or conformity assessment** of a named site, system, or process.
+- Audit something **against ISO 45001, a regulation (OSHA / Factories Act / HSWA), or a custom checklist**.
+- Record **clause-by-clause findings** — conformity, nonconformity (major or minor), observation, or opportunity for improvement — each traced to evidence.
+- **Rate conformity** for an audited scope, or produce an **audit report with corrective actions** (a CAPA register).
+
+Do **not** use this skill to investigate an incident or run a root-cause analysis (that is `incident-investigation` / B5), to build a single-task JSA (`job-safety-analysis`), or to manage an existing CAPA register's lifecycle over time (`capa-manager` / B7 — this skill *produces* the register B7 then tracks). If the request is vague ("audit the site"), the Workflow intake below forces the specific scope and the audit criteria before any drafting.
 
 <!-- hse:block:deid:start -->
 ## Data Protection & De-identification (MANDATORY — apply before drafting)
@@ -84,31 +91,60 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
      (rule-2 presence check, never byte-diffed). Author the rows for the jurisdictions
      this skill serves; rule-9 checks every path/ID resolves against the KB registries. -->
 
-| Jurisdiction | Read |
+| Jurisdiction / criteria | Read |
 |---|---|
-| India | ../../knowledge-base/regulatory/in-factories-act.md (+ in-state-forms.md for the user's state) |
+| India | ../../knowledge-base/regulatory/in-factories-act.md (+ in-state-forms.md for the user's state — **mandatory state detection** before citing any form) |
 | UK    | ../../knowledge-base/regulatory/uk-hswa.md |
 | USA   | ../../knowledge-base/regulatory/us-osha.md |
 | EU    | ../../knowledge-base/regulatory/eu-osh.md |
 | Unknown | Ask before citing any specific law |
+| Audit method (always) | ../../knowledge-base/standards/iso-45001.md (KB-STD-ISO45001, clause 9.2 — internal audit: the method backbone, scope→criteria→evidence→findings→reporting) |
+| Criteria = ISO 45001 (Q-Crit) | ../../knowledge-base/standards/iso-45001.md (the audited clauses — e.g. 6.1.2, 7.2, 8.1, 9.1 — become the criteria set the audit walks; distinct from 9.2, the method) |
+| Criteria = custom checklist (Q-Crit) | Use the user-supplied checklist items as the criteria set; cite **no** external clause beyond what the user names (a private checklist has no KB fragment) |
+
+**Method vs criteria (the distinction this skill turns on):** ISO 45001 **9.2** is always the *method* (how the audit is planned and conducted). The *criteria* — what is audited **against** — are chosen at intake (Q-Crit): ISO 45001 itself, a regulatory regime, or a custom checklist. The same 9.2 loop audits a site against any of them.
 
 ## Workflow
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-<!-- TODO: author this skill's intake question set -->
+### Intake question set (one at a time; branch; echo back; never proceed on vague)
 
-For this skill, the structured intake captures, one question at a time, the
-specific facts the domain method needs before any drafting begins. Author the
-question set here as a numbered list (MCQ where the answer space is enumerable,
-free-text where it is open); branch on the answers and echo the captured facts
-back before analysis. The runtime intake pattern is `KB-SNIP-INTAKE`.
+Ask these in order, ONE at a time, following `KB-SNIP-INTAKE`. **Q-Scope and Q-Crit are load-bearing** — refuse to proceed on a vague scope ("general site audit") or an undeclared criteria set: ask, or record `[GAP]`. An audit with no defined boundary is unauditable; an audit with no criteria set cannot classify a finding.
 
-1. **TODO** — first intake question (the specific task / activity / subject).
-2. **TODO** — second intake question (the named site / asset / scope).
-3. **TODO** — remaining domain questions; never proceed on vague or missing inputs.
+| # | Question | Type | Options / prompt | Feeds |
+|---|---|---|---|---|
+| Q-Juris | Jurisdiction | MCQ | India · UK · USA · EU · Other/Unknown | India → Q-Juris-a; the kb-selection row |
+| Q-Juris-a | *(India only)* Which state? | MCQ | Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Other | resolves `KB-REG-IN-STATEFORMS`; **mandatory state detection** — confirm before citing a form |
+| **Q-Scope** | **The site / system / process audited, and its boundary** | free-text | "Describe the exact subject and its boundary (e.g. 'the permit-to-work system at the Plant 3 maintenance shop — issuance, isolation, sign-off, close-out; excludes hot-work permits')." | **the specificity anchor — refuse a vague answer** |
+| **Q-Crit** | **The standard / criteria to audit against** | MCQ + free-text | **ISO 45001 (MS standard) · A regulatory regime (OSHA / Factories Act / HSWA) · A custom checklist (paste / describe it)** | **the criteria gate** — resolves the clause/checklist set walked finding-by-finding; *Regulatory* → leans on the Q-Juris fragment; *Custom* → free-text items, no external clause cited |
+| **Q-Type** | **Audit type** | MCQ | Compliance (vs law) · Management-system (vs ISO 45001 / a MS standard) · Process (vs an SOP / process spec) | tunes the evidence-sufficiency bar + classification lens |
+| Q-Evid | Evidence available | free-text | "What evidence can you provide or did you gather? (documents/records, observations, interview notes by role, photos, prior audit/CAPA history)." | step 3 evidence assessment; flags `[GAP]` criteria |
+| Q-Industry | Industry / sector | MCQ + free-text | Construction · Manufacturing · Oil & Gas · Chemicals · Mining · General/Other | tunes criteria emphasis + nonconformity risk descriptors |
+| Q-NCrate | Org risk-matrix size (rating nonconformities) | MCQ | 3×3 · 4×4 · **5×5 (default)** · Supply our matrix | → `MatrixConfig` for `risk_matrix` (step 4) |
 
-Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
+After the last applicable question, **echo a captured-facts summary** ("Auditing: the PTW system at the Plant 3 maintenance shop (issuance → isolation → sign-off → close-out, hot-work excluded), against ISO 45001 clause 8.1 operational control + the org's PTW procedure, management-system type, Maharashtra, 5×5 matrix — correct?") and only then proceed.
+
+### The audit method (ISO 45001 9.2 internal-audit loop)
+
+Full method — finding-classification rules, sampling guidance, evidence-sufficiency tests — in `references/METHODOLOGY.md`. The steps:
+
+1. **De-identify the inputs FIRST** (the `deid` block + the De-identifier-runs-first rule). Audit evidence routinely carries worker names, signatures, training/injury records — scrub all of it to role labels before any assessment; everything downstream (every finding, every quoted evidence item) consumes the scrubbed text. A personal identifier surviving into a finding's evidence trail is a de-id auto-fail.
+2. **Establish the scope & criteria set.** Fix the boundary (Q-Scope) and resolve Q-Crit into a concrete, walkable clause/checklist list: ISO 45001 → the relevant clauses from `KB-STD-ISO45001`; a regulatory regime → the duties from the matched jurisdiction fragment; a custom checklist → the user's items. State the audit type (Q-Type) and methodology (interview / document review / observation / sampling). Record `[GAP]` where the criteria set is incomplete — **never invent a clause**.
+3. **Gather & assess objective evidence per criterion.** For each clause/checklist item, assess the available evidence **against that specific criterion**: what it shows, whether it is sufficient, what is missing. Each assessment names the specific evidence item (document id, observation, interview-role, record) it rests on. Flag `[GAP]` where evidence is absent — an unassessed criterion is "insufficient evidence," **never silently passed**.
+4. **Record one finding per criterion, each classified + traced to evidence (the defensibility core).** Classify with the 4-class ISO scheme:
+   - **Conformity** — evidence demonstrates the requirement is met.
+   - **Nonconformity — Major** — a systemic failure or total absence of a required arrangement.
+   - **Nonconformity — Minor** — an isolated lapse against an otherwise-conforming arrangement.
+   - **Observation** — conforming now, but a risk of drift / an early warning.
+   - **Opportunity for improvement** — conforming, but a better practice is available.
+   Every finding names the **clause/checklist item, the objective evidence, and the classification**. **Risk-rate EVERY nonconformity by default** via `risk_matrix.load_matrix(config)` then `risk_matrix.score(likelihood, severity, matrix)` (config from Q-NCrate, default 5×5) so remediation can be prioritised — the band is the engine's, not prose. Conformities/observations need no score.
+5. **Rate overall conformity.** Count by classification; derive a conformity rating for the scope (conformity % of assessed criteria, count of major/minor nonconformities, highest residual nonconformity risk band) — computed from the per-finding ratings, not asserted in prose.
+6. **Corrective actions (HoC, owners + dates) + emit the CAPA register.** For **every nonconformity** (and any observation the auditor elects to action), apply `KB-SNIP-HOC` (Elimination → Substitution → Engineering → Administrative → PPE), then call `controls.rank_controls(controls)` + `controls.validate_treatment(controls)`. If `ppe_admin_only` is `True`, **add a higher-order control or record an explicit justification** — an un-justified lower-order-only treatment is a defect the Critic/QA pass catches. Each action is SMART (named owner + ISO due date + measure) linked to its **finding id**; assemble the CAPA register and call `smart_actions.validate_register(actions)`. The register uses the **B5 schema verbatim** — `{action, owner, due, measure, links_to_cause, hoc_tier}`, where `links_to_cause` is the **finding id**. Any action missing an owner, a valid date, a measure, or a finding link is **invalid** and must be fixed (no anonymous actions, no "ASAP"). *This validated register is the handoff artifact `capa-manager` (B7) ingests — B6 creates and validates it; B7 tracks and closes it.*
+7. **Validate against `references/QUALITY_CHECKLIST.md`** — every criterion assessed (or `[GAP]`-flagged); every finding classified + evidence-traced + (if a nonconformity) risk-rated; every corrective action HoC-ranked, owned, dated, finding-linked; no un-justified lower-order-only treatment; every cited criterion traces to the KB (9.2 method always; the audited clauses / jurisdiction fragment for the criteria); de-id applied.
+8. **Assemble the branded audit report** — build `report.json` (see `assets/audit-report.template.json`) and run the canonical `report-output` call.
+
+The **orchestration block below** sits after this Workflow so the triage gate judges the assembled work before fanning out. The deterministic rating/ranking steps (4 risk-rating via `risk_matrix`; 6 ranking via `controls`, register validation via `smart_actions`) are **A7 script calls in every case — never a fan-out job** (there is no "Conformity-Scorer" subagent: deterministic work runs in the script).
 
 <!-- hse:block:orchestration:start -->
 ## Agentic Execution (Orchestration Block)
@@ -157,17 +193,15 @@ de-identification leak. Fix everything it raises before delivery.
 <!-- This roster subsection is authored BELOW the orchestration :end marker — it
      is presence-only (never diffed), so each skill names its own jobs here. -->
 
-For a non-trivial task the triage gate may fan out to:
+The standard **moderate roster** (A6 "moderate = 2–3"). The De-identifier is the **sequential first gate, not a fan-out peer**; the 3 fan-out jobs are Evidence-Assessor + Regulatory-Checker + Drafter; Critic/QA is mandatory. **There is no Conformity-Scorer** — nonconformity risk-rating, control ranking, and CAPA-register validation are deterministic A7 script calls at steps 4/6 (the project's core value: deterministic work runs in the script).
 
-- **Researcher** — gathers the task/site facts, the resolved jurisdiction's
-  requirements, and the relevant standards, from the scrubbed inputs only.
-- **Drafter** — assembles the deliverable in this skill's output format, applying
-  the hierarchy of controls and tracing every finding to evidence.
-- **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
-  output: specificity, hierarchy of controls, defensibility, de-identification, and
-  citation accuracy.
+- **De-identifier** — runs FIRST (sequential gate, not a fan-out peer); scrub all PII/health detail in the audit evidence (names, signatures, training/injury records) to role labels before any assessment. Every fan-out job below consumes only its scrubbed output.
+- **Evidence-Assessor** — for each criterion in the resolved criteria set, assess the scrubbed objective evidence against that specific clause/checklist item: what it shows, sufficiency, what is missing; cite the specific evidence item per assessment; flag `[GAP]` where evidence is absent. SCOPE-OUT: law/criteria wording (Regulatory-Checker owns it), drafting the report (Drafter owns it). (Conformity rating is NOT a subagent — it is the A7 `risk_matrix`/`controls` scripts.)
+- **Regulatory-Checker** — for the resolved jurisdiction + criteria, return the applicable duty + clause/section + (India → resolved STATE first) the state form via `KB-REG-IN-STATEFORMS`, and confirm each cited clause exists; conservative — flag `[GAP]` when unsure. SCOPE-OUT: assessing evidence (Evidence-Assessor), drafting (Drafter), inventing a form number.
+- **Drafter** — write the clause-by-clause findings + nonconformity log + conformity summary + corrective-action plan + CAPA register to the output template using role placeholders; each finding tagged its classification + evidence trail, each control tagged its `KB-SNIP-HOC` tier (consumes the De-identifier's scrubbed text + the Evidence-Assessor's per-criterion assessments + the A7 `risk_matrix`/`controls` ratings + the Regulatory-Checker's verdict). SCOPE-OUT: assessing evidence (Evidence-Assessor), checking law (Regulatory-Checker).
+- **Critic/QA** (MANDATORY) — every criterion assessed or `[GAP]`-flagged, every finding classified + traced to objective evidence, every nonconformity risk-rated (via the A7 engine), every corrective action HoC-ranked + owned + dated + finding-linked, no PPE/admin-only treatment without justification, every cited clause traces to the KB, zero PII/health leak. PASS/FAIL.
 
-Simple single-subject tasks run single-threaded — no subagents.
+Single-thread fallback (the block's canonical line): on a host with no subagent capability, the same jobs run sequentially in one context — De-identifier scrub first, the A7 rating/ranking/validation calls still made deterministically, scope discipline kept, the Critic/QA pass still performed. (This skill is *not* single-threaded-by-design; it ships the roster above.)
 
 <!-- hse:block:report-output:start -->## Output format
 

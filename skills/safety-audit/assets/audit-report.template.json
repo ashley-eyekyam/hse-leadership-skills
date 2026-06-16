@@ -1,0 +1,81 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Safety Audit — Permit-to-Work System, Maintenance Shop, Plant 3",
+    "subtitle": "Management-system audit vs ISO 45001 8.1 + the org PTW procedure — de-identified; competent-person review required",
+    "author": "HSE Department",
+    "date": "2026-06-16",
+    "classification": "Internal — competent-person review required",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. Identifiers in the audited evidence (names, signatures, training/injury records) were pseudonymised before any assessment; the re-identification key is held separately and is not part of this document. No injury/illness cell of fewer than 5 individuals is published. This audit is a point-in-time sample; a competent person must validate it."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "Management-system audit of the permit-to-work (PTW) system at the Plant 3 maintenance shop (issuance → isolation → sign-off → close-out; hot-work permits excluded), audited against ISO 45001 clause 8.1 (operational control) and the org's PTW procedure, audit method per ISO 45001 9.2. Of 6 assessed criteria, 3 conform, 1 is a major nonconformity, 1 a minor nonconformity, and 1 an opportunity for improvement. The highest-risk finding is the absence of an enforced isolation-verification step before sign-off (NC-Major, High). Every finding below traces to specific objective evidence; every nonconformity is risk-rated; every corrective action is hierarchy-of-controls-ranked with a named owner and date. This report is de-identified throughout." },
+
+    { "type": "metrics", "metrics": [
+        { "label": "Conformity", "value": "50%", "caption": "3 of 6 assessed criteria conform" },
+        { "label": "Nonconformities", "value": "1 major / 1 minor", "caption": "highest residual band: High" },
+        { "label": "Audit method", "value": "ISO 45001 9.2", "caption": "internal audit; point-in-time sample" } ] },
+
+    { "type": "heading", "level": 1, "text": "Scope & method" },
+    { "type": "bullets", "items": [
+        "Scope: the PTW system at the Plant 3 maintenance shop — issuance, isolation, sign-off, close-out. Boundary: hot-work permits excluded.",
+        "Criteria (Q-Crit): ISO 45001 clause 8.1 operational control + the org's PTW procedure (management-system audit type).",
+        "Audit method: ISO 45001 clause 9.2 (internal audit) — scope → criteria → evidence → findings → conformity rating → corrective action.",
+        "Methodology: a sample of 12 issued permits across 3 shifts; an isolation-register extract; two interview summaries by role; direct observation of one issuance.",
+        "Nonconformity risk-rating: org 5x5 matrix (Q-NCrate)." ] },
+
+    { "type": "heading", "level": 1, "text": "Key findings — clause-by-clause (each traced to evidence)" },
+    { "type": "findings", "rows": [
+        { "title": "8.1 / PTW-1 — Permit issuance authorisation", "risk_level": "",
+          "description": "Conformity. The PTW procedure requires a named authorised issuer; the sampled permits all carried an issuer role + the work scope.", "evidence": "E-1 (permit sample, 12/12 issuer-signed); E-2 (PTW procedure §3)" },
+        { "title": "8.1 / PTW-2 — Isolation verification before sign-off", "risk_level": "High",
+          "description": "Nonconformity — Major. The procedure does not mandate an independent isolation-verification step before the permit is signed off; 4 of 12 sampled permits were signed off with no recorded isolation check. A systemic gap, not an isolated lapse.", "evidence": "E-1 (4/12 permits, no isolation record); E-3 (isolation-register extract — gaps); E-4 (PTW procedure §5, no verification step)" },
+        { "title": "8.1 / PTW-3 — Permit close-out & sign-back", "risk_level": "Medium",
+          "description": "Nonconformity — Minor. Close-out was performed but 2 of 12 permits lacked the final sign-back signature — an isolated lapse against an otherwise-followed step.", "evidence": "E-1 (2/12 permits, no sign-back); E-5 (interview, Supervisor role)" },
+        { "title": "8.1 / PTW-4 — Competence of issuers", "risk_level": "",
+          "description": "Conformity. Sampled issuers held current PTW-authoriser training; records were in date.", "evidence": "E-6 (training matrix, de-identified — all issuers in date)" },
+        { "title": "8.1 / PTW-5 — Communication at shift handover", "risk_level": "",
+          "description": "Conformity. Open permits are logged and handed over at shift change; observed and corroborated by interview.", "evidence": "E-7 (observation); E-5 (interview, Supervisor role)" },
+        { "title": "8.1 / PTW-6 — Periodic PTW system review", "risk_level": "",
+          "description": "Opportunity for improvement. The PTW system conforms but is reviewed only on incident; a scheduled periodic review would catch drift earlier.", "evidence": "E-2 (PTW procedure — no review cadence stated)" } ] },
+
+    { "type": "heading", "level": 1, "text": "Nonconformity log" },
+    { "type": "table",
+      "headers": ["Finding id", "Clause / item", "Classification", "Evidence", "Risk band", "Status"],
+      "rows": [
+        ["NC-1", "8.1 / PTW-2 isolation verification", "Nonconformity — Major", "E-1, E-3, E-4", "High", "Open"],
+        ["NC-2", "8.1 / PTW-3 close-out sign-back", "Nonconformity — Minor", "E-1, E-5", "Medium", "Open"] ] },
+
+    { "type": "heading", "level": 1, "text": "Conformity summary" },
+    { "type": "metrics", "metrics": [
+        { "label": "Conformity rate", "value": "50%", "caption": "3 conform / 6 assessed" },
+        { "label": "By class", "value": "3 C · 1 NC-Maj · 1 NC-Min · 1 OFI", "caption": "0 observations" },
+        { "label": "Highest residual risk", "value": "High", "caption": "NC-1 isolation verification" } ] },
+
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls (corrective controls)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Engineer an isolation-verification interlock: the permit cannot be signed off until the isolation is independently confirmed in the register (NC-1)", "tier": "Engineering", "owner": "Maintenance Lead" },
+        { "control": "Amend the PTW procedure to mandate an independent isolation-verification step before sign-off (NC-1)", "tier": "Administrative", "owner": "HSE Manager" },
+        { "control": "Add a mandatory close-out sign-back field that blocks permit closure if blank (NC-2)", "tier": "Engineering", "owner": "Maintenance Lead" } ] },
+
+    { "type": "heading", "level": 1, "text": "Corrective-action plan (CAPA register — the B7 handoff)" },
+    { "type": "paragraph", "text": "The CAPA register below is the producer side of the B6→B7 seam: each row carries the B5 CAPA schema verbatim — action, owner, due, measure, links_to_cause (the FINDING id), hoc_tier — validated by smart_actions.validate_register (every row requires an owner, an ISO due date, a measure, and a finding link). capa-manager (B7) ingests this exact shape and runs the lifecycle (status, overdue, effectiveness, closure) over it." },
+    { "type": "table",
+      "headers": ["action", "owner", "due", "measure", "links_to_cause", "hoc_tier"],
+      "rows": [
+        ["Fit an isolation-verification interlock so a permit cannot be signed off until isolation is independently confirmed in the register.", "Maintenance Lead", "2026-07-15", "0 sampled permits signed off without a recorded isolation check at the next quarterly audit", "NC-1", "Engineering"],
+        ["Amend the PTW procedure to mandate an independent isolation-verification step before sign-off; brief all issuers.", "HSE Manager", "2026-07-08", "Revised procedure issued and 100% of issuers briefed (training matrix)", "NC-1", "Administrative"],
+        ["Add a mandatory close-out sign-back field that blocks permit closure if blank.", "Maintenance Lead", "2026-07-22", "0 permits closed without sign-back in the following month's sample", "NC-2", "Engineering"] ] },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory / criteria basis (cited)" },
+    { "type": "bullets", "items": [
+        "ISO 45001 clause 9.2 (internal audit) — the audit method backbone.",
+        "ISO 45001 clause 8.1 (operational control) — the audited criteria for the PTW system; clause 8.1.2 (hierarchy of controls) for the corrective actions; clause 10.2 (nonconformity & corrective action) for the finding→CAPA loop.",
+        "The org's documented PTW procedure — the second criteria source (a management-system audit against the org's own arrangement).",
+        "Jurisdiction: where a regulatory regime is the criteria, the matched fragment's duties are cited (India → the resolved state form via KB-REG-IN-STATEFORMS, never a national number). This management-system audit cites the org procedure + ISO clauses only.",
+        "Re-identification key held separately; no injury/illness cell of fewer than 5 individuals is published in this circulated report." ] }
+  ]
+}
