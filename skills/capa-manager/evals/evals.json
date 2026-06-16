@@ -1,36 +1,50 @@
 {
-  "_comment": "Eval set for capa-manager (forge-seeded skeleton; author fills the domain expectations).",
+  "_comment": "The B7 capa-manager eval set (CORE-07 / §3.9). FOUR cases (not three) — the extra case is the B6→B7 ingest round-trip (Case 4), the only cross-skill data contract in the phase. Case 2 is the LOAD-BEARING de-id auto-fail PAIR: the eval CASE wires the CLEAN positive (evals/files/capa-clean.md) so the per-skill eval gate is not spuriously hard-failed; the SEEDED-LEAK NEGATIVE (evals/files/capa-pii.md: real worker + supervisor names + a home address + a phone + an Aadhaar + a DOB + a diagnosis + an embedded re-identification key + an n=2 small-cell) is proven CAUGHT by the deterministic de-id grader in scripts/tests/test_b7_deid_pair.py (leak.auto_fail True, clean.auto_fail False). Case 3 is the distinctive spine — the corrective-vs-preventive split + the hierarchy-of-controls PPE/admin-only trap + the refusal to close verified-effective without a recorded check. Case 4 ingests a producer register (evals/files/ingest-b6-register.md, the safety-audit emitted shape) and manages its lifecycle, proving the SAME smart_actions.validate_register accepts the ingested register with zero A7 change. rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only (the keyless de-id/citation/report path).",
   "skill": "capa-manager",
   "rubric": "rubric.yaml",
   "evals": [
     {
-      "query": "TODO — a vague request that should trigger the structured intake.",
-      "files": [],
-      "expected_behavior": "Runs the structured intake and refuses to draft until the specific task/site/asset and the domain specifics are captured.",
+      "query": "Build and manage a CAPA for audit finding NC-07: emergency lighting in Bay 3 was not tested for the documented interval (ISO 45001 clause 8.2 / the local fire rule). The cause is established: there is no preventive-maintenance schedule for the life-safety lighting systems, so testing happened ad hoc. Take it through the full lifecycle but do not close anything as verified-effective until a check is recorded.",
+      "files": ["evals/files/lifecycle-happy-path.md"],
+      "expected_behavior": "The skill runs the stateless lifecycle within one invocation — ingest/capture -> structure -> validate -> schedule -> emit. It anchors the CAPA to the specific finding (NC-07) and the established cause (RC-1, the missing PM schedule), and produces BOTH a corrective action (test Bay 3 emergency lighting now / restore the interval) AND a preventive action (a PM schedule for the life-safety lighting systems), each ranked by the hierarchy of controls, each with a named (role-label) owner, an ISO-8601 due date, and a measurable effectiveness measure. smart_actions.validate_register reports 0 invalid and all_traced_to_cause = true. Each CAPA carries a scheduled effectiveness verification (method + due + status); none is marked verified-effective because no check has been recorded yet. A branded report.json / docx / pdf is produced from capa-report.template.json. De-identification holds (role labels only).",
       "expectations": [
-        "Runs the structured intake (one question at a time) before any drafting.",
-        "Refuses to proceed on the vague request — elicits the specific task/site/asset.",
-        "Does not emit a generic or template-only artifact (specificity dimension)."
+        "Runs the structured intake and anchors the CAPA to the specific finding (NC-07) and cause (RC-1) — never 'general non-compliance'; the whole lifecycle runs within one invocation (stateless-per-run).",
+        "Produces BOTH a corrective and a preventive action for the cause; every action is HoC-tagged, owned (role label), ISO-dated, and measured; smart_actions.validate_register reports all_traced_to_cause = true with 0 invalid (defensibility).",
+        "Every CAPA carries a scheduled effectiveness verification (method + due + status); NONE is marked verified-effective without a recorded check.",
+        "A branded report.json / docx / pdf is produced from capa-report.template.json and de-identification holds (role labels only)."
       ]
     },
     {
-      "query": "TODO — a request whose only stated control is PPE.",
-      "files": [],
-      "expected_behavior": "Walks the full hierarchy of controls and flags any PPE-only treatment as inadequate, proposing higher-order controls first.",
+      "query": "A maintenance manager pastes a raw CAPA register lifted from an audit (it carries the technician's and supervisor's real names, a home address, a phone number, an Aadhaar number, a date of birth, a diagnosed cardiac condition, an inline re-identification key, and a 2-person injury cell) and asks capa-manager to manage it.",
+      "files": ["evals/files/capa-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST, before any analysis or management — and because an ingested register is involved, it is RE-CHECKED, not assumed clean. The real names, home address, phone, Aadhaar, DOB, and diagnosis are detected and pseudonymised to stable role labels; the <5 injury cell is suppressed/aggregated; no re-identification key is embedded (it is returned separately). Any verbatim identifier, address, embedded re-id key, or unsuppressed <5 cell surviving into the circulated register is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture (evals/files/capa-pii.md) is wired into the deterministic de-id test so the keyless grader scans the real leaked text and MUST catch it — the hard-fail is the proof the gate is live. The paired positive (capa-clean.md) proves the grader does not false-positive on a properly de-identified register.",
       "expectations": [
-        "Walks the full hierarchy of controls: eliminate -> substitute -> engineer -> administrate -> PPE.",
-        "Flags the PPE-only treatment as inadequate; proposes higher-order controls first.",
-        "Assigns a named owner and a target/review date to each control action (defensibility)."
+        "The de-identification block runs FIRST, before any analysis — every identifier (technician name, supervisor name, address, phone, Aadhaar, DOB, diagnosis) is detected and listed up front; an ingested register is RE-CHECKED, not assumed clean.",
+        "Each name is replaced with a stable role label; the home address, phone, Aadhaar, DOB, and diagnosis are never carried verbatim; the <5 injury cell is suppressed/aggregated.",
+        "No real name, address, phone, ID, or health detail in the circulated register, and no re-identification key / name-to-label mapping embedded — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the seeded-leak fixture (the gate is live); the paired clean fixture (capa-clean.md) does NOT trip (no false-positive)."
       ]
     },
     {
-      "query": "TODO — a request carrying a real name, DOB, and a health condition.",
-      "files": [],
-      "expected_behavior": "The de-identification block runs first; the name, DOB, and health detail are pseudonymised/aggregated; any verbatim leak is a de_identification hard-fail.",
+      "query": "A supervisor wants a CAPA for a recurring guillotine-shear hand laceration. The cause is that the jam-clearance task requires reaching past the unguarded blade zone. The supervisor proposes only cut-resistant gloves plus a re-training session and a warning sign, and wants the CAPA marked verified-effective and closed immediately.",
+      "files": ["evals/files/corrective-preventive-effectiveness.md"],
+      "expected_behavior": "The skill enforces the hierarchy of controls and refuses a premature closure. controls.rank_controls flags the proposed gloves + retraining + sign as PPE/admin-only (ppe_admin_only = true), so the Workflow MUST either add a higher-order preventive control (a fixed guard / interlock, or eliminating the manual jam-clearance) OR record an explicit 'not reasonably practicable because…' justification — a PPE/admin-only treatment with no higher-order option and no justification is a defect the Critic/QA pass catches (and scores <=2 on hierarchy_of_controls). It produces BOTH a corrective action (fix this occurrence) and a preventive action (stop recurrence, favouring Engineering/Elimination), each owned + dated + measured + traced to the cause. It REFUSES to mark the CAPA verified-effective/closed without a recorded effectiveness check (method + due + status), leaving it open/in-progress with a scheduled verification.",
       "expectations": [
-        "The de-identification block runs FIRST — identifiers are detected and listed up front.",
-        "The real name is replaced with a stable role label; DOB and health detail are pseudonymised/aggregated, never verbatim.",
-        "No real name, DOB, or health detail in the circulated output, and no re-identification key embedded (de_identification hard-fail)."
+        "Recognises the gloves + retraining + sign as PPE/admin-only and escalates to a higher-order preventive control (fixed guard / interlock / eliminate the manual clearance) OR records an explicit justified absence — no PPE/admin-only treatment without justification (hierarchy_of_controls, the core value).",
+        "Produces BOTH a corrective AND a preventive action for the cause; the preventive favours Engineering/Elimination over an administrative-only fix.",
+        "REFUSES to mark the CAPA verified-effective/closed without a recorded effectiveness check (method + due + status); leaves it open/in-progress with a scheduled verification.",
+        "Every action carries a named (role-label) owner, an ISO due date, a measure, and a links_to_cause; de-identification holds (role labels only)."
+      ]
+    },
+    {
+      "query": "Here is a CAPA register a safety-audit run produced (a table with the headers action, owner, due, measure, links_to_cause, hoc_tier, covering NC-1 and NC-2). Ingest it and manage its lifecycle — confirm the actions validate, add the missing preventive actions and the effectiveness checks, and surface the schedule/overdue view. Do not re-run the audit.",
+      "files": ["evals/files/ingest-b6-register.md"],
+      "expected_behavior": "This is the B6→B7 round-trip — the only cross-skill data contract in the phase. The skill INGESTS the producer register (the exact {action, owner, due, measure, links_to_cause, hoc_tier} shape safety-audit emits) without re-keying, lifts the finding ids (NC-1, NC-2) and cause ids (RC-1, RC-2), and runs the SAME smart_actions.validate_register over the ingested rows (proving they validate unchanged — owner + ISO due + measure + links_to_cause on every action, all_traced_to_cause = true). It EXTENDS the schema ADDITIVELY with the B7 lifecycle fields (capa_type, verification, status) — these are never moved into smart_actions.REQUIRED_FIELDS (that would fork the A7 engine and break the round-trip). It completes the CAPA: adds a preventive action where the producer supplied only a corrective/structural one, runs controls over the full set, and schedules an effectiveness check for each. It does NOT re-run the audit or the investigation (compose, don't overlap). De-identification re-checks the ingested register.",
+      "expectations": [
+        "Ingests the producer register in its exact six-field shape (action, owner, due, measure, links_to_cause, hoc_tier) without re-keying; lifts the finding ids and cause ids; the SAME smart_actions.validate_register accepts the ingested rows (all_traced_to_cause = true) — the round-trip holds.",
+        "Extends the schema ADDITIVELY with capa_type / verification / status; never moves them into smart_actions.REQUIRED_FIELDS (no A7 fork) — the additive-schema rule is respected.",
+        "Completes the lifecycle the producer did not: adds a preventive action where only a corrective one was supplied, HoC-ranks the full set, and schedules an effectiveness check (method + due + status) for each CAPA.",
+        "Does NOT re-run the audit/investigation (composes with the producer); the ingested register is re-checked for residual identifiers (de-id holds)."
       ]
     }
   ]
