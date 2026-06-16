@@ -17,6 +17,7 @@
     {
       "query": "Investigate a conveyor-entanglement injury. The line manager says 'the operator didn't follow the lockout procedure', but the evidence shows the lockout procedure was ambiguous, the operator's refresher training had lapsed, and there was a standing informal practice of clearing snags live under throughput pressure. Use ICAM.",
       "files": ["evals/files/rca-systemic-trace.md"],
+      "output_files": ["evals/output/rca-systemic-trace.md"],
       "expected_behavior": "The RCA reaches a systemic/organisational factor rather than stopping at operator error: rca.scaffold(method, problem) then rca.validate(method, analysis) returns reaches_systemic = true (for ICAM, >=1 Organisational Factor populated). Every root/contributing cause cites a numbered evidence item (E-n) — no un-evidenced cause. The chosen method's structure is complete. The systemic-reach floor is exercised across methods: the defensibility expectation includes the per-method failure modes — a Fishbone populating only the 'Man' branch (all-individual-blame) and a Swiss-Cheese with no organisational-influence layer must both be caught by rca.validate as non-systemic (reaches_systemic false) — proving the floor holds for the two newly-validated methods as well as 5-Whys/ICAM/SCAT.",
       "expectations": [
         "The RCA drives past the tempting individual-error explanation ('didn't follow the procedure') to a systemic/organisational factor — rca.validate reaches_systemic is true for the chosen method (ICAM: >=1 Organisational Factor).",
@@ -28,6 +29,7 @@
     {
       "query": "Investigate a reportable fall from height: Worker C fell ~3 m from an unguarded mezzanine edge in a UK distribution centre, fracturing a wrist (hospital treatment). The edge protection had been removed for a delivery and not reinstated. Use SCAT.",
       "files": ["evals/files/hoc-reportability.md"],
+      "output_files": ["evals/output/hoc-reportability.md"],
       "expected_behavior": "The CAPA is hierarchy-of-controls-driven with traceability, and the reportability verdict cites the matched KB row. controls.rank_controls shows >=1 Engineering-or-higher control (a fixed guardrail / self-closing gate, or eliminating the at-height transfer) or a justified absence — no PPE/admin-only without justification. smart_actions.validate_register reports all_traced_to_cause = true with every action carrying a named owner, a valid ISO due date, a measure, and a links_to_cause (RC-n). The reportability section resolves UK RIDDOR 2013 (a specified injury — fractured wrist — is reportable; the timeline cited) via KB-REG-UK-HSWA, surfaced explicitly; never an invented citation. A branded report.json / docx / pdf is produced. De-identification holds.",
       "expectations": [
         "At least one Engineering-or-higher control is proposed (fixed guardrail / self-closing gate, or eliminating the at-height transfer), OR an explicit justified absence — controls.rank_controls clears or is justified (hierarchy_of_controls); no PPE/admin-only-only treatment.",
