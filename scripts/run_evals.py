@@ -365,6 +365,22 @@ def grade_case(
         record["weighted_mean"] = None
         return record
 
+    # A case with NO graded OUTPUT artifact (the de-id PAIR cases wire the CLEAN
+    # positive into `files` and intentionally carry no `output_files` — their
+    # seeded-leak NEGATIVE is proven caught by the dedicated test_*_deid_pair.py +
+    # --deid-selftest, not by this eval case) has nothing to quality-grade. Do NOT
+    # invoke the model grader on empty text (it would score 1/1/1 and pollute the
+    # quality pass-rate); the case passes on the deterministic verdict (no hard-fail
+    # = not blocked), exactly like the no-CLI branch.
+    if not output_text.strip():
+        record["model_grade"] = {
+            "scored": False,
+            "reason": "no graded output artifact (de-id pair / deterministic-only case)",
+        }
+        record["weighted_mean"] = None
+        record["pass"] = True
+        return record
+
     # The model grader scores ONLY the pre-captured OUTPUT artifact (never intake).
     model_grade = run_model_grader(skill_dir, case, output_text, rubric, grader_model)
     record["model_grade"] = model_grade

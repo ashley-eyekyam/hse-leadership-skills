@@ -158,3 +158,27 @@ def test_load_case_output_text_reads_output_files(tmp_path):
 def test_load_case_output_text_empty_when_no_output():
     case = {"query": "q", "files": ["evals/files/x.md"]}
     assert run_evals._load_case_output_text(Path("/nonexistent"), case) == ""
+
+
+# --- (e) a de-id PAIR case (no graded output) is NOT model-graded ---------------
+# The de-id pair cases wire the CLEAN positive into `files` and carry no
+# `output_files`. With no graded OUTPUT artifact there is nothing to quality-grade,
+# so the model grader must NOT run (an empty-text grade would score 1/1/1 and
+# pollute the quality pass-rate); the case passes on the deterministic verdict.
+
+def test_no_output_artifact_case_is_not_model_graded(monkeypatch, tmp_path):
+    # Clean intake (no leak -> no short-circuit), NO output_files.
+    skill_dir, case = _write_case_dir(tmp_path, intake="clean intake scope only")
+    assert "output_files" not in case  # de-id-pair shape
+
+    def boom(*a, **k):
+        raise AssertionError("model grader must NOT run when there is no graded "
+                             "OUTPUT artifact")
+
+    monkeypatch.setattr(run_evals, "run_model_grader", boom)
+    record = run_evals.grade_case(skill_dir, case, _RUBRIC, "claude-sonnet-4-6", None)
+
+    assert record["model_grade"]["scored"] is False
+    assert "no graded output artifact" in record["model_grade"]["reason"]
+    assert record["weighted_mean"] is None
+    assert record["pass"] is True            # passes on the deterministic verdict
