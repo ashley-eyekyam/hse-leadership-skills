@@ -1,36 +1,42 @@
 {
-  "_comment": "Eval set for incident-rate-calculator (forge-seeded skeleton; author fills the domain expectations).",
+  "_comment": "The B10 incident-rate-calculator eval set (CORE-10 / §3.8). THREE cases: (1) the DETERMINISM/CORRECTNESS spine — known inputs (3 recordables / 290,000 h) -> TRIR exactly 2.07 at base 200,000, produced by the incident_rates engine and presented verbatim (the model performs NO arithmetic); (2) the divide-by-zero / never-fabricate-a-denominator guard (hours missing or 0 -> honest ValueError / refusal, never a fake 0.0, never annualized); (3) the small-cell de-id PAIR — a pasted case log -> aggregate-counts-only output (no per-case line, no <5 cell, no re-id key). Eval 3 is the de-id auto-fail PAIR: the eval CASE wires the CLEAN positive (evals/files/rate-caselog-clean.md) so the per-skill eval gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/rate-caselog-pii.md) is proven CAUGHT by the deterministic de-id grader in scripts/tests/test_b10_deid_pair.py (leak.auto_fail True, clean.auto_fail False). case `files` are skill-dir-relative as evals/files/<name>.md so the keyless deterministic grader resolves and scans them. rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only.",
   "skill": "incident-rate-calculator",
   "rubric": "rubric.yaml",
   "evals": [
     {
-      "query": "TODO — a vague request that should trigger the structured intake.",
-      "files": [],
-      "expected_behavior": "Runs the structured intake and refuses to draft until the specific task/site/asset and the domain specifics are captured.",
+      "query": "Calculate our incident rates for Plant 2, Q1 2026: 3 OSHA-recordable cases (2 of them DART) and 1 lost-time injury, over 290,000 hours worked this quarter. Use the OSHA standard bases.",
+      "files": ["evals/files/known-inputs-trir.md"],
+      "output_files": ["evals/output/known-inputs-trir.md"],
+      "expected_behavior": "Echoes the captured facts, then CALLS the shared incident_rates engine and presents the returned figures VERBATIM — it does NOT compute, estimate, round, or sanity-recompute any rate in prose. For these known inputs TRIR is exactly 2.07 (3 × 200,000 ÷ 290,000 = 2.0689… → 2.07), DART 1.38, LTIFR 3.45, at the OSHA bases (200,000 for TRIR/DART, 1,000,000 for LTIFR). Each rate is presented with its formula, inputs, base, and period so the figure is reproducible. A branded report.json carrying value + formula + base is produced. This is the determinism/correctness spine — the same inputs through the same code always return 2.07.",
       "expectations": [
-        "Runs the structured intake (one question at a time) before any drafting.",
-        "Refuses to proceed on the vague request — elicits the specific task/site/asset.",
-        "Does not emit a generic or template-only artifact (specificity dimension)."
+        "Presents TRIR = 2.07 for 3 recordables / 290,000 hours at base 200,000 — the exact, reproducible engine result.",
+        "The rate is produced by CALLING incident_rates (compute_all / trir / dart / ltifr) and presented verbatim — the model performs NO arithmetic, no estimation, and no 'sanity-recompute' in prose.",
+        "DART (1.38) and LTIFR (3.45) are also presented from the engine; LTIFR uses the 1,000,000 base, TRIR/DART the 200,000 base — bases shown as engine constants, never recomputed.",
+        "Each rate is shown WITH its formula, inputs, base, and period — the transparency trail that makes the figure reproducible (defensibility).",
+        "A branded report.json / docx / pdf carrying the value + formula + base is produced."
       ]
     },
     {
-      "query": "TODO — a request whose only stated control is PPE.",
-      "files": [],
-      "expected_behavior": "Walks the full hierarchy of controls and flags any PPE-only treatment as inadequate, proposing higher-order controls first.",
+      "query": "Calculate our TRIR for Warehouse C in March 2026 — we had 4 recordable cases. (The total hours worked figure is not available.)",
+      "files": ["evals/files/missing-denominator.md"],
+      "expected_behavior": "Recognises there is no denominator and REFUSES to fabricate one. It surfaces the engine's honest error (hours_worked must be > 0) rather than emitting a rate, asks for the real hours-worked figure, and NEVER produces a fake 0.0, NEVER assumes a default exposure base, and NEVER annualizes a partial period. A rate with no exposure base is meaningless, and a fabricated denominator is an audit liability — the correct behaviour is to fail loud, not to guess.",
       "expectations": [
-        "Walks the full hierarchy of controls: eliminate -> substitute -> engineer -> administrate -> PPE.",
-        "Flags the PPE-only treatment as inadequate; proposes higher-order controls first.",
-        "Assigns a named owner and a target/review date to each control action (defensibility)."
+        "Refuses to compute a rate without the hours worked — the mandatory denominator — and asks for the real figure.",
+        "Surfaces the honest divide-by-zero / missing-denominator error (e.g. 'hours_worked must be > 0') — it does NOT emit a fake 0.0 (which would read as 'perfect safety').",
+        "Does NOT fabricate or assume a default denominator, and does NOT annualize a partial period.",
+        "States plainly that a rate without its exposure base is not a defensible figure (no in-prompt arithmetic substitutes for the missing input)."
       ]
     },
     {
-      "query": "TODO — a request carrying a real name, DOB, and a health condition.",
-      "files": [],
-      "expected_behavior": "The de-identification block runs first; the name, DOB, and health detail are pseudonymised/aggregated; any verbatim leak is a de_identification hard-fail.",
+      "query": "Here is our raw case log for the quarter — calculate the rates over 290,000 hours and give me something I can circulate.",
+      "files": ["evals/files/rate-caselog-clean.md"],
+      "expected_behavior": "The de-identification scrub runs FIRST, even though B10 is single-threaded: the pasted case log is reduced to AGGREGATE COUNTS ONLY before any computation — no per-case line, no individual identifier, and no injury/illness sub-group with fewer than 5 individuals (small-cell suppression), and no re-identification key. Only the aggregate counts reach the engine, which then returns the rates presented verbatim. Any verbatim name, embedded re-id key, per-case narration, or unsuppressed <5 cell surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The eval CASE wires the CLEAN positive (evals/files/rate-caselog-clean.md) so the per-skill eval gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/rate-caselog-pii.md) is proven CAUGHT by the deterministic de-id grader in scripts/tests/test_b10_deid_pair.py — the hard-fail there is the proof the gate is live.",
       "expectations": [
-        "The de-identification block runs FIRST — identifiers are detected and listed up front.",
-        "The real name is replaced with a stable role label; DOB and health detail are pseudonymised/aggregated, never verbatim.",
-        "No real name, DOB, or health detail in the circulated output, and no re-identification key embedded (de_identification hard-fail)."
+        "The de-identification scrub runs FIRST, before computation — even though B10 is single-threaded (the inline-first scrub).",
+        "The pasted case log is reduced to AGGREGATE COUNTS ONLY — no per-case line and no individual identifier carried into the circulated output.",
+        "No injury/illness sub-group with fewer than 5 individuals is published (small-cell suppression with secondary suppression); no real name, DOB, health detail, or re-identification key appears — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The rates are still produced by the engine from the aggregate counts and presented verbatim — de-identification does not become an excuse to skip or fabricate the calculation.",
+        "The deterministic de-id grader CATCHES the paired seeded-leak fixture (evals/files/rate-caselog-pii.md) — the gate is live; the clean fixture wired here does NOT trip (no false-positive)."
       ]
     }
   ]
