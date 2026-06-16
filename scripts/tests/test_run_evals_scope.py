@@ -3,12 +3,16 @@
 Two enforcement-surface behaviours the code review flagged as untested:
 
   CR-01: the keyless `deid-auto-fail` job must actually enforce the de-id hard
-         block. It now grades captured control artifacts (examples/deid-canary/)
-         via `run_deid_selftest` / a CLI-less `run_skill` fallback, instead of
-         re-executing the skill (which returns "" with no Claude CLI on the runner
-         and made the gate inert). These tests prove the self-test fires on a leak,
-         passes a clean report, and that the CLI-less executor falls back to
-         captured text (forced via `_model_available` -> False).
+         block. It grades captured control artifacts (examples/deid-canary/) via
+         `run_deid_selftest`, and the per-case deterministic gate scans the case's
+         INTAKE fixtures (`_load_case_artifact_text`, which carry the seeded-leak
+         de-id negatives) — never "" — so the gate is non-vacuous even with no
+         Claude CLI on the runner. (There is no live skill executor anymore: the
+         old `run_skill` graded the bare base model / fell back to intake on a 300s
+         timeout. The quality grade now reads a pre-captured OUTPUT artifact via
+         `_load_case_output_text`; the deterministic gate scans intake + output.)
+         These tests prove the self-test fires on a leak, passes a clean report,
+         and that the intake loader returns real captured text (not "").
 
   WR-06: the D-04 changed-vs-sweep classification used to live only in eval.yml's
          shell `decide` step. It now lives in `classify_changed_targets` — these
@@ -61,29 +65,26 @@ def test_deid_selftest_missing_fixtures_is_nonzero(tmp_path):
     assert run_evals.run_deid_selftest(tmp_path) == 1
 
 
-# --- CR-01: keyless run_skill grades captured artifact text, not "" ------------
+# --- CR-01: the intake loader feeds the deterministic gate real text, not "" ---
 
-def test_run_skill_keyless_returns_captured_inline_output(monkeypatch):
-    monkeypatch.setattr(run_evals, "_model_available", lambda: False)
+def test_intake_loader_returns_captured_inline_output():
     case = {"query": "q", "output": "Worker John Smith leaked here."}
-    text = run_evals.run_skill(REPO / "examples" / "risk-assessment", case, None)
+    text = run_evals._load_case_artifact_text(REPO / "examples" / "risk-assessment", case)
     assert "John Smith" in text  # NOT "" — the deterministic graders get real text
 
 
-def test_run_skill_keyless_reads_case_files(monkeypatch, tmp_path):
-    monkeypatch.setattr(run_evals, "_model_available", lambda: False)
+def test_intake_loader_reads_case_files(tmp_path):
     artifact = tmp_path / "evals" / "files"
     artifact.mkdir(parents=True)
     (artifact / "case1.md").write_text("Phone 555-867-5309 leaked.")
     case = {"query": "q", "files": ["evals/files/case1.md"]}
-    text = run_evals.run_skill(tmp_path, case, None)
+    text = run_evals._load_case_artifact_text(tmp_path, case)
     assert "555-867-5309" in text
 
 
-def test_run_skill_keyless_no_artifact_is_empty(monkeypatch):
-    monkeypatch.setattr(run_evals, "_model_available", lambda: False)
+def test_intake_loader_no_artifact_is_empty():
     case = {"query": "q", "files": []}
-    text = run_evals.run_skill(REPO / "examples" / "risk-assessment", case, None)
+    text = run_evals._load_case_artifact_text(REPO / "examples" / "risk-assessment", case)
     assert text == ""  # nothing captured -> nothing to scan (correct)
 
 

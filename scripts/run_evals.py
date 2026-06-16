@@ -3,13 +3,33 @@
 
 Pipeline per eval case (research Pattern A8 — the two enforcement classes):
 
-    executor  ->  DETERMINISTIC graders (deid, citation, report)  ->  model grader
+    DETERMINISTIC graders (deid, citation, report)  ->  model grader
 
 The deterministic graders are the NON-WAIVABLE hard block and run FIRST. A
 deterministic hard-fail (a de-id leak, an invented citation) SHORT-CIRCUITS the
 case BEFORE the model grader is ever invoked — a stochastic judge never gets to
 "pass" a privacy leak (threat T-03-16). A deterministic auto-fail overrides the
 weighted mean.
+
+WHAT EACH LAYER GRADES (measurement validity — 2026-06-16 fix):
+
+  * The QUALITY grade is computed from a PRE-CAPTURED, representative
+    consultant-grade OUTPUT artifact per case (`case["output_files"]` /
+    inline `case["output"]`) — NOT from a live skill executor. There is no
+    longer a `claude -p` call that *runs the skill-under-test* and no 300s
+    skill-executor timeout: that path graded the BARE BASE MODEL (it never
+    injected the SKILL.md / blocks / KB), and on timeout it fell back to the
+    de-identified INTAKE fixtures (scope / task-steps with NO controls),
+    flooring hierarchy_of_controls at 1 by construction. Grading the
+    pre-captured output is deterministic, reproducible and CI-stable.
+
+  * The DETERMINISTIC gate scans the INTAKE fixtures (`case["files"]`, which
+    carry the seeded-leak de-id negatives) CONCATENATED WITH the OUTPUT
+    artifact — a leak in EITHER text hard-fails. The model grader scans ONLY
+    the OUTPUT artifact text.
+
+  * The only remaining `claude -p` invocation is the GRADER itself
+    (`run_model_grader`) — fast, and self-skipping in headless CI.
 
 The model grader scores ONLY the judgement dimensions (specificity,
 hierarchy_of_controls, defensibility) by shelling out to the local Claude CLI
@@ -89,10 +109,17 @@ DEFAULT_GATE = 4.0
 
 
 # --- model provider: local Claude CLI on the subscription ----------------------
-# The grader + executor are the ONLY model users, and they reach the model by
-# shelling `claude -p` — which runs on the developer's Claude subscription (no API
-# key). The deterministic graders need NEITHER the CLI NOR any key (the CR-01
-# keyless path stays intact). Stdlib only (subprocess) — no SDK.
+# The GRADER is now the ONLY model user (the live skill executor is gone — the
+# quality grade reads a pre-captured OUTPUT artifact). The grader reaches the
+# model by shelling `claude -p` — which runs on the developer's Claude
+# subscription (no API key). The deterministic graders need NEITHER the CLI NOR
+# any key (the CR-01 keyless path stays intact). Stdlib only (subprocess) — no SDK.
+#
+# _MODEL_TIMEOUT bounds the GRADER call only. It is NOT a skill-executor timeout
+# anymore: there is no skill executor, so there is no executor-timeout intake
+# fallback (that was the measurement-validity defect — grading intake floored HoC
+# at 1). The grader is a short scoring call; the timeout is a safety bound, and on
+# timeout the model dims are simply left unscored (the deterministic verdict stands).
 _MODEL_TIMEOUT = 300
 
 
@@ -175,23 +202,32 @@ def gate_threshold(rubric: Dict[str, Any]) -> float:
     return float((rubric.get("gate") or {}).get("weighted_mean_min", DEFAULT_GATE))
 
 
-# --- executor ------------------------------------------------------------------
+# --- per-case artifact loaders -------------------------------------------------
+# Two DISTINCT artifact streams per case (the measurement-validity fix):
+#   * INTAKE  (`case["files"]`)        — the de-identified skill INPUT (scope,
+#     jurisdiction, task-steps) AND the seeded-leak de-id negatives. Scanned by
+#     the DETERMINISTIC gate only; NEVER quality-graded (it has no controls, so
+#     grading hierarchy_of_controls on it floors at 1 by construction).
+#   * OUTPUT  (`case["output_files"]` / inline `case["output"]`) — the
+#     pre-captured, consultant-grade artifact the case actually grades for
+#     quality. Scanned by BOTH the deterministic gate (a leak here also
+#     hard-fails) AND the model grader.
+
 
 def _load_case_artifact_text(skill_dir: Path, case: Dict[str, Any]) -> str:
-    """Return the case's CAPTURED artifact text for the keyless deterministic path
-    (CR-01).
+    """Return the case's INTAKE artifact text — the de-id fixtures (`case["files"]`)
+    plus any inline `case["output"]`/`case["fixture_text"]` text.
 
-    When the Claude CLI is unavailable the executor cannot produce live output, so
-    the deterministic de-id / citation graders would scan "" and ALWAYS pass — making
-    the dedicated deid-auto-fail CI job inert. Instead, when no key is present we
-    grade the case's own on-disk / inline artifact:
+    This text feeds the DETERMINISTIC gate (CR-01): the keyless `deid-auto-fail`
+    CI job cannot run a skill, so without real captured text the de-id / citation
+    graders would scan "" and ALWAYS pass — making the gate inert. The seeded-leak
+    de-id NEGATIVES live in `case["files"]`, so they MUST be scanned here even when
+    the OUTPUT artifact is clean.
       - `case["output"]` / `case["fixture_text"]`: inline text in evals.json; or
       - each path in `case["files"]`: a file relative to the skill dir (e.g.
         evals/files/<case>.md) whose contents are concatenated.
-    A case that declares no artifact contributes no text (nothing to scan), which
-    is correct — there is nothing captured to leak. The seeded-leak fixture under
-    examples/ carries a `files`/`output` artifact so the keyless job has real text
-    to hard-fail on, and a CI assertion proves the job exits nonzero."""
+    A case that declares no intake contributes no text (nothing to scan), which is
+    correct — there is nothing captured to leak."""
     parts: List[str] = []
     inline = case.get("output") or case.get("fixture_text")
     if isinstance(inline, str) and inline.strip():
@@ -202,27 +238,37 @@ def _load_case_artifact_text(skill_dir: Path, case: Dict[str, Any]) -> str:
             if candidate.is_file():
                 parts.append(candidate.read_text(encoding="utf-8"))
         except OSError as exc:  # pragma: no cover - host/fs dependent
-            print(f"WARN: could not read case artifact {candidate} ({exc})",
+            print(f"WARN: could not read case intake artifact {candidate} ({exc})",
                   file=sys.stderr)
     return "\n".join(parts)
 
 
-def run_skill(skill_dir: Path, case: Dict[str, Any], model: Optional[str]) -> str:
-    """Execute the skill against the case's query via `claude -p` (run from the skill
-    dir, on the local subscription) and return the output text.
+def _load_case_output_text(skill_dir: Path, case: Dict[str, Any]) -> str:
+    """Return the case's pre-captured graded-OUTPUT artifact text.
 
-    With NO Claude CLI (the headless deid-auto-fail CI job, by design) the executor
-    cannot run, so we fall back to the case's CAPTURED artifact text rather than ""
-    (CR-01) — that keeps the deterministic de-id / citation hard blocks live in the
-    keyless deterministic job. With the CLI, the live skill output is graded; the
-    captured artifact is appended so a seeded leak in a fixture still trips even if
-    the live model happened to behave."""
-    query = case.get("query", "")
-    captured = _load_case_artifact_text(skill_dir, case)
-    if not _model_available():
-        return captured
-    live = call_model(query, model, cwd=skill_dir)
-    return "\n".join(p for p in (live, captured) if p)
+    This is the consultant-grade artifact the case grades for QUALITY (the model
+    grader scans ONLY this) and that the deterministic gate also scans for a leak.
+    It is loaded from, in order:
+      - inline `case["output"]` text in evals.json (if present); and/or
+      - each path in `case["output_files"]`: a file relative to the skill dir
+        (convention: ``evals/output/<case-slug>.md``) whose contents are
+        concatenated.
+    A case with NO output artifact (e.g. a de-id-leak case that short-circuits on
+    the deterministic gate) contributes no text — the model grader is then simply
+    not the deciding path; the deterministic layer governs."""
+    parts: List[str] = []
+    inline = case.get("output")
+    if isinstance(inline, str) and inline.strip():
+        parts.append(inline)
+    for rel in case.get("output_files", []) or []:
+        candidate = (skill_dir / rel).resolve()
+        try:
+            if candidate.is_file():
+                parts.append(candidate.read_text(encoding="utf-8"))
+        except OSError as exc:  # pragma: no cover - host/fs dependent
+            print(f"WARN: could not read case output artifact {candidate} ({exc})",
+                  file=sys.stderr)
+    return "\n".join(parts)
 
 
 # --- deterministic graders (run FIRST, short-circuit) --------------------------
@@ -256,9 +302,10 @@ def run_model_grader(
     rubric: Dict[str, Any], grader_model: str,
 ) -> Dict[str, Any]:
     """Score the judgement dimensions with the pinned GRADER_MODEL via `claude -p`
-    on the subscription. A no-op (scores omitted) when the Claude CLI is absent
-    (headless CI) — the deterministic verdict still stands. Only invoked when the
-    deterministic layer did NOT hard-fail."""
+    on the subscription. `output_text` is the case's pre-captured OUTPUT artifact
+    (`_load_case_output_text`) — NEVER the intake fixtures. A no-op (scores omitted)
+    when the Claude CLI is absent (headless CI) — the deterministic verdict still
+    stands. Only invoked when the deterministic layer did NOT hard-fail."""
     if not _model_available():
         return {"scored": False, "model": grader_model, "scores": {}}
 
@@ -290,11 +337,22 @@ def grade_case(
     skill_dir: Path, case: Dict[str, Any], rubric: Dict[str, Any],
     grader_model: str, exec_model: Optional[str],
 ) -> Dict[str, Any]:
-    """Run one eval case through executor -> deterministic graders -> model grader
-    (short-circuit on a deterministic hard-fail)."""
-    output_text = run_skill(skill_dir, case, exec_model)
+    """Run one eval case through the deterministic gate (over INTAKE + OUTPUT) then
+    the model grader (over the OUTPUT artifact only), short-circuiting on a
+    deterministic hard-fail.
 
-    deterministic = run_deterministic(output_text)
+    `exec_model` is retained for signature/CLI compatibility but is unused — there
+    is no live skill executor anymore (the quality grade reads a pre-captured
+    OUTPUT artifact, not a live `claude -p` run of the skill-under-test)."""
+    del exec_model  # no live skill executor; kept only for call-site compatibility
+
+    intake_text = _load_case_artifact_text(skill_dir, case)
+    output_text = _load_case_output_text(skill_dir, case)
+
+    # The DETERMINISTIC gate scans intake (seeded-leak negatives) + output. A leak
+    # in EITHER hard-fails; the seeded-leak case stays caught even with a clean
+    # output present (CR-01 keyless path: intake fixtures carry real text).
+    deterministic = run_deterministic("\n".join(t for t in (intake_text, output_text) if t))
     record: Dict[str, Any] = {
         "query": case.get("query", ""),
         "deterministic": deterministic,
@@ -307,6 +365,7 @@ def grade_case(
         record["weighted_mean"] = None
         return record
 
+    # The model grader scores ONLY the pre-captured OUTPUT artifact (never intake).
     model_grade = run_model_grader(skill_dir, case, output_text, rubric, grader_model)
     record["model_grade"] = model_grade
 
