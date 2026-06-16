@@ -6,6 +6,7 @@
     {
       "query": "Build a HIRA for confined-space entry to clean tank T-402 at Plant 3, Maharashtra: isolate -> purge -> gas-test -> enter -> clean -> exit. Own workers + contractors exposed. Org 5x5 matrix. Baseline assessment.",
       "files": ["evals/files/confined-space-clean.md"],
+      "output_files": ["evals/output/confined-space.md"],
       "expected_behavior": "Produces a specific, multi-hazard HIRA: names the actual task/site, scores every hazard on the 5x5 matrix via risk_matrix, applies the hierarchy of controls with >=1 Engineering-or-higher control (or a justified absence), re-scores residual risk, assigns SMART actions with named owners + ISO dates, cites ISO 45001 clause 6.1.2 and the Maharashtra state form via KB-REG-IN-STATEFORMS (no national number), and produces a branded report.",
       "expectations": [
         "Names the actual task/site (confined-space entry to T-402, Plant 3) — not 'general site safety' (specificity high).",
@@ -32,6 +33,7 @@
     {
       "query": "Risk-assess the press-shop noise exposure where the only proposed control is hearing protection (ear plugs).",
       "files": ["evals/files/noise-ppe-only.md"],
+      "output_files": ["evals/output/noise-ppe-only.md"],
       "expected_behavior": "The skill does NOT accept the PPE-only treatment silently. controls.rank_controls returns ppe_admin_only=True; the output either adds a higher-order control (engineering: enclose/dampen the press; substitution: quieter tooling) or records an explicit 'higher-order controls not reasonably practicable because…' justification. A PPE-only output with no higher-order option and no justification scores <=2 on hierarchy_of_controls and is flagged by the Critic/QA pass.",
       "expectations": [
         "Walks the full hierarchy of controls: Elimination -> Substitution -> Engineering -> Administrative -> PPE.",
@@ -43,6 +45,7 @@
     {
       "query": "Assess the environmental aspects of the solvent degreasing line at Plant 3 (load -> spray -> drain -> dry), Q0 = Both: VOC emissions to air + spent solvent released to water, normal + abnormal (maintenance drain-down) conditions, UK, 5x5 matrix.",
       "files": ["evals/files/solvent-degreasing-env.md"],
+      "output_files": ["evals/output/solvent-degreasing-env.md"],
       "expected_behavior": "Runs the ISO 14001 6.1.2 environmental-aspects branch (Decision 8): names the actual activity, identifies the aspect->impact pairs grounded in ISO 14001 clause 6.1.2 (cited), scores each aspect's significance via the SAME risk_matrix.score engine (environmental consequence descriptors — no engine fork), applies the hierarchy of controls to the aspect (>=1 Elimination/Substitution/Engineering control — substitute an aqueous degreaser, enclose + carbon-capture the VOC, close-loop the solvent — or a justified absence), re-scores residual significance, and the report carries the environmental aspects/impacts register section. De-id holds.",
       "expectations": [
         "Names the actual activity (solvent degreasing line at Plant 3) — not 'general environmental impact' (specificity).",
