@@ -1,0 +1,19 @@
+{
+  "_comment": "B9 board-safety-report author-interview answers (05-04). roster=moderate -> the A6 moderate (2-3) starter roster (Researcher+Drafter+Critic/QA) which B9 refines below orchestration:end into De-identifier-first -> Data-Synthesizer + Narrative-Drafter -> mandatory Critic/QA (§3.5). a7_components=[incident_rates] ONLY (NO controls/risk_matrix/smart_actions/rca) -> scripts/ symlink + verbatim _shim.py; the engine is consumed GUARDED (compute_all/benchmark_delta only if hours+counts captured, else a pre-computed rate or [GAP] -- never a fabricated denominator). category=governance (D-06), audience=[E] (the ONLY [E] skill in v1.0), industry=[All], jurisdiction=[All] (India context only -> KB-REG-IN-STATEFORMS, state detection only if a statutory figure is cited). KB-STD-ISO14001 is carried ONLY as the D-02 optional environmental-performance line (clause 9.1.2), NOT a full ESG branch.",
+  "description": "Produces an executive, board-level HSE safety report: synthesizes a reporting period's leading and lagging safety indicators (TRIR / LTIFR / DART, training and audit closure), key events, trends, and benchmark comparisons into a board-ready narrative — what changed, why it matters, and what leadership must decide. Use this skill whenever a user asks to write a board safety report, an executive safety report or summary, a leadership or board HSE performance report, a quarterly or annual safety performance review, or a management-review safety input. Grounds the report in ISO 45001 clause 9.1 (monitoring & performance evaluation) and 9.3 (management review), de-identifies and aggregates incident detail so no individual is identifiable, compares performance to a benchmark with its source and year, and frames strategic decisions for the board — emitting a branded report. It is an executive narrative, not a data dump. Decision-support only; a competent person must review the output.",
+  "author": "eyekyam",
+  "roster": "moderate",
+  "a7_components": ["incident_rates"],
+  "kb_ids": ["KB-STD-ISO45001", "KB-STD-ISO14001", "KB-DATA-TRIR-BENCHMARKS", "KB-SNIP-INTAKE", "KB-SNIP-ARCHETYPES", "KB-REG-IN-STATEFORMS"],
+  "metadata": {
+    "author": "eyekyam",
+    "version": "1.0",
+    "category": "governance",
+    "tier": 1,
+    "audience": ["E"],
+    "industry": ["All"],
+    "jurisdiction": ["All"],
+    "status": "stable",
+    "plugin": "hse-core"
+  }
+}
