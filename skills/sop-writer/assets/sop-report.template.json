@@ -1,0 +1,92 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Safe Work Procedure — Manual Print-Head Changeover, Press 4",
+    "subtitle": "Plant 2, Maharashtra — planned stop · frontline-operator literacy level",
+    "author": "HSE Department",
+    "date": "2026-06-16",
+    "classification": "Internal — competent-person review required before issue",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. No identifiers appear in the responsibilities or approval blocks; the approval block carries role + signature placeholder only."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Purpose" },
+    { "type": "paragraph", "text": "This safe work procedure (SWP) covers the manual changeover of the print-head on Press 4 during a planned stop. It is grounded in ISO 45001 clause 8.1 (operational control) and integrates with the existing job-safety analysis JSA-2026-014 (its hazards and rated controls are ingested and cross-referenced, not re-scored). It is written to a frontline-operator literacy level: short imperative steps, one action per step." },
+
+    { "type": "heading", "level": 1, "text": "Scope & boundaries" },
+    { "type": "bullets", "items": [
+        "IN scope: mechanical changeover of the print-head on Press 4 during a planned, de-energised stop.",
+        "OUT of scope: electrical fault repair (requires a competent electrician under a separate permit); print-head calibration beyond the function-test.",
+        "Hazard source: ingested from JSA-2026-014 (cross-referenced by id) — this procedure does not re-score risk.",
+        "Authored to ISO 45001 8.1 operational control; reading level = frontline operator (KB-SNIP-AUDIENCE)." ] },
+
+    { "type": "heading", "level": 1, "text": "Responsibilities & required competencies" },
+    { "type": "table",
+      "headers": ["Role", "Responsibility", "Required competency / training"],
+      "rows": [
+        ["Authorised Person (PTW)", "Authorise the planned stop; issue + close the isolation permit; verify zero energy.", "Lock-out/tag-out authorised-person certification; PTW issuer training."],
+        ["Operator", "Execute the changeover steps; apply personal lock; perform the function-test.", "Press 4 operator competency; LOTO awareness; SWP induction."],
+        ["Supervisor", "Verify the procedure is followed; sign the completion of the changeover.", "Front-line supervisor competency; this SWP reviewed."] ] },
+
+    { "type": "heading", "level": 1, "text": "Hazards & embedded controls (per step)" },
+    { "type": "table",
+      "headers": ["Hazard", "Step it arises at", "Embedded control(s) + HoC tier"],
+      "rows": [
+        ["Unexpected start-up / stored energy", "Step 1–2 (isolate & confirm zero energy)", "Line de-energised + locked out (Engineering/Admin isolation) BEFORE work begins; zero-energy confirmation [check]."],
+        ["Pinch / crush on guard removal", "Step 3 (remove guard)", "Fixed guard interlock proven open (Engineering); two-hand technique; cut-resistant gloves [PPE]."],
+        ["Contact with hot/sharp print-head", "Step 4–5 (unclip / fit print-head)", "Allow cool-down hold-point [check]; cut-resistant gloves + face shield [PPE]."] ] },
+
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls — the control plan" },
+    { "type": "hoc_table", "rows": [
+        { "control": "De-energise & lock out Press 4 before any work (isolation regime)", "tier": "Engineering", "owner": "Authorised Person (PTW)" },
+        { "control": "Fixed guard interlock proven open before guard removal", "tier": "Engineering", "owner": "Operator" },
+        { "control": "Cool-down hold-point before touching the print-head", "tier": "Administrative", "owner": "Operator" },
+        { "control": "Cut-resistant gloves + face shield", "tier": "PPE", "owner": "Operator" } ] },
+
+    { "type": "heading", "level": 1, "text": "Procedure — step by step" },
+    { "type": "table",
+      "headers": ["Step", "Action (imperative, literacy-calibrated)", "Embedded controls / PPE / checks / hold-points"],
+      "rows": [
+        ["1", "Stop Press 4 and tell the Authorised Person you are ready to isolate.", "Planned stop only — do not start if the press is mid-run."],
+        ["2", "Isolate Press 4. Apply your personal lock. Confirm zero energy.", "LOTO: line locked out [Engineering]; confirm zero-energy reading [check/hold-point] — do NOT proceed until confirmed."],
+        ["3", "Remove the print-head guard.", "Guard interlock proven open [Engineering]; wear cut-resistant gloves [PPE]; use two hands [technique]."],
+        ["4", "Wait for the print-head to cool, then unclip it.", "Cool-down hold-point — confirm cool to touch [check]; face shield + gloves [PPE]."],
+        ["5", "Fit the replacement print-head and clip it home.", "Confirm seated correctly [check]; gloves [PPE]."],
+        ["6", "Refit the guard. Confirm the interlock re-engages.", "Guard interlock confirmed closed [check/hold-point]."],
+        ["7", "Remove your personal lock. The Authorised Person closes the permit.", "Only the lock owner removes their lock [Admin]."],
+        ["8", "Function-test the press at low speed. Stop if anything is abnormal.", "Stop condition: any abnormal noise/movement → re-isolate [hold-point]."] ] },
+
+    { "type": "heading", "level": 1, "text": "PPE & equipment" },
+    { "type": "bullets", "items": [
+        "PPE (secondary to the step-embedded engineering controls): cut-resistant gloves; face shield.",
+        "Equipment: personal lock + tag (LOTO); replacement print-head; torque tool.",
+        "Permit: isolation/LOTO permit issued by the Authorised Person." ] },
+
+    { "type": "heading", "level": 1, "text": "Emergency / abnormal-condition provisions" },
+    { "type": "callout", "text": "STOP conditions — re-isolate Press 4 immediately and call the Supervisor if: zero energy cannot be confirmed; the guard interlock does not prove open/closed; the function-test shows abnormal noise or movement." },
+    { "type": "bullets", "items": [
+        "Hold-point failure (zero-energy or interlock not confirmed): do NOT proceed; re-isolate and escalate to the Authorised Person.",
+        "First aid: nearest first-aider via the plant emergency number; report any contact injury under the incident process.",
+        "Do not improvise an electrical repair — raise a separate permit for a competent electrician (out of scope)." ] },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis (cited)" },
+    { "type": "bullets", "items": [
+        "ISO 45001 clause 8.1 (operational control) + 8.1.2 (hierarchy of controls).",
+        "Ingested hazard analysis: JSA-2026-014 (cross-referenced by id — method ↔ JSA).",
+        "India / Maharashtra: the documented-procedure duty under the resolved state Factory Rules via KB-REG-IN-STATEFORMS (state confirmed; no SOP form number — an SOP is an internal MS document)." ] },
+
+    { "type": "heading", "level": 1, "text": "Revision & approval block" },
+    { "type": "table",
+      "headers": ["Field", "Value"],
+      "rows": [
+        ["SOP / SWP id", "SWP-PRESS4-PRINTHEAD-001"],
+        ["Version", "1.0"],
+        ["Effective date", "2026-06-16"],
+        ["Authored by (role)", "HSE Officer — signature: ____________"],
+        ["Reviewed by (role)", "Front-line Supervisor — signature: ____________"],
+        ["Approved by (role)", "Plant Safety Manager — signature: ____________"],
+        ["Review cycle", "Review on change (MoC-triggered) or at minimum annually [ASSUMPTION — user gave no cycle; competent-person reviewer to confirm]"],
+        ["Change history", "v1.0 — initial issue."] ] }
+  ]
+}
