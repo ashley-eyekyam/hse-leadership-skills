@@ -1,36 +1,60 @@
 {
-  "_comment": "Eval set for rams-builder (forge-seeded skeleton; author fills the domain expectations).",
+  "_comment": "The B4 rams-builder eval set (§3.9). FOUR cases (not 3): Eval 1 the UK/CDM happy path exercising the BIDIRECTIONAL RA<->MS cross-reference (the distinctive spine); Eval 2 the de-id auto-fail PAIR honouring the named-competent-persons exception (clean positive wired here, seeded-leak negative proven CAUGHT in scripts/tests/test_b4_deid_pair.py); Eval 3 MS-specificity + hierarchy-of-controls (catch a generic/PPE-only method statement); Eval 4 the India/BOCW branch + MANDATORY state detection (regulatory_citation_accuracy). rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only.",
   "skill": "rams-builder",
   "rubric": "rubric.yaml",
   "evals": [
     {
-      "query": "TODO — a vague request that should trigger the structured intake.",
-      "files": [],
-      "expected_behavior": "Runs the structured intake and refuses to draft until the specific task/site/asset and the domain specifics are captured.",
+      "query": "Build a RAMS, UK / principal contractor (CDM 2015): erect a mobile access tower to replace south-elevation cladding panels on levels 2-4 of an occupied building with an adjacent public footpath. 8-step sequence (mobilise -> clear-down). Plant = tower + MEWP. Competencies = PASMA + IPAF. Working-at-height permit. Org 5x5 matrix.",
+      "files": ["evals/files/scaffold-cladding-uk.md"],
+      "expected_behavior": "Produces a specific, sequenced RAMS: names the actual activity/site, scores every hazard on the 5x5 matrix via risk_matrix, applies the hierarchy of controls with >=1 Engineering-or-higher control (or a justified absence), re-scores residual risk, builds a SEQUENCED method statement, and ties them with a BIDIRECTIONAL RA<->MS cross-reference (every method step traces to RA rows AND every RA hazard is addressed by a step). Names competent persons, sets activity-specific emergency/rescue arrangements, ships a briefing/sign-off record with empty signature rows, assigns SMART actions with named owners + ISO dates, cites CDM 2015 Reg 13 + ISO 45001 6.1.2/8.1.2, and produces a branded report.",
       "expectations": [
-        "Runs the structured intake (one question at a time) before any drafting.",
-        "Refuses to proceed on the vague request — elicits the specific task/site/asset.",
-        "Does not emit a generic or template-only artifact (specificity dimension)."
+        "Names the actual activity/site (erect a tower to replace south-elevation cladding, levels 2-4, occupied building + public footpath) — not 'general construction works' (specificity high).",
+        "Every hazard is scored on the org 5x5 matrix via the deterministic risk_matrix engine; the band is the engine's, not prose.",
+        "The method statement is SEQUENCED (ordered steps with plant, competencies, permits per step) — not a flat hazard list.",
+        "The RA<->MS cross-reference is BIDIRECTIONAL — every method step is cross-referenced to its RA rows AND every RA hazard is addressed by a step (the load-bearing coupling; no orphan hazard, no step whose hazards are absent from the RA).",
+        "At least one Engineering-or-higher control (edge protection / a MEWP, an exclusion zone) is proposed OR a justified absence — controls.ppe_admin_only clears or is justified; NOT 'wear a harness' alone (hierarchy_of_controls).",
+        "Residual risk is re-scored after controls and the initial->residual movement is shown.",
+        "Activity-specific emergency/rescue arrangements are present (a MEWP/at-height rescue plan, not just 'call 999'); named competent persons present; the briefing/sign-off record ships with empty signature rows.",
+        "Every action carries a named (role-label) owner + an ISO due date + a hazard link (defensibility).",
+        "CDM 2015 Reg 13 (principal-contractor duties) is cited and grounded in KB-REG-UK-HSWA, with ISO 45001 6.1.2/8.1.2 (regulatory_citation_accuracy).",
+        "A branded report.json / docx / pdf is produced; de-identification holds (role labels only for input-derived persons)."
       ]
     },
     {
-      "query": "TODO — a request whose only stated control is PPE.",
-      "files": [],
-      "expected_behavior": "Walks the full hierarchy of controls and flags any PPE-only treatment as inadequate, proposing higher-order controls first.",
+      "query": "A contractor pastes the raw trench-excavation brief (it contains an operative's real name, DOB, phone, home address, NI number, a near-miss note naming the injured worker, an embedded re-identification key, and a 2-person injury cell) and asks for a RAMS.",
+      "files": ["evals/files/excavation-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST. The real name, DOB, phone, home address, NI number, and the near-miss-named worker are detected and pseudonymised to role labels; the <5 injury cell is suppressed/aggregated; no re-identification key is embedded. Any input-derived identifier, address, embedded re-id key, or unsuppressed <5 cell surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). CRUCIALLY this is layered with the named-competent-persons EXCEPTION: the competent persons the user deliberately assigns at Q-C (appointed person, supervisor) stay NAMED in the sign-off record, and the briefing-acknowledgement table ships with EMPTY signature rows (no pre-populated operative names). The seeded-leak fixture (files/excavation-pii.md) is proven CAUGHT in scripts/tests/test_b4_deid_pair.py; the paired clean positive (wired here) proves no false-positive.",
       "expectations": [
-        "Walks the full hierarchy of controls: eliminate -> substitute -> engineer -> administrate -> PPE.",
-        "Flags the PPE-only treatment as inadequate; proposes higher-order controls first.",
-        "Assigns a named owner and a target/review date to each control action (defensibility)."
+        "The de-identification block runs FIRST, before any drafting — the identifiers (name, DOB, phone, address, NI number, near-miss-named worker) are detected and listed up front.",
+        "Input-derived names are replaced with stable role labels; DOB, phone, address, NI number, and health detail are never carried verbatim; the <5 injury cell is suppressed/aggregated.",
+        "No input-derived name, address, phone, DOB, or health detail in the circulated output, and no re-identification key / name-to-label mapping embedded — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The named-competent-persons EXCEPTION holds: the user-supplied competent persons (appointed person, supervisor) stay NAMED in the sign-off record; the briefing-acknowledgement table ships with EMPTY signature rows (no pre-populated operative names) — the exception does not weaken the de-id gate.",
+        "The deterministic de-id grader CATCHES the seeded-leak negative (files/excavation-pii.md, asserted in scripts/tests/test_b4_deid_pair.py); the paired clean fixture (files/excavation-clean.md) does NOT trip (no false-positive)."
       ]
     },
     {
-      "query": "TODO — a request carrying a real name, DOB, and a health condition.",
-      "files": [],
-      "expected_behavior": "The de-identification block runs first; the name, DOB, and health detail are pseudonymised/aggregated; any verbatim leak is a de_identification hard-fail.",
+      "query": "Produce a RAMS for hot-works welding of new handrail sections onto a steel walkway at high level. The requester's draft method is just: 'work safely, wear PPE, have a fire extinguisher, be careful of sparks' — no sequence, no permit, no fire watch.",
+      "files": ["evals/files/hotwork-generic.md"],
+      "expected_behavior": "The skill does NOT accept the vague PPE-only method. It forces a SEQUENCED safe system of work (set up -> hot-work permit + fire watch -> fire blankets/screens -> weld -> post-work fire-watch period -> clear). controls.rank_controls returns ppe_admin_only=True on the fire control, and the output either adds a higher-order control (eliminate hot work via a cold-cut/bolted connection; engineering via fire blankets/screens/gas detection) or records an explicit justification. Every method step is cross-referenced to an RA hazard. An output that ships the vague PPE-only method with no sequence and no higher-order control scores <=2 on specificity and hierarchy_of_controls and is flagged by the Critic/QA pass.",
       "expectations": [
-        "The de-identification block runs FIRST — identifiers are detected and listed up front.",
-        "The real name is replaced with a stable role label; DOB and health detail are pseudonymised/aggregated, never verbatim.",
-        "No real name, DOB, or health detail in the circulated output, and no re-identification key embedded (de_identification hard-fail)."
+        "Does NOT accept the generic, unsequenced method — it forces a SEQUENCED safe system of work (set up -> permit + fire watch -> fire screens -> weld -> post-work fire-watch -> clear).",
+        "Walks the full hierarchy of controls; controls.ppe_admin_only=True on the PPE-only fire control is flagged as inadequate.",
+        "Either adds a higher-order control (eliminate hot work via cold-cut/bolted connection; engineering via fire blankets/screens, gas detection) OR records an explicit justification — does not ship 'PPE + be careful' as the sole fire control (hierarchy_of_controls is the core value; an un-justified PPE-only output scores <=2).",
+        "Adds the missing hot-work permit and a fire-watch (during + post-work); every method step is cross-referenced to an RA hazard (specificity).",
+        "Assigns a named owner + a due date to each control action (defensibility)."
+      ]
+    },
+    {
+      "query": "Build a RAMS, India / Maharashtra: a mobile-crane TANDEM lift of precast beams on a building site. Sequenced method, plant = two mobile cranes + lifting accessories, competencies = appointed person + slinger/signaller (as supplied), lifting-operations permit. Org 5x5 matrix.",
+      "files": ["evals/files/lifting-india-mh.md"],
+      "expected_behavior": "Resolves and CONFIRMS the state (Maharashtra) before citing any form (mandatory state detection). The regulatory basis cites BOCW + the resolved Maharashtra state form via KB-REG-IN-STATEFORMS (never a hard-coded national number) with the OSH-Code transition note appended; an unseeded state would be [GAP], never fabricated. The RA<->MS cross-reference holds bidirectionally; >=1 Engineering-or-higher control (or a justified absence) on the lifting hazards; named competent persons (appointed person, slinger/signaller) present in the sign-off record; de-id holds; a branded report is produced.",
+      "expectations": [
+        "The state is RESOLVED (Maharashtra) and CONFIRMED before any form is cited (mandatory state detection) — never proceeds on an unstated state.",
+        "The regulatory basis cites BOCW + the resolved Maharashtra state form via KB-REG-IN-STATEFORMS — NEVER a hard-coded national form number — with the OSH-Code transition note appended (regulatory_citation_accuracy).",
+        "An unseeded/unknown state would be recorded as [GAP] + 'verify with a competent person' — never a fabricated form.",
+        "The bidirectional RA<->MS cross-reference holds (every tandem-lift step traces to RA rows and every RA hazard is addressed by a step); the method statement is sequenced (specificity).",
+        "At least one Engineering-or-higher control (or a justified absence) on the lifting hazards; named competent persons (appointed person, slinger/signaller) present in the sign-off record (hierarchy_of_controls + defensibility).",
+        "De-identification holds (role labels for input-derived persons); a branded report.json / docx / pdf is produced."
       ]
     }
   ]
