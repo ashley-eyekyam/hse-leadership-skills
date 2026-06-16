@@ -1,0 +1,19 @@
+{
+  "_comment": "B7 capa-manager author-interview answers (05-07). roster=moderate -> the standard De-identifier-first gate + Researcher/Drafter/Critic starter, refined by the domain pass to B7's De-identifier(first) -> Researcher/Cause-Analyst + Drafter -> Critic/QA (§3.5; NO CAPA-Scorer). a7_components=[smart_actions,controls,rca] -> scripts/ symlink + verbatim _shim.py; smart_actions is CENTRAL (validate_register + days_until_due), controls HoC-tags corrective+preventive, rca is OPTIONAL (light 5-Whys only to establish a missing cause). risk_matrix/incident_rates NOT wired (those are B1/B10). category=compliance (CAPA = the management-system compliance loop, A2 §4.1; distinct from B5's incident-management). audience=[M,C], industry=[All], jurisdiction=[All] (India noted -> KB-REG-IN-STATEFORMS mandatory state detection for the documented-information duty). CONSUMER/MANAGER side of the B6->B7 CAPA seam: ingests the smart_actions-validated register {action,owner,due,measure,links_to_cause,hoc_tier} a B5/B6 output emits and extends it ADDITIVELY with capa_type/verification/status (fields smart_actions.validate_register ignores) -> never forks the schema. Stateless-per-run (no persistent cross-session CAPA store; that is v2).",
+  "description": "Manages the full lifecycle of corrective and preventive actions (CAPA) for an HSE finding, nonconformity, or incident cause — grounded in ISO 45001 clause 10.2. Use this skill whenever a user asks to build, manage, or close out a CAPA, write a corrective action, add a preventive action, track a nonconformity, manage an audit finding, build a CAPA register or action tracker, or turn an incident's root cause into a managed action plan. Takes findings from an audit, incident, inspection, or near-miss (standalone, or ingested from an incident-investigation or safety-audit output), confirms the root cause, derives corrective and preventive actions ranked by the hierarchy of controls (no PPE- or admin-only treatments without justification), assigns named owners and due dates, schedules an effectiveness verification for each, and emits a branded CAPA register. Decision-support only; a competent person must review the output.",
+  "author": "eyekyam",
+  "roster": "moderate",
+  "a7_components": ["smart_actions", "controls", "rca"],
+  "kb_ids": ["KB-STD-ISO45001", "KB-SNIP-HOC", "KB-SNIP-INTAKE", "KB-SNIP-ARCHETYPES", "KB-REG-IN-STATEFORMS"],
+  "metadata": {
+    "author": "eyekyam",
+    "version": "1.0",
+    "category": "compliance",
+    "tier": 1,
+    "audience": ["M", "C"],
+    "industry": ["All"],
+    "jurisdiction": ["All"],
+    "status": "stable",
+    "plugin": "hse-core"
+  }
+}
