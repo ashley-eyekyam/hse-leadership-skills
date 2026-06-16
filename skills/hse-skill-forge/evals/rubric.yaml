@@ -49,10 +49,31 @@ dimensions:
       escalated.
     anchors:
       "5": >
-        Every control ranked through the full hierarchy; any PPE/admin-only
-        treatment explicitly justified or escalated to a higher-order control.
+        Every control ranked through the full hierarchy (Elim -> Sub -> Eng ->
+        Admin -> PPE), each tied to its named hazard and tier; at least one
+        Engineering-or-higher control per hazard OR an explicit "higher-order
+        not reasonably practicable because…" justification; any PPE/admin-only
+        line (controls.py ppe_admin_only == True) carries that justification and
+        is surfaced, not hidden; residual risk re-scored after controls and the
+        movement shown. Matches controls.rank_controls with no unjustified flag.
+      "4": >
+        Full hierarchy ranking present and each control tagged its tier, BUT at
+        least one hazard is left PPE/admin-only (controls.py ppe_admin_only ==
+        True) WITHOUT the "higher-order not reasonably practicable" justification
+        — the ranking is right but one lower-order-only treatment is unjustified.
+      "3": >
+        Controls ranked by tier, but the treatment is incomplete: residual risk
+        is NOT re-scored after controls (no initial-vs-residual movement shown),
+        OR the tier labels are present but not consistently tied to a named
+        hazard. Higher-order controls ARE proposed where practicable.
+      "2": >
+        Controls listed and at least one higher-order (non-admin/PPE) control is
+        present, but they are NOT ranked through the hierarchy and tiers are not
+        labelled — the hierarchy is not visibly applied.
       "1": >
-        Unranked controls, or PPE-only with no justification.
+        Unranked controls, or PPE-only / admin-only with no justification
+        (controls.py ppe_admin_only == True and no escalation) — the core value
+        ("no PPE-only treatments") is breached.
 
   - name: defensibility
     weight: 0.20
