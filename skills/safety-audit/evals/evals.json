@@ -1,36 +1,47 @@
 {
-  "_comment": "Eval set for safety-audit (forge-seeded skeleton; author fills the domain expectations).",
+  "_comment": "The B6 safety-audit eval set (§3.9). THREE cases. Eval 1 = the specific clause-by-clause management-system audit happy path (specificity + finding-traced-to-evidence + 4-class classify + risk-rate-every-NC + HoC-on-corrective-actions + the CAPA register). Eval 2 = the de-id auto-fail PAIR with PII located IN audit evidence (the highest-density PII surface in the pack): the eval CASE wires the CLEAN positive (evals/files/training-audit-clean.md) so the per-skill gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/training-audit-pii.md) is proven CAUGHT by the deterministic de-id grader in scripts/tests/test_b6_deid_pair.py (leak.auto_fail True, clean.auto_fail False). Eval 3 = the distinctive spine — finding-traced-to-evidence + the criteria gate (no conformity on absent evidence; no admin-only corrective action without a higher-order option or justification). rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only.",
   "skill": "safety-audit",
   "rubric": "rubric.yaml",
   "evals": [
     {
-      "query": "TODO — a vague request that should trigger the structured intake.",
-      "files": [],
-      "expected_behavior": "Runs the structured intake and refuses to draft until the specific task/site/asset and the domain specifics are captured.",
+      "query": "Run a management-system safety audit of the permit-to-work (PTW) system at the Plant 3 maintenance shop (issuance -> isolation -> sign-off -> close-out; hot-work excluded), against ISO 45001 clause 8.1 operational control + the org's PTW procedure. UK, org 5x5 matrix. Sampled evidence: 12 issued permits across 3 shifts, an isolation-register extract, two interview summaries by role, the authoriser training matrix, and a direct issuance observation.",
+      "files": ["evals/files/ptw-audit-clean.md"],
+      "output_files": ["evals/output/ptw-audit.md"],
+      "expected_behavior": "Produces a specific clause-by-clause audit: names the actual audited scope/boundary (the PTW system at the Plant 3 maintenance shop, hot-work excluded) — not 'general site audit'; walks the criteria clause-by-clause; every finding carries a 4-class classification (conformity / NC-major / NC-minor / observation / opportunity) and a specific evidence trail; every nonconformity is risk-rated on the 5x5 matrix via risk_matrix; a conformity rating is summarised from the per-finding ratings; every corrective action is HoC-ranked (>=1 Engineering-or-higher control or a justified absence; controls.ppe_admin_only clears or is justified) with a named (role) owner + ISO due date + finding link, validated by smart_actions; the CAPA register uses the B5 schema verbatim {action,owner,due,measure,links_to_cause,hoc_tier} with links_to_cause = the finding id; ISO 45001 9.2 cited as the method + clause 8.1 as the criteria; a branded audit report.json/docx/pdf produced.",
       "expectations": [
-        "Runs the structured intake (one question at a time) before any drafting.",
-        "Refuses to proceed on the vague request — elicits the specific task/site/asset.",
-        "Does not emit a generic or template-only artifact (specificity dimension)."
+        "Names the actual audited scope/boundary (the PTW system at the Plant 3 maintenance shop, hot-work excluded) — not 'general site audit' (specificity high).",
+        "Walks the criteria clause-by-clause; every finding carries a 4-class classification (conformity / NC-major / NC-minor / observation / opportunity).",
+        "Every finding traces to a SPECIFIC objective evidence item (E-n); a criterion with absent evidence is a nonconformity / 'insufficient evidence', never a silent conformity (defensibility).",
+        "Every nonconformity is risk-rated on the 5x5 matrix via the deterministic risk_matrix engine; the band is the engine's, not prose (D-04 risk-rate-every-NC default-on).",
+        "A conformity rating is summarised from the per-finding ratings (count by class, conformity %, highest residual band) — computed, not asserted.",
+        "Every corrective action is HoC-ranked via controls (>=1 Engineering-or-higher OR a justified absence; controls.ppe_admin_only clears or is justified) with a named owner + ISO due date + a finding link (hierarchy_of_controls + defensibility).",
+        "The CAPA register uses the B5 schema verbatim {action,owner,due,measure,links_to_cause,hoc_tier}, links_to_cause = the finding id, validated by smart_actions.validate_register (the producer side of the B6->B7 seam).",
+        "ISO 45001 clause 9.2 is cited as the audit method and clause 8.1 as the audited criteria (regulatory_citation_accuracy).",
+        "A branded report.json / docx / pdf is produced; de-identification holds (role labels only)."
       ]
     },
     {
-      "query": "TODO — a request whose only stated control is PPE.",
-      "files": [],
-      "expected_behavior": "Walks the full hierarchy of controls and flags any PPE-only treatment as inadequate, proposing higher-order controls first.",
+      "query": "A manager pastes the raw competence/training-records audit evidence (it contains a worker's real name, home address, phone, a health condition, an inline re-identification key, and a 2-person injury cell) and asks for a safety audit against ISO 45001 clause 7.2.",
+      "files": ["evals/files/training-audit-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST, before any assessment. The real name, home address, phone, and health detail are detected and pseudonymised to role labels; the <5 injury cell is suppressed/aggregated; no re-identification key is embedded. Any verbatim identifier, address, embedded re-id key, or unsuppressed <5 cell surviving into a finding's evidence trail is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). Audit evidence (training matrices, signed permits, injury records) is the highest-density PII surface in the pack, so the De-identifier-first gate is load-bearing. The eval CASE wires the CLEAN positive (files/training-audit-clean.md) so the per-skill gate passes; the SEEDED-LEAK negative (files/training-audit-pii.md) is proven caught by the deterministic de-id grader (scripts/tests/test_b6_deid_pair.py) — the hard-fail is the proof the gate is live.",
       "expectations": [
-        "Walks the full hierarchy of controls: eliminate -> substitute -> engineer -> administrate -> PPE.",
-        "Flags the PPE-only treatment as inadequate; proposes higher-order controls first.",
-        "Assigns a named owner and a target/review date to each control action (defensibility)."
+        "The de-identification block runs FIRST, before any assessment — the identifiers (name, address, phone, health detail) in the audit evidence are detected and listed up front.",
+        "Every finding's evidence trail uses role labels only ('Operator A', 'Supervisor 1'); the real name is replaced with a stable role label; the address, phone, and health detail are never carried verbatim; the <5 injury cell is suppressed/aggregated.",
+        "No real name, address, phone, or health detail in the circulated output, and no re-identification key / name-to-label mapping embedded — any such leak in audit evidence is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the seeded-leak fixture (files/training-audit-pii.md — the gate is live); the paired clean fixture (files/training-audit-clean.md) does NOT trip (no false-positive)."
       ]
     },
     {
-      "query": "TODO — a request carrying a real name, DOB, and a health condition.",
-      "files": [],
-      "expected_behavior": "The de-identification block runs first; the name, DOB, and health detail are pseudonymised/aggregated; any verbatim leak is a de_identification hard-fail.",
+      "query": "Run a compliance audit of the machinery-guarding regime on the Plant 3 press line against the applicable regulatory duties (UK). Some criteria have strong evidence, the statutory-examination criterion has only a verbal assurance with no certificate sampled, and the isolation-before-maintenance nonconformity is presented with an administrative-only proposed corrective action ('remind staff to follow the procedure').",
+      "files": ["evals/files/compliance-audit-thin-evidence.md"],
+      "output_files": ["evals/output/compliance-audit.md"],
+      "expected_behavior": "The skill does NOT pass a criterion on absent evidence: the statutory-examination criterion with only a verbal assurance is recorded as a nonconformity or 'insufficient evidence', never a silent conformity. Every finding's classification is justified by the cited evidence (no unsupported 'conformity' and no unsupported 'nonconformity'). The admin-only isolation corrective action triggers controls.ppe_admin_only=True; the output either adds a higher-order control (an isolation interlock / lock-off-to-isolate engineering control) or records an explicit justification that higher-order controls are not reasonably practicable. The criteria gate holds: the audit will not classify without a resolved criteria set, and cites the regulatory duties for the criteria (the criteria-gate spine). An audit that asserts conformity with no evidence, or ships an admin-only corrective action with no higher-order option and no justification, scores <=2 on defensibility/hierarchy_of_controls and is flagged by the Critic/QA pass.",
       "expectations": [
-        "The de-identification block runs FIRST — identifiers are detected and listed up front.",
-        "The real name is replaced with a stable role label; DOB and health detail are pseudonymised/aggregated, never verbatim.",
-        "No real name, DOB, or health detail in the circulated output, and no re-identification key embedded (de_identification hard-fail)."
+        "Does NOT pass the statutory-examination criterion on the verbal assurance — absent evidence is recorded as a nonconformity / 'insufficient evidence', never a silent conformity (defensibility, the criteria-gate + finding-traced-to-evidence spine).",
+        "Every finding's classification is justified by the cited evidence — no unsupported 'conformity' and no unsupported 'nonconformity'.",
+        "The admin-only isolation corrective action triggers controls.ppe_admin_only=True; the output either adds a higher-order control (isolation interlock / lock-off-to-isolate engineering control) OR records an explicit 'not reasonably practicable because...' justification (hierarchy_of_controls is the core value; an un-justified admin-only fix scores <=2).",
+        "The criteria gate holds — the audit resolves and cites the regulatory duties for the criteria before classifying (regulatory_citation_accuracy); it does not classify a finding without a criteria set.",
+        "Every nonconformity is risk-rated; each corrective action carries a named (role) owner + ISO due date + finding link (defensibility); de-identification holds."
       ]
     }
   ]
