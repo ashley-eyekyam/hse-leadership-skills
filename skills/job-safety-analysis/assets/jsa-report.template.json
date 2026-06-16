@@ -1,0 +1,79 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Job Safety Analysis (JSA) — Clean & Inspect Tank T-402",
+    "subtitle": "Plant 3, Maharashtra — own workers + confined-space-permitted contractors",
+    "author": "HSE Department",
+    "date": "2026-06-16",
+    "classification": "Internal — competent-person review required",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document. The sign-off block ships with empty signature rows, completed at point of use."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "Step-by-step Job Safety Analysis for cleaning and inspecting tank T-402 (isolate/lockout -> purge/ventilate -> gas-test -> enter -> clean -> exit & restore) at Plant 3, scored per step on the org 5x5 matrix per ISO 45001 6.1.2. Each step's hazards are energy-source paired, scored, controlled through the hierarchy of controls, and residual-re-scored; the per-step controls are consolidated into SMART actions with named role-label owners and ISO due dates." },
+    { "type": "metrics", "metrics": [
+        { "label": "Steps analysed", "value": "6", "caption": "ordered sequence" },
+        { "label": "Highest residual step", "value": "Medium", "caption": "Step 4 'enter' after controls" },
+        { "label": "Higher-order controls", "value": "4", "caption": "Elimination/Engineering" } ] },
+
+    { "type": "heading", "level": 1, "text": "Scope & method" },
+    { "type": "bullets", "items": [
+        "Job: clean & inspect tank T-402, decomposed into 6 confirmed steps (none invented)",
+        "Site: Plant 3, tank farm bay 2, Maharashtra; performed by own workers + confined-space-permitted contractors",
+        "Scored PER STEP on the org 5x5 matrix (multiply; Low 1-4 / Medium 5-9 / High 10-15 / Critical 16-25)",
+        "Standard: ISO 45001 6.1.2 (hazard identification, per step) + 8.1.2 (hierarchy of controls)" ] },
+
+    { "type": "heading", "level": 1, "text": "JSA table (the core — one row per step)" },
+    { "type": "table",
+      "headers": ["Step", "Hazards (energy source)", "Initial risk", "Controls (HoC tier)", "Residual risk", "Owner"],
+      "risk_column": 2,
+      "rows": [
+        ["1. Isolate / lockout", "Stored mechanical & process energy on agitator/inlet (mechanical, pressure)", "High", "Eliminate: LOTO de-energise + bleed (Elimination); verify zero-energy (Administrative)", "Low", "Maintenance"],
+        ["2. Purge / ventilate", "Oxygen displacement from nitrogen purge (chemical/asphyxiant)", "High", "Engineering: forced-air ventilation + continuous O2 monitoring; Administrative: purge procedure", "Medium", "Process Eng"],
+        ["3. Gas-test", "Undetected toxic/flammable atmosphere (chemical, thermal)", "High", "Engineering: calibrated multi-gas detector; Administrative: test-before-entry hold point", "Low", "HSE"],
+        ["4. Enter", "Confined-space engulfment / atmosphere change on entry (chemical, gravity)", "Critical", "Engineering: continuous monitoring + retrieval system; Administrative: entry permit + standby attendant + rescue plan", "Medium", "HSE"],
+        ["5. Clean", "Residual hydrocarbon vapour + sludge engulfment (chemical, kinetic)", "High", "Engineering: continuous ventilation; Substitution: low-VOC cleaning method; Administrative: limited dwell time", "Medium", "Contractor crew (role label)"],
+        ["6. Exit & restore", "Trip/fall on egress; premature re-energise (gravity, mechanical)", "Medium", "Administrative: controlled egress + LOTO removal sequence + permit close-out", "Low", "Maintenance"]
+      ],
+      "caption": "JSA table — one row per confirmed step; the initial/residual cells are coloured off the risk_matrix band. This table IS the JSA." },
+
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls — consolidated control plan" },
+    { "type": "hoc_table", "rows": [
+        { "control": "LOTO de-energise + bleed before any intervention (addresses Step 1)", "tier": "Elimination", "owner": "Maintenance" },
+        { "control": "Substitute a low-VOC cleaning method for the sludge removal (addresses Step 5)", "tier": "Substitution", "owner": "Process Eng" },
+        { "control": "Continuous forced-air ventilation + continuous gas monitoring (addresses Steps 2, 4, 5)", "tier": "Engineering", "owner": "Maintenance" },
+        { "control": "Entry permit + standby attendant + rescue plan (addresses Step 4)", "tier": "Administrative", "owner": "HSE" } ] },
+
+    { "type": "heading", "level": 1, "text": "Residual risk (per-step movement)" },
+    { "type": "metrics", "metrics": [
+        { "label": "Step 4 'enter'", "value": "Medium", "caption": "Critical -> Medium (delta -2 bands)" },
+        { "label": "Step 2 'purge'", "value": "Medium", "caption": "High -> Medium (delta -1 band)" },
+        { "label": "Steps still High/Critical", "value": "0", "caption": "after controls" } ] },
+
+    { "type": "heading", "level": 1, "text": "Recommendations — consolidated SMART actions" },
+    { "type": "recommendations", "rows": [
+        { "action": "Install a fixed continuous gas monitor on T-402 with entry interlock (Steps 3,4)", "priority": "P1", "owner": "Maintenance Lead", "due": "2026-07-01" },
+        { "action": "Qualify and adopt a low-VOC sludge-cleaning method (Step 5)", "priority": "P1", "owner": "Process Eng", "due": "2026-07-15" },
+        { "action": "Revise the confined-space entry SOP + rescue plan for T-402 (Step 4)", "priority": "P2", "owner": "HSE", "due": "2026-07-20" } ] },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": [
+        "ISO 45001 clause 6.1.2 (hazard identification & assessment of risks, applied per step) + 8.1.2 (hierarchy of controls)",
+        "Maharashtra — the resolved state accident/dangerous-occurrence form via KB-REG-IN-STATEFORMS (state confirmed; never a national form number)",
+        "Permit-to-work triggers implied by the steps: confined-space entry permit (Step 4), hot-work permit if any (none in this job)" ] },
+
+    { "type": "heading", "level": 1, "text": "Sign-off / acceptance" },
+    { "type": "paragraph", "text": "This JSA must be reviewed and accepted before the job starts. Role-labelled rows are signed at point of use; names are entered on the physical/printed copy, never carried into this de-identified document." },
+    { "type": "table",
+      "headers": ["Role", "Name (entered at point of use)", "Signature", "Date"],
+      "rows": [
+        ["Worker(s) performing the job", "", "", ""],
+        ["Worker(s) performing the job", "", "", ""],
+        ["Supervisor", "", "", ""],
+        ["Reviewed-by (competent person)", "", "", ""]
+      ],
+      "caption": "Sign-off / acceptance block (CORE-02 / SC-1) — role-labelled rows with EMPTY signature + date columns, completed at point of use; no fabricated names (de-id convention)." }
+  ]
+}

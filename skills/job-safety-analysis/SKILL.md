@@ -36,13 +36,40 @@ metadata:
   hse_reviewed_date: ''
 ---
 
-# Job Safety Analysis
+# Job Safety Analysis (JSA / JHA)
 
-A consultant-grade HSE skill that produces a specific, defensible job safety analysis for a named task, site, or asset. It forces the single lever that separates a defensible artifact from copy-paste paperwork: task/site specificity plus the full hierarchy of controls — never a vague, PPE-only treatment.
+A consultant-grade HSE skill that produces a task/site/asset-specific **step-by-step**
+Job Safety Analysis (a.k.a. Job Hazard Analysis), grounded in **ISO 45001 clause 6.1.2**
+applied *per step* and enforcing the **hierarchy of controls** (8.1.2) at step granularity.
+Its distinctive spine is **task-step decomposition**: it breaks a physical job into its
+ordered sequence of steps, then for **each step** identifies the hazards, scores the
+initial risk, ranks controls (Elimination → … → PPE), and re-scores the residual risk —
+finally consolidating the per-step controls into SMART actions with named owners and dates.
+The deterministic scoring/ranking is the A7 `risk_matrix`/`controls` engines called **once
+per step**, never prose judgement; the single lever the pack forces — task specificity plus
+the full hierarchy of controls, never a PPE-only step — bites here at *step* granularity.
 
 ## When to use this skill
 
-Use this skill when the user needs a job safety analysis for a concrete task, site, or asset. List the trigger scenarios that reinforce the `description` so the host routes here rather than to a generic answer. If the request is vague, the Workflow intake below forces the specifics before any drafting.
+Use this skill when the user needs a **step-by-step** safety analysis of a **concrete
+physical job** — for example "walk me through cleaning tank T-402 **step by step** and give
+me a JSA", "build/review a JHA for working at height on the north roof", "break this welding
+job into steps and assess the hazards of each step", or "produce a safe-work method statement
+for the line changeover". Trigger phrases: *JSA, JHA, job safety analysis, job hazard
+analysis, task-step analysis, step-by-step, safe work method, job steps, hazard per step,
+hierarchy of controls, residual risk, risk matrix, controls*.
+
+**When NOT to use this skill:**
+
+- For a **whole-activity** risk assessment (one register, one row per *hazard*, not per
+  *step*) use the **`risk-assessment`** skill (B1, HIRA/HIRARC) — that is its job, and a JSA
+  would lose its reason to exist.
+- To **investigate an event that already happened** (root-cause analysis, CAPA from an
+  incident) use the **`incident-investigation`** skill (B5).
+
+If the request is vague ("write me a JSA") or names a job with no steps, the Workflow intake
+below **refuses to proceed** until the specific job *and its ordered step sequence* are
+elicited — a JSA with no steps is not a JSA.
 
 <!-- hse:block:deid:start -->
 ## Data Protection & De-identification (MANDATORY — apply before drafting)
@@ -91,28 +118,112 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 | Jurisdiction | Read |
 |---|---|
 | India | ../../knowledge-base/regulatory/in-factories-act.md (+ in-state-forms.md for the user's state) |
-| UK    | ../../knowledge-base/regulatory/uk-hswa.md |
+| UK    | ../../knowledge-base/regulatory/uk-hswa.md (construction → CDM 2015 reg. 13/15 + Construction Phase Plan rows, KB-REG-UK-HSWA) |
 | USA   | ../../knowledge-base/regulatory/us-osha.md |
 | EU    | ../../knowledge-base/regulatory/eu-osh.md |
 | Unknown | Ask before citing any specific law |
+
+This skill always grounds in `KB-STD-ISO45001` (**6.1.2** hazard identification &
+assessment of risks, applied per step + **8.1.2** hierarchy of controls) and applies
+`KB-SNIP-HOC` to every per-step control; for an India site it resolves the state via
+`KB-REG-IN-STATEFORMS` (mandatory state detection — confirm the state before citing any
+form, never a national form number); for UK construction work it cites the CDM 2015
+rows in `KB-REG-UK-HSWA` (reg. 13 / reg. 15 / Construction Phase Plan). This is a
+**safety-only** skill — there is **no ISO 14001 environmental branch** (for environmental
+aspects use `risk-assessment`). The rule-9 manifest is `references/_skill-kb.md`.
 
 ## Workflow
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-<!-- TODO: author this skill's intake question set -->
+### Step 0 — Structured intake (run this first, one question at a time)
 
-For this skill, the structured intake captures, one question at a time, the
-specific facts the domain method needs before any drafting begins. Author the
-question set here as a numbered list (MCQ where the answer space is enumerable,
-free-text where it is open); branch on the answers and echo the captured facts
-back before analysis. The runtime intake pattern is `KB-SNIP-INTAKE`.
+Run the question set below one at a time, branch on the answers, and **echo the
+captured facts back for confirmation before any analysis**. The **two load-bearing
+free-text questions are the job/task (Q3) and its ordered step sequence (Q4) — the
+spine**. **Refuse to proceed on a vague job or an empty/one-line step list** — ask the
+user to break the job into its actual sequence of steps, or record `[ASSUMPTION]` /
+`[GAP]`; **never invent a step**. A JSA with no steps is not a JSA.
 
-1. **TODO** — first intake question (the specific task / activity / subject).
-2. **TODO** — second intake question (the named site / asset / scope).
-3. **TODO** — remaining domain questions; never proceed on vague or missing inputs.
+| # | Question | Type | Options / prompt |
+|---|---|---|---|
+| Q1 | Jurisdiction | MCQ | India · UK · USA · EU · Other/Unknown (India → Q1a) |
+| Q1a | *(India only)* Which state? | MCQ | Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Other — **mandatory state detection; confirm before citing any form** |
+| Q2 | Industry / sector | MCQ + free-text | Manufacturing · Oil & Gas · Construction · Mining · Other physical-work sector (+ detail) |
+| **Q3** | **The job/task being analysed** | **free-text** | "Name the exact job/task — e.g. 'clean and inspect storage tank T-402, Plant 3'." — **specificity anchor (a); refuse a vague answer** |
+| **Q4** | **The job's steps, in the order performed** | **free-text** | "List the steps in sequence — e.g. '1. isolate & lockout · 2. purge/ventilate · 3. gas-test · 4. enter · 5. clean · 6. exit & restore'. One step per line." — **specificity anchor (b), THE SPINE; each step becomes a JSA row; refuse an empty/one-line list — ask the user to decompose** |
+| Q5 | Tools / equipment / materials used | free-text | "What tools, plant, equipment, or materials does this job use (e.g. cherry-picker, angle grinder, solvent, scaffold)?" (introduces equipment/substance hazards into the relevant steps) |
+| Q6 | Who performs the job, and their competencies | MCQ multi-select + free-text | Own workers · Contractors · Specialist/licensed trade · Mixed crew (+ required competencies/permits — confined-space entry permit, hot-work permit) |
+| Q7 | Environment / conditions | MCQ multi-select + free-text | Working at height · Confined space · Hot/cold/outdoor · Live plant nearby · Public/traffic nearby · Restricted access · Other — flags permit-to-work triggers |
+| Q8 | Location / site | free-text | "Which specific site/area/asset?" |
+| Q9 | Likelihood band (org scale) | MCQ | 1 Rare · 2 Unlikely · 3 Possible · 4 Likely · 5 Almost certain |
+| Q10 | Severity band (org scale) | MCQ | 1 Negligible · 2 Minor · 3 Moderate · 4 Major · 5 Catastrophic |
+| Q11 | Org risk-matrix size | MCQ | 3×3 · 4×4 · **5×5 (default)** · Supply our matrix |
 
-Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
+After Q11, **echo a captured-facts summary** ("Analysing: clean & inspect tank T-402,
+Plant 3, Maharashtra, 6 steps (isolate/lockout → purge → gas-test → enter → clean →
+exit), own workers + confined-space-permitted contractors, cherry-picker + solvent, 5×5
+matrix — correct?") and only then proceed. Q9/Q10 establish the org scale; **each step's
+hazard is scored individually at Workflow step 4**.
+
+### The JSA method (ISO 45001 6.1.2 loop, run PER STEP)
+
+Full method in `references/METHODOLOGY.md`. Steps:
+
+1. **De-identify the inputs** — before any drafting (the `deid` block above + the
+   De-identifier-runs-first orchestration rule). Everything downstream consumes the
+   scrubbed, role-labelled text.
+2. **Confirm + normalise the step sequence** — restate the job's steps as an **ordered
+   list** (Step 1, Step 2, …) exactly as the user described them; this ordered list is the
+   skeleton the rest of the Workflow iterates over. If the sequence has obvious gaps (e.g.
+   an isolation step missing before a maintenance step), **ask** rather than silently
+   inserting — an unconfirmed step is recorded `[GAP]`, never invented.
+3. **Per-step hazard identification** — **for each step in the confirmed sequence**,
+   identify the specific, observable hazards *of that step* (the energy sources — gravity /
+   electrical / mechanical / pressure / chemical / thermal / kinetic — substances, plant,
+   environment, human factors introduced *by performing that step*), grounded in
+   `KB-STD-ISO45001` 6.1.2; each hazard pairs **what** is hazardous in the step with **its
+   energy source** and names **who/what is exposed**. Flag `[GAP]` where a step's hazards
+   are uncertain — never invent.
+4. **Per-step initial risk scoring** — **for each step's hazard(s)** call
+   `risk_matrix.load_matrix(config)` once (Q11; default `DEFAULT_5X5`) then
+   `risk_matrix.score(likelihood, severity, matrix)`. The score + band are the engine's,
+   deterministically — not prose. Each step carries its own initial-risk rating.
+5. **Per-step control selection (the hierarchy-of-controls lever)** — **for each step**
+   propose controls and **apply `KB-SNIP-HOC`**: rank Elimination → Substitution →
+   Engineering → Administrative → PPE; then call `controls.rank_controls` +
+   `controls.validate_treatment`. If a step's `ppe_admin_only` is `True`, the Workflow
+   **must** either add a higher-order control for that step **or** record an explicit
+   per-step justification ("for this step, higher-order controls not reasonably practicable
+   because…"). **A step left with a lower-order-only treatment and no justification is a
+   defect the Critic/QA pass must catch** — the hard enforcement of the core value at step
+   granularity, not a mention.
+6. **Per-step residual re-scoring** — **for each step** re-score the step *with its
+   selected controls applied* via `risk_matrix.score`, then
+   `risk_matrix.residual_delta(initial, residual)` to show the movement for that step. A
+   step whose residual remains High/Critical needs additional controls or a stop/hold
+   decision before it is performed (not "accept and proceed").
+7. **Consolidate per-step controls into SMART actions (named owners + dates)** — gather the
+   controls that are *actions* (not already in place) across all steps into one register;
+   for each produce a SMART action (specific, measurable, **assignable (named owner)**,
+   relevant, **time-bound (ISO due date)**, **linked to the step + hazard it addresses**).
+   Call `smart_actions.validate_register`; any action missing an owner, a valid date, a
+   measure, or a step/hazard link is **invalid** and must be fixed — no anonymous actions,
+   no "ASAP".
+8. **Validate against `references/QUALITY_CHECKLIST.md`** — the self-check loop before
+   output: every step decomposed + confirmed (none invented); every step's hazards
+   identified + scored; every step's controls HoC-ranked; no step with an un-justified
+   lower-order-only treatment; every action owned + dated + step/hazard-linked; every
+   citation traced to the KB (ISO 45001 6.1.2 always; the jurisdiction fragment + India
+   state form where raised); de-id applied; no conclusion on an unstated assumption.
+9. **Assemble the branded JSA report** — build `report.json` (see
+   `assets/jsa-report.template.json` — the **JSA table** is the core, plus the **sign-off /
+   acceptance block**) and run the canonical `report-output` call below.
+
+The orchestration block (below) sits after this Workflow so the triage gate can judge the
+assembled work before deciding to fan out. The **deterministic per-step scoring/ranking
+steps (4, 5, 6 via `risk_matrix`/`controls`) are A7 script calls in every case — never a
+fan-out job** (there is no "Risk-Scorer" / "Step-Scorer" subagent).
 
 <!-- hse:block:orchestration:start -->
 ## Agentic Execution (Orchestration Block)
@@ -161,17 +272,41 @@ de-identification leak. Fix everything it raises before delivery.
 <!-- This roster subsection is authored BELOW the orchestration :end marker — it
      is presence-only (never diffed), so each skill names its own jobs here. -->
 
-For a non-trivial task the triage gate may fan out to:
+This is the **STANDARD moderate roster** (A6 "moderate = 2–3"), inherited from the B1
+`risk-assessment` flagship: the De-identifier is the **sequential first gate** (not a
+fan-out peer), the **3 fan-out jobs** are Researcher + Regulatory-Checker + Drafter, and
+**Critic/QA is mandatory**. **There is no Risk-Scorer / Step-Scorer subagent** — per-step
+scoring, residual re-scoring, and control ranking are deterministic A7 script calls at
+Workflow steps 4/5/6 (`risk_matrix`, `controls`), never LLM fan-out work. Archetypes:
+`KB-SNIP-ARCHETYPES`.
 
-- **Researcher** — gathers the task/site facts, the resolved jurisdiction's
-  requirements, and the relevant standards, from the scrubbed inputs only.
-- **Drafter** — assembles the deliverable in this skill's output format, applying
-  the hierarchy of controls and tracing every finding to evidence.
-- **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
-  output: specificity, hierarchy of controls, defensibility, de-identification, and
-  citation accuracy.
+- **De-identifier** — runs FIRST (sequential gate, not a fan-out peer); scrub all
+  PII/health detail to role labels before any analysis (every fan-out job below consumes
+  scrubbed text).
+- **Researcher** — gather evidence for the hazards of the **named steps** from primary
+  sources (equipment/substance/process data, prior-incident patterns for this task type);
+  cited summary, flag `[GAP]`. SCOPE-OUT: law (Regulatory-Checker), drafting (Drafter).
+  (Per-step scoring is NOT a subagent — it is the A7 `risk_matrix` script.)
+- **Regulatory-Checker** — for the resolved jurisdiction, return the applicable duty +
+  clause + (India) the state form via `KB-REG-IN-STATEFORMS`, and any permit-to-work
+  triggers the steps imply (confined space, hot work, working at height); conservative,
+  flag `[GAP]`. SCOPE-OUT: drafting the JSA, gathering hazard evidence (Researcher).
+- **Drafter** — write the JSA table (step → hazards → initial risk → controls[HoC tier] →
+  residual) + the consolidated control/action register + the sign-off block to the output
+  template using **role placeholders** (no fabricated names); each control tagged its
+  `KB-SNIP-HOC` tier (consumes the De-identifier's scrubbed text + the A7
+  `risk_matrix`/`controls` per-step scores + the Regulatory-Checker's verdict). SCOPE-OUT:
+  gathering evidence (Researcher), checking law (Regulatory-Checker).
+- **Critic/QA** (MANDATORY) — every step decomposed + confirmed (none invented), every
+  step's hazards scored (via the A7 engine), every step's controls HoC-ranked, no step left
+  PPE/admin-only without justification, every action owned + dated + step/hazard-linked,
+  every citation traces to the KB, zero PII leaked (including no fabricated names in the
+  sign-off block). PASS/FAIL.
 
-Simple single-subject tasks run single-threaded — no subagents.
+Researcher + Regulatory-Checker may merge to land at 2 fan-out jobs and stay in-band.
+Simple two-step quick checks run single-threaded — no subagents — but the A7 per-step
+scoring/ranking calls and the Critic/QA pass are still made. (B2 is *not* a
+single-threaded-by-design skill like `toolbox-talk`; it ships this moderate roster.)
 
 <!-- hse:block:report-output:start -->## Output format
 
