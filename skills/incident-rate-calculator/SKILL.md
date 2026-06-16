@@ -34,11 +34,36 @@ metadata:
 
 # Incident Rate Calculator
 
-A consultant-grade HSE skill that produces a specific, defensible incident rate calculator for a named task, site, or asset. It forces the single lever that separates a defensible artifact from copy-paste paperwork: task/site specificity plus the full hierarchy of controls — never a vague, PPE-only treatment.
+A deterministic OSHA-standard lagging-rate calculator: it turns a short structured intake
+(recordable / DART / lost-time counts, the **mandatory** hours worked, the period, and the
+base convention) into **TRIR, DART, and LTIFR computed by the shared `incident_rates` engine
+and presented verbatim**, plus a branded report that carries each figure with its formula,
+inputs, and base. The one thing to internalise: **the model never does the arithmetic.**
+Determinism is the whole value — a rate is defensible only if anyone can re-run the same
+inputs through the same tested code and get the same number. So this skill **calls the
+engine and presents the returned dict verbatim**; it must not compute, estimate, or even
+"recompute to sanity-check" a rate in prose. The denominator is real hours worked (never
+fabricated, never annualized from a partial period); a zero/missing denominator surfaces the
+engine's honest `ValueError`, never a fake `0.0` that would read as "perfect safety".
 
 ## When to use this skill
 
-Use this skill when the user needs a incident rate calculator for a concrete task, site, or asset. List the trigger scenarios that reinforce the `description` so the host routes here rather than to a generic answer. If the request is vague, the Workflow intake below forces the specifics before any drafting.
+Use this skill whenever the user needs an OSHA-standard lagging incident rate for a named
+site and period: a **TRIR** (Total Recordable Incident Rate), a **DART** (Days-Away/
+Restricted/Transfer rate), an **LTIFR** (Lost-Time Injury Frequency Rate), a recordable or
+lost-time injury **frequency rate**, or a **benchmark comparison** of a computed rate against
+an industry figure. Trigger phrases: *calculate an incident rate, TRIR, DART, LTIFR,
+recordable incident rate, lost-time injury frequency rate, injury frequency rate, benchmark
+our safety rate*. If the request omits the hours worked, the Workflow intake below **refuses
+to proceed** until that mandatory denominator is supplied — a rate without its exposure base
+is meaningless.
+
+**When NOT to use this skill** (keeping B10 lean): to write the board narrative *around* these
+figures use `board-safety-report`; to investigate the event behind a count use
+`incident-investigation`; to assess a hazard use `risk-assessment`. B10 computes and presents
+the rates — it does not narrate, investigate, or assess. **Severity rate is out of scope** —
+the shared engine has no `severity_rate()`, so the calculator marks it a deferred `[GAP]` and
+never computes it in-prompt.
 
 <!-- hse:block:deid:start -->
 ## Data Protection & De-identification (MANDATORY — apply before drafting)
@@ -84,31 +109,89 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
      (rule-2 presence check, never byte-diffed). Author the rows for the jurisdictions
      this skill serves; rule-9 checks every path/ID resolves against the KB registries. -->
 
-| Jurisdiction | Read |
+<!-- B10 jurisdiction rows are LEAN: a rate is a number, not a statutory notice. The
+     load-bearing rows are the STANDARD (ISO 45001 9.1 — the measurement basis) and the
+     BENCHMARK (KB-DATA-TRIR-BENCHMARKS — never a bare number). The per-jurisdiction reads
+     are CONSULTED ONLY to settle a recordability/countability definition (what counts as a
+     recordable, a DART case, a lost-time injury) — they never change the maths. -->
+
+| Jurisdiction / scope | Read |
 |---|---|
-| India | ../../knowledge-base/regulatory/in-factories-act.md (+ in-state-forms.md for the user's state) |
-| UK    | ../../knowledge-base/regulatory/uk-hswa.md |
-| USA   | ../../knowledge-base/regulatory/us-osha.md |
-| EU    | ../../knowledge-base/regulatory/eu-osh.md |
-| Unknown | Ask before citing any specific law |
+| Standard (always) | ../../knowledge-base/standards/iso-45001.md (KB-STD-ISO45001 — clause 9.1 monitoring, measurement, analysis & performance evaluation — the basis for measuring a rate) |
+| Performance benchmark | ../../knowledge-base/data-points/incident-rates-benchmarks.md (KB-DATA-TRIR-BENCHMARKS — quote body + year + sector, never a bare comparator number) |
+| India | ../../knowledge-base/regulatory/in-factories-act.md (context only — recordability/notifiable-injury definition; resolve the state via in-state-forms.md if a statutory count is cited; mandatory state detection) |
+| UK    | ../../knowledge-base/regulatory/uk-hswa.md (context for RIDDOR-reportable counts feeding the rate) |
+| USA   | ../../knowledge-base/regulatory/us-osha.md (context for OSHA-recordable / DART counts under 29 CFR 1904) |
+| EU    | ../../knowledge-base/regulatory/eu-osh.md (context for the EU counting framework) |
+| Unknown | Ask before citing any specific recordability rule |
+
+This skill always grounds in `KB-STD-ISO45001` clause **9.1** (monitoring, measurement,
+analysis & performance evaluation — the basis for a defensible rate), reads every benchmark
+from `KB-DATA-TRIR-BENCHMARKS` **with its source + year** (never a bare number), and
+instantiates the `KB-SNIP-INTAKE` pattern in its lean intake. The per-jurisdiction rows are
+consulted **only** to settle what *counts* (recordable / DART / lost-time) — they never alter
+the engine's fixed bases. The rule-9 manifest is `references/_skill-kb.md`.
 
 ## Workflow
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-<!-- TODO: author this skill's intake question set -->
+B10 runs a lean, MCQ-heavy intake — the counts, the **mandatory** denominator, and the
+period. Ask ONE at a time, branch on the answers, **echo the captured facts back** before
+computing, and **never invent a count or a denominator**. The hours worked is not optional:
+without it there is no rate.
 
-For this skill, the structured intake captures, one question at a time, the
-specific facts the domain method needs before any drafting begins. Author the
-question set here as a numbered list (MCQ where the answer space is enumerable,
-free-text where it is open); branch on the answers and echo the captured facts
-back before analysis. The runtime intake pattern is `KB-SNIP-INTAKE`.
+### Step 0 — Lean structured intake (run first, one question at a time)
 
-1. **TODO** — first intake question (the specific task / activity / subject).
-2. **TODO** — second intake question (the named site / asset / scope).
-3. **TODO** — remaining domain questions; never proceed on vague or missing inputs.
+| # | Question | Type | Options / prompt |
+|---|---|---|---|
+| Q1 | **Which rate(s)** do you need | MCQ (multi-select) | TRIR (recordables) · DART (days-away/restricted/transfer) · LTIFR (lost-time injuries) · **All three (default)** — selects which `incident_rates` calls run |
+| Q2 | **Site / scope & reporting period** | **free-text** | "Name the site/scope and the exact period — e.g. 'Plant 2, Q1 2026 (Jan–Mar)'." — the specificity anchor; a rate with no named scope+period is not defensible. Refuse a vague answer; record `[GAP]` if truly unavailable, never fabricate |
+| Q3 | **Recordable / DART / lost-time counts** for the period | free-text (numbers) | "How many OSHA-recordable cases? Of those, how many DART cases? How many lost-time injuries? Enter the integer counts for the rates you selected." — counts are non-negative integers; if a count is unknown say so (the engine never guesses) |
+| Q4 | **Total hours worked** in the period | **free-text (number) — MANDATORY** | "Total employee-hours worked across the scope for this exact period (actual hours-to-date — NOT annualized). This is the denominator; **there is no rate without it.**" — **refuse to proceed if blank or ≤ 0**; never substitute a default, never annualize a partial period |
+| Q5 | **Base convention** | MCQ | **OSHA standard (200,000 for TRIR/DART, 1,000,000 for LTIFR) — default** · (other conventions are out of scope for v1.0) — the base is an engine constant; this only confirms the convention, it is never user-arithmetic |
+| Q6 | **Industry benchmark** to compare against (optional) | free-text (optional) | "Optional — an industry benchmark rate to compare against, WITH its publishing body + year + sector (e.g. '2.7 — BLS SOII manufacturing, 2023'). Leave blank to skip." — a benchmark is only used if it carries its source + year; a bare number is recorded `[GAP]`, never invented |
 
-Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
+After the last applicable question, **echo a captured-facts summary** ("Computing TRIR + DART
++ LTIFR for Plant 2, Q1 2026: 3 recordables / 1 DART / 0 lost-time over 290,000 hours, OSHA
+base — correct?") and only then call the engine.
+
+### The calculation method (single-threaded — the model NEVER computes a rate)
+
+This is the whole discipline of B10: **the maths lives only in the tested
+`scripts/hse_components/incident_rates` engine, never in the prose.** Do not compute,
+estimate, round, or "recompute to sanity-check" any rate — call the function and present
+the returned dict **verbatim**.
+
+1. **De-identify first** — if the user pasted a case log, the `deid` block above scrubs it to
+   **aggregate counts only** before anything else: no per-case line, no individual identifier,
+   and no injury/illness sub-group with fewer than 5 individuals (small-cell suppression).
+   Only the aggregate counts reach Step 3.
+2. **Confirm the denominator is real** — hours worked must be present and `> 0`. If it is
+   missing, zero, or negative, do NOT compute: surface the engine's `ValueError`
+   ("hours_worked must be > 0") honestly and ask for the real figure. **Never emit a fake
+   `0.0`.** Never implicitly annualize a partial period — the period label is recorded, never
+   used as a scaling factor.
+3. **Call the engine** — for the selected rates call
+   `incident_rates.compute_all(counts, hours_worked, period)` (or the individual
+   `incident_rates.trir(...)` / `incident_rates.dart(...)` / `incident_rates.ltifr(...)`).
+   The bases are the engine's locked constants (`OSHA_BASE = 200000`, `MILLION_BASE =
+   1000000`) — they are NOT config and NOT recomputed in prose. On a host with **no Python
+   sandbox**, do NOT fabricate a rate in-prompt: state that the deterministic calculator is
+   unavailable and that the figure must be produced by running the engine.
+4. **Benchmark (optional)** — only if Q6 supplied a benchmark WITH its source + year, call
+   `incident_rates.benchmark_delta(rate, industry_rate)` and present the returned delta +
+   direction. A bare comparator with no source is recorded `[GAP]`, never used.
+5. **Severity rate — deferred `[GAP]` (D-03)** — the intake may list severity rate, but the
+   shared engine has **no** `severity_rate()`; mark it `[GAP] — not computed (no validated
+   engine in v1.0)` and **never compute it in-prompt**.
+6. **Present the dict verbatim + the transparency trail** — surface each returned rate exactly
+   as the engine returned it, alongside its formula (e.g. *TRIR = recordables × 200,000 ÷
+   hours_worked*), the inputs, the base, and the period label — so a reviewer can re-run the
+   same inputs and reproduce the number.
+
+Then **validate against `references/QUALITY_CHECKLIST.md`** (the rate-defensibility self-check)
+and **produce the output** via the Output format section below.
 
 <!-- hse:block:orchestration:start -->
 ## Agentic Execution (Orchestration Block)
@@ -155,10 +238,23 @@ de-identification leak. Fix everything it raises before delivery.
 ### Subagent roster for THIS skill
 
 <!-- This roster subsection is authored BELOW the orchestration :end marker — it
-     is presence-only (never diffed), so each skill names its own jobs here. -->
+     is presence-only (never diffed). B10 copies B3's canonical single-thread
+     line VERBATIM (it is a short deterministic wrapper), the one difference from
+     B3 being that B10 DOES wire the incident_rates engine via scripts/. -->
 
-- Single-threaded by design — no subagents. (Replace with this skill's named
-  fan-out jobs if the triage gate warrants them.)
+- Single-threaded by design — no subagents.
+
+The Step-0 triage gate keeps B10 single-threaded (all three single-thread conditions hold: it
+is a short deterministic ~2-min artifact, its parts are tightly dependent — the rate cannot be
+presented before the engine returns it — and the input fits one context window), so the
+orchestration block self-deactivates at runtime and the skill computes and presents the rates
+directly. The inline **de-identification scrub still runs first** (any pasted case log is
+reduced to aggregate counts before computation) and the **mandatory Critic/QA pass still runs**
+inline (a single adversarial self-check that the figure came from the engine — not from
+in-prompt arithmetic — that the denominator is real, and that no per-case line or <5 cell
+leaked). On a host with no subagent capability nothing changes — B10 was already
+single-threaded; on a host with no Python sandbox the calculator refuses to fabricate a rate
+rather than degrade to in-prompt maths.
 
 <!-- hse:block:report-output:start -->## Output format
 

@@ -1,0 +1,47 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Incident Rate Report — Plant 2, Q1 2026",
+    "subtitle": "TRIR · DART · LTIFR · OSHA-standard bases · computed by the incident_rates engine",
+    "author": "HSE Performance Lead",
+    "date": "2026-06-15",
+    "classification": "Internal — performance figures; competent-person review required",
+    "house_template": "house-standard",
+    "deid_notice": "All incident detail behind these figures is de-identified AND aggregated — only period counts and standard rates appear. No individual case, injured party, exact date+location, or small (<5) injury cell is identifiable, and no re-identification key appears. Figures are decision-support; a competent person must review them."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Lagging incident rates for the period" },
+    { "type": "paragraph", "text": "All three rates below are computed deterministically by the shared incident_rates engine from the period's recordable counts and the actual hours worked — they are NOT estimated in prose. Each figure is reproducible: the same inputs through the same code return the same number. The denominator is the real hours-to-date for this exact period (290,000 h), not annualized. The bases are OSHA-standard engine constants (200,000 for TRIR/DART, 1,000,000 for LTIFR), never recomputed here." },
+
+    { "type": "metrics", "metrics": [
+        { "label": "TRIR", "value": "2.07", "unit": "/200k hrs", "color": "#2E8B8B" },
+        { "label": "DART", "value": "1.38", "unit": "/200k hrs", "color": "#2E8B8B" },
+        { "label": "LTIFR", "value": "3.45", "unit": "/M hrs", "color": "#2E8B8B" } ] },
+
+    { "type": "heading", "level": 1, "text": "Transparency trail (value · formula · inputs · base)" },
+    { "type": "paragraph", "text": "Each rate is shown with the exact formula and inputs the engine used, so a reviewer can re-run the calculation and reproduce the figure to the dp. The value column carries the engine's returned number verbatim." },
+    { "type": "table",
+      "headers": ["Rate", "Value", "Formula", "Count", "Hours worked", "Base", "Period"],
+      "rows": [
+        ["TRIR", "2.07", "recordables × 200,000 ÷ hours", "3", "290,000", "200,000", "Q1 2026 (actual)"],
+        ["DART", "1.38", "DART cases × 200,000 ÷ hours", "2", "290,000", "200,000", "Q1 2026 (actual)"],
+        ["LTIFR", "3.45", "lost-time injuries × 1,000,000 ÷ hours", "1", "290,000", "1,000,000", "Q1 2026 (actual)"] ],
+      "caption": "Rates are period-actual (not annualized). Values are produced by incident_rates and presented verbatim; no figure is computed in-prompt." },
+
+    { "type": "heading", "level": 1, "text": "Benchmark comparison" },
+    { "type": "paragraph", "text": "Computed rates are compared against an industry benchmark ONLY when the benchmark carries its publishing body + year + sector; a bare comparator is flagged [GAP], never invented. A lower rate is better." },
+    { "type": "table",
+      "headers": ["Rate", "This period", "Benchmark (source, year, sector)", "Delta", "Better than benchmark?"],
+      "rows": [
+        ["TRIR", "2.07", "2.7 — BLS SOII manufacturing, 2023", "-0.63", "Yes"],
+        ["LTIFR", "3.45", "[GAP] — no sourced sector benchmark supplied", "—", "—"] ],
+      "caption": "Benchmark deltas from incident_rates.benchmark_delta; an unsourced comparator is recorded [GAP], never used." },
+
+    { "type": "callout", "box_type": "info", "text": "Severity rate is NOT computed: there is no validated severity-rate engine in v1.0, so it is recorded [GAP] rather than estimated in-prompt (D-03)." },
+
+    { "type": "callout", "box_type": "warning", "text": "A rate is meaningless without its exposure base. If hours worked is missing or zero, the calculator surfaces an honest error and produces NO rate — it never emits a fake 0.0, and it never annualizes a partial period." },
+
+    { "type": "divider" },
+    { "type": "paragraph", "text": "Provenance: TRIR/DART/LTIFR produced by scripts/hse_components/incident_rates (compute_all / trir / dart / ltifr); benchmark deltas by benchmark_delta. Inputs de-identified and aggregated before computation. Decision-support only — a competent person must review these figures." }
+  ]
+}
