@@ -6,6 +6,7 @@
     {
       "query": "Write a <5-minute toolbox talk for re-roofing Bay 3 today: the cherry-picker (MEWP) is out of service so the mixed crew is working off the leading edge by hand. Plain English. Include the attendance sign-off sheet.",
       "files": ["evals/files/reroof-bay3-clean.md"],
+      "output_files": ["evals/output/reroof-bay3.md"],
       "expected_behavior": "Produces a SPECIFIC, frontline-ready talk: names the actual task/site/crew (re-roofing Bay 3, MEWP out of service, mixed crew) and the concrete hazards (unprotected leading edge, the unavailable MEWP) — NOT generic 'work safely at height' patter; controls are hierarchy-of-controls-ranked with higher-order first (eliminate/engineer the edge protection before PPE); a recent relevant incident appears de-identified OR as a clearly-labelled typical example (never a fabricated local event); the sign-off sheet is present; a branded report is produced.",
       "expectations": [
         "Names the actual task/site/crew (re-roofing Bay 3, cherry-picker out of service, mixed crew) — not 'general site safety' (specificity high).",
@@ -31,6 +32,7 @@
     {
       "query": "Write a <5-minute plain-English tailgate talk on manual handling for a mixed crew, and include a fillable attendance / sign-off table.",
       "files": ["evals/files/manual-handling-short.md"],
+      "output_files": ["evals/output/manual-handling-tailgate.md"],
       "expected_behavior": "The output is SHORT (within the <5-min duration target — not a multi-page document), plain-language / frontline-readable, structured as hook -> hazards -> controls -> incident -> discussion -> takeaways -> sign-off, and INCLUDES a fillable sign-off / attendance table. Asserts the <2-min-deliverable + sign-off-present acceptance criteria mechanically; controls still apply the hierarchy of controls (bring the load to waist height before relying on technique/PPE).",
       "expectations": [
         "The output is SHORT — within the <5-min duration target, not a multi-page document (length / frontline readability).",
