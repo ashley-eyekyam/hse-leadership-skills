@@ -11,8 +11,15 @@
     {
       "name": "hse-core",
       "skills": [
+        "board-safety-report",
+        "capa-manager",
         "incident-investigation",
+        "incident-rate-calculator",
+        "job-safety-analysis",
+        "rams-builder",
         "risk-assessment",
+        "safety-audit",
+        "sop-writer",
         "toolbox-talk"
       ]
     },
