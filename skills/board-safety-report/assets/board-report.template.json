@@ -1,0 +1,60 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Board Safety Report — FY2025 HSE Performance",
+    "subtitle": "For the Board of Directors · Annual · grounded in ISO 45001 9.1/9.3",
+    "author": "Head of HSE",
+    "date": "2026-06-15",
+    "classification": "Board confidential — competent-person review required",
+    "house_template": "house-standard",
+    "deid_notice": "All incident detail in this report is de-identified AND aggregated — events are reported as counts and categories by role label only; no individual incident, injured party, exact date+location, or small (<5) cell is identifiable, and no re-identification key appears. Figures are decision-support; a competent person must review this report."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "FY2025 was a year of improving lagging performance against a rising exposure signal that the board must act on. Our LTIFR fell 18% to 4.92 (from 6.00 in FY2024) and now sits below the sector benchmark, but high-potential incidents rose 22% — the trend that matters most: we are getting fewer outcomes while the conditions that produce a fatality are becoming MORE frequent, concentrated in work-at-height and contractor-managed activities. The single decision this report asks the board to make is whether to fund the FY2026 work-at-height and contractor-assurance programme that the HiPo pattern says is now the highest-leverage control on serious-injury exposure." },
+    { "type": "callout", "box_type": "warning", "text": "The headline is not the falling injury rate — it is the rising HiPo/SIF precursor count. A lower LTIFR alongside more high-potential events is the classic signature of a serious event being set up. The board is asked to treat the work-at-height + contractor exposure as the year's governing risk." },
+
+    { "type": "heading", "level": 1, "text": "Leading & lagging indicators" },
+    { "type": "metrics", "metrics": [
+        { "label": "LTIFR (lagging)", "value": "4.92", "unit": "/M hrs", "color": "#2E8B8B" },
+        { "label": "TRIR (lagging)", "value": "2.07", "color": "#2E8B8B" },
+        { "label": "Training complete (leading)", "value": "94", "unit": "%" },
+        { "label": "Audit closure (leading)", "value": "81", "unit": "%" } ] },
+    { "type": "paragraph", "text": "Lagging rates (TRIR / DART / LTIFR) are computed deterministically by the shared incident_rates engine from the period's recordable counts and hours worked — they are not estimated in prose. Leading indicators are management-supplied. Each figure is read against the prior period and the benchmark in the Trend analysis below; the table here is supporting evidence, not the deliverable." },
+    { "type": "table",
+      "headers": ["Indicator", "FY2025", "FY2024", "Movement", "Benchmark (source, year)"],
+      "rows": [
+        ["LTIFR", "4.92", "6.00", "-18%", "5.4 — BLS SOII manufacturing, 2023"],
+        ["TRIR", "2.07", "2.31", "-10%", "2.7 — BLS SOII manufacturing, 2023"],
+        ["High-potential incidents", "61", "50", "+22%", "no published benchmark — internal trend [GAP]"],
+        ["Training completion", "94%", "88%", "+6pp", "internal target 95%"],
+        ["Audit/inspection closure", "81%", "73%", "+8pp", "internal target 90%"] ],
+      "caption": "Period indicators vs prior period and benchmark. Benchmarks carry source + year; an unsourced comparator is flagged [GAP], never invented." },
+
+    { "type": "heading", "level": 1, "text": "Key events (de-identified, aggregated)" },
+    { "type": "paragraph", "text": "The period's significant HSE events, rolled up to board altitude — counts and categories by role label, no individual incident narrated:" },
+    { "type": "bullets", "items": [
+        "Recordable injuries: aggregated by mechanism — slips/trips/falls-same-level (largest category), manual-handling, and struck-by; no single category below 5 cases is published individually.",
+        "Lost-time injuries: down vs the prior period; all in operational and contractor roles (role labels only).",
+        "Notable near-misses: a cluster in work-at-height and mobile-plant interaction — the leading signal behind the HiPo rise.",
+        "Regulatory contacts: a small number of routine inspections, all closed; no enforcement notices.",
+        "Environmental events: none in scope this period (environmental metrics not supplied)." ] },
+
+    { "type": "heading", "level": 1, "text": "HiPo / SIF lens" },
+    { "type": "paragraph", "text": "Interpreting the high-potential and serious-injury-or-fatality precursor pattern (not merely listing it): the 22% rise in HiPo events is concentrated in two activities — unprotected or improvised work at height, and contractor-managed lifting/mobile-plant operations. These are textbook SIF precursors: the realistic worst-credible outcome of several of this year's near-misses was a fatality, even though the actual outcomes were minor. The reading for the board is that our exposure to a serious or fatal event has RISEN this year despite the falling injury rate, and that exposure is predictable — it lives in known activities and a known part of the workforce (contractors), which makes it controllable. This is the lens a lagging-rate table hides; it is the basis for the strategic decision below. (All HiPo/SIF inputs are de-identified and aggregated — no single event is narrated with date, location, or injury detail.)" },
+
+    { "type": "heading", "level": 1, "text": "Trend analysis" },
+    { "type": "paragraph", "text": "LTIFR fell 18% vs FY2024 and now sits below the BLS SOII manufacturing sector average (5.4, 2023); TRIR fell 10% and is likewise below the 2.7 (BLS SOII, 2023) sector figure — defensible, sourced improvements. Leading indicators improved (training +6pp, audit closure +8pp) but audit closure (81%) remains below the 90% internal target — a gap the board should note. The counter-trend is the HiPo rise (+22%), which has no published benchmark and is tracked internally [GAP]; read together with the SIF-precursor concentration, the trends say outcomes improved while exposure to a serious event worsened." },
+
+    { "type": "heading", "level": 1, "text": "Strategic actions / decisions needed" },
+    { "type": "recommendations", "rows": [
+        { "action": "Approve and fund the FY2026 work-at-height assurance programme (engineered edge protection standard + competency verification) — the highest-leverage control on the SIF exposure the HiPo trend reveals.", "priority": "High", "owner": "Board / CEO", "due": "Q1 FY2026" },
+        { "action": "Direct a contractor safety-assurance uplift (pre-qualification + active supervision standard) — contractor-managed activity is the second SIF-precursor concentration.", "priority": "High", "owner": "Board / COO", "due": "Q1 FY2026" },
+        { "action": "Set audit/inspection closure as a board-monitored objective until it reaches the 90% target (currently 81%).", "priority": "Medium", "owner": "HSE Director", "due": "Quarterly review" },
+        { "action": "Endorse continued HiPo/SIF-precursor reporting as a board-level leading indicator (it predicted this year's exposure shift the lagging rates missed).", "priority": "Medium", "owner": "Board", "due": "Ongoing" } ] },
+    { "type": "paragraph", "text": "These are governance-level decisions (resource allocation, policy direction, accountability) tied to ISO 45001 9.3 management-review outputs — not operational CAPA task lists (those are owned by incident-investigation / capa-manager)." },
+
+    { "type": "heading", "level": 1, "text": "Outlook" },
+    { "type": "paragraph", "text": "If the work-at-height and contractor programmes are funded in Q1, the HiPo/SIF exposure trajectory should bend back over FY2026 and the lagging gains consolidate. The emerging risks to watch are the audit-closure gap and any further HiPo concentration in new contractor scopes. The board's governing question for the next period remains exposure, not just outcomes: are we reducing the conditions that produce a serious event, not only the count of minor ones." }
+  ]
+}
