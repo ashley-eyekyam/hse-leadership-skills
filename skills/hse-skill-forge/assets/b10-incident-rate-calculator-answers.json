@@ -1,0 +1,19 @@
+{
+  "_comment": "B10 incident-rate-calculator author-interview answers (05-05). roster=single-thread -> the B3 verbatim 'Single-threaded by design — no subagents.' one-liner (cloned), BUT a7_components=[incident_rates] (unlike B3 which declares none) -> the forge DOES create the scripts/ symlink + verbatim _shim.py. The skill CALLS incident_rates (trir/dart/ltifr/compute_all/benchmark_delta) and presents the returned dict VERBATIM — the model performs NO arithmetic anywhere (determinism is the whole value). Severity rate is a deferred [GAP] (D-03 — A7 has NO severity_rate()). category=performance (D-06; B10 owns it), audience=[M,E], industry=[All], jurisdiction=[All] (India context only via KB-REG-IN-STATEFORMS, recordability-definition nuance). kb_ids lean: ISO 45001 backbone + TRIR benchmarks + intake + archetypes + India state-forms.",
+  "description": "Computes and presents OSHA-standard lagging incident rates — TRIR, DART, and LTIFR — for a named site, period, and exposure base by calling the shared, tested incident_rates engine and presenting its returned figures verbatim; the model never does the arithmetic itself, so the result is deterministic, reproducible, and audit-defensible. Use this skill whenever a user asks to calculate an incident rate, a TRIR / DART / LTIFR, a recordable or lost-time injury frequency rate, or to benchmark a safety rate against an industry figure. It runs a lean intake (recordable / DART / lost-time counts, mandatory hours worked, the period, the base), refuses to fabricate a denominator or annualize a partial period, surfaces a divide-by-zero as an honest error not a fake zero, de-identifies any pasted case log to aggregate counts only, and emits a branded report carrying each rate with its formula, inputs, base, and optional benchmark (source + year). Decision-support only; a competent person must review the output.",
+  "author": "eyekyam",
+  "roster": "single-thread",
+  "a7_components": ["incident_rates"],
+  "kb_ids": ["KB-STD-ISO45001", "KB-DATA-TRIR-BENCHMARKS", "KB-SNIP-INTAKE", "KB-SNIP-ARCHETYPES", "KB-REG-IN-STATEFORMS"],
+  "metadata": {
+    "author": "eyekyam",
+    "version": "1.0",
+    "category": "performance",
+    "tier": 1,
+    "audience": ["M", "E"],
+    "industry": ["All"],
+    "jurisdiction": ["All"],
+    "status": "stable",
+    "plugin": "hse-core"
+  }
+}
