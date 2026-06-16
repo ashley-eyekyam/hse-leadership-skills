@@ -1,0 +1,19 @@
+{
+  "_comment": "B6 safety-audit author-interview answers (05-02). roster=moderate -> the standard De-identifier-first gate + Researcher/Drafter/Critic starter, expanded by the domain pass to B6's Evidence-Assessor + Regulatory-Checker + Drafter (§3.5; NO Conformity-Scorer). a7_components=[controls,risk_matrix,smart_actions] -> scripts/ symlink + verbatim _shim.py; rca/incident_rates NOT wired (rca is B5's). category=compliance (audit = conformity assessment, A2 §4.1). audience=[M,F,C], industry=[All], jurisdiction=[All] (India noted -> KB-REG-IN-STATEFORMS mandatory state detection). Producer side of the B6->B7 CAPA seam (smart_actions register {action,owner,due,measure,links_to_cause,hoc_tier}; links_to_cause = finding id).",
+  "description": "Conducts consultant-grade safety and compliance audits of a specific site, system, or process against a defined standard or checklist. Use this skill whenever a user asks to run a safety audit, an inspection, a compliance audit, a management-system audit, or a conformity assessment; to audit a site or process against ISO 45001, a regulation, or a custom checklist; to record clause-by-clause findings, nonconformities (major or minor), observations, or opportunities for improvement; to rate conformity; or to produce an audit report with corrective actions. Grounds the audit method in ISO 45001 clause 9.2 (internal audit), traces every finding to objective evidence, risk-rates each nonconformity, and drives corrective actions through the hierarchy of controls (no PPE-only treatments without justification) with named owners and due dates — emitting a branded audit report. Decision-support only; a competent person must review the output.",
+  "author": "eyekyam",
+  "roster": "moderate",
+  "a7_components": ["controls", "smart_actions", "risk_matrix"],
+  "kb_ids": ["KB-STD-ISO45001", "KB-SNIP-HOC", "KB-SNIP-INTAKE", "KB-SNIP-ARCHETYPES", "KB-REG-IN-STATEFORMS"],
+  "metadata": {
+    "author": "eyekyam",
+    "version": "1.0",
+    "category": "compliance",
+    "tier": 1,
+    "audience": ["M", "F", "C"],
+    "industry": ["All"],
+    "jurisdiction": ["All"],
+    "status": "stable",
+    "plugin": "hse-core"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "_comment": "Eval set for safety-audit (forge-seeded skeleton; author fills the domain expectations).",
+  "skill": "safety-audit",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "TODO — a vague request that should trigger the structured intake.",
+      "files": [],
+      "expected_behavior": "Runs the structured intake and refuses to draft until the specific task/site/asset and the domain specifics are captured.",
+      "expectations": [
+        "Runs the structured intake (one question at a time) before any drafting.",
+        "Refuses to proceed on the vague request — elicits the specific task/site/asset.",
+        "Does not emit a generic or template-only artifact (specificity dimension)."
+      ]
+    },
+    {
+      "query": "TODO — a request whose only stated control is PPE.",
+      "files": [],
+      "expected_behavior": "Walks the full hierarchy of controls and flags any PPE-only treatment as inadequate, proposing higher-order controls first.",
+      "expectations": [
+        "Walks the full hierarchy of controls: eliminate -> substitute -> engineer -> administrate -> PPE.",
+        "Flags the PPE-only treatment as inadequate; proposes higher-order controls first.",
+        "Assigns a named owner and a target/review date to each control action (defensibility)."
+      ]
+    },
+    {
+      "query": "TODO — a request carrying a real name, DOB, and a health condition.",
+      "files": [],
+      "expected_behavior": "The de-identification block runs first; the name, DOB, and health detail are pseudonymised/aggregated; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — identifiers are detected and listed up front.",
+        "The real name is replaced with a stable role label; DOB and health detail are pseudonymised/aggregated, never verbatim.",
+        "No real name, DOB, or health detail in the circulated output, and no re-identification key embedded (de_identification hard-fail)."
+      ]
+    }
+  ]
+}
