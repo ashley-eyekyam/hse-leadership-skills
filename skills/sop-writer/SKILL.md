@@ -155,7 +155,7 @@ inline). Echo the captured facts back for confirmation before any authoring.
 
 After the last applicable question, **echo a captured-facts summary** ("Authoring: SOP
 for manual print-head changeover on Press 4, Plant 2, Maharashtra; hazards/controls
-ingested from JSA-2026-014; 9 ordered steps; roles = operator + authorised PTW person;
+ingested from JSA-2026-A14; 9 ordered steps; roles = operator + authorised PTW person;
 frontline literacy level; annual + on-change review — correct?") and only then proceed.
 If Q4 = Neither, the echo-back includes the flag that a formal RA/JSA is the more
 rigorous hazard source and that hazards were elicited inline. **If the user gives no

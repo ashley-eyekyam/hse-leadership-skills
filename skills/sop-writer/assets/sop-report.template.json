@@ -11,13 +11,13 @@
   },
   "sections": [
     { "type": "heading", "level": 1, "text": "Purpose" },
-    { "type": "paragraph", "text": "This safe work procedure (SWP) covers the manual changeover of the print-head on Press 4 during a planned stop. It is grounded in ISO 45001 clause 8.1 (operational control) and integrates with the existing job-safety analysis JSA-2026-014 (its hazards and rated controls are ingested and cross-referenced, not re-scored). It is written to a frontline-operator literacy level: short imperative steps, one action per step." },
+    { "type": "paragraph", "text": "This safe work procedure (SWP) covers the manual changeover of the print-head on Press 4 during a planned stop. It is grounded in ISO 45001 clause 8.1 (operational control) and integrates with the existing job-safety analysis JSA-2026-A14 (its hazards and rated controls are ingested and cross-referenced, not re-scored). It is written to a frontline-operator literacy level: short imperative steps, one action per step." },
 
     { "type": "heading", "level": 1, "text": "Scope & boundaries" },
     { "type": "bullets", "items": [
         "IN scope: mechanical changeover of the print-head on Press 4 during a planned, de-energised stop.",
         "OUT of scope: electrical fault repair (requires a competent electrician under a separate permit); print-head calibration beyond the function-test.",
-        "Hazard source: ingested from JSA-2026-014 (cross-referenced by id) — this procedure does not re-score risk.",
+        "Hazard source: ingested from JSA-2026-A14 (cross-referenced by id) — this procedure does not re-score risk.",
         "Authored to ISO 45001 8.1 operational control; reading level = frontline operator (KB-SNIP-AUDIENCE)." ] },
 
     { "type": "heading", "level": 1, "text": "Responsibilities & required competencies" },
@@ -73,7 +73,7 @@
     { "type": "heading", "level": 1, "text": "Regulatory basis (cited)" },
     { "type": "bullets", "items": [
         "ISO 45001 clause 8.1 (operational control) + 8.1.2 (hierarchy of controls).",
-        "Ingested hazard analysis: JSA-2026-014 (cross-referenced by id — method ↔ JSA).",
+        "Ingested hazard analysis: JSA-2026-A14 (cross-referenced by id — method ↔ JSA).",
         "India / Maharashtra: the documented-procedure duty under the resolved state Factory Rules via KB-REG-IN-STATEFORMS (state confirmed; no SOP form number — an SOP is an internal MS document)." ] },
 
     { "type": "heading", "level": 1, "text": "Revision & approval block" },
