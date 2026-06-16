@@ -1,0 +1,19 @@
+{
+  "_comment": "B8 sop-writer author-interview answers (05-03). roster=moderate -> the standard De-identifier-first gate + Researcher/Drafter/Critic starter, refined by the domain pass to B8's Researcher + Drafter + Critic/QA (§3.5; NO Control-Ranker subagent — control ranking is the deterministic A7 controls call). a7_components=[controls] ONLY — the controls-ONLY divergence (Decision 4): NO risk_matrix (B8 authors a procedure, it does not score risk — it ingests an existing B1 RA / B2 JSA rating, never re-derives it), NO smart_actions/rca/incident_rates (those are B5/B7). This single declaration is the #1 silent-defect guard; the scaffold symlinks the whole hse_components package but the skill imports only controls. category=ms-admin (D-06 — masterplan §14/§80 file SOPs under Management-system administration, A2 §4.1 enum). audience=[M,C] (the SOP authors; the frontline is the READER — literacy-level targeted via KB-SNIP-AUDIENCE, Decision 6), industry=[All], jurisdiction=[All] (India noted -> KB-REG-IN-STATEFORMS mandatory state detection).",
+  "description": "Creates clear, task-specific, version-controlled standard operating procedures (SOPs) and safe work procedures (SWPs) written to the reader's literacy level. Use this skill whenever a user asks to write, draft, or review an SOP, a standard operating procedure, a safe work procedure, an SWP, a work instruction, or a step-by-step procedure for a specific task, operation, or piece of equipment. Grounds the procedure in ISO 45001 clause 8.1 (operational control), embeds the hierarchy of controls into the individual steps (no procedure that relies on PPE or 'follow the rules' alone without justification), integrates with an existing risk assessment or JSA where one is supplied rather than re-scoring it, names responsibilities and required competencies by role, adds emergency provisions, and produces a revision-controlled, approval-ready, branded document. Decision-support only; a competent person must review the procedure before it is issued.",
+  "author": "eyekyam",
+  "roster": "moderate",
+  "a7_components": ["controls"],
+  "kb_ids": ["KB-STD-ISO45001", "KB-SNIP-HOC", "KB-SNIP-INTAKE", "KB-SNIP-ARCHETYPES", "KB-SNIP-AUDIENCE", "KB-REG-IN-STATEFORMS"],
+  "metadata": {
+    "author": "eyekyam",
+    "version": "1.0",
+    "category": "ms-admin",
+    "tier": 1,
+    "audience": ["M", "C"],
+    "industry": ["All"],
+    "jurisdiction": ["All"],
+    "status": "stable",
+    "plugin": "hse-core"
+  }
+}
