@@ -1,0 +1,80 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "CAPA Register — Permit-to-Work Isolation Nonconformity, Maintenance Shop, Plant 3",
+    "subtitle": "Corrective & preventive action lifecycle vs ISO 45001 10.2 — ingested from a safety-audit finding set; de-identified; competent-person review required",
+    "author": "HSE Department",
+    "date": "2026-06-16",
+    "classification": "Internal — competent-person review required",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. Identifiers in the ingested register and supporting evidence (names, signatures, training/injury records) were pseudonymised before any analysis; the re-identification key is held separately, access-controlled, and is not part of this document. No injury/illness cell of fewer than 5 individuals is published. This CAPA register is decision-support; a competent person must validate it before closure."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "This is the management (B7) side of the CAPA lifecycle for nonconformity NC-1, ingested from the safety-audit finding set (the B6 register: action, owner, due, measure, links_to_cause, hoc_tier). The audit found that the permit-to-work procedure does not mandate an independent isolation-verification step before sign-off (4 of 12 sampled permits signed off with no recorded isolation check) — a systemic gap traced to cause RC-1 (an absent procedural control), not an isolated lapse. For each cause this register carries BOTH a corrective action (fix this occurrence) AND a preventive action (stop recurrence), every action hierarchy-of-controls ranked, owned, ISO-dated, measured, traced to its cause, and given a scheduled effectiveness verification. No CAPA is marked verified-effective without a recorded check. The whole lifecycle runs within one invocation (stateless-per-run; v1.0). This register is de-identified throughout; the re-identification key is held separately." },
+
+    { "type": "metrics", "metrics": [
+        { "label": "CAPAs managed", "value": "4", "caption": "2 corrective · 2 preventive across 2 causes" },
+        { "label": "All traced to a cause", "value": "Yes", "caption": "smart_actions.validate_register: 0 invalid, all_traced_to_cause = true" },
+        { "label": "Highest-order preventive control", "value": "Engineering", "caption": "above an admin-only fix (hierarchy of controls)" } ] },
+
+    { "type": "heading", "level": 1, "text": "Source & lifecycle (ISO 45001 10.2 — stateless-per-run)" },
+    { "type": "bullets", "items": [
+        "Source (Q0): an audit finding set INGESTED from safety-audit (the B6→B7 seam). The finding id (NC-1), the cause id(s) (RC-n), and the first CAPA rows were lifted verbatim — the producer's {action, owner, due, measure, links_to_cause, hoc_tier} schema is reused, not re-keyed.",
+        "Lifecycle: ingest → structure → validate → schedule → emit, within a single invocation. No persistent cross-session CAPA store is maintained (that is a v2 consideration); the status and verification fields are designed so a future store can read them without a schema change.",
+        "Validation: smart_actions.validate_register over the producer's six fields (owner + ISO due + measure + links_to_cause on every action); controls.rank_controls / validate_treatment over the full corrective + preventive set (the ppe_admin_only flag forces a higher-order control or a recorded justification).",
+        "De-identification re-check: the ingested register was re-scanned, not assumed clean; all personnel carry role labels only.",
+        "Schema rule: the lifecycle fields capa_type / verification / status are B7-side ADDITIVE metadata that smart_actions.validate_register ignores — they are NEVER moved into smart_actions.REQUIRED_FIELDS (that would fork the A7 engine and break the round-trip)." ] },
+
+    { "type": "heading", "level": 1, "text": "Causes the CAPAs trace to" },
+    { "type": "findings", "rows": [
+        { "title": "RC-1 (root)", "risk_level": "High",
+          "description": "Organisational / procedural: the PTW procedure omits an independent isolation-verification step before sign-off, so permits were signed off with no recorded isolation check — a systemic control gap, not an individual error. Reused from the ingested audit cause (not re-investigated).", "evidence": "NC-1 (audit), E-4 (PTW procedure §5)" },
+        { "title": "RC-2 (contributing)", "risk_level": "Medium",
+          "description": "The permit close-out lacked a mandatory sign-back field, so 2 of 12 permits were closed without a final sign-back.", "evidence": "NC-2 (audit), E-1 (permit sample)" } ] },
+
+    { "type": "heading", "level": 1, "text": "Managed CAPA register (B5 schema + B7 lifecycle fields)" },
+    { "type": "paragraph", "text": "Each row carries the producer's six fields verbatim (action, owner, due, measure, links_to_cause, hoc_tier — validated by smart_actions.validate_register) EXTENDED additively with the three B7 lifecycle fields the engine ignores: capa_type (corrective | preventive), verification (the scheduled effectiveness check — method · due · status), and status (open · in-progress · verified-effective · verified-ineffective · closed). The same smart_actions.validate_register that the producer ran accepts this register unchanged — the round-trip holds with zero A7 change." },
+    { "type": "table",
+      "headers": ["action", "owner", "due", "measure", "links_to_cause", "hoc_tier", "capa_type", "verification (method · due · status)", "status"],
+      "rows": [
+        ["Stand down sign-off on any permit lacking a recorded isolation check until isolation is independently confirmed (interim control while the procedure is amended).", "HSE Manager", "2026-06-20", "0 permits signed off without a recorded isolation check during the interim period (100% sample)", "RC-1", "Administrative", "corrective", "Re-inspection · 2026-07-20 · scheduled", "in-progress"],
+        ["Fit an isolation-verification interlock so a permit cannot be signed off until isolation is independently confirmed in the register.", "Maintenance Lead", "2026-07-15", "0 sampled permits signed off without a recorded isolation check at the next quarterly audit (no recurrence over the audit window)", "RC-1", "Engineering", "preventive", "Re-audit · 2026-10-15 · scheduled", "open"],
+        ["Re-sign the 2 permits closed without a final sign-back and confirm the work was correctly closed out (fix this occurrence).", "Supervisor", "2026-06-25", "Both affected permits re-signed and verified closed (2/2)", "RC-2", "Administrative", "corrective", "Document/record check · 2026-07-10 · scheduled", "open"],
+        ["Add a mandatory close-out sign-back field that blocks permit closure if blank.", "Maintenance Lead", "2026-07-22", "0 permits closed without a sign-back in the following month's sample (no recurrence)", "RC-2", "Engineering", "preventive", "Re-inspection · 2026-08-22 · scheduled", "open"] ] },
+
+    { "type": "heading", "level": 1, "text": "Corrective vs preventive split (per cause)" },
+    { "type": "table",
+      "headers": ["Cause", "Corrective (fix this occurrence)", "Preventive (stop recurrence)", "Preventive HoC tier"],
+      "rows": [
+        ["RC-1", "Stand down sign-off without a recorded isolation check (interim)", "Isolation-verification interlock", "Engineering"],
+        ["RC-2", "Re-sign the 2 permits closed without sign-back", "Mandatory close-out sign-back field that blocks closure if blank", "Engineering"] ] },
+
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls (corrective + preventive)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Isolation-verification interlock — the permit cannot be signed off until isolation is independently confirmed (RC-1 preventive)", "tier": "Engineering", "owner": "Maintenance Lead" },
+        { "control": "Mandatory close-out sign-back field that blocks permit closure if blank (RC-2 preventive)", "tier": "Engineering", "owner": "Maintenance Lead" },
+        { "control": "Amend the PTW procedure to mandate an independent isolation-verification step before sign-off; interim stand-down until done (RC-1 corrective)", "tier": "Administrative", "owner": "HSE Manager" },
+        { "control": "Re-sign and verify closure of the affected permits (RC-2 corrective)", "tier": "Administrative", "owner": "Supervisor" } ] },
+
+    { "type": "heading", "level": 1, "text": "Effectiveness verification & schedule (the lifecycle B7 owns)" },
+    { "type": "paragraph", "text": "Every CAPA carries a verification floor of method + due + status. No CAPA may be marked verified-effective without a recorded check (method + due + status + verified_by + verified_date). smart_actions.days_until_due(verification.due, today) surfaces any verification past its due date in the register view (a negative value = overdue). A re-occurrence window (e.g. 'no recurrence at the next quarterly audit') is recorded where practicable as the stronger effectiveness test — encouraged, not hard-required in v1.0." },
+    { "type": "table",
+      "headers": ["links_to_cause", "capa_type", "verification method", "verification due", "status", "recorded effectiveness check?"],
+      "rows": [
+        ["RC-1", "corrective", "Re-inspection", "2026-07-20", "scheduled", "Not yet — cannot close verified-effective until the check is recorded"],
+        ["RC-1", "preventive", "Re-audit", "2026-10-15", "scheduled", "Not yet — no-recurrence window runs to the next quarterly audit"],
+        ["RC-2", "corrective", "Document/record check", "2026-07-10", "scheduled", "Not yet"],
+        ["RC-2", "preventive", "Re-inspection", "2026-08-22", "scheduled", "Not yet"] ] },
+
+    { "type": "callout", "box_type": "warning", "text": "Closure rule (ISO 45001 10.2): a CAPA is not closed verified-effective until its scheduled effectiveness check is recorded (method + due + status + verified_by + verified_date). All four CAPAs above remain open / in-progress pending their scheduled verification — none may be reported as effective yet." },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory / management-system basis (cited)" },
+    { "type": "bullets", "items": [
+        "ISO 45001 clause 10.2 (incident, nonconformity & corrective action) — the CAPA-lifecycle backbone: react → evaluate the need to eliminate the cause so it does not recur → implement corrective + preventive action → review effectiveness → retain documented evidence.",
+        "ISO 45001 clause 8.1.2 (hierarchy of controls) — applied to every corrective and preventive action; the preventive controls favour Engineering over an administrative-only fix.",
+        "Jurisdiction: the documented-information / corrective-action / record-retention duty is cited from the matched KB row when a regulatory regime applies (India → the resolved state duty via KB-REG-IN-STATEFORMS, mandatory state detection, never a national form number). This management-system CAPA cites the ISO clauses + the org procedure.",
+        "Re-identification key held separately; no injury/illness cell of fewer than 5 individuals is published in this circulated register." ] }
+  ]
+}
