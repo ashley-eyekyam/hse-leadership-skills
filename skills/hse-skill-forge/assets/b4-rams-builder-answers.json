@@ -1,0 +1,19 @@
+{
+  "_comment": "B4 rams-builder author-interview answers (05-06). roster=moderate seeds the STANDARD A6 moderate roster below orchestration:end (the author replaces it with B4's De-identifier-first -> Researcher + Regulatory-Checker + Drafter -> Critic/QA roster, §3.5). a7_components=[risk_matrix,controls,smart_actions] -> scripts/ symlink + verbatim _shim.py (the RA half reuses B1's HIRA loop verbatim; the MS half uses NO engine). category=compliance (D-06), audience=[M,C] (D-07), industry=[Con] -- the one sector-scoped core B-skill. jurisdiction=[All] -> runtime intake resolves CDM (UK) / BOCW (India, mandatory state detection). kb_ids ground CDM 2015 via KB-REG-UK-HSWA (Reg 13/15 + CPP rows landed in 05-01) + BOCW via KB-REG-IN-STATEFORMS.",
+  "description": "Creates consultant-grade, construction-ready RAMS — a combined Risk Assessment and Method Statement for a specific construction activity on a specific site. Use this skill whenever a user asks to build, write, or review a RAMS, a method statement, or a safe system of work for construction works, or to produce a CDM RAMS, a contractor RAMS, or a method statement tied to a risk assessment. Assesses the activity's hazards on a risk matrix, enforces the hierarchy of controls (no PPE-only treatments without justification), builds a sequenced safe system of work with plant, competencies, and permits, cross-references every method step to the risk assessment, names the competent persons, sets out emergency and rescue arrangements, and produces a briefing/sign-off record — grounded in ISO 45001 clause 6.1.2 and the applicable construction law (UK CDM 2015 Regulation 13, or India BOCW with the user's state form), emitting a branded report. Decision-support only; a competent person must review the output.",
+  "author": "eyekyam",
+  "roster": "moderate",
+  "a7_components": ["risk_matrix", "controls", "smart_actions"],
+  "kb_ids": ["KB-STD-ISO45001", "KB-SNIP-HOC", "KB-SNIP-INTAKE", "KB-SNIP-ARCHETYPES", "KB-REG-UK-HSWA", "KB-REG-IN-STATEFORMS", "KB-REG-US-OSHA", "KB-REG-EU-OSH"],
+  "metadata": {
+    "author": "eyekyam",
+    "version": "1.0",
+    "category": "compliance",
+    "tier": 1,
+    "audience": ["M", "C"],
+    "industry": ["Con"],
+    "jurisdiction": ["All"],
+    "status": "stable",
+    "plugin": "hse-core"
+  }
+}
