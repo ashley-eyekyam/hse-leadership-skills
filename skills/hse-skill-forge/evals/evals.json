@@ -6,22 +6,26 @@
     {
       "query": "Scaffold a new toolbox-talk skill: single-threaded, no A7 components, category training, audience F.",
       "files": ["files/deid-clean.md"],
+      "output_files": ["evals/output/scaffold-single-thread.md"],
       "expected_behavior": "Runs the author-interview (one question at a time) to capture name/category/audience/roster/components, then scaffolds a born-conformant skills/<name>/ that lint_skills.py passes with zero hand-edits — the five inline blocks byte-matching template/blocks/*, the folder skeleton, vocab-validated metadata, and the seeded runtime-intake TODO STEP (never the new skill's domain question VALUES).",
       "expectations": [
         "Runs the author-interview (the forge's build-time Q&A about WHAT skill to build) before scaffolding, capturing name, category, audience, roster, and A7 components.",
         "Emits a born-conformant skills/<name>/ whose five inline blocks byte-match template/blocks/* and which lint_skills.py passes with zero hand-edits (specificity dimension: the output reflects the captured answers, not a generic shell).",
         "Seeds the §2.7 runtime intake as a TODO STEP only — it does NOT invent the new skill's domain question VALUES (the two intakes are never conflated, A10 D4).",
-        "Does not produce an HSE artifact (no risk assessment, talk, or investigation) — it produces the next skill's contract-clean skeleton."
+        "Does not produce an HSE artifact (no risk assessment, talk, or investigation) — it produces the next skill's contract-clean skeleton.",
+        "Hierarchy of controls is N/A for this build-time scaffolder (it emits no controls and ranks no hazards) — grade the output on AUTHORING conformance (born-conformant, blocks byte-identical, intakes not conflated, no dead links), not on control ranking."
       ]
     },
     {
       "query": "skill-creator is not installed in this environment — scaffold a permit-to-work skill anyway.",
       "files": ["files/deid-clean.md"],
+      "output_files": ["evals/output/standalone-fallback.md"],
       "expected_behavior": "Falls back to the standalone templates/* skeletons (workflow-skeleton, intake-todo, metadata-stub) and still emits a contract-clean skill — the absence of skill-creator never blocks scaffolding or yields a non-conformant skill.",
       "expectations": [
         "Detects skill-creator is absent and uses the standalone templates/* fallback skeletons rather than failing.",
         "Still emits a contract-clean skill that lint_skills.py passes with zero hand-edits (born-conformant by construction — the blocks are copied from template/blocks/*, not from skill-creator).",
-        "Seeds domain-TODO scaffolds (METHODOLOGY, QUALITY_CHECKLIST, the intake STEP) for the author to fill — every reference resolves on disk so rule 8 passes (defensibility: a clean, fillable skeleton, no dead links)."
+        "Seeds domain-TODO scaffolds (METHODOLOGY, QUALITY_CHECKLIST, the intake STEP) for the author to fill — every reference resolves on disk so rule 8 passes (defensibility: a clean, fillable skeleton, no dead links).",
+        "Hierarchy of controls is N/A for this build-time scaffolder (it emits no controls and ranks no hazards) — grade the output on AUTHORING conformance (standalone fallback clean, blocks byte-identical, intakes not conflated, no dead links), not on control ranking."
       ]
     },
     {
