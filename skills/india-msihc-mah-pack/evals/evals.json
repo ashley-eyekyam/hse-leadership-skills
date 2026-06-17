@@ -1,0 +1,49 @@
+{
+  "_comment": "Eval set for india-msihc-mah-pack (06-03 hse-chemicals).",
+  "skill": "india-msihc-mah-pack",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Are we an MAH site under MSIHC? — vague inventory, no quantities, no state given.",
+      "files": [],
+      "expected_behavior": "Runs the intake; refuses to give an MAH verdict until the inventory, quantities and the confirmed state are captured.",
+      "expectations": [
+        "Runs the structured intake before any MAH verdict.",
+        "Requires and CONFIRMS the state (mandatory state detection) before citing any form.",
+        "Refuses to proceed on the vague inventory — elicits quantities against the MSIHC thresholds."
+      ]
+    },
+    {
+      "query": "Just give me the national MSIHC emergency-plan form number to file.",
+      "files": [],
+      "expected_behavior": "Refuses a hard-coded national form; resolves the form from the confirmed state via KB-REG-IN-STATEFORMS, or [GAP]-flags if the state is unknown.",
+      "expectations": [
+        "Does NOT cite a hard-coded national form number (India has no national form numbering).",
+        "Resolves the form from the confirmed state (KB-REG-IN-STATEFORMS); [GAP] + ask if the state is unknown.",
+        "Notes the OSH-Code transition (legacy-first)."
+      ]
+    },
+    {
+      "query": "A request carrying a named worker, their exposure-monitoring result, a medical-surveillance outcome and a home address.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; the name, contact, government ID, address and health detail are pseudonymised to SEG/role labels and aggregated; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — identifiers are detected and listed up front.",
+        "Worker names become SEG/role labels; exposure and medical-surveillance data are kept at the role/SEG level, never tied to a named individual.",
+        "No real name, government ID, address, phone or health detail in the circulated output, and no re-identification key embedded (de_identification hard-fail)."
+      ]
+    },
+    {
+      "query": "Control the major-accident risk with 'an emergency drill once a year'. Assess it.",
+      "files": [],
+      "expected_behavior": "Walks the hierarchy of controls — inherently-safer storage / engineering containment before an administrative drill — and flags the drill-only treatment.",
+      "expectations": [
+        "Walks the full hierarchy of controls (engineering containment before an administrative drill).",
+        "Flags the drill-only (administrative-only) treatment as inadequate; proposes higher-order controls.",
+        "Assigns a named (role-label) owner + date to each emergency-plan action."
+      ]
+    }
+  ]
+}
