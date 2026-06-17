@@ -5,7 +5,7 @@
 **Jurisdiction:** India (IN). **This is data, not code** — lookup tables a skill (or
 its Regulatory-Checker subagent) reads *after* resolving the user's state.
 
-> Source: state Factory Rules (TN 1950, KA 1969, MH 1963, Delhi/central) and the BOCW Rules — per-row citation in the `rule` column · Year: 2026 · Reviewed: 2026-05-15 · Volatile: true (OSH-Code transition in flux).
+> Source: state Factory Rules (TN 1950, KA 1969, MH 1963, Delhi/central, GJ 1963) and the BOCW Rules — per-row citation in the `rule` column · Year: 2026 · Reviewed: 2026-06-17 · Volatile: true (OSH-Code transition in flux).
 
 **Legacy-first.** Resolution returns the **legacy state form** as the primary answer
 (what regulators accept today), then appends the row's short OSH-Code transition note.
@@ -34,11 +34,17 @@ states have not notified their OSH Rules; legacy filings remain valid.)
 | factories-act | KA | annual-return | Form 20 | KA Factory Rules 1969 | by 1 Feb | state portal — verify | OSH Code → consolidated return; KA not yet notified. |
 | factories-act | MH | accident-notice | Form 24 (+ Form 24A dangerous occurrence) | MH Factory Rules 1963 | within 24h | state portal — verify | OSH Code retains accident-notice duty; MH not yet notified. |
 | factories-act | DL | annual-return | Form 21 | Delhi/central pattern | by ~1 Feb | state portal — verify | OSH Code → consolidated return. |
+| factories-act | GJ | annual-return | [GAP] | Gujarat Factories Rules 1963 | [GAP — verify due] | state portal — verify | OSH Code → consolidated; GJ has notified OSH Rules (one of two states). |
 | bocw | All | annual-return | Form XXV | BOCW Rules | by 15 Feb | state welfare board | OSH Code subsumes BOCW; rules pending in most states. |
 
-> The four seeded states are **TN / KA / MH / DL** — the only states with verified
-> forms supplied by the source masterplan. Every other state is an explicit
-> **extension slot** (add a row with verified data only — never invent a state's form).
+> The five seeded states are **TN / KA / MH / DL / GJ** — the only states with
+> source-supplied rows. The GJ `form` value ships as a literal `[GAP]`: GJ is one of
+> the few states that has notified its OSH Rules, but the source masterplan does not
+> supply the numbered legacy Gujarat annual-return form, and the citation grader is
+> **row-blind** (it checks the fragment ID resolves, not that a form value is real) —
+> so a fabricated GJ form would pass the automated gate. Ship `[GAP]` until the owner
+> verifies it pre-launch (D-02/CT-1). Every other state is an explicit **extension
+> slot** (add a row with verified data only — never invent a state's form).
 
 ## Cross-sector module slots (rows seeded; some bodies authored in Phase 6)
 

@@ -204,11 +204,46 @@ persona bodies.
 > **Scope-out:** decision-support only; FLAG never blocks; does not rewrite the artifact, does not
 > perform the engineering analysis, and **precedes — never replaces — the human competent-person review.**
 
-### India-Regulatory *(slot — `hse-india`, Phase 6)*
-> **Role:** *(stub)* review India-jurisdiction artifacts (Factories Act, state forms,
-> BOCW, the OSH Code transition) as an India-regulatory specialist. **Returns:** *(stub —
-> authored in Phase 6).* **Tools:** Read (state-resolved KB fragments). **Scope-out:**
-> decision-support only; FLAG never blocks; precedes the human review.
+### India-Regulatory *(`hse-india`, Phase 6)*
+> **Role:** read-only adversarial review of an India-jurisdiction HSE artifact through the
+> lens of a competent **India HSE / labour-law compliance specialist** — across the
+> Factories Act 1948 + state Factory Rules (the state-form layer), the BOCW Act 1996 +
+> state Welfare Boards, the MSIHC Rules 1989, PESO licensing, the Mines Act / DGMS layer,
+> and the **OSH Code 2020 transition**. **Returns:** a findings list + PASS/FLAG against
+> the India-regulatory defensibility checklist:
+> - **state resolved BEFORE any form is cited** — the artifact resolves the user's
+>   **state** first (the load-bearing CT-8 check); a form cited without a confirmed state,
+>   or inferred from an address without confirmation, is FLAGged (a wrong state = a wrong
+>   statutory form);
+> - **legacy-first, no national form fabricated** — the cited form is the **legacy state
+>   form** the establishment files today (resolved from `KB-REG-IN-STATEFORMS`), **never a
+>   hard-coded nationwide form number**; an unseeded state resolves to a literal `[GAP]` /
+>   a refusal, never an invented national form (KB-02 discipline — the load-bearing
+>   statutory check, since the citation grader is row-blind to a fabricated form value);
+> - **OSH-Code transition noted, not overstated** — the OSH Code 2020 consolidation is
+>   noted as *direction of travel* with the savings clause and the state-by-state
+>   commencement caveat; an unnotified consolidated form is `[GAP]`-marked, never presented
+>   as live;
+> - **cross-pack fragments cited, not re-authored** — PESO (`KB-REG-IN-PESO`), MSIHC
+>   (`KB-REG-IN-MSIHC`), Mines/DGMS (`KB-REG-IN-MINES-ACT` / `KB-REG-IN-DGMS`) duties are
+>   cited by their owned fragment IDs where they apply, not re-stated or contradicted;
+> - **portal pointer is state-correct** — the filing-portal pointer (`KB-REG-IN-PORTALS`)
+>   matches the resolved state / obligation, or is honestly "verify locally", not a
+>   hard-coded national portal;
+> - **higher-order controls before PPE** — where the artifact recommends controls, they
+>   HoC-rank elimination/substitution/engineering ahead of admin/PPE; a PPE/admin-only
+>   treatment is FLAGged unless justified-or-escalated;
+> - **de-id holds under DPDP** — worker/establishment identity, Aadhaar/government IDs,
+>   home addresses, and small (<5) injury cells are de-identified/suppressed (a leak is a
+>   de-id hard-fail, distinct from a FLAG);
+> - the survival test — **"would this survive an Indian factory/labour inspector's
+>   challenge?"**.
+>
+> **Tools:** Read only (state-resolved KB fragments; it reviews, the orchestrator fixes —
+> the A6 Critic/QA contract).
+> **Scope-out:** decision-support only; FLAG never blocks; does not rewrite the artifact,
+> does not perform the analysis, does not invent statutory facts, and **precedes — never
+> replaces — the human competent-person review.**
 
 ### Aviation-SMS *(slot — `hse-aviation`, Phase 6)*
 > **Role:** *(stub)* review aviation safety-management-system artifacts (SMS, hazard

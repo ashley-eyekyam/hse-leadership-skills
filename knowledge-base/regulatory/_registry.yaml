@@ -23,10 +23,10 @@
     industry: [All]
     topics: [annual-return, half-yearly-return, accident-notice, registers, license, state-detection]
     audience: [M, C]
-  summary: "(law, state, obligation) → {form, rule, due, portal, osh_transition}; TN/KA/MH/DL + BOCW seeded; Mines/PESO/MSIHC module slots; OSH-Code transition note. No nationwide form number."
-  source: "State Factory Rules (TN 1950, KA 1969, MH 1963, Delhi/central) + BOCW Rules — see fragment body for per-row cite."
+  summary: "(law, state, obligation) → {form, rule, due, portal, osh_transition}; TN/KA/MH/DL/GJ + BOCW seeded (GJ form value [GAP] until verified — D-02/CT-1); Mines/PESO/MSIHC module slots; OSH-Code transition note. No nationwide form number."
+  source: "State Factory Rules (TN 1950, KA 1969, MH 1963, Delhi/central, GJ 1963) + BOCW Rules — see fragment body for per-row cite."
   year: 2026
-  last_reviewed: 2026-05-15
+  last_reviewed: 2026-06-17
   volatile: true
   supersedes: null
 
@@ -210,5 +210,52 @@
   source: "Mines Act 1952 + Mines Rules / DGMS (https://www.dgms.gov.in/) — verified anchors per row; [GAP] where source does not supply a numbered form."
   year: 2026
   last_reviewed: 2026-05-15
+  volatile: true
+  supersedes: null
+
+# --- hse-india sector pack (06-05): BOCW + OSH Code (90d staleness) + state portals ---
+- id: KB-REG-IN-BOCW
+  file: in-bocw.md
+  title: "India — BOCW Act 1996 + BOCW Rules (construction-worker welfare/safety, legacy-first)"
+  facets:
+    jurisdiction: [IN]
+    industry: [Con, All]
+    topics: [bocw, registration, cess, welfare-board, safety-officer, returns, accident-notice, state-detection, osh-code-transition]
+    audience: [M, C]
+  summary: "BOCW Act 1996 + BOCW (RE&CS) Central Rules 1998 duty→artifact map: establishment registration, 1% cess, state Welfare Board returns (Form XXV annual), safety-officer/committee thresholds, accident notice. State-aware (mandatory state detection via KB-REG-IN-STATEFORMS); legacy-first; OSH-Code (BOCW subsumed) transition note. No hard-coded national form. Citation map, not the rules text."
+  source: "Building & Other Construction Workers Act 1996 + BOCW Central Rules 1998 + state BOCW Rules (citation map; user holds the text)"
+  year: 2026
+  last_reviewed: 2026-06-17
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-IN-OSH-CODE
+  file: in-osh-code.md
+  title: "India — OSH Code 2020 (transitional consolidation of 13 labour laws, legacy-first)"
+  facets:
+    jurisdiction: [IN]
+    industry: [All]
+    topics: [osh-code, consolidation, registration, single-return, savings-clause, state-rules, state-detection, transition]
+    audience: [M, C]
+  summary: "Occupational Safety, Health & Working Conditions Code 2020 transition map: consolidates 13 laws (Factories/BOCW/Mines/Contract-Labour/Dock/Plantation…) into single registration + single consolidated return in principle; commencement is state-by-state and largely PENDING; the savings clause keeps legacy filings valid. Legacy-first — cite the legacy state form (KB-REG-IN-STATEFORMS) as the primary answer, flag the OSH-Code direction. ACTIVELY TRANSITIONING (status: beta; staleness window 90d). No hard-coded national form. Citation map, not the Code text."
+  source: "Occupational Safety, Health and Working Conditions Code, 2020 (Act 37 of 2020) + draft Central/State OSH Rules (citation map; status in flux — user holds the text)"
+  year: 2026
+  last_reviewed: 2026-06-17
+  volatile: true
+  staleness_days: 90
+  supersedes: null
+
+- id: KB-REG-IN-PORTALS
+  file: in-portals.md
+  title: "India — statutory filing-portal pointers (Shram Suvidha + state factory/labour portals)"
+  facets:
+    jurisdiction: [IN]
+    industry: [All]
+    topics: [filing-portals, shram-suvidha, state-factory-portal, welfare-board-portal, dgms-portal, state-detection]
+    audience: [M, C]
+  summary: "Filing-portal pointer layer for India statutory returns/notices: the central Shram Suvidha portal + the per-state factory/labour-department + BOCW Welfare Board + DGMS portals. Pointers only ('verify locally' where the portal is state-specific) — never a substitute for resolving the state (KB-REG-IN-STATEFORMS) first. No hard-coded national portal as the single filing target. Pointer map, not a live directory."
+  source: "Shram Suvidha (https://shramsuvidha.gov.in/) + state factory/labour-department & BOCW Welfare Board portals + DGMS (https://www.dgms.gov.in/) — pointer map (verify per state; user confirms the live URL)"
+  year: 2026
+  last_reviewed: 2026-06-17
   volatile: true
   supersedes: null
