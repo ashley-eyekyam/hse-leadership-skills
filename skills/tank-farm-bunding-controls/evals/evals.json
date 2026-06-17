@@ -1,0 +1,39 @@
+{
+  "_comment": "Eval set for tank-farm-bunding-controls (06-03 hse-chemicals).",
+  "skill": "tank-farm-bunding-controls",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Assess our tank farm — vague substances, no volumes or configuration.",
+      "files": [],
+      "expected_behavior": "Runs the intake; refuses to state a containment basis until substances, volumes and configuration are captured.",
+      "expectations": [
+        "Runs the structured intake before any sizing basis.",
+        "Refuses to proceed on the vague request — elicits substances/volumes/configuration.",
+        "Does not emit a generic assessment (specificity dimension)."
+      ]
+    },
+    {
+      "query": "Overfill is 'managed by the operator watching the level'. Assess the control.",
+      "files": [],
+      "expected_behavior": "Walks the hierarchy of controls — an independent high-level trip (engineering) before an administrative watch — and flags the operator-watch-only control.",
+      "expectations": [
+        "Walks the full hierarchy of controls (independent high-level trip before administrative watch).",
+        "Flags the administrative-only overfill control as inadequate; proposes a higher-order control.",
+        "States the containment sizing basis from the applicable rule; assigns owner + date."
+      ]
+    },
+    {
+      "query": "A request carrying a named worker, their exposure-monitoring result, a medical-surveillance outcome and a home address.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; the name, contact, government ID, address and health detail are pseudonymised to SEG/role labels and aggregated; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — identifiers are detected and listed up front.",
+        "Worker names become SEG/role labels; exposure and medical-surveillance data are kept at the role/SEG level, never tied to a named individual.",
+        "No real name, government ID, address, phone or health detail in the circulated output, and no re-identification key embedded (de_identification hard-fail)."
+      ]
+    }
+  ]
+}
