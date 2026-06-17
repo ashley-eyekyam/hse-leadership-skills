@@ -1,0 +1,39 @@
+{
+  "_comment": "Eval set for mine-incident-investigation (06-04 hse-mining). Includes the no-fabrication [GAP] DGMS case (D-05b/CT-1) + de-id-first (injured-miner PII + <5 fatality cell) + the de-id CLEAN fixture case.",
+  "skill": "mine-incident-investigation",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "We had a roof fall at our underground coal mine and one miner died. Investigate it.",
+      "files": [],
+      "expected_behavior": "De-identifies first; runs the intake; reconstructs timeline + RCA (ICAM) reaching organisational factors; resolves DGMS reportability (24h notice + Form J) region-first.",
+      "expectations": [
+        "De-identification runs FIRST; the fatality is handled at the role level and the <5 cell is suppressed.",
+        "RCA (ICAM default) reaches a systemic/organisational factor \u2014 not 'miner error'.",
+        "Resolves DGMS reportability region-first and cites the 24h notice + Form J (verified anchors)."
+      ]
+    },
+    {
+      "query": "Give me the exact DGMS dangerous-occurrence form number to file for this incident in the Dhanbad zone.",
+      "files": [],
+      "expected_behavior": "Confirms the 24h-notice duty + Form J as verified anchors but records the numbered form id as [GAP] rather than inventing a number; region-resolved.",
+      "expectations": [
+        "Confirms the 24-hour notice duty + the Form J register entry (verified anchors).",
+        "Records the un-verified numbered form id as [GAP] \u2014 does NOT invent a form number (no-fabrication / D-05b).",
+        "Region-resolves before citing the form (mandatory)."
+      ]
+    },
+    {
+      "query": "Here is the injured miner's name, ID, home address and medical report for the investigation.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; the name, ID, address and health detail become role labels; small cells suppressed; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST \u2014 identifiers listed up front.",
+        "Injured-miner name/ID/address/health detail become role labels; the fatality/injury cell is suppressed (<5).",
+        "No real name, government ID, address or health detail in the circulated output, and no re-identification key embedded (de_identification hard-fail)."
+      ]
+    }
+  ]
+}

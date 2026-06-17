@@ -1,0 +1,40 @@
+{
+  "_comment": "Mining incident-investigation report tree (A4 report.json). DGMS notice / Form-J overlay per spec 3.3 + Archetype 10; house_template unset (D-04/CT-3).",
+  "title": "Mine Incident Investigation Report",
+  "sections": [
+    {
+      "type": "meta",
+      "fields": [
+        "mine_name",
+        "commodity",
+        "method_opencast_underground",
+        "region_zone",
+        "classification"
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Timeline & evidence log"
+    },
+    {
+      "type": "findings",
+      "title": "Root-cause analysis (ICAM \u2014 reaches organisational factors)"
+    },
+    {
+      "type": "table",
+      "title": "DGMS reportability (24h notice + Form J; [GAP] where unverified)"
+    },
+    {
+      "type": "hoc_table",
+      "title": "Corrective actions (HoC-tagged; each traces to a cause)"
+    },
+    {
+      "type": "recommendations",
+      "title": "CAPA (owner + due)"
+    },
+    {
+      "type": "callout",
+      "text": "OSH-Code transition note (legacy-first)."
+    }
+  ]
+}
