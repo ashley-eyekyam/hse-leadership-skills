@@ -212,3 +212,19 @@
   last_reviewed: 2026-05-15
   volatile: true
   supersedes: null
+
+# --- hse-mining sector pack (06-04): ICMM Critical Control Management (mining-owned framing) ---
+- id: KB-STD-ICMM-CCM
+  file: icmm-ccm.md
+  title: "ICMM Critical Control Management (CCM) framing + mining principal-hazard taxonomy"
+  facets:
+    jurisdiction: [All]
+    industry: [Min]
+    topics: [icmm, ccm, critical-control, material-unwanted-event, principal-hazard, verification, performance-standard]
+    audience: [M, C]
+  summary: "ICMM CCM method map (material unwanted events, critical-control identification, criticality, performance requirements, verification + accountability) + the mining principal-hazard taxonomy (mining-owned). References KB-STD-CCPS-BOWTIE + bowtie-builder for the bowtie technique — does NOT re-author it. Jurisdiction-independent framing reference, not the ICMM guidance text."
+  source: "ICMM Critical Control Management — method structure (user holds the guidance)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null

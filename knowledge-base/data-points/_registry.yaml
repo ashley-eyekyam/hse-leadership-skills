@@ -61,3 +61,19 @@
   last_reviewed: 2026-05-15
   volatile: true
   supersedes: null
+
+# --- hse-mining sector pack (06-04): mining principal-hazard library + benchmark figures ---
+- id: KB-DATA-MINING-HAZARDS
+  file: mining-hazards.md
+  title: "Mining principal-hazard library + benchmark figures (source+year)"
+  facets:
+    jurisdiction: [All]
+    industry: [Min]
+    topics: [principal-hazard, strata, inrush, fire-explosion, ventilation, mobile-plant, respirable-dust, benchmarks]
+    audience: [M, C]
+  summary: "Mining principal-hazard library (strata/inrush/fire-explosion/ventilation/mobile-plant/fall/energy/dust) + fatality/injury benchmark figures resolved from DGMS / ICMM with authority+year (never a bare number; [GAP] where unresolved). Controls HoC-ranked (KB-SNIP-HOC)."
+  source: "DGMS annual statistics / reports (India mining fatality & injury rates); ICMM safety-performance benchmarking (per-row authority+year)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: true
+  supersedes: null

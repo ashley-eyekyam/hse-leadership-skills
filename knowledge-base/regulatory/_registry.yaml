@@ -181,3 +181,34 @@
   last_reviewed: 2026-05-15
   volatile: true
   supersedes: null
+
+# --- hse-mining sector pack (06-04): India Mines Act / DGMS (legacy-first, [GAP]-marked forms) ---
+- id: KB-REG-IN-MINES-ACT
+  file: in-mines-act.md
+  title: "India — Mines Act 1952 + Mines Rules (statutory-artifact map, legacy-first)"
+  facets:
+    jurisdiction: [IN]
+    industry: [Min]
+    topics: [mines-act, statutory-appointment, ventilation, strata-control, blasting, accident-notice, returns, region-detection, osh-code-transition]
+    audience: [M, C]
+  summary: "Mines Act 1952 + Mines Rules provision→duty→artifact map (statutory Manager/officials appointment, ventilation/strata/blasting plan duties, accident-notification, returns/registers). Cross-references KB-REG-IN-DGMS for forms + KB-REG-IN-STATEFORMS for region resolution; legacy-first, mandatory region detection, OSH-Code transition note. Provision map, not the statute text."
+  source: "Mines Act 1952 + Mines Rules / DGMS (https://www.dgms.gov.in/) — provision→duty map (user holds the text)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-IN-DGMS
+  file: in-dgms.md
+  title: "India — DGMS / Mines Act forms, notices, returns & appointments (legacy-first)"
+  facets:
+    jurisdiction: [IN]
+    industry: [Min]
+    topics: [accident-notice, dangerous-occurrence, form-j-register, form-b-register, annual-return, statutory-appointment, region-detection, osh-code-transition]
+    audience: [M, C]
+  summary: "DGMS prescribed forms — 24h accident notice, Form J register, Form B register, annual return ~20 Jan, statutory Manager/officials appointments; OSH-Code transition note. Form ids not verified in source are marked [GAP] — never invented (the citation grader is row-blind). Mandatory region detection via KB-REG-IN-STATEFORMS."
+  source: "Mines Act 1952 + Mines Rules / DGMS (https://www.dgms.gov.in/) — verified anchors per row; [GAP] where source does not supply a numbered form."
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: true
+  supersedes: null
