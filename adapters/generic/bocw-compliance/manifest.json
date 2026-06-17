@@ -1,0 +1,19 @@
+{
+  "description": "Assess India BOCW (Building & Other Construction Workers) statutory compliance for a named construction establishment: establishment registration, the 1% welfare cess, the Form XXV annual return (by 15 Feb), Safety Officer / Safety Committee thresholds, and accident notification — grounded in KB-REG-IN-BOCW with MANDATORY state detection. Use it to produce a BOCW compliance gap-list for a site in a given state, resolve which Welfare Board return is filed and when, and flag the OSH-Code (BOCW subsumed) transition. State detection is mandatory; state-specific values resolve from the KB row or are [GAP]-flagged, never invented; no hard-coded national form. Decision-support only; a competent person must review the output.",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/deid-checklist.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/in-state-forms.md",
+    "knowledge/intake-interview.md",
+    "knowledge/iso-45001.md",
+    "knowledge/subagent-archetypes.md"
+  ],
+  "name": "bocw-compliance",
+  "notes": "Markdown-report degradation; run the intake conversationally.",
+  "system_prompt_file": "system-prompt.md"
+}

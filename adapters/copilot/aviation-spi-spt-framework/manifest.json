@@ -1,0 +1,21 @@
+{
+  "capabilities": [],
+  "description": "Design a Safety Performance Indicator (SPI) and Safety Performance Target (SPT) framework per the ICAO Annex 19 Safety Assurance pillar: define leading/lagging SPIs, set alert and target levels, and map each SPI to an owning hazard or safety objective. Use this skill to build or review an SPI/SPT framework for a named operator, airport, or AMO, or to align SPIs to a State Safety Programme's acceptable level of safety performance (the DGCA SSP in India). Grounds in KB-STD-ICAO-ANNEX19, uses incident_rates for trend context, forces every SPI to carry a defined threshold and an owner, and never invents performance figures. Decision-support only; a competent person must review the output.",
+  "instructions": "See instructions.md (the full instruction field).",
+  "knowledge_sources": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/deid-checklist.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/icao-annex19.md",
+    "knowledge/in-dgca.md",
+    "knowledge/incident-rates-benchmarks.md",
+    "knowledge/intake-interview.md",
+    "knowledge/subagent-archetypes.md"
+  ],
+  "name": "aviation-spi-spt-framework",
+  "schema": "1.7"
+}

@@ -1,0 +1,21 @@
+{
+  "code_interpreter": true,
+  "conversation_starters": [],
+  "description": "Produces a Management of Change (MoC) package: the technical basis for the change, a risk assessment of the change, temporary-change expiry, the Pre-Start-Up Safety Review (PSSR) as a hard pre-start-up gate, and document/training updates (OSHA 1910.119(l), ISO 45001 8.1.3). No start-up authorization is issued until the PSSR checklist passes. Decision-support only; a competent person must review the output.",
+  "instructions_file": "instructions.md",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/deid-checklist.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/intake-interview.md",
+    "knowledge/iso-45001.md",
+    "knowledge/psm.md",
+    "knowledge/subagent-archetypes.md",
+    "knowledge/us-osha.md"
+  ],
+  "name": "management-of-change"
+}

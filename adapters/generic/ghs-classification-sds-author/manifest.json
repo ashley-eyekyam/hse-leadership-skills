@@ -1,0 +1,21 @@
+{
+  "description": "Classify a substance or mixture to GHS / EU CLP (with REACH registration and SDS duties) and author or maintain a 16-section Safety Data Sheet — hazard class + category, pictograms, signal word, H/P statements, and §8 exposure controls ranked through the hierarchy of controls (engineering before PPE). Use it to classify a chemical, write an SDS, check CLP labelling, or work out REACH SDS / registration duties. Refuses to invent a hazard class on absent data — flags [GAP] and routes to a competent person / further testing. Decision-support only; a competent person must review the output, which is never an authoritative regulatory SDS.",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/deid-checklist.md",
+    "knowledge/eu-clp-reach.md",
+    "knowledge/ghs.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/in-state-forms.md",
+    "knowledge/intake-interview.md",
+    "knowledge/subagent-archetypes.md",
+    "knowledge/us-osha.md"
+  ],
+  "name": "ghs-classification-sds-author",
+  "notes": "Markdown-report degradation; run the intake conversationally.",
+  "system_prompt_file": "system-prompt.md"
+}

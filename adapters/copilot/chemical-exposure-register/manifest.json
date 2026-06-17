@@ -1,0 +1,23 @@
+{
+  "capabilities": [],
+  "description": "Build an OEL/WEL/PEL-linked chemical hazard and exposure register, organised by similar-exposure group (SEG), banding each exposure with the risk matrix and flagging where health surveillance or air monitoring is due. Use it to build a chemical exposure register, link agents to occupational exposure limits, assess inhalation/dermal exposure risk by SEG, or plan a monitoring schedule. Every limit is cited with its source and year; controls are hierarchy-of-controls ranked; worker exposure data is de-identified to role/SEG labels before drafting. Decision-support only; a competent person (e.g. occupational hygienist) must review the output.",
+  "instructions": "See instructions.md (the full instruction field).",
+  "knowledge_sources": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/deid-checklist.md",
+    "knowledge/eu-clp-reach.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/intake-interview.md",
+    "knowledge/iso-45001.md",
+    "knowledge/oel-limits.md",
+    "knowledge/subagent-archetypes.md",
+    "knowledge/uk-hswa.md",
+    "knowledge/us-osha.md"
+  ],
+  "name": "chemical-exposure-register",
+  "schema": "1.7"
+}

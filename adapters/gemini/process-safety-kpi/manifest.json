@@ -1,0 +1,19 @@
+{
+  "code_interpreter": false,
+  "description": "Computes and frames API RP 754 process-safety performance indicators: Tier-1 and Tier-2 Process Safety Event (PSE) counts and normalized rates, and Tier-3/Tier-4 leading indicators. Counting is structured from the user's event facts (never invented); the rate uses the fail-loud denominator discipline (a missing or zero hours denominator is [GAP], never a fabricated figure). Distinct from the occupational TRIR/LTIFR/DART family. Decision-support only; a competent person must review the output.",
+  "instructions_file": "instructions.md",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/api-rp-754.md",
+    "knowledge/deid-checklist.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/intake-interview.md",
+    "knowledge/iso-45001.md",
+    "knowledge/subagent-archetypes.md"
+  ],
+  "name": "process-safety-kpi"
+}

@@ -1,0 +1,18 @@
+{
+  "code_interpreter": false,
+  "description": "Scaffold a new, contract-conformant HSE Leadership skill at build time: this build-time authoring tool runs an author-interview, then emits a born-conformant skills/<name>/ with the five inline blocks byte-matching template/blocks/*, the folder skeleton, vocab-validated metadata, the seeded runtime intake step, and an A8-shaped evals skeleton. It is for skill authors and maintainers extending the pack, not an HSE-advice skill — it produces no risk assessment, talk, or investigation.",
+  "instructions_file": "instructions.md",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/deid-checklist.md",
+    "knowledge/intake-interview.md",
+    "knowledge/mandatory-blocks.md",
+    "knowledge/orchestration-patterns.md",
+    "knowledge/subagent-archetypes.md"
+  ],
+  "name": "hse-skill-forge"
+}

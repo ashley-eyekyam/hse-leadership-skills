@@ -1,0 +1,19 @@
+{
+  "code_interpreter": false,
+  "description": "Build an ICAO Annex 19 four-pillar Safety Management System (SMS) manual — Safety Policy & Objectives, Safety Risk Management, Safety Assurance, Safety Promotion — scoped to a named aircraft operator, airport, or approved maintenance/training organisation, plus the SPI/SPT framework and just-culture policy it frames. Use this skill to build or review an aviation SMS manual, align an SMS to a State Safety Programme (the DGCA SSP in India), or structure an SMS-acceptance submission. Grounds every pillar in KB-STD-ICAO-ANNEX19, aligns the India layer to KB-REG-IN-DGCA, names the Accountable Manager and Safety Manager, forces operator/operation specificity, and ranks every risk mitigation through the hierarchy of controls. Decision-support only; a competent person (aviation SME) must review the output.",
+  "instructions_file": "instructions.md",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/deid-checklist.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/icao-annex19.md",
+    "knowledge/in-dgca.md",
+    "knowledge/intake-interview.md",
+    "knowledge/subagent-archetypes.md"
+  ],
+  "name": "aviation-sms-builder"
+}

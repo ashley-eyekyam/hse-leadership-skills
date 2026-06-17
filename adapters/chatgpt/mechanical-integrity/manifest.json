@@ -1,0 +1,20 @@
+{
+  "code_interpreter": true,
+  "conversation_starters": [],
+  "description": "Structures a mechanical / asset-integrity program: equipment criticality ranking, inspection/test/preventive-maintenance (ITPM) schedules, deficiency management, and integrity-operating-windows framing. Produces a criticality-ranked equipment register with a hierarchy-of-controls deficiency-remediation plan and SMART actions tracked to closure. Decision-support only; a competent person must review the output.",
+  "instructions_file": "instructions.md",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/deid-checklist.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/intake-interview.md",
+    "knowledge/iso-45001.md",
+    "knowledge/psm.md",
+    "knowledge/subagent-archetypes.md"
+  ],
+  "name": "mechanical-integrity"
+}

@@ -1,0 +1,127 @@
+# adapters.yml — the cross-platform adapter-bundle CI (Unit C, §3.8).
+#
+# Deterministic, no model calls — mirrors validate-skills.yml's house pattern:
+# a `guard` step detects the build script and every work step is gated on
+# `steps.guard.outputs.present == 'true'` so nothing self-blocks before the
+# scripts land. Pinned python 3.12; stdlib + pyyaml only.
+#
+# The three per-job `name:` strings (build, bundle-diff, four-non-negotiables)
+# become NEW branch-protection status-check contexts (registered on main in Plan
+# 07-05). They are SEPARATE from — and must NEVER be confused with — the existing
+# 8 contexts (lint · standard-validate · pytest · marketplace · report-smoke ·
+# changed-skills-eval · deid-auto-fail · sme-persona-review), which live in
+# validate-skills.yml / eval.yml and are untouched here.
+name: Adapter Bundles
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'skills/**'
+      - 'adapters/**'
+      - 'assets/report-engine/**'
+      - 'scripts/hse_components/**'
+      - 'knowledge-base/**'
+      - 'template/blocks/**'
+  push:
+    paths:
+      - 'skills/**'
+      - 'adapters/**'
+      - 'assets/report-engine/**'
+      - 'scripts/hse_components/**'
+      - 'knowledge-base/**'
+      - 'template/blocks/**'
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: guard
+        name: Check adapter build script exists
+        run: |
+          if [ -f "adapters/build.py" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::adapters/build.py not yet present. Skipping adapter build."
+          fi
+
+      - name: Set up Python
+        if: steps.guard.outputs.present == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        if: steps.guard.outputs.present == 'true'
+        run: pip install pyyaml
+
+      - name: Emit + self-validate all 49 skills × 4 platforms
+        if: steps.guard.outputs.present == 'true'
+        run: python adapters/build.py --all --check
+
+  bundle-diff:
+    name: bundle-diff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: guard
+        name: Check adapter validator exists
+        run: |
+          if [ -f "adapters/validate_adapters.py" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::adapters/validate_adapters.py not yet present. Skipping bundle-diff."
+          fi
+
+      - name: Set up Python
+        if: steps.guard.outputs.present == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        if: steps.guard.outputs.present == 'true'
+        run: pip install pyyaml
+
+      - name: Validate committed bundles + rebuild-and-diff drift + no-heavy-assets
+        if: steps.guard.outputs.present == 'true'
+        run: python adapters/validate_adapters.py --all
+
+  four-non-negotiables:
+    name: four-non-negotiables
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: guard
+        name: Check adapter validator exists
+        run: |
+          if [ -f "adapters/validate_adapters.py" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::adapters/validate_adapters.py not yet present. Skipping four-non-negotiables."
+          fi
+
+      - name: Set up Python
+        if: steps.guard.outputs.present == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        if: steps.guard.outputs.present == 'true'
+        run: pip install pyyaml
+
+      - name: Assert de-id · DISCLAIMER · HoC · §2.7 intake survive IN instructions
+        if: steps.guard.outputs.present == 'true'
+        # A8's de-id-auto-fail philosophy in the adapter layer: a missing
+        # non-negotiable is unmistakable in THIS check name (the single biggest
+        # Phase-7 safety gap — watchlist).
+        run: python adapters/validate_adapters.py --all --non-negotiables

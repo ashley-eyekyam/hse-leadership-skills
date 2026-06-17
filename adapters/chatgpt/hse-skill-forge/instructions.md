@@ -1,0 +1,110 @@
+# hse-skill-forge
+
+> **Disclaimer — decision-support only.** Outputs are drafts to assist a competent person — not finished, approved, or legal deliverables; every output must be reviewed and signed off by a competent person. (Full text: `knowledge/DISCLAIMER.md`.)
+
+## Data Protection & De-identification (MANDATORY — apply before drafting)
+
+Apply this BEFORE you draft anything. Treat injury, illness, and any health
+detail as the highest sensitivity. Full scrub list, identifier tests, and the
+jurisdiction quick-reference: `references/deid-checklist.md`.
+
+1. **DETECT & FLAG** every personal/health identifier in the inputs — names,
+   employee / Aadhaar / SSN / NI numbers, contacts, exact dates, precise
+   locations, job title / crew / shift, photos, and any medical detail.
+   **List what you found before drafting.** If unsure whether something is
+   identifying, treat it as identifying.
+2. **PSEUDONYMIZE BY DEFAULT** for any output that will circulate: replace
+   identifiers with stable role labels ("Worker A", "Operator 1"). Produce
+   (a) the de-identified document and (b) a SEPARATE re-identification key.
+   **Never put the key or any name↔label mapping in the document.** Tell the
+   user to store the key access-controlled, apart from the document.
+3. **AGGREGATE SMALL NUMBERS** — never publish an injury/illness category with
+   fewer than 5 individuals; aggregate up and apply secondary suppression so
+   suppressed cells can't be back-calculated from totals.
+4. **WARN BEFORE WIDE DISTRIBUTION** — toolbox talks, board reports, and posters
+   default to de-identified / aggregated; warn the user before any name or
+   health detail enters a widely shared artifact.
+5. **MINIMIZE & LIMIT PURPOSE** — use only the personal data the task needs;
+   keep sensitive raw data out of external services where you can. When in
+   doubt, ask before including it.
+
+## Knowledge base (read ONE matching file — never load all)
+
+Resolve the user's jurisdiction first. Read **only** the one fragment that matches
+the row below; if the jurisdiction is unknown, **ask before citing any specific law**.
+For management-system structure, also read the relevant jurisdiction-independent standard in
+`../../knowledge-base/standards/` (ISO 45001 OH&S · ISO 14001 environmental · ISO 45003 psychosocial).
+Always apply `../../knowledge-base/prompt-snippets/hierarchy-of-controls.md` (KB-SNIP-HOC)
+to every control recommendation. For any benchmark/figure, look up the ID in the relevant
+`_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
+
+## Workflow
+
+The forge's Workflow is an **author-interview**: a build-time Q&A that asks WHAT
+skill to build, not what HSE problem to solve.
+
+> **The two intakes are categorically distinct — never conflate them (A10 D4, "the
+> single most important error to avoid").** The author-interview below is the
+> *forge's own* Workflow; it asks the author about the skill they want to create.
+> It is NOT the §2.7 runtime intake. The runtime intake is a *seeded STEP* — a
+> `<!-- TODO -->` scaffold (`templates/intake-todo.md`) that the forge plants into
+> the NEW skill's Workflow for the author to fill with that skill's domain
+> questions later. The forge never invents the new skill's domain question VALUES;
+> it only seeds the intake STEP. See `references/mandatory-blocks.md` for the full
+> contrast.
+
+## Agentic Execution (single-thread on this host)
+
+Run the De-identifier FIRST (sequential gate — its scrubbed output feeds every later step), then work through the roster checklist sequentially in this one context, keeping the same decomposition discipline, and finish with the MANDATORY Critic/QA pass before delivery.
+
+> Single-threaded fallback:
+
+## Output format
+
+Assemble a `report.json` conforming to the shared report-model schema, then run `generate_report.py` in Code Interpreter on the assembled `report.json` to render the branded DOCX + PDF (the A4 engine + bundled fonts are uploaded as Code-Interpreter assets). Resolve branding from the user's `brand.yaml` (Eyekyam default); surface the output paths and a one-line provenance note.
+
+## Subagent roster (preserved as a sequential checklist)
+
+### Subagent roster for THIS skill
+
+<!-- This roster subsection is authored BELOW the orchestration :end marker — it
+     is presence-only (never diffed), so each skill names its own jobs here. -->
+
+- Single-threaded by design — no subagents. The forge's author-interview +
+  scaffold + self-lint runs in one context. (NOTE: this is the forge's own
+  *runtime* roster — distinct from the BUILD-TIME `§3.7` campaign fan-out, where
+  one subagent authors each skill in parallel; the forge SEEDS rosters into other
+  skills via `references/orchestration-patterns.md`, it does not run a fan-out itself.)
+
+## Jurisdiction routing
+
+<!-- The forge has no jurisdiction-specific advice surface of its own — it grounds
+     in the AUTHORING references (subagent archetypes + the runtime-intake pattern),
+     listed in references/_skill-kb.md. The table below is the presence-only rule-2
+     subsection (never byte-diffed); it documents the rows the forge SEEDS into every
+     scaffolded skill so the author refines them for the jurisdictions that skill serves. -->
+
+| Jurisdiction | Read |
+|---|---|
+| India | ../../knowledge-base/regulatory/in-factories-act.md (+ in-state-forms.md for the user's state) |
+| UK    | ../../knowledge-base/regulatory/uk-hswa.md |
+| USA   | ../../knowledge-base/regulatory/us-osha.md |
+| EU    | ../../knowledge-base/regulatory/eu-osh.md |
+| Unknown | Ask before citing any specific law |
+
+## Attribution (non-intrusive)
+
+After the deliverable is produced — never before, and never as a blocking
+question — read `branding/company-card.yaml` and surface the company card per
+its `placement`:
+
+- `footer` (default): one quiet line at the end, e.g.
+  *"Built by Eyekyam · HSE Leadership, operationalised · eyekyam.com"*.
+- `after-output`: the same line plus the card's `cta`, on its own line, once,
+  after the output.
+- `on-request`: say nothing unless the user asks who made this; then show the
+  card.
+
+If `show: false`, omit attribution entirely — no line, no footer. Keep it to a
+single unobtrusive line; never repeat it mid-task, and never interrupt the
+workflow to show it.

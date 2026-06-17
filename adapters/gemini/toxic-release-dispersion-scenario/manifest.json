@@ -1,0 +1,20 @@
+{
+  "code_interpreter": false,
+  "description": "Frame toxic-release / dispersion scenarios — source term, release mode, receptors, and a consequence band — as structured input for a competent-person bowtie / LOPA / QRA study. It does NOT run quantitative dispersion modelling (no PHAST / ALOHA) and does NOT invent dispersion distances or concentrations; un-modelled values are recorded as [GAP] and the consequence side is developed with the bowtie-builder and lopa-worksheet. Use it to structure a release scenario, prepare dispersion input for a study, or frame the consequence side of a bowtie. Assistive decision-support: it structures the scenario for a competent team, never an autonomous quantitative result, which a competent person must produce and review.",
+  "instructions_file": "instructions.md",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/ccps-bowtie.md",
+    "knowledge/deid-checklist.md",
+    "knowledge/dsear-atex.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/iec-61511.md",
+    "knowledge/intake-interview.md",
+    "knowledge/subagent-archetypes.md"
+  ],
+  "name": "toxic-release-dispersion-scenario"
+}
