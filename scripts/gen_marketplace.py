@@ -33,6 +33,42 @@ MANIFEST = REPO / ".claude-plugin" / "marketplace.json"
 # one-line "install everything" consumer pack.
 EXCLUDE_FROM_META = {"hse-systems"}
 
+# Every plugin entry shares one marketplace-root source (the whole repo is git-cloned
+# when a user runs `/plugin marketplace add owner/repo`). `source` is a REQUIRED field
+# in the Claude Code marketplace schema — omitting it makes Claude Code fail to classify
+# the plugin and emit the misleading "this plugin uses a source type your Claude Code
+# version does not support" error. With a marketplace-root source, several plugin entries
+# share the one top-level `skills/` folder; each entry's `skills` list (the curated
+# `./skills/<name>` subdirectory paths emitted below) then becomes the COMPLETE set of
+# skills for that bundle.
+#   docs: https://code.claude.com/docs/en/plugin-marketplaces#plugin-sources
+_PLUGIN_SOURCE = "./"
+
+# strict:false — these bundles have NO per-plugin plugin.json; the marketplace entry IS
+# the entire component definition. This is also what makes the component summary
+# resolvable from marketplace.json alone (no clone needed to count skills).
+_PLUGIN_STRICT = False
+
+# Human-facing bundle descriptions (shown in `/plugin` discovery and on install). Keyed
+# by bundle name; a bundle missing here falls back to the generic line so the generator
+# never crashes when a future bundle is registered in metadata-vocab.yaml.
+_DESCRIPTIONS = {
+    "hse-all": "Install everything — the full HSE Leadership Skills toolbox (all consultant skills across hse-core plus the five sector packs).",
+    "hse-core": "Core HSE skills — risk assessments, JSAs, toolbox talks, incident investigations, safety audits, CAPAs, SOPs, RAMS, board reports, and incident-rate calculators.",
+    "hse-process": "Process-safety pack — HAZOP, HAZID, What-If, LOPA, bow-tie, permit-to-work, management-of-change, mechanical integrity, PSM program, PESO licensing, and process-safety KPIs.",
+    "hse-chemicals": "Chemicals & major-accident-hazard pack — GHS/SDS authoring, chemical exposure & transport, dust-explosion and toxic-release assessment, tank-farm bunding, India MSIHC/MAH, plus shared PHA tools.",
+    "hse-india": "India compliance pack — state accident notices, Factories Act returns, BOCW, OSH Code, and the legacy-first state-form finder (mandatory state detection).",
+    "hse-aviation": "Aviation SMS pack — SMS builder, hazard register, SPI/SPT framework, FDM/FOQA analysis, just-culture policy, confidential reporting, change safety assessment, and SRB minutes.",
+    "hse-mining": "Mining pack — DGMS statutory pack, ICMM critical-control management, principal-hazard management plans, mine incident investigation, mine rescue ERP, and ventilation/strata/blasting plans.",
+    "hse-systems": "Build-time tooling — hse-skill-forge, the scaffolder that authors born-conformant HSE skills (for contributors, not a consultant artifact bundle).",
+}
+
+
+def _describe(bundle: str) -> str:
+    return _DESCRIPTIONS.get(
+        bundle, f"HSE Leadership Skills bundle: {bundle}."
+    )
+
 # The stable manifest header (everything except the generated `plugins` array).
 _HEADER = {
     "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
@@ -105,7 +141,16 @@ def build_manifest(repo: Path = REPO) -> Dict[str, Any]:
         # WR-04: dedup the per-bundle skills list. A skill routed into the same bundle by
         # both `plugin: X` and `bundled_in: [X]` would otherwise be listed twice (the
         # hse-all synthesis already dedups via a set; the per-bundle path did not).
-        plugins.append({"name": name, "skills": sorted(set(bundles[name]))})
+        skills = sorted(set(bundles[name]))
+        plugins.append({
+            "name": name,
+            "source": _PLUGIN_SOURCE,
+            "strict": _PLUGIN_STRICT,
+            "description": _describe(name),
+            # Schema requires component PATHS, not bare names: each entry points at the
+            # skill's subdirectory under the shared marketplace-root `skills/` folder.
+            "skills": [f"./skills/{s}" for s in skills],
+        })
 
     manifest = dict(_HEADER)
     manifest["plugins"] = plugins

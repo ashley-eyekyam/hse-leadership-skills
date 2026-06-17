@@ -43,7 +43,10 @@ def _write_skill(repo: Path, name: str, plugin: str) -> None:
 
 
 def _by_name(manifest):
-    return {p["name"]: p["skills"] for p in manifest["plugins"]}
+    # Each plugin's `skills` are emitted as `./skills/<name>` paths (marketplace
+    # schema requires component paths, not bare names); strip back to bare names so
+    # these membership assertions read against the skill names.
+    return {p["name"]: [s.rsplit("/", 1)[-1] for s in p["skills"]] for p in manifest["plugins"]}
 
 
 def test_hse_all_is_union_minus_forge(tmp_path):

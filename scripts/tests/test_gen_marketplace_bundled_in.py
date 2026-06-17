@@ -51,7 +51,7 @@ def test_bundled_in_skill_appears_in_all_three_bundles(tmp_path):
         bundled_in=["hse-chemicals", "hse-mining"],
     )
     manifest = gen_marketplace.build_manifest(tmp_path)
-    by_name = {p["name"]: p["skills"] for p in manifest["plugins"]}
+    by_name = {p["name"]: [s.rsplit("/", 1)[-1] for s in p["skills"]] for p in manifest["plugins"]}
 
     assert "permit-to-work" in by_name.get("hse-process", []), "missing from owning bundle"
     assert "permit-to-work" in by_name.get("hse-chemicals", []), "missing from bundled_in chemicals"
@@ -63,7 +63,7 @@ def test_no_bundled_in_leaves_single_bundle(tmp_path):
     non-facilitator skills are unaffected)."""
     _write_skill(tmp_path, "risk-assessment", "hse-core")
     manifest = gen_marketplace.build_manifest(tmp_path)
-    by_name = {p["name"]: p["skills"] for p in manifest["plugins"]}
+    by_name = {p["name"]: [s.rsplit("/", 1)[-1] for s in p["skills"]] for p in manifest["plugins"]}
 
     assert by_name.get("hse-core") == ["risk-assessment"]
     # No phantom *bundled_in* bundles were minted. The synthesized hse-all
