@@ -135,3 +135,9 @@ resolve the STATE first** (`KB-REG-IN-STATEFORMS`, mandatory state detection) fo
 documented corrective-action / return duty — never an invented national form number; an
 un-seeded state → `[GAP]` + "verify with a competent person". Unknown jurisdiction →
 ask before citing.
+
+## Intake guidance (relocated from SKILL.md Step 0 for char-fit — substance unchanged)
+
+- **Q2 worked example** (the finding/nonconformity anchor): "Audit NC-07: emergency
+  lighting in Bay 3 not tested — ISO 45001 8.2 / local fire rule." Refuse to proceed
+  on "general non-compliance".

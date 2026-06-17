@@ -109,11 +109,21 @@ def test_generic_manifest_minimal_shape(risk_assessment_dir, tmp_path):
     assert "notes" in manifest
 
 
-def test_generic_real_cap_hardfails_heavy_flagship(risk_assessment_dir, tmp_path):
-    # At the conservative 6000 default the flagship overflows → IrreducibleOverflow
-    # (never a silent truncation; D-08 / §3.7).
+def test_generic_resolved_cap_fits_flagship(risk_assessment_dir, tmp_path):
+    # OWNER-RESOLVED 2026-06-17 (D-10): generic=9000 now clears the flagship irreducible
+    # core (7887) — the heavy flagship emits cleanly instead of hard-failing.
     adapted = build.load_skill(risk_assessment_dir)
-    platforms = build.load_platforms()  # generic=6000
+    platforms = build.load_platforms()  # generic=9000
+    out = build.emit_generic(adapted, tmp_path / "g", platforms)
+    instr = (out / "system-prompt.md").read_text(encoding="utf-8")
+    assert len(instr) <= platforms["platforms"]["generic"]["char_limit"]
+
+
+def test_generic_still_never_truncates_below_core(risk_assessment_dir, tmp_path):
+    # The "never silently truncate" guarantee (D-08 / §3.7) still holds at a sub-core cap.
+    adapted = build.load_skill(risk_assessment_dir)
+    platforms = build.load_platforms()
+    platforms["platforms"]["generic"]["char_limit"] = 1000
     with pytest.raises(build.IrreducibleOverflow):
         build.emit_generic(adapted, tmp_path / "g", platforms)
 

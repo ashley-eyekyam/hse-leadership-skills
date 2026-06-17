@@ -90,11 +90,21 @@ def test_gemini_manifest_byte_identical(risk_assessment_dir, tmp_path):
     ).read_bytes()
 
 
-def test_gemini_real_cap_hardfails_heavy_flagship(risk_assessment_dir, tmp_path):
-    # At the conservative 4000 default the flagship overflows → IrreducibleOverflow
-    # (the spec-correct CI signal: lean the body as authored, D-08 / §3.7). NEVER a
-    # silent truncation.
+def test_gemini_resolved_cap_fits_flagship(risk_assessment_dir, tmp_path):
+    # OWNER-RESOLVED 2026-06-17 (D-10): gemini=9000 now clears the flagship irreducible
+    # core (7887) — the heavy flagship emits cleanly instead of hard-failing.
     adapted = build.load_skill(risk_assessment_dir)
-    platforms = build.load_platforms()  # gemini=4000
+    platforms = build.load_platforms()  # gemini=9000
+    out = build.emit_gemini(adapted, tmp_path / "g", platforms)
+    instr = (out / "instructions.md").read_text(encoding="utf-8")
+    assert len(instr) <= platforms["platforms"]["gemini"]["char_limit"]
+
+
+def test_gemini_still_never_truncates_below_core(risk_assessment_dir, tmp_path):
+    # The "never silently truncate" guarantee (D-08 / §3.7) still holds: a cap BELOW the
+    # irreducible core raises IrreducibleOverflow rather than trimming a non-negotiable.
+    adapted = build.load_skill(risk_assessment_dir)
+    platforms = build.load_platforms()
+    platforms["platforms"]["gemini"]["char_limit"] = 1000  # below the core
     with pytest.raises(build.IrreducibleOverflow):
         build.emit_gemini(adapted, tmp_path / "g", platforms)

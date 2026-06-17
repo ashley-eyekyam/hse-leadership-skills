@@ -119,3 +119,20 @@ per section → add responsibilities/competencies/emergency/references/revision-
 validate → branded `report.json`.** It leans on `heading`/`paragraph`/`bullets`/ordered
 steps + an `hoc_table` + an appendix revision/approval block (distinct from B1's
 risk-card-heavy mapping).
+
+## Intake guidance (relocated from SKILL.md Step 0 for char-fit — substance unchanged)
+
+The two specificity anchors are Q3 (task/operation) and Q8 (procedure steps). Refuse
+to proceed on a vague task or generic/missing steps such as "work safely" or "follow
+all rules" — ask again, or record `[GAP]` / `[ASSUMPTION]`; never invent.
+
+- **Q3 worked example:** "manual changeover of the print-head on Press 4 during a
+  planned stop — does NOT cover electrical fault repair, which needs a competent
+  electrician."
+- **Q8 worked example:** "isolate & lock out Press 4 → confirm zero energy → remove
+  guard → unclip print-head → fit replacement → refit guard → remove locks →
+  function-test."
+- **Echo-back example:** "Authoring: SOP for manual print-head changeover on Press 4,
+  Plant 2, Maharashtra; hazards/controls ingested from JSA-2026-A14; 9 ordered steps;
+  roles = operator + authorised PTW person; frontline literacy level; annual +
+  on-change review — correct?"

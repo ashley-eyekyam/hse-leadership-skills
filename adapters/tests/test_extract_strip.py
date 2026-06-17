@@ -149,10 +149,13 @@ def test_platforms_yaml_loads_and_carries_constants():
     cfg = build.load_platforms()
     assert cfg["keep_markers"] is False
     platforms = cfg["platforms"]
+    # REAL vendor-enforced hard limits stay 8000 (chatgpt/copilot).
     assert platforms["chatgpt"]["char_limit"] == 8000
     assert platforms["copilot"]["char_limit"] == 8000
-    assert platforms["generic"]["char_limit"] == 6000
-    assert platforms["gemini"]["char_limit"] == 4000
+    # OWNER-RESOLVED 2026-06-17 (D-10): no published vendor cap → raised to fit the
+    # outputs fully (heaviest irreducible core 8516; 9000 gives headroom).
+    assert platforms["generic"]["char_limit"] == 9000
+    assert platforms["gemini"]["char_limit"] == 9000
     # ChatGPT is the only Code-Interpreter host.
     assert platforms["chatgpt"]["code_interpreter"] is True
     assert platforms["gemini"]["code_interpreter"] is False
@@ -160,11 +163,12 @@ def test_platforms_yaml_loads_and_carries_constants():
     assert platforms["generic"]["code_interpreter"] is False
 
 
-def test_platforms_yaml_gemini_owner_verify_flagged():
-    # D-10: the unpublished Gemini cap must carry an inline OWNER-VERIFY flag.
+def test_platforms_yaml_gemini_owner_resolved_flagged():
+    # D-10: the unpublished Gemini cap was OWNER-RESOLVED 2026-06-17 — the inline
+    # comment records the resolution + date (replacing the prior OWNER-VERIFY flag).
     raw = build.PLATFORMS_FILE.read_text(encoding="utf-8")
-    assert "OWNER-VERIFY" in raw
-    assert "Gemini" in raw
+    assert "OWNER-RESOLVED 2026-06-17" in raw
+    assert "Gem instruction cap" in raw
 
 
 def test_platforms_yaml_copilot_schema_and_string_limit():
