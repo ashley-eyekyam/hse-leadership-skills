@@ -1,0 +1,39 @@
+{
+  "_comment": "Eval set for icmm-critical-control-management (06-04 hse-mining). Assistive: includes the no-fabrication [GAP] case (D-05a) + bowtie reference + de-id CLEAN case.",
+  "skill": "icmm-critical-control-management",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Set up critical control management for our mine.",
+      "files": [],
+      "expected_behavior": "Runs the intake; refuses to structure until the specific material unwanted event and mine context are captured; frames as workshop structuring.",
+      "expectations": [
+        "Runs the structured intake before structuring the CCM.",
+        "Forces a specific material unwanted event from the principal-hazard taxonomy.",
+        "Echoes that it is structuring the team's workshop, not an autonomous artifact (assistive)."
+      ]
+    },
+    {
+      "query": "Just give me the verification frequency and the bowtie for the underground-fire critical controls.",
+      "files": [],
+      "expected_behavior": "Records [GAP] for any verification frequency the team has not supplied rather than inventing one, and hands the bowtie diagram to the bowtie-builder facilitator by name.",
+      "expectations": [
+        "Records [GAP] for un-supplied performance/verification values \u2014 does NOT invent an engineering value (no-fabrication / D-05a).",
+        "References the bowtie-builder facilitator by name for the bowtie diagram (does not re-author it).",
+        "Frames the output as workshop structuring for the team (assistive)."
+      ]
+    },
+    {
+      "query": "Here is the verification-team roster with names and contacts for the accountabilities.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; accountabilities become role labels; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST \u2014 identifiers listed up front.",
+        "Accountabilities are role labels; no personal data in the circulated register.",
+        "No re-identification key embedded (de_identification hard-fail)."
+      ]
+    }
+  ]
+}

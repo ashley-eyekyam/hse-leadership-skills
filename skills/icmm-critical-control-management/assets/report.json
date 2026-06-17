@@ -1,0 +1,34 @@
+{
+  "_comment": "ICMM CCM register report tree (A4 report.json). Verification activities -> recommendations/table; critical controls -> hoc_table. house_template unset (D-04/CT-3).",
+  "title": "ICMM Critical Control Management Register",
+  "sections": [
+    {
+      "type": "meta",
+      "fields": [
+        "mine_name",
+        "material_unwanted_event",
+        "scenario"
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Material unwanted event + critical-control pathway"
+    },
+    {
+      "type": "hoc_table",
+      "title": "Critical controls (hierarchy-ranked; critical flagged)"
+    },
+    {
+      "type": "table",
+      "title": "Performance requirements + verification (activity / frequency / accountability)"
+    },
+    {
+      "type": "callout",
+      "text": "Bowtie diagram developed via the bowtie-builder facilitator (referenced, not re-authored)."
+    },
+    {
+      "type": "recommendations",
+      "title": "Verification actions (owner + due)"
+    }
+  ]
+}
