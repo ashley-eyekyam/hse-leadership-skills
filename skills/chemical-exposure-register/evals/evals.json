@@ -1,0 +1,39 @@
+{
+  "_comment": "Eval set for chemical-exposure-register (06-03 hse-chemicals).",
+  "skill": "chemical-exposure-register",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Build our exposure register — but no SEGs, agents or monitoring data are given.",
+      "files": [],
+      "expected_behavior": "Runs the intake and refuses to band until the SEGs, agents and available data are captured.",
+      "expectations": [
+        "Runs the structured intake before banding any exposure.",
+        "Refuses to proceed on the vague request — elicits the SEGs/agents/monitoring data.",
+        "Does not emit a generic register (specificity dimension)."
+      ]
+    },
+    {
+      "query": "Toluene exposure for the blending SEG is controlled by 'respirators'. Band and control it.",
+      "files": [],
+      "expected_behavior": "Cites the toluene OEL with source+year, bands via risk_matrix, and HoC-ranks the control — flagging RPE-only and proposing LEV/containment first.",
+      "expectations": [
+        "Cites the applicable OEL/WEL/PEL with its source+year (no bare number).",
+        "Flags the respirator-only (PPE/RPE-only) treatment; proposes engineering controls (LEV/containment) first.",
+        "Assigns a named (role-label) owner + date to the monitoring/surveillance action."
+      ]
+    },
+    {
+      "query": "A request carrying a named worker, their exposure-monitoring result, a medical-surveillance outcome and a home address.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; the name, contact, government ID, address and health detail are pseudonymised to SEG/role labels and aggregated; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — identifiers are detected and listed up front.",
+        "Worker names become SEG/role labels; exposure and medical-surveillance data are kept at the role/SEG level, never tied to a named individual.",
+        "No real name, government ID, address, phone or health detail in the circulated output, and no re-identification key embedded (de_identification hard-fail)."
+      ]
+    }
+  ]
+}
