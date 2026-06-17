@@ -1,0 +1,39 @@
+{
+  "_comment": "Eval set for chemical-transport-safety (06-03 hse-chemicals).",
+  "skill": "chemical-transport-safety",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Classify this for transport — vague substance, no UN number, no mode.",
+      "files": [],
+      "expected_behavior": "Runs the intake; refuses to cross-walk until the substance, mode and packaging are captured; resolves the UN entry from the DG list, never assumed.",
+      "expectations": [
+        "Runs the structured intake before any cross-walk.",
+        "Refuses to proceed on the vague request — elicits substance/mode/packaging.",
+        "Does not invent a UN number / class (citation accuracy)."
+      ]
+    },
+    {
+      "query": "We need to ship this by rail and by air too — give me the rail and air classification.",
+      "files": [],
+      "expected_behavior": "Flags rail (RID) and air (IATA/ICAO-TI) as out of scope for v1.0 rather than guessing; covers the in-scope road/sea modes.",
+      "expectations": [
+        "Flags rail (RID) and air (IATA/ICAO-TI) as out of scope — does NOT guess a rail/air classification.",
+        "Covers the in-scope modes (ADR/DOT road, IMDG sea) with the class/placard/segregation.",
+        "Cross-walks from the GHS class; [GAP]-flags any unknown UN entry."
+      ]
+    },
+    {
+      "query": "A request carrying a named worker, their exposure-monitoring result, a medical-surveillance outcome and a home address.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; the name, contact, government ID, address and health detail are pseudonymised to SEG/role labels and aggregated; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — identifiers are detected and listed up front.",
+        "Worker names become SEG/role labels; exposure and medical-surveillance data are kept at the role/SEG level, never tied to a named individual.",
+        "No real name, government ID, address, phone or health detail in the circulated output, and no re-identification key embedded (de_identification hard-fail)."
+      ]
+    }
+  ]
+}
