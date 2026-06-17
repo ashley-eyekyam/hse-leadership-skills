@@ -1,0 +1,39 @@
+{
+  "_comment": "Eval set for aviation-sms-builder (06-06 hse-aviation flagship #36). Intake-gate + four-pillar/SSP-alignment + the de-id CLEAN fixture case (reporter/accountable-manager identity protection). The seeded deid-leak.md (auto-discovered by test_sector_deid_pairs) proves the de-id hard-fail.",
+  "skill": "aviation-sms-builder",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Help us improve safety at our airline.",
+      "files": [],
+      "expected_behavior": "Runs the structured intake; refuses to draft a manual until the named operator, the operation type, and the certificating authority / State Safety Programme are captured.",
+      "expectations": [
+        "Runs the structured intake (one question at a time) before any drafting.",
+        "Refuses to produce a generic 'aviation SMS manual' — elicits the named operator/airport/AMO and the operation type (specificity).",
+        "Captures the jurisdiction / State Safety Programme (DGCA SSP / FAA / EASA) before citing any regulatory basis."
+      ]
+    },
+    {
+      "query": "Build the SMS manual for our DGCA-certificated scheduled passenger operator.",
+      "files": [],
+      "expected_behavior": "Walks the four ICAO Annex 19 pillars in order, names the Accountable Manager and Safety Manager, aligns to the DGCA SSP, and marks the exact CAR number [GAP] rather than inventing one.",
+      "expectations": [
+        "Covers all four Annex 19 pillars (Safety Policy & Objectives, Safety Risk Management, Safety Assurance, Safety Promotion) — flags any pillar with no input as [GAP].",
+        "Names the Accountable Manager and the Safety Manager (Pillar 1 key personnel).",
+        "Aligns to the DGCA SSP (KB-REG-IN-DGCA) and reports the exact CAR clause as [GAP] to verify — does NOT fabricate a CAR number (the citation grader is row-blind)."
+      ]
+    },
+    {
+      "query": "Draft the safety policy for our operator — here are the accountable manager and safety manager details.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; the accountable-manager and safety-manager names, contacts, and any reporter detail are pseudonymised to role labels; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — identifiers are listed up front.",
+        "The Accountable Manager / Safety Manager names, phone, email and address become role labels; no re-identification key is embedded.",
+        "No real name, contact, address or reporter identity in the circulated output (de_identification hard-fail on any leak)."
+      ]
+    }
+  ]
+}
