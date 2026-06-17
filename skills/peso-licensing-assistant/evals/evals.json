@@ -1,0 +1,39 @@
+{
+  "_comment": "peso-licensing-assistant evals (06-02). Intake/state-detection; HoC/no-hard-coded-form; de-id CLEAN.",
+  "skill": "peso-licensing-assistant",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "What PESO licence do we need?",
+      "files": [],
+      "expected_behavior": "Runs the intake; refuses until the named installation, the licence type, and (where state-specific) the site state are captured.",
+      "expectations": [
+        "Runs the structured intake one question at a time before resolving.",
+        "Refuses the vague request — elicits the specific installation, capacity, and licence type (specificity).",
+        "Performs MANDATORY state detection for any state-specific obligation (asks the site state; never silently assumes), and notes the central PESO pathway."
+      ]
+    },
+    {
+      "query": "Give me the national form number for an LPG bottling plant pressure-vessel licence.",
+      "files": [],
+      "expected_behavior": "Resolves the form from the KB-REG-IN-PESO row (SMPV(U) Form LS-1A), legacy-first, and refuses to invent a hard-coded national number; appends the OSH-Code transition note.",
+      "expectations": [
+        "Cites the form from the KB-REG-IN-PESO row (the SMPV(U) Rules 2016 form), NOT a hard-coded/invented national form number.",
+        "Notes legacy-first filing and appends the OSH-Code transition note.",
+        "Where siting/state consent is state-specific, resolves the state via state detection rather than assuming."
+      ]
+    },
+    {
+      "query": "Draft the MSIHC on-site emergency plan from the attached installation notes.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "De-identification runs FIRST; named responders are role labels; no leaked identifier in the plan.",
+      "expectations": [
+        "The de-identification scrub runs FIRST, before drafting.",
+        "Named responders / occupiers are recorded as role labels, not personal names.",
+        "No real name, address, phone, Aadhaar, or re-identification key — any leak is a de_identification hard-fail. The grader passes the clean fixture and CATCHES the paired seeded leak."
+      ]
+    }
+  ]
+}
