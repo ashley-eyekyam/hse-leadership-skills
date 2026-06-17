@@ -14,6 +14,8 @@ Plain pytest, sandbox-offline, no framework config. Paths resolve from the repo
 root so the suite runs from any working directory.
 """
 
+import sys
+from datetime import date, timedelta
 from pathlib import Path
 
 import pytest
@@ -21,6 +23,11 @@ import yaml
 
 REPO = Path(__file__).resolve().parents[2]
 KB = REPO / "knowledge-base"
+
+# lint_skills lives in scripts/ — wire it onto sys.path for the rule-9 staleness test.
+_SCRIPTS = REPO / "scripts"
+if str(_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS))
 
 # §3.2 required fields on every registry entry.
 REQUIRED_FIELDS = [
@@ -109,3 +116,64 @@ def test_data_points_have_source_and_year():
     for e in entries:
         assert str(e.get("source", "")).strip(), f"{e['id']} has empty source"
         assert e.get("year"), f"{e['id']} has empty year"
+
+
+# --- D-05c per-fragment staleness_days override (Plan 06-01, Task 2) -------------
+
+def _build_kb_with_entry(tmp_path: Path, entry: dict) -> tuple:
+    """A minimal tmp repo: one regulatory registry entry + the file it points at, plus
+    a skill body citing the entry's id. Returns (body, skill_dir, repo)."""
+    repo = tmp_path
+    reg_dir = repo / "knowledge-base" / "regulatory"
+    reg_dir.mkdir(parents=True)
+    (reg_dir / entry["file"]).write_text("# fragment\n", encoding="utf-8")
+    (reg_dir / "_registry.yaml").write_text(yaml.safe_dump([entry]), encoding="utf-8")
+    skill_dir = repo / "skills" / "demo"
+    skill_dir.mkdir(parents=True)
+    body = f"This skill cites {entry['id']} for the rule.\n"
+    return body, skill_dir, repo
+
+
+def _entry(days_old: int, staleness_days=None) -> dict:
+    lr = date.today() - timedelta(days=days_old)
+    e = {
+        "id": "KB-REG-IN-OSH-CODE",
+        "file": "in-osh-code.md",
+        "title": "India OSH Code (volatile)",
+        "summary": "test",
+        "source": "test",
+        "year": 2026,
+        "last_reviewed": lr.strftime("%Y-%m-%d"),
+        "volatile": True,
+        "supersedes": None,
+    }
+    if staleness_days is not None:
+        e["staleness_days"] = staleness_days
+    return e
+
+
+def _staleness_warns(tmp_path, days_old, staleness_days=None) -> bool:
+    import lint_skills
+
+    body, skill_dir, repo = _build_kb_with_entry(
+        tmp_path, _entry(days_old, staleness_days)
+    )
+    report = lint_skills.Report(skill="demo")
+    lint_skills._rule9_kb_resolution(report, body, skill_dir, repo)
+    return any("predates" in w and "window" in w for w in report.warnings)
+
+
+def test_staleness_override_90d_warns_a_100day_old_fragment(tmp_path):
+    """A 100-day-old volatile fragment with staleness_days: 90 WARNs (it would NOT at
+    the 180d global default) — D-05c per-fragment override is honoured."""
+    # With the 90d override → 100d old > 90d window → WARN.
+    assert _staleness_warns(tmp_path / "a", 100, staleness_days=90) is True
+    # Same age, NO override → 100d < 180d default → no staleness WARN.
+    assert _staleness_warns(tmp_path / "b", 100) is False
+
+
+def test_global_180d_default_unchanged(tmp_path):
+    """Without an override the 180d global default still governs: 200d old WARNs,
+    100d old does not."""
+    assert _staleness_warns(tmp_path / "c", 200) is True
+    assert _staleness_warns(tmp_path / "d", 100) is False

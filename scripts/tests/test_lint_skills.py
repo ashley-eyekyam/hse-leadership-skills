@@ -175,6 +175,37 @@ def test_rule10_time_sensitive_phrasing_is_warning(bad_skill):
                for w in report.warnings), report.warnings
 
 
+# --- rule 6 D-06 bundled_in cross-bundle membership (Plan 06-01) ----------------
+
+def test_rule6_unregistered_bundled_in_hard_fails(bad_skill):
+    """An unregistered metadata.bundled_in value is a rule-6 HARD error (D-06)."""
+    skill = bad_skill / "SKILL.md"
+    text = skill.read_text(encoding="utf-8")
+    # Inject a bundled_in list with one good + one bogus bundle under metadata.
+    text = text.replace(
+        "  plugin: hse-core",
+        "  plugin: hse-core\n  bundled_in:\n    - hse-chemicals\n    - not-a-bundle",
+    )
+    skill.write_text(text, encoding="utf-8")
+    errs = _errors(bad_skill)
+    assert any("bundled_in" in e and "not-a-bundle" in e for e in errs), errs
+    # The registered sibling value must NOT itself error.
+    assert not any("bundled_in" in e and "hse-chemicals" in e for e in errs), errs
+
+
+def test_rule6_registered_bundled_in_passes(bad_skill):
+    """A registered metadata.bundled_in value produces no rule-6 error (D-06)."""
+    skill = bad_skill / "SKILL.md"
+    text = skill.read_text(encoding="utf-8")
+    text = text.replace(
+        "  plugin: hse-core",
+        "  plugin: hse-core\n  bundled_in:\n    - hse-chemicals\n    - hse-mining",
+    )
+    skill.write_text(text, encoding="utf-8")
+    errs = _errors(bad_skill)
+    assert not any("bundled_in" in e for e in errs), errs
+
+
 # --- rule 9 KB-SNIP-ARCHETYPES resolves (Plan 01 registered it) -----------------
 
 def test_kb_snip_archetypes_resolves_under_rule9():
