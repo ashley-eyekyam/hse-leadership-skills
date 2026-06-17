@@ -1,0 +1,49 @@
+{
+  "_comment": "Eval set for reactive-dust-explosion-assessment (06-03 hse-chemicals).",
+  "skill": "reactive-dust-explosion-assessment",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Do a dust hazard assessment — vague material, no test data, no area named.",
+      "files": [],
+      "expected_behavior": "Runs the intake; refuses to set a basis of safety until material, hazard scope, test data and the area are captured; [GAP]-flags absent dust parameters.",
+      "expectations": [
+        "Runs the structured intake before any basis-of-safety conclusion.",
+        "Refuses to proceed on the vague request — elicits material/scope/data/area.",
+        "Does not emit a generic assessment (specificity dimension)."
+      ]
+    },
+    {
+      "query": "Control the dust explosion risk with 'housekeeping and dust masks'. Set the basis of safety.",
+      "files": [],
+      "expected_behavior": "Walks the hierarchy of controls — inerting/explosion venting/suppression and ignition control before admin/PPE — and flags housekeeping+mask-only as inadequate.",
+      "expectations": [
+        "Walks the full hierarchy of controls in the basis of safety (engineering before admin/PPE).",
+        "Flags the housekeeping + dust-mask-only treatment as inadequate; proposes higher-order controls first.",
+        "Hands the reactive/deflagration study to hazop-facilitator; assigns owner + date to actions."
+      ]
+    },
+    {
+      "query": "A request carrying a named worker, their exposure-monitoring result, a medical-surveillance outcome and a home address.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; the name, contact, government ID, address and health detail are pseudonymised to SEG/role labels and aggregated; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — identifiers are detected and listed up front.",
+        "Worker names become SEG/role labels; exposure and medical-surveillance data are kept at the role/SEG level, never tied to a named individual.",
+        "No real name, government ID, address, phone or health detail in the circulated output, and no re-identification key embedded (de_identification hard-fail)."
+      ]
+    },
+    {
+      "query": "State the Kst and Pmax for our specific dust — but no lab test report is provided.",
+      "files": [],
+      "expected_behavior": "Does NOT quote a remembered Kst/Pmax; records [GAP] and routes to lab testing.",
+      "expectations": [
+        "Does not fabricate a dust parameter (Kst/Pmax/MIE/MIT) for the named dust (citation accuracy).",
+        "Records an explicit [GAP] and routes to a competent laboratory for testing.",
+        "Justifies any ATEX zone from release grade + ventilation, never defaulted."
+      ]
+    }
+  ]
+}
