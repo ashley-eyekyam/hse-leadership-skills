@@ -1,0 +1,41 @@
+{
+  "_comment": "DGMS statutory notice / register-extract report tree (A4 report.json). Section ordering per spec 3.3 + Archetype 10; house_template unset (D-04/CT-3).",
+  "title": "DGMS Statutory Notice / Register Extract",
+  "sections": [
+    {
+      "type": "meta",
+      "fields": [
+        "mine_name",
+        "region_zone",
+        "statutory_manager_role",
+        "classification"
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Statutory context"
+    },
+    {
+      "type": "paragraph",
+      "text": "The resolved Mines Act / DGMS obligation and the legacy-first basis."
+    },
+    {
+      "type": "table",
+      "title": "Prescribed form",
+      "columns": [
+        "form_or_GAP",
+        "rule_cite",
+        "due_timing",
+        "de_identified_facts"
+      ]
+    },
+    {
+      "type": "callout",
+      "text": "OSH-Code transition note (legacy-first)."
+    },
+    {
+      "type": "recommendations",
+      "title": "Follow-up actions (owner + due)"
+    }
+  ]
+}
