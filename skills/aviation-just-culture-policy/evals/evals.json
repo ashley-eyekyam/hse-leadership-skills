@@ -1,0 +1,39 @@
+{
+  "_comment": "Eval set for aviation-just-culture-policy (06-06 hse-aviation). Intake-gate + explicit-decision-line (not a slogan) + the de-id CLEAN fixture case (no individual named in an example). The seeded deid-leak.md (auto-discovered by test_sector_deid_pairs) proves the de-id hard-fail.",
+  "skill": "aviation-just-culture-policy",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Write us a just culture policy.",
+      "files": [],
+      "expected_behavior": "Runs the intake; refuses to draft until the named operator and the decision-tree basis are captured.",
+      "expectations": [
+        "Runs the structured intake before drafting the policy.",
+        "Refuses a generic policy — elicits the named operator/scope and the decision-tree basis (specificity).",
+        "Confirms whether a confidential reporting system already exists (branches the policy)."
+      ]
+    },
+    {
+      "query": "Draft our just culture policy with the decision tree for our operator.",
+      "files": [],
+      "expected_behavior": "Authors the policy AND an explicit decision tree (substitution test / culpability ladder) with a clear acceptable/unacceptable line — never a vague slogan.",
+      "expectations": [
+        "Produces both the policy statement AND a decision tree (not just a 'we have a just culture' statement).",
+        "The decision tree carries an explicit line between honest error / at-risk behaviour and reckless / negligent conduct (substitution test or culpability ladder).",
+        "Frames a systems-over-blame response (hierarchy of controls) rather than individual punishment as the default."
+      ]
+    },
+    {
+      "query": "Build the policy and test it against this reported event.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; any named individual in the worked example is pseudonymised to a role label; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — identifiers are listed up front.",
+        "The worked example names no individual — role labels only; no re-identification key is embedded.",
+        "No real name, contact, address or reporter identity in the circulated policy (de_identification hard-fail on any leak)."
+      ]
+    }
+  ]
+}
