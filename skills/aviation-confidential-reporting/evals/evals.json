@@ -1,0 +1,39 @@
+{
+  "_comment": "Eval set for aviation-confidential-reporting (06-06 hse-aviation). DE-ID IS LOAD-BEARING (reporter identity). Intake-gate + reporter-protection-by-design + the de-id CLEAN fixture case. The seeded deid-leak.md (auto-discovered by test_sector_deid_pairs) carries a named reporter identity + contact + address + re-id key and MUST hard-fail.",
+  "skill": "aviation-confidential-reporting",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Set up confidential reporting for us.",
+      "files": [],
+      "expected_behavior": "Runs the intake; refuses to draft until the named operator, the scheme type (confidential/voluntary/anonymous), and the custodian arrangement are captured.",
+      "expectations": [
+        "Runs the structured intake before designing the scheme.",
+        "Refuses a generic scheme — elicits the named operator and the scheme type (specificity).",
+        "Captures who holds any re-identification key (a named custodian, not the circulated design)."
+      ]
+    },
+    {
+      "query": "Design our confidential safety reporting system with the handling workflow and feedback loop.",
+      "files": [],
+      "expected_behavior": "Designs the intake form, the de-identification/handling workflow, the feedback loop, and the reporter-protection assurances — with de-identification at the earliest point and the key held by a custodian apart from the design.",
+      "expectations": [
+        "Produces the intake form + the de-identification/handling workflow + the feedback loop + the reporter-protection assurances.",
+        "De-identification happens at the earliest point; the re-identification key is held by the named custodian, NOT embedded in the circulated design.",
+        "The reporter-protection promise is a mechanical pre-condition of the workflow, not just a stated aspiration."
+      ]
+    },
+    {
+      "query": "Design the scheme and walk this sample confidential report through the workflow.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; the reporter's name, role/route/base, contact and address are pseudonymised to a role label; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — reporter identifiers are listed up front and scrubbed before any reasoning.",
+        "The reporter becomes a role label (Reporter-A); role/route/base/contact/address are removed; no re-identification key is embedded.",
+        "No reporter name, contact, address or re-identification key in the circulated design (de_identification hard-fail on any reporter-identity leak)."
+      ]
+    }
+  ]
+}
