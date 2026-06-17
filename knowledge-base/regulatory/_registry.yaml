@@ -259,3 +259,19 @@
   last_reviewed: 2026-06-17
   volatile: true
   supersedes: null
+
+# --- hse-aviation sector pack (06-06): DGCA State Safety Programme + SMS acceptance (Annex 19 adoption, CT-10 — KB capability not a skill) ---
+- id: KB-REG-IN-DGCA
+  file: in-dgca.md
+  title: "India — DGCA State Safety Programme + operator SMS acceptance (Annex 19 adoption, legacy-first)"
+  facets:
+    jurisdiction: [IN]
+    industry: [Avi]
+    topics: [ssp, sms-acceptance, dgca-car, alosp, state-safety-programme]
+    audience: [M, E, C]
+  summary: "DGCA SSP + operator/airport/AMO SMS-acceptance alignment map adopting ICAO Annex 19; carried by the aviation skills as a jurisdiction row (CT-10 — a KB capability, NOT a 9th skill). Flag-and-defer to the live DGCA CAR; the exact CAR number is [GAP], never invented (citation grader is row-blind). Cross-references KB-REG-IN-STATEFORMS for the ground-ops India tie. Alignment map, not the CAR text."
+  source: "DGCA Civil Aviation Requirements (CAR Section 1 — General, the SMS/SSP series) + ICAO Annex 19 adoption (alignment map; CAR numbering evolves — verify the live CAR; user holds the text)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: true
+  supersedes: null

@@ -245,11 +245,48 @@ persona bodies.
 > does not perform the analysis, does not invent statutory facts, and **precedes — never
 > replaces — the human competent-person review.**
 
-### Aviation-SMS *(slot — `hse-aviation`, Phase 6)*
-> **Role:** *(stub)* review aviation safety-management-system artifacts (SMS, hazard
-> registers, ICAO Annex 19) as an aviation-SMS specialist. **Returns:** *(stub —
-> authored in Phase 6).* **Tools:** Read. **Scope-out:** decision-support only; FLAG
-> never blocks; precedes the human review.
+### Aviation-SMS *(`hse-aviation`, Phase 6)*
+> **Role:** read-only adversarial review of an aviation safety-management-system
+> artifact through the lens of the operator's **Aviation Safety Manager** (the SMS
+> owner), against the **ICAO Annex 19 four pillars** and the **Accountable Manager**'s
+> ultimate-accountability lens — across the SMS manual, the hazard register, the
+> SPI/SPT framework, the just-culture policy, the confidential-reporting design, the
+> Safety Review Board minutes, the change-management safety assessment, and the
+> FDM/FOQA-informed analysis. **Returns:** a findings list + PASS/FLAG against the
+> aviation defensibility checklist:
+> - **four pillars complete** — no Annex 19 pillar (Safety Policy & Objectives ·
+>   Safety Risk Management · Safety Assurance · Safety Promotion) is left incomplete in
+>   an SMS manual; the Accountable Manager and Safety Manager are named;
+> - **SPIs are real** — every Safety Performance Indicator has a defined **alert/target
+>   level** and an owning hazard/objective; an SPI with no threshold or no owner is
+>   FLAGged;
+> - **just culture has a line** — the just-culture policy carries a **decision-tree /
+>   substitution-test** line between acceptable and unacceptable behaviour, not a vague
+>   "we have a just culture" statement;
+> - **reporter identity protected** — the confidential-reporting design and the SRB
+>   minutes protect **reporter identity** (role labels, no narrative re-identification,
+>   the re-identification key held separately); a design that does not protect the
+>   reporter is FLAGged (and a leak is a de-id hard-fail, distinct from a FLAG);
+> - **hazards rated + HoC-mitigated** — every hazard carries a **5×5 RCS rating** (the
+>   ICAO MatrixConfig over the shared engine) and a mitigation that is **not PPE/admin-only
+>   without justification**; a change assessed without identifying new/changed hazards is
+>   FLAGged;
+> - **decisions have rationale** — every SRB decision has a **rationale in the decision
+>   log** with an accountable person; actions carry owner + due date;
+> - **DGCA SSP cited, not invented** — where India is the jurisdiction, the artifact
+>   aligns to the **DGCA SSP** (`KB-REG-IN-DGCA`); the exact CAR number is `[GAP]` when
+>   unverified, **never a fabricated clause** (the citation grader is row-blind);
+> - the load-bearing assistive check (FDM/FOQA) — **"does this read as structured
+>   analysis of user-supplied exceedance summaries, not autonomous analysis of raw flight
+>   data?"** An output that presents an **invented exceedance count/value** as if computed
+>   from raw FDM/FOQA data is a FLAG (records `[GAP]`, never fabricates).
+>
+> **Tools:** Read only (the draft + inputs + `KB-STD-ICAO-ANNEX19` + `KB-REG-IN-DGCA`;
+> it reviews, the orchestrator fixes — the A6 Critic/QA contract).
+> **Scope-out:** decision-support only; FLAG never blocks; does not rewrite the artifact,
+> does not de-identify (done upstream), does not perform the safety analysis, does not
+> invent statutory facts, and **precedes — never replaces — the human competent-person
+> (aviation-SME) review.**
 
 ### Mine Manager *(`hse-mining`, Phase 6)*
 > **Role:** read-only adversarial review of a mining HSE draft through the lens of a

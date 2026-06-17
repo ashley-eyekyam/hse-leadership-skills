@@ -228,3 +228,19 @@
   last_reviewed: 2026-05-15
   volatile: false
   supersedes: null
+
+# --- hse-aviation sector pack (06-06): ICAO Annex 19 four-pillar SMS framework ---
+- id: KB-STD-ICAO-ANNEX19
+  file: icao-annex19.md
+  title: "ICAO Annex 19 — Safety Management (four-pillar clause→artifact map)"
+  facets:
+    jurisdiction: [All]
+    industry: [Avi]
+    topics: [sms, four-pillars, hazard-id, risk-management, safety-assurance, spi-spt, safety-promotion, just-culture]
+    audience: [M, E, C]
+  summary: "Annex 19 four pillars + element→aviation-skill map; SMS manual / SPI-SPT / hazard register / just-culture grounding. The 5×5 RCS is KB-DATA-AVI-RISK-MATRIX (config over the shared engine). Structural reference, not the standard text."
+  source: "ICAO Annex 19 (2nd ed., 2016) + ICAO Doc 9859 SMM (4th ed.) — element structure; user holds the licensed documents"
+  year: 2016
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null

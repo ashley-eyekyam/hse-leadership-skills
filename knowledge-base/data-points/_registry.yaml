@@ -77,3 +77,19 @@
   last_reviewed: 2026-05-15
   volatile: true
   supersedes: null
+
+# --- hse-aviation sector pack (06-06): ICAO 5×5 Risk Classification Scheme as an A7 MatrixConfig ---
+- id: KB-DATA-AVI-RISK-MATRIX
+  file: aviation-risk-matrix.md
+  title: "Aviation 5×5 Risk Classification Scheme (ICAO Annex 19) — A7 MatrixConfig"
+  facets:
+    jurisdiction: [All]
+    industry: [Avi]
+    topics: [risk-classification, severity, likelihood, acceptability, matrix-config]
+    audience: [M, C]
+  summary: "ICAO Annex 19 Risk Classification Scheme (severity × likelihood 5×5) as a named A7 MatrixConfig (rows/cols/bands), consumed by the SHARED risk_matrix.score() — never a forked engine. Acceptable/Tolerable-with-mitigation/Intolerable bands over a 1..25 multiply scale; source+year carried. Config, not the ICAO table."
+  source: "ICAO Annex 19 (2nd ed., 2016) + ICAO Doc 9859 SMM (4th ed.) — the Safety Risk Assessment Matrix (severity/likelihood scheme); user holds the licensed documents"
+  year: 2016
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
