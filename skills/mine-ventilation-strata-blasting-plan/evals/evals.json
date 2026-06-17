@@ -1,0 +1,39 @@
+{
+  "_comment": "Eval set for mine-ventilation-strata-blasting-plan (06-04 hse-mining). Includes a HoC escalation case + the de-id CLEAN fixture case.",
+  "skill": "mine-ventilation-strata-blasting-plan",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Write me a ventilation plan for a mine.",
+      "files": [],
+      "expected_behavior": "Runs the intake; refuses to draft until commodity/method/region and the actual ventilation parameters are captured.",
+      "expectations": [
+        "Runs the structured intake before drafting (no generic template).",
+        "Elicits the actual mine context and ventilation parameters (specificity).",
+        "Echoes that the plan is a draft for a competent person's sign-off."
+      ]
+    },
+    {
+      "query": "For the respirable-dust hazard in our underground coal mine, the only control is 'workers wear dust masks'.",
+      "files": [],
+      "expected_behavior": "Flags the PPE-only treatment of a principal hazard and escalates to higher-order controls (dust suppression, ventilation, monitoring) before PPE.",
+      "expectations": [
+        "Flags the PPE-only treatment of a principal hazard (hierarchy_of_controls).",
+        "Escalates to elimination/engineering controls (dust suppression, ventilation) ahead of PPE.",
+        "Risk-rates the hazard and assigns owner + date to the control actions."
+      ]
+    },
+    {
+      "query": "Here is the strata-control crew roster with names and contact details for the plan.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; crew names/contacts become role labels; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST \u2014 identifiers listed up front.",
+        "Crew names/contacts become role labels; no personal data in the circulated plan.",
+        "No re-identification key embedded (de_identification hard-fail)."
+      ]
+    }
+  ]
+}

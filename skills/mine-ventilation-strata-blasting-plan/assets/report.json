@@ -1,0 +1,36 @@
+{
+  "_comment": "Mining plan report tree (A4 report.json). Section ordering per spec 3.3 (PHMP/plan shape); house_template unset (D-04/CT-3).",
+  "title": "Mine Ventilation / Strata-Control / Blasting Plan",
+  "sections": [
+    {
+      "type": "meta",
+      "fields": [
+        "mine_name",
+        "commodity",
+        "method_opencast_underground",
+        "region_zone",
+        "plan_type"
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Executive summary"
+    },
+    {
+      "type": "findings",
+      "title": "Principal hazards (risk-rated via risk_matrix)"
+    },
+    {
+      "type": "hoc_table",
+      "title": "Control suite (hierarchy-ranked; critical controls flagged)"
+    },
+    {
+      "type": "recommendations",
+      "title": "SMART actions (owner + due)"
+    },
+    {
+      "type": "bullets",
+      "title": "Regulatory basis (Mines Act / DGMS plan duty)"
+    }
+  ]
+}
