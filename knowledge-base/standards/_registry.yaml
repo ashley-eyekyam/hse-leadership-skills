@@ -45,3 +45,79 @@
   last_reviewed: 2026-05-15
   volatile: false
   supersedes: null
+
+# --- hse-process sector pack (06-02): process-safety framework/method standards ---
+- id: KB-STD-PSM
+  file: psm.md
+  title: "OSHA PSM 14-element framework (clause→artifact map)"
+  facets:
+    jurisdiction: [All]
+    industry: ["O&G", Process]
+    topics: [psm, pha, pssr, moc, mechanical-integrity, process-safety]
+    audience: [M, C]
+  summary: "14-element PSM map; each element → its artifact + grounding skill. Structure reference, not the regulation text; the US-statutory citation lives on KB-REG-US-OSHA."
+  source: "OSHA 29 CFR 1910.119 (element structure; user holds the standard)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
+
+- id: KB-STD-API-RP-754
+  file: api-rp-754.md
+  title: "API RP 754 — process-safety performance indicators (tier→indicator map)"
+  facets:
+    jurisdiction: [All]
+    industry: ["O&G", Process]
+    topics: [api-rp-754, process-safety-metrics, leading-lagging, pse-tier1, pse-tier2]
+    audience: [M, C]
+  summary: "Process-safety indicator pyramid: Tier-1/Tier-2 PSE counting + normalized rate (fail-loud denominator); Tier-3/Tier-4 leading indicators. Structure reference, not the standard text."
+  source: "API RP 754 (2nd ed.) — indicator-tier structure (user holds the standard)"
+  year: 2021
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
+
+- id: KB-STD-IEC-61882
+  file: iec-61882.md
+  title: "IEC 61882 — HAZOP application guide (method→worksheet map)"
+  facets:
+    jurisdiction: [All]
+    industry: ["O&G", Process, Chem]
+    topics: [hazop, guideword, node, pha, worksheet]
+    audience: [M, C]
+  summary: "HAZOP method map: node × guideword×parameter → deviation/cause/consequence/safeguard/recommendation worksheet columns; risk rank via risk_matrix. Structure reference, not the standard text."
+  source: "IEC 61882 HAZOP application guide (structure; user holds the standard)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
+
+- id: KB-STD-IEC-61511
+  file: iec-61511.md
+  title: "IEC 61511 — functional safety / LOPA (method map)"
+  facets:
+    jurisdiction: [All]
+    industry: ["O&G", Process, Chem]
+    topics: [lopa, ipl, sil, functional-safety, pfd]
+    audience: [M, C]
+  summary: "LOPA/SIL method map: initiating event → IPLs (independence test) → residual gap → SIL. PFD/IPL credits are engineer-supplied, never computed. Structure reference, not the standard text."
+  source: "IEC 61511 functional safety (structure; user holds the standard)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
+
+- id: KB-STD-CCPS-BOWTIE
+  file: ccps-bowtie.md
+  title: "CCPS/EI bowtie & barrier-based risk management; ICMM CCM (method map)"
+  facets:
+    jurisdiction: [All]
+    industry: ["O&G", Process, Chem, Avi, Min]
+    topics: [bowtie, barrier, critical-control, ccm, performance-standard]
+    audience: [M, C]
+  summary: "Bowtie method map: top event → threats/preventive barriers / consequences/mitigative barriers; effective-independent-auditable criteria + performance standards; ICMM critical controls. Structure reference, not the guidance text."
+  source: "CCPS/EI bowtie method; ICMM CCM (structure; user holds the guidance)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null

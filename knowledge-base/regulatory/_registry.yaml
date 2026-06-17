@@ -74,3 +74,34 @@
   last_reviewed: 2026-05-15
   volatile: false
   supersedes: null
+
+# --- hse-process sector pack (06-02): COMAH (UK/EU) + PESO (India) statutory maps ---
+- id: KB-REG-UK-COMAH
+  file: uk-comah.md
+  title: "United Kingdom — COMAH 2015 / Seveso III (Safety Report duty map)"
+  facets:
+    jurisdiction: [UK, EU]
+    industry: ["O&G", Process, Chem]
+    topics: [comah, seveso, safety-report, mapp, major-accident]
+    audience: [M, C]
+  summary: "COMAH 2015 / Seveso III map: lower/upper-tier duties, MAPP, Safety Report elements, on/off-site emergency plans, notification thresholds → grounds comah-safety-report-assistant. Citation map, not the regulation text."
+  source: "COMAH 2015 / Seveso III Directive 2012/18/EU (citation map)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-IN-PESO
+  file: in-peso.md
+  title: "India — PESO petroleum/explosives/pressure-vessel licensing (legacy-first)"
+  facets:
+    jurisdiction: [IN]
+    industry: ["O&G", Process, Chem]
+    topics: [peso, petroleum-rules, explosives-rules, gas-cylinder, smpv, licensing, state-detection, osh-code-transition]
+    audience: [M, C]
+  summary: "PESO map: Petroleum Rules 2002 / Explosives Rules 2008 / Gas Cylinder Rules 2016 (Form E/F) / SMPV(U) 2016 (Form LS-1A) → licence/form/authority cluster for peso-licensing-assistant; legacy-first, state-aware, OSH-Code transition note. No hard-coded national form. Citation map, not the rules text."
+  source: "PESO — Petroleum Rules 2002 / Explosives Rules 2008 / Gas Cylinder Rules 2016 / SMPV(U) 2016 (citation map)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: true
+  supersedes: null
