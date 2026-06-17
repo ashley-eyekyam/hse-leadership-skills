@@ -31,6 +31,22 @@
   volatile: true
   supersedes: null
 
+# --- hse-chemicals sector pack (06-03): chemicals substance OEL anchors ---
+- id: KB-DATA-OEL-LIMITS
+  file: oel-limits.md
+  title: "Chemicals — occupational exposure limits (OEL/WEL/PEL) substance anchors"
+  facets:
+    jurisdiction: [All]
+    industry: [Chem, Process]
+    topics: [oel, wel, pel, tlv, exposure, twa, stel, ceiling]
+    audience: [C]
+  summary: "Chemicals substance→exposure-limit anchors (each value carries authority+year); the binding value is resolved from the cited authority at use time. India absent-limit → most-protective referenced value, [GAP]-flagged. Extends the KB-DATA-EXPOSURE-LIMITS resolution map."
+  source: "UK HSE EH40/2005 WEL / OSHA 29 CFR 1910.1000 PEL / ACGIH TLV (per-row authority+year)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: true
+  supersedes: null
+
 - id: KB-DATA-PPE-STANDARDS
   file: ppe-standards.md
   title: "PPE conformity standards reference"

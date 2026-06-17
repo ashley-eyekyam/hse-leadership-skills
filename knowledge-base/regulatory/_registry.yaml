@@ -105,3 +105,79 @@
   last_reviewed: 2026-05-15
   volatile: true
   supersedes: null
+
+# --- hse-chemicals sector pack (06-03): CLP/REACH (EU) + ADR/DOT (road) + MSIHC (India) ---
+- id: KB-REG-EU-CLP
+  file: eu-clp-reach.md
+  title: "European Union — CLP Regulation (EC) 1272/2008 (classification/labelling/packaging)"
+  facets:
+    jurisdiction: [EU]
+    industry: [Chem, Process]
+    topics: [clp, classification, labelling, packaging, annex-vi, c-and-l]
+    audience: [M, C]
+  summary: "CLP duty→artifact map (classify/label/package/notify); EU implementation of GHS — read with KB-STD-GHS. Grounds ghs-classification-sds-author. Citation map, not the regulation text."
+  source: "CLP Regulation (EC) No 1272/2008 (Article/Annex structure; user holds the official text)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-EU-REACH
+  file: eu-clp-reach.md
+  title: "European Union — REACH Regulation (EC) 1907/2006 (registration/SDS/authorisation)"
+  facets:
+    jurisdiction: [EU]
+    industry: [Chem, Process]
+    topics: [reach, registration, sds, exposure-scenario, authorisation, restriction]
+    audience: [M, C]
+  summary: "REACH duty→artifact map (registration / (e)SDS + exposure scenarios / authorisation Annex XIV / restriction Annex XVII). Grounds ghs-classification-sds-author + chemical-exposure-register. Citation map, not the regulation text."
+  source: "REACH Regulation (EC) No 1907/2006 (Article/Annex structure; user holds the official text)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-EU-ADR
+  file: transport-adr-dot.md
+  title: "European Union — ADR road transport of dangerous goods (class→placard map)"
+  facets:
+    jurisdiction: [EU]
+    industry: [Chem, Process]
+    topics: [adr, road-transport, dangerous-goods, placarding, segregation, packing-group]
+    audience: [M, C]
+  summary: "ADR class/packing/marking/placarding/segregation structure → road-transport map; cross-walks GHS class. Grounds chemical-transport-safety (EU road). Citation map, not the agreement text."
+  source: "ADR (UNECE European Agreement) — class/marking/placarding structure (user holds the official text)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-US-DOT-HMR
+  file: transport-adr-dot.md
+  title: "United States — DOT Hazardous Materials Regulations 49 CFR 100–185 (class→placard map)"
+  facets:
+    jurisdiction: [US]
+    industry: [Chem, Process]
+    topics: [dot-hmr, road-transport, hazmat-table, placarding, shipping-papers, packing-group]
+    audience: [M, C]
+  summary: "US DOT HMR class/HMT §172.101/marking/placarding/shipping-papers structure → road-transport map; cross-walks GHS class. Grounds chemical-transport-safety (US road). Citation map, not the regulation text."
+  source: "US DOT Hazardous Materials Regulations, 49 CFR 100–185 (structure; user holds the official text)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-IN-MSIHC
+  file: in-msihc.md
+  title: "India — MSIHC Rules 1989 (MAH identification + emergency plan, legacy-first)"
+  facets:
+    jurisdiction: [IN]
+    industry: [Chem, Process]
+    topics: [msihc, mah, threshold-quantity, on-site-emergency-plan, safety-report, state-detection, osh-code-transition]
+    audience: [M, C]
+  summary: "MSIHC threshold→duty→artifact map (MAH identification, on-site emergency plan, safety report); chemicals-owned (§5). State-aware (mandatory state detection via KB-REG-IN-STATEFORMS), references KB-REG-IN-PESO, OSH-Code transition note. No hard-coded national form. Citation map, not the rules text."
+  source: "MSIHC Rules 1989 (Environment (Protection) Act / Factories Act) — Rule/Schedule structure (user holds the text)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: true
+  supersedes: null

@@ -121,3 +121,94 @@
   last_reviewed: 2026-05-15
   volatile: false
   supersedes: null
+
+# --- hse-chemicals sector pack (06-03): GHS, DSEAR/ATEX, NFPA dust, IMDG ---
+- id: KB-STD-GHS
+  file: ghs.md
+  title: "UN GHS Rev.10 — classification + 16-section SDS map (clause→artifact)"
+  facets:
+    jurisdiction: [All]
+    industry: [Chem, Process]
+    topics: [classification, labelling, sds, pictograms, h-statements, p-statements]
+    audience: [M, C]
+  summary: "GHS hazard classes/categories + the 16-section SDS structure (§8 as HoC table); grounds ghs-classification-sds-author + the transport cross-walk. Structural reference, not the standard text."
+  source: "UN GHS Rev.10 (2023, clause/section structure; user holds the licensed text)"
+  year: 2023
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
+
+- id: KB-STD-DSEAR
+  file: dsear-atex.md
+  title: "DSEAR 2002 — dangerous substances / explosive atmospheres basis-of-safety (clause→artifact)"
+  facets:
+    jurisdiction: [All]
+    industry: [Chem, Process]
+    topics: [dsear, explosive-atmosphere, basis-of-safety, area-classification, ignition-control]
+    audience: [M, C]
+  summary: "DSEAR duty → basis-of-safety → artifact map (assess, prevent/mitigate, classify, control); read with KB-STD-ATEX for zoning. Structural reference, not the regulation text."
+  source: "DSEAR 2002 (clause structure; user holds the text)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
+
+- id: KB-STD-ATEX
+  file: dsear-atex.md
+  title: "ATEX 2014/34/EU + 1999/92/EC — explosive-atmosphere zoning (zone→artifact)"
+  facets:
+    jurisdiction: [All]
+    industry: [Chem, Process]
+    topics: [atex, zone, epl, equipment-category, hazardous-area]
+    audience: [M, C]
+  summary: "ATEX zone scheme (0/1/2 gas, 20/21/22 dust) → EPL/equipment category map; read with KB-STD-DSEAR. Structural reference, not the directive text."
+  source: "ATEX 2014/34/EU (equipment) + 1999/92/EC (workplace) (zone structure; user holds the text)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
+
+- id: KB-STD-NFPA-652
+  file: nfpa-652-660.md
+  title: "NFPA 652 — combustible-dust fundamentals / DHA (element→artifact)"
+  facets:
+    jurisdiction: [All]
+    industry: [Chem, Process, Mfg]
+    topics: [combustible-dust, dha, kst, deflagration, dust-explosion]
+    audience: [M, C]
+  summary: "NFPA 652 Dust Hazard Analysis element map + the named dust-parameter set (Kst/Pmax/MIE/MIT) resolved with source+year, never invented. Structural reference, not the standard text. Superseded by KB-STD-NFPA-660 (legacy citations preserved)."
+  source: "NFPA 652 Fundamentals of Combustible Dust (element structure; user holds the standard)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
+
+- id: KB-STD-NFPA-660
+  file: nfpa-652-660.md
+  title: "NFPA 660 — consolidated combustible dusts (element→artifact)"
+  facets:
+    jurisdiction: [All]
+    industry: [Chem, Process, Mfg]
+    topics: [combustible-dust, dha, consolidated-standard, dust-explosion]
+    audience: [M, C]
+  summary: "NFPA 660 consolidated combustible-dusts standard (draws together 652/654/61/484/655) — DHA element map. Structural reference, not the standard text. Supersedes KB-STD-NFPA-652."
+  source: "NFPA 660 Combustible Dusts (consolidated; element structure; user holds the standard)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: KB-STD-NFPA-652
+
+- id: KB-STD-IMDG
+  file: imdg.md
+  title: "IMDG Code — sea transport of dangerous goods (class→artifact)"
+  facets:
+    jurisdiction: [All]
+    industry: [Chem, Process]
+    topics: [imdg, sea-transport, dangerous-goods, packing-group, segregation, marine-pollutant]
+    audience: [M, C]
+  summary: "IMDG class/packing-group/segregation structure → sea-transport classification map; cross-walks GHS class to UN number/PG. Structural reference, not the Code text."
+  source: "IMDG Code (IMO) — class/packing/segregation structure (user holds the current amendment)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: true
+  supersedes: null
