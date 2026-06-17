@@ -1,0 +1,39 @@
+{
+  "_comment": "process-safety-kpi evals (06-02). Intake/specificity; fail-loud denominator [GAP]; de-id CLEAN.",
+  "skill": "process-safety-kpi",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "What's our process safety performance?",
+      "files": [],
+      "expected_behavior": "Runs the intake; refuses until the named facility, the period, the PSE events, and the work-hours denominator are captured.",
+      "expectations": [
+        "Runs the structured intake one question at a time before computing.",
+        "Refuses the vague request — elicits the specific facility, reporting period, and the PSE events (specificity).",
+        "Asks for the total work-hours denominator and distinguishes the API RP 754 PSE tiers from occupational TRIR/LTIFR/DART."
+      ]
+    },
+    {
+      "query": "We had 3 Tier-1 PSEs this quarter but I don't have the work hours — just give me a rate.",
+      "files": [],
+      "expected_behavior": "Reports the count but records the rate as [GAP] because the denominator is missing — the fail-loud discipline, no fabricated figure.",
+      "expectations": [
+        "Reports the Tier-1 PSE count (3) structured from the stated facts.",
+        "Records the normalized RATE as [GAP] because the work-hours denominator is missing — does NOT fabricate a denominator or a rate (fail-loud discipline).",
+        "Explains the rate needs the work-hours denominator and offers to compute it once supplied."
+      ]
+    },
+    {
+      "query": "Frame our PSE KPIs from the attached event log.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "De-identification runs FIRST; persons in the event log are role labels; no leaked identifier and no small injury cell in the output.",
+      "expectations": [
+        "The de-identification scrub runs FIRST, before computing.",
+        "Persons in the event log are recorded as role labels, not personal names; injury sub-cells <5 are aggregated/suppressed.",
+        "No real name, address, phone, government ID, re-identification key, or unsuppressed <5 injury cell — any leak is a de_identification hard-fail. The grader passes the clean fixture and CATCHES the paired seeded leak."
+      ]
+    }
+  ]
+}
