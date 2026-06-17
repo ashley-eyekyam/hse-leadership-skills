@@ -58,6 +58,13 @@ def incident_investigation_dir() -> Path:
 
 
 @pytest.fixture(scope="session")
+def board_safety_report_dir() -> Path:
+    """A heavy skill whose ChatGPT path uses the _ENGINE_REPORT report instruction
+    (exercises the WR-02 engine-path HoC discipline)."""
+    return SKILLS_DIR / "board-safety-report"
+
+
+@pytest.fixture(scope="session")
 def exemplar_dirs(
     risk_assessment_dir, toolbox_talk_dir, incident_investigation_dir
 ) -> dict:

@@ -77,6 +77,50 @@ _RESIDUAL_MARKER_RE = re.compile(r"<!--\s*hse:block")
 
 _FM_RE = re.compile(r"^---\n(.*?)\n---\n(.*)$", re.S)
 
+# --- CR-01 pointer rehoming: repo-relative -> on-host knowledge/ flat layout -----
+#
+# `_write_knowledge` flattens every uploaded file to `knowledge/<basename>`. The block
+# CONTENTS that flow into the emitted instruction surface, however, carry repo-relative
+# pointers (`../../knowledge-base/<...>/<file>.md`, `references/<file>`,
+# `branding/company-card.yaml`) that are correct INSIDE the repo but DEAD on every Tier-B
+# host. `rehome_pointers` rewrites those pointers to the flat `knowledge/<basename>`
+# layout the bundle actually ships, so a host that follows the instruction literally
+# resolves the file. `_resolve_knowledge_files` is the matching half — it bundles every
+# file these pointers name (every KB fragment referenced anywhere in the body, every
+# reference, and branding/company-card.yaml) so each rewritten pointer resolves (CR-01).
+
+# `(../)+knowledge-base/<dirs>/<file>.md` -> `knowledge/<file>.md`
+_REHOME_KB_FILE_RE = re.compile(
+    r"(?:\.\./)+knowledge-base/[A-Za-z0-9_./-]*?([A-Za-z0-9_.-]+\.md)"
+)
+# `(../)+knowledge-base/<dirs>/` (a directory pointer, e.g. ".../standards/") -> `knowledge/`
+_REHOME_KB_DIR_RE = re.compile(r"(?:\.\./)+knowledge-base/[A-Za-z0-9_./-]*/")
+# `references/<file.ext>` -> `knowledge/<file.ext>`
+_REHOME_REFS_RE = re.compile(r"\breferences/([A-Za-z0-9_.-]+\.\w+)")
+# `branding/company-card.yaml` -> `knowledge/company-card.yaml`
+_REHOME_BRANDING_RE = re.compile(r"\bbranding/(company-card\.yaml)")
+
+# Any repo-relative pointer that MUST NOT survive into an emitted instruction file
+# (the CR-01 regression assertion the validator depends on).
+_REPO_RELATIVE_POINTER_RE = re.compile(
+    r"(?:\.\./)+knowledge-base/|\breferences/[A-Za-z0-9_.-]+\.\w+|\bbranding/[A-Za-z0-9_.-]+\.\w+"
+)
+
+
+def rehome_pointers(text: str) -> str:
+    """Rewrite repo-relative file pointers in emitted instruction text to the flat
+    on-host ``knowledge/<basename>`` layout the bundle actually ships (CR-01).
+
+    Order matters: rewrite the FILE form first (it is more specific and ends in
+    ``.md``), then the bare DIRECTORY form (``.../standards/`` -> ``knowledge/``), then
+    ``references/`` and ``branding/``. Idempotent — re-running on already-rehomed text
+    is a no-op (the patterns only match repo-relative prefixes)."""
+    text = _REHOME_KB_FILE_RE.sub(r"knowledge/\1", text)
+    text = _REHOME_KB_DIR_RE.sub("knowledge/", text)
+    text = _REHOME_REFS_RE.sub(r"knowledge/\1", text)
+    text = _REHOME_BRANDING_RE.sub(r"knowledge/\1", text)
+    return text
+
 
 # --- frontmatter / region helpers (reused shape from lint_skills) --------------
 
@@ -185,15 +229,44 @@ def _extract_intake(body: str) -> str:
     return body[start:end].strip()
 
 
-def _resolve_knowledge_files(skill_dir: Path) -> List[Path]:
-    """Enumerate the knowledge files a bundle uploads: references/* + the resolved
-    KB fragments named in references/_skill-kb.md + the DISCLAIMER + a SKILL.md copy.
+def _kb_refs_in(text: str, anchor: Path, repo: Path) -> List[Path]:
+    """Resolve every ``(../)+knowledge-base/<...>/<file>.md`` reference in ``text``
+    against ``anchor`` (the file the reference lives in), validating each stays UNDER
+    ``repo`` (T-07-01-PT path-traversal guard, rooted at the BUILD's ``--repo`` —
+    WR-05, not the module global). Returns resolved, on-disk paths only."""
+    out: List[Path] = []
+    for m in re.finditer(r"(?:\.\./)+knowledge-base/[A-Za-z0-9_./-]+\.md", text):
+        target = (anchor / m.group(0)).resolve()
+        # V5 input validation — the resolved path must stay under the repo root.
+        if repo not in target.parents and target != repo:
+            raise ValueError(
+                f"_resolve_knowledge_files: KB reference {m.group(0)!r} escapes "
+                f"the repo root ({target}) — refusing (T-07-01-PT)"
+            )
+        if target.is_file():
+            out.append(target)
+    return out
+
+
+def _resolve_knowledge_files(skill_dir: Path, repo: Path = REPO) -> List[Path]:
+    """Enumerate the knowledge files a bundle uploads: references/* + EVERY KB fragment
+    referenced anywhere in the SKILL.md body (the kb-selection routing rubric AND the
+    jurisdiction-routing rows) + the ones named in references/_skill-kb.md + the
+    branding company-card + the DISCLAIMER + a SKILL.md copy.
+
+    Bundling EVERY referenced KB fragment (not just the _skill-kb.md manifest) is the
+    matching half of CR-01: ``rehome_pointers`` rewrites each repo-relative pointer in
+    the emitted instruction surface to ``knowledge/<basename>``, so every such pointer
+    must resolve to an actually-uploaded file. The jurisdiction-routing table names KB
+    files (uk-hswa.md, us-osha.md, …) that are NOT in _skill-kb.md; those were never
+    bundled before, leaving dead pointers on the host (CR-01).
 
     Every ``../../knowledge-base/…`` reference is resolved with ``Path.resolve()`` and
-    asserted to stay UNDER the repo root before it is recorded (T-07-01-PT mitigation:
-    no path-escape when composing knowledge copies). Returns sorted, de-duplicated,
+    asserted to stay UNDER ``repo`` before it is recorded (T-07-01-PT path-traversal
+    guard, rooted at the BUILD's repo — WR-05). Returns sorted, de-duplicated,
     POSIX-comparable absolute paths (Pitfall 5 determinism)."""
     skill_dir = Path(skill_dir).resolve()
+    repo = Path(repo).resolve()
     files: List[Path] = []
 
     # references/* (the on-demand pointers + the de-id checklist where present).
@@ -201,26 +274,29 @@ def _resolve_knowledge_files(skill_dir: Path) -> List[Path]:
     if refs.is_dir():
         files.extend(sorted(p for p in refs.iterdir() if p.is_file()))
 
+    # EVERY KB fragment referenced in the SKILL.md body — the kb-selection rubric AND
+    # the below-:end jurisdiction-routing rows — so each rehomed pointer resolves (CR-01).
+    skill_md = skill_dir / "SKILL.md"
+    if skill_md.is_file():
+        files.extend(_kb_refs_in(_read(skill_md), skill_dir, repo))
+
     # Resolved KB fragments named in references/_skill-kb.md (the rule-9 manifest).
     manifest = refs / "_skill-kb.md"
     if manifest.is_file():
-        for m in re.finditer(r"(\.\./)+knowledge-base/[A-Za-z0-9_./-]+\.md", _read(manifest)):
-            target = (manifest.parent / m.group(0)).resolve()
-            # V5 input validation — the resolved path must stay under the repo root.
-            if REPO not in target.parents and target != REPO:
-                raise ValueError(
-                    f"_resolve_knowledge_files: KB reference {m.group(0)!r} escapes "
-                    f"the repo root ({target}) — refusing (T-07-01-PT)"
-                )
-            if target.is_file():
-                files.append(target)
+        files.extend(_kb_refs_in(_read(manifest), manifest.parent, repo))
+
+    # The branding company-card — the attribution block points at it; bundle it so the
+    # rehomed `knowledge/company-card.yaml` attribution pointer resolves (CR-01 part b).
+    card = skill_dir / "branding" / "company-card.yaml"
+    if card.is_file():
+        files.append(card.resolve())
 
     # The canonical DISCLAIMER (a non-negotiable knowledge file on every host).
-    if DISCLAIMER_FILE.is_file():
-        files.append(DISCLAIMER_FILE.resolve())
+    disclaimer = repo / "DISCLAIMER.md"
+    if disclaimer.is_file():
+        files.append(disclaimer.resolve())
 
     # The marker-PRESERVED SKILL.md copy (re-ingestible by the repo linter, §3.2).
-    skill_md = skill_dir / "SKILL.md"
     if skill_md.is_file():
         files.append(skill_md.resolve())
 
@@ -248,30 +324,44 @@ class AdaptedSkill:
     has_a7: bool = False
 
 
-def load_skill(skill_dir: Path) -> AdaptedSkill:
+def _clean(text: str) -> str:
+    """Strip hse:block markers (R2) AND rehome repo-relative pointers to the flat
+    on-host knowledge/ layout (CR-01) — the two transforms every emitted instruction
+    surface must carry before it ships."""
+    return rehome_pointers(strip_markers(text))
+
+
+def load_skill(skill_dir: Path, repo: Path = REPO) -> AdaptedSkill:
     """Parse one ``skills/<name>/SKILL.md`` into an ``AdaptedSkill`` (C §3.1 step 1-2).
 
     Read SKILL.md → split frontmatter+body → extract the five block CONTENTS
-    (fail loud) → strip markers from the body for instructions_core → capture the
-    below-:end roster + jurisdiction rows + the §2.7 intake set verbatim →
-    enumerate knowledge files → detect has_a7."""
+    (fail loud) → strip markers + rehome repo-relative pointers for the emitted
+    surface → capture the below-:end roster + jurisdiction rows + the §2.7 intake set
+    verbatim → enumerate knowledge files → detect has_a7.
+
+    ``repo`` is the BUILD's repo root (the ``--repo`` arg); the path-traversal guard +
+    DISCLAIMER source are rooted at it, not the module global (WR-05)."""
     skill_dir = Path(skill_dir)
+    repo = Path(repo).resolve()
     text = _read(skill_dir / "SKILL.md")
     fm, body = _split_frontmatter(text)
 
     blocks = extract_blocks(body)
+    # The five block CONTENTS flow verbatim into the instruction surface, so they carry
+    # both transforms (marker strip + pointer rehome) — CR-01 / R2 / §3.2.
+    blocks = {name: _clean(content) for name, content in blocks.items()}
     return AdaptedSkill(
         name=fm.get("name", skill_dir.name),
         description=str(fm.get("description", "") or ""),
-        instructions_core=strip_markers(body),
+        instructions_core=_clean(body),
         blocks=blocks,
         # Roster / rows / intake all flow into the emitted INSTRUCTION surface, so they
-        # carry the R2 strip too (a Workflow that ends right before the orchestration
-        # block can otherwise drag in that block's :start marker line — §3.2).
-        roster_prose=strip_markers(_below_end(body, "orchestration")).strip(),
-        jurisdiction_rows=strip_markers(_rows_below_end(body, "kb-selection")).strip(),
-        intake_questions=strip_markers(_extract_intake(body)).strip(),
-        knowledge_files=_resolve_knowledge_files(skill_dir),
+        # carry the R2 strip + pointer rehome too (a Workflow that ends right before the
+        # orchestration block can otherwise drag in that block's :start marker — §3.2).
+        roster_prose=_clean(_below_end(body, "orchestration")).strip(),
+        jurisdiction_rows=_clean(_rows_below_end(body, "kb-selection")).strip(),
+        intake_questions=_clean(_extract_intake(body)).strip(),
+        knowledge_files=_resolve_knowledge_files(skill_dir, repo),
         has_a7=has_a7(skill_dir),
     )
 
@@ -300,13 +390,19 @@ HOUSE_SECTION_ORDER = [
 ]
 
 # The report-output instruction per report path (§3.3 vs §3.4 degradation).
+#
+# WR-02: the HoC discipline sentence is emitted INLINE on the engine path too (it was
+# previously only on the markdown-degradation path), so the four-non-negotiables HoC
+# discipline is present in the ChatGPT-engine instructions independent of any KB pointer.
 _ENGINE_REPORT = (
     "## Output format\n\n"
     "Assemble a `report.json` conforming to the shared report-model schema, then "
     "run `generate_report.py` in Code Interpreter on the assembled `report.json` to "
     "render the branded DOCX + PDF (the A4 engine + bundled fonts are uploaded as "
     "Code-Interpreter assets). Resolve branding from the user's `brand.yaml` (Eyekyam "
-    "default); surface the output paths and a one-line provenance note."
+    "default); surface the output paths and a one-line provenance note. "
+    "Rank every control by the hierarchy of controls (no PPE-only treatment without "
+    "justification); give every SMART action a named owner and a due date."
 )
 
 
@@ -350,7 +446,12 @@ _MOVABLE_HEADINGS = [
 # The compact single-thread fallback line every degraded host keeps inline (the
 # orchestration "instruction", not the full block — §3.7). Extracted from the block's
 # own fallback line so it is the skill's own words, never invented.
-_FALLBACK_RE = re.compile(r"(?m)^>\s*Single-threaded fallback:.*?(?:\n(?!>).*)*")
+#
+# WR-01: the source fallback is a multi-line BLOCKQUOTE — every continuation line starts
+# with `> `. The continuation group therefore matches lines that DO start with `>`
+# (`(?:\n>.*)*`); the previous `(?:\n(?!>).*)*` skipped every blockquote line and dropped
+# the actual fallback prose, shipping a dangling `> Single-threaded fallback:` header.
+_FALLBACK_RE = re.compile(r"(?m)^>[ \t]*Single-threaded fallback:.*(?:\n>.*)*")
 
 
 def _orchestration_instruction(block: str) -> str:
@@ -361,13 +462,31 @@ def _orchestration_instruction(block: str) -> str:
     fallback = ""
     m = _FALLBACK_RE.search(block)
     if m:
-        fallback = m.group(0).strip()
+        # WR-01: render the captured multi-line fallback as a single instruction line —
+        # strip the leading `> ` blockquote prefix from each line and collapse the
+        # internal wrapping to spaces (it is an instruction field, not a rendered
+        # blockquote), so the skill's own fallback words survive intact and compact.
+        lines = [re.sub(r"^>[ \t]?", "", ln).strip() for ln in m.group(0).splitlines()]
+        fallback = " ".join(ln for ln in lines if ln)
+    # The compact lead-in frames the single-thread host + roster checklist; the captured
+    # fallback (the skill's own words — WR-01) carries the De-identifier-first sequencing,
+    # scope discipline, and the MANDATORY Critic/QA pass, so the two no longer duplicate
+    # that prose (which would inflate the irreducible core past tight char limits — §3.7
+    # "a compact directive"). The validator check 6 (single-thread · de-identif · Critic/QA)
+    # is satisfied by the fallback prose. If a skill ever lacks a fallback line, the
+    # hardcoded discipline below is emitted instead so the non-negotiables never vanish.
+    if fallback:
+        return (
+            "## Agentic Execution (single-thread on this host)\n\n"
+            "Work through the roster checklist sequentially in this one context, keeping "
+            "the same decomposition discipline.\n\n" + fallback
+        ).strip()
     return (
         "## Agentic Execution (single-thread on this host)\n\n"
         "Run the De-identifier FIRST (sequential gate — its scrubbed output feeds every "
         "later step), then work through the roster checklist sequentially in this one "
         "context, keeping the same decomposition discipline, and finish with the "
-        "MANDATORY Critic/QA pass before delivery.\n\n" + fallback
+        "MANDATORY Critic/QA pass before delivery."
     ).strip()
 
 
@@ -463,9 +582,11 @@ def _render_body(adapted: AdaptedSkill, report_instruction: str) -> str:
 
 
 def _serialize(obj: dict) -> str:
-    """Byte-identical JSON — the same contract as gen_marketplace._serialize
-    (sorted keys, indent 2, ensure_ascii False, trailing newline) so re-runs are
-    idempotent (Pitfall 5)."""
+    """Deterministic JSON for the per-bundle manifests: ``indent=2``,
+    ``ensure_ascii=False``, ``sort_keys=True``, trailing newline, so re-runs are
+    idempotent (Pitfall 5). IN-02: this shares the same json.dumps OPTIONS as
+    ``gen_marketplace._serialize`` (both now pass ``sort_keys=True``); they serialize
+    DIFFERENT objects, so this is an option-parity claim, not a byte-identical-output one."""
     return json.dumps(obj, indent=2, ensure_ascii=False, sort_keys=True) + "\n"
 
 
@@ -487,18 +608,25 @@ def _conversation_starters(intake: str, limit: int = 4) -> List[str]:
 
 def _write_knowledge(adapted: AdaptedSkill, out: Path) -> List[str]:
     """Copy the knowledge files into ``out/knowledge/`` and return their sorted
-    POSIX-relative names."""
+    POSIX-relative names.
+
+    WR-03: two distinct source files with the same basename would both flatten to
+    ``knowledge/<basename>`` and the second copy would SILENTLY overwrite the first,
+    losing one file's content while the manifest hid the loss. Detect the collision and
+    FAIL LOUD (consistent with extract_blocks / IrreducibleOverflow)."""
     kdir = out / "knowledge"
     kdir.mkdir(parents=True, exist_ok=True)
-    names = []
+    written: Dict[str, Path] = {}
     for src in adapted.knowledge_files:
-        # The marker-preserved SKILL.md copy keeps the skill's own name distinct.
-        dest_name = src.name
-        if src.name == "SKILL.md":
-            dest_name = "SKILL.md"
-        shutil.copyfile(src, kdir / dest_name)
-        names.append(f"knowledge/{dest_name}")
-    return sorted(set(names))
+        if src.name in written and written[src.name] != src:
+            raise ValueError(
+                f"knowledge basename collision: {src} vs {written[src.name]} would both "
+                f"land at knowledge/{src.name} — one would silently overwrite the other; "
+                f"refusing (WR-03). Namespace or rename one source."
+            )
+        written[src.name] = src
+        shutil.copyfile(src, kdir / src.name)
+    return sorted(f"knowledge/{n}" for n in written)
 
 
 def _emit_common(adapted, out, report_instruction, char_limit):
@@ -529,25 +657,31 @@ def emit_chatgpt(adapted: AdaptedSkill, out: Path, platforms: dict) -> Path:
 
     # INSTALL.md — per D-09, NAME the canonical shared assets to upload; never
     # physically duplicate the heavy A4 engine / A7 package into the committed bundle.
-    a7_line = (
-        "5. Upload the A7 deterministic engines from `scripts/hse_components/` "
-        "(`risk_matrix.py`, `controls.py`, `rca.py`, `smart_actions.py`, "
-        "`incident_rates.py`, `__init__.py`, `_shim.py`).\n"
-        if adapted.has_a7
-        else ""
-    )
-    install = (
-        f"# Install `{adapted.name}` as a ChatGPT Custom GPT\n\n"
-        "1. Create a new Custom GPT (Configure tab).\n"
-        "2. Paste `instructions.md` into the **Instructions** field.\n"
-        "3. Upload every file under `knowledge/` as **Knowledge**.\n"
-        "4. Enable **Code Interpreter & Data Analysis**, then upload the canonical "
+    # IN-01: build the numbered list from a list of steps so the ordinals stay
+    # contiguous (no 4 → 6 gap) when the optional A7 step is absent (e.g. toolbox-talk).
+    steps = [
+        "Create a new Custom GPT (Configure tab).",
+        "Paste `instructions.md` into the **Instructions** field.",
+        "Upload every file under `knowledge/` as **Knowledge**.",
+        "Enable **Code Interpreter & Data Analysis**, then upload the canonical "
         "report engine from `assets/report-engine/` (`generate_report.py`, "
         "`render_docx.py`, `render_pdf.py`, `theme.py`, the schemas, `brand.yaml`, "
-        "`house-standard.yaml`, and the `fonts/` directory).\n"
-        f"{a7_line}"
-        "6. The GPT runs `generate_report.py` in Code Interpreter to produce the "
-        "branded DOCX + PDF.\n\n"
+        "`house-standard.yaml`, and the `fonts/` directory).",
+    ]
+    if adapted.has_a7:
+        steps.append(
+            "Upload the A7 deterministic engines from `scripts/hse_components/` "
+            "(`risk_matrix.py`, `controls.py`, `rca.py`, `smart_actions.py`, "
+            "`incident_rates.py`, `__init__.py`, `_shim.py`)."
+        )
+    steps.append(
+        "The GPT runs `generate_report.py` in Code Interpreter to produce the "
+        "branded DOCX + PDF."
+    )
+    numbered = "".join(f"{i}. {step}\n" for i, step in enumerate(steps, start=1))
+    install = (
+        f"# Install `{adapted.name}` as a ChatGPT Custom GPT\n\n"
+        f"{numbered}\n"
         "_Heavy Code-Interpreter assets are shared from the repo's single canonical "
         "copy (D-09) — they are named here, not duplicated into this bundle._\n"
     )
@@ -702,8 +836,10 @@ def _self_check(bundle_dir: Path, platform: str, platforms: dict) -> List[str]:
 
 
 def _iter_skill_names(repo: Path) -> List[str]:
-    root = repo / "skills"
-    return sorted(p.parent.name for p in root.rglob("SKILL.md"))
+    # WR-06: the intent is a SINGLE level — skills/<name>/SKILL.md. `glob("*/SKILL.md")`
+    # (not `rglob`) refuses to double-count any nested SKILL.md (a vendored example, or a
+    # marker-preserved knowledge copy if --out were ever pointed inside skills/).
+    return sorted(p.parent.name for p in (repo / "skills").glob("*/SKILL.md"))
 
 
 def main(argv: Optional[List[str]] = None) -> int:
@@ -747,7 +883,7 @@ def main(argv: Optional[List[str]] = None) -> int:
                 problems.append(f"{skill}: no skills/{skill}/SKILL.md")
                 continue
             try:
-                adapted = load_skill(skill_dir)
+                adapted = load_skill(skill_dir, repo)
             except (ValueError, IrreducibleOverflow) as e:
                 problems.append(f"{skill}: load failed — {e}")
                 continue

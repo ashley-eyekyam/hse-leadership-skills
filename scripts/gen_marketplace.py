@@ -57,11 +57,15 @@ def _frontmatter(skill_md: Path) -> Dict[str, Any]:
 
 def _iter_skills(repo: Path) -> List[Path]:
     """Every shipped skill folder (skills/ — the examples/ proof stubs are NOT
-    marketplace plugins)."""
+    marketplace plugins).
+
+    WR-06: single level only — skills/<name>/SKILL.md (glob, not rglob), so a nested
+    SKILL.md (a vendored example or a bundled knowledge copy) can never be double-counted
+    as a phantom skill named after the wrong parent directory."""
     root = repo / "skills"
     if not root.is_dir():
         return []
-    return sorted(child.parent for child in root.rglob("SKILL.md"))
+    return sorted(child.parent for child in root.glob("*/SKILL.md"))
 
 
 def build_manifest(repo: Path = REPO) -> Dict[str, Any]:
@@ -98,7 +102,10 @@ def build_manifest(repo: Path = REPO) -> Dict[str, Any]:
 
     plugins: List[Dict[str, Any]] = []
     for name in sorted(bundles):
-        plugins.append({"name": name, "skills": sorted(bundles[name])})
+        # WR-04: dedup the per-bundle skills list. A skill routed into the same bundle by
+        # both `plugin: X` and `bundled_in: [X]` would otherwise be listed twice (the
+        # hse-all synthesis already dedups via a set; the per-bundle path did not).
+        plugins.append({"name": name, "skills": sorted(set(bundles[name]))})
 
     manifest = dict(_HEADER)
     manifest["plugins"] = plugins
@@ -106,7 +113,10 @@ def build_manifest(repo: Path = REPO) -> Dict[str, Any]:
 
 
 def _serialize(manifest: Dict[str, Any]) -> str:
-    return json.dumps(manifest, indent=2, ensure_ascii=False) + "\n"
+    # IN-02: pass sort_keys=True explicitly (the manifest keys are already stable, so this
+    # is a no-op on current output) — making determinism explicit instead of relying on
+    # dict insertion order, and matching build._serialize's json.dumps options.
+    return json.dumps(manifest, indent=2, ensure_ascii=False, sort_keys=True) + "\n"
 
 
 def main(argv: Optional[List[str]] = None) -> int:

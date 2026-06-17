@@ -177,9 +177,18 @@ def _check_non_negotiables(rep, bundle_dir, platform, instr, adapted) -> None:
     if not (bundle_dir / "knowledge" / "DISCLAIMER.md").is_file():
         rep.error(f"{tag}: DISCLAIMER.md MISSING from knowledge/ (non-negotiable)")
 
-    # Hierarchy-of-controls (KB-SNIP-HOC): the HoC instruction content present.
-    if "hierarchy-of-controls" not in norm and "hierarchy of controls" not in norm:
-        rep.error(f"{tag}: hierarchy-of-controls (KB-SNIP-HOC) MISSING from instructions")
+    # Hierarchy-of-controls (KB-SNIP-HOC): the HoC DISCIPLINE must be present inline, not
+    # merely a `hierarchy-of-controls` path pointer (WR-02). A bare topic word — or worse,
+    # a dead `knowledge/hierarchy-of-controls.md` pointer — used to satisfy this check while
+    # the discipline lived only in the uploaded file (Pitfall 3 spill-to-knowledge). Require
+    # the discipline phrase ("hierarchy of controls" prose OR the "no PPE-only" rule), so the
+    # check fails marker-independently if the discipline ever spills out of instructions.
+    norm_l = norm.lower()
+    if "hierarchy of controls" not in norm_l and "no ppe-only" not in norm_l:
+        rep.error(
+            f"{tag}: hierarchy-of-controls DISCIPLINE MISSING from instructions "
+            f"(KB-SNIP-HOC — must be inline prose, not a knowledge/ path pointer)"
+        )
 
     # §2.7 intake: the intake heading + the skill's question set present.
     if not _contains(norm, adapted.intake_questions, min_chars=30):
@@ -207,15 +216,54 @@ def _check_r2_markers(rep, bundle_dir, platform, instr) -> None:
         rep.error(f"{tag}: `## Output format` heading did not survive the marker strip (Pitfall 1)")
 
 
-def _check_knowledge_resolvable(rep, bundle_dir, platform, skill_dir) -> None:
-    """Check 5 — every KB fragment / reference the skill's _skill-kb.md names exists in
-    the UPLOADED knowledge/ copy (adapter analogue of A8 rule 9 — the uploaded copy
-    resolves, not the repo path)."""
+# A repo-relative pointer that must NEVER survive into an emitted instruction file
+# (CR-01): the host flattens uploads to knowledge/<basename>, so any `../../`,
+# `references/<file>`, or `branding/<file>` pointer is dead on the target.
+_REPO_RELATIVE_POINTER_RE = re.compile(
+    r"(?:\.\./)+knowledge-base/"
+    r"|\breferences/[A-Za-z0-9_.-]+\.\w+"
+    r"|\bbranding/[A-Za-z0-9_.-]+\.\w+"
+)
+# A rehomed `knowledge/<file.ext>` pointer (the on-host flat layout). `\.\w` excludes the
+# bare `knowledge/` directory pointer (which is a valid "see the uploads" reference).
+_KNOWLEDGE_POINTER_RE = re.compile(r"\bknowledge/([A-Za-z0-9_.-]+\.\w+)")
+
+
+def _check_knowledge_resolvable(rep, bundle_dir, platform, skill_dir, instr) -> None:
+    """Check 5 (CR-01 teeth) — the emitted instruction surface ships NO dead repo-relative
+    pointer, and every ``knowledge/<file>`` pointer it DOES carry resolves to an actual
+    file in the bundle's knowledge/ directory (the host flattens uploads to that layout).
+
+    This is the missing tooth the old check lacked: previously it only checked that the
+    _skill-kb.md basenames existed somewhere in knowledge/, never that the path STRING in
+    the instruction the host follows actually resolves. A future spill-to-knowledge or a
+    pointer that re-introduces `../../` now hard-fails."""
     tag = f"{platform}/{bundle_dir.name}"
+    kdir = bundle_dir / "knowledge"
+    present = {p.name for p in kdir.iterdir() if p.is_file()} if kdir.is_dir() else set()
+
+    # (a) No repo-relative pointer may survive into the instruction surface (CR-01).
+    for m in _REPO_RELATIVE_POINTER_RE.finditer(instr):
+        rep.error(
+            f"{tag}: repo-relative pointer {m.group(0)!r} survived into instructions — "
+            f"it is DEAD on the host (uploads flatten to knowledge/<basename>); "
+            f"rehome it to knowledge/<basename> (CR-01)"
+        )
+
+    # (b) Every knowledge/<file> pointer the host is told to read must actually be uploaded.
+    for m in _KNOWLEDGE_POINTER_RE.finditer(instr):
+        basename = m.group(1)
+        if basename not in present:
+            rep.error(
+                f"{tag}: instruction points at knowledge/{basename} but no such file is "
+                f"in the uploaded knowledge/ (CR-01 — unresolvable on the host)"
+            )
+
+    # (c) Retain the A8-rule-9 spirit: every KB fragment the skill's _skill-kb.md names
+    # must be present in the uploaded knowledge/ copy.
     manifest = skill_dir / "references" / "_skill-kb.md"
     if not manifest.is_file():
         return  # not every skill carries a _skill-kb manifest
-    present = {p.name for p in (bundle_dir / "knowledge").iterdir() if p.is_file()}
     text = manifest.read_text(encoding="utf-8")
     for m in re.finditer(r"(?:\.\./)+knowledge-base/[A-Za-z0-9_./-]+\.md", text):
         basename = m.group(0).rsplit("/", 1)[-1]
@@ -274,10 +322,18 @@ def check_no_heavy_assets(bundle_dir: Path, platform: str) -> List[str]:
 
 
 def validate_bundle(
-    bundle_dir: Path, skill_dir: Path, platform: str, platforms_cfg: dict
+    bundle_dir: Path, skill_dir: Path, platform: str, platforms_cfg: dict,
+    repo: Optional[Path] = None,
 ) -> Report:
-    """Run the SIX §3.8 checks + the D-09 no-heavy-`assets/` check on one bundle."""
+    """Run the SIX §3.8 checks + the D-09 no-heavy-`assets/` check on one bundle.
+
+    ``repo`` (the build's repo root) is threaded into ``build.load_skill`` so the
+    path-traversal guard + DISCLAIMER source match the bundle's actual build tree
+    (WR-05); it defaults to the skill's grandparent (``skills/<name>`` -> repo)."""
     bundle_dir = Path(bundle_dir)
+    skill_dir = Path(skill_dir)
+    if repo is None:
+        repo = skill_dir.resolve().parent.parent
     rep = Report(target=f"{platform}/{bundle_dir.name}")
     if not bundle_dir.is_dir():
         rep.error(f"{platform}/{bundle_dir.name}: bundle directory does not exist")
@@ -286,7 +342,7 @@ def validate_bundle(
     # Re-extract the canonical block CONTENTS from the SOURCE SKILL.md (using the
     # markers, in the repo) — the §3.2 content-survives-even-if-marker-doesn't basis.
     try:
-        adapted = build.load_skill(skill_dir)
+        adapted = build.load_skill(skill_dir, repo)
     except (ValueError, build.IrreducibleOverflow) as e:
         rep.error(f"{platform}/{bundle_dir.name}: source skill failed to load — {e}")
         return rep
@@ -298,7 +354,7 @@ def validate_bundle(
         _check_non_negotiables(rep, bundle_dir, platform, instr, adapted)
         _check_r2_markers(rep, bundle_dir, platform, instr)
         _check_orchestration_degraded(rep, bundle_dir, platform, instr)
-    _check_knowledge_resolvable(rep, bundle_dir, platform, skill_dir)
+    _check_knowledge_resolvable(rep, bundle_dir, platform, skill_dir, instr)
     for prob in check_no_heavy_assets(bundle_dir, platform):
         rep.error(prob)
     return rep
@@ -369,7 +425,9 @@ def bundle_diff(repo: Path, platforms_cfg: Optional[dict] = None) -> Report:
 
 
 def _iter_skill_names(repo: Path) -> List[str]:
-    return sorted(p.parent.name for p in (repo / "skills").rglob("SKILL.md"))
+    # WR-06: single level only — skills/<name>/SKILL.md (glob, not rglob), so a nested
+    # SKILL.md (vendored example / knowledge copy) can never be mistaken for a skill.
+    return sorted(p.parent.name for p in (repo / "skills").glob("*/SKILL.md"))
 
 
 def main(argv: Optional[List[str]] = None) -> int:
@@ -407,7 +465,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         skill_dir = repo / "skills" / skill
         for platform in targets:
             bundle_dir = adapters_root / platform / skill
-            rep = validate_bundle(bundle_dir, skill_dir, platform, platforms_cfg)
+            rep = validate_bundle(bundle_dir, skill_dir, platform, platforms_cfg, repo)
             if args.non_negotiables:
                 # Keep only the non-negotiable / DISCLAIMER / HoC / intake errors.
                 rep.errors = [

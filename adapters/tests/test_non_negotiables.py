@@ -81,11 +81,19 @@ def test_disclaimer_removed_from_instructions_fails(toolbox_talk_dir, tmp_path):
 
 
 def test_hoc_removed_from_instructions_fails(toolbox_talk_dir, tmp_path):
+    # WR-02: the HoC check now requires the DISCIPLINE (the "hierarchy of controls" prose
+    # OR the "no PPE-only" rule), not a mere topic word or a knowledge/ path pointer. Strip
+    # BOTH discipline phrases (and the now-rehomed knowledge/ HoC pointer with them) to
+    # prove the strengthened check fires when the discipline is gone from instructions.
     adapted, out = _emit(toolbox_talk_dir, "gemini", tmp_path)
     instr_path = out / "instructions.md"
     instr = instr_path.read_text(encoding="utf-8")
-    instr = instr.replace("hierarchy-of-controls", "X").replace("hierarchy of controls", "X")
+    instr = (
+        instr.replace("hierarchy-of-controls", "X")
+        .replace("hierarchy of controls", "X")
+        .replace("no PPE-only", "no X-only")
+    )
     instr_path.write_text(instr, encoding="utf-8")
     platforms = build.load_platforms()
     rep = va.validate_bundle(out, toolbox_talk_dir, "gemini", platforms)
-    assert any("hierarchy" in e for e in rep.errors), rep.errors
+    assert any("hierarchy-of-controls DISCIPLINE" in e for e in rep.errors), rep.errors
