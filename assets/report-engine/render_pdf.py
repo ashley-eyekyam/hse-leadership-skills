@@ -318,14 +318,38 @@ class EyekyamPDF:
             _fn_bold = self._get_font("Helvetica-Bold")
             _fn = self._get_font("Helvetica")
 
-            # Title (multi-line via \n). Devanagari-aware per-line font.
-            title_lines = cover_data.get("title", "Report").split("\n")
+            # Title — word-wrapped + shrink-to-fit so a long title never runs
+            # off the page. PDF has no native text reflow (DOCX does), so the
+            # title previously overflowed the right edge; here it wraps on the
+            # same width budget as the subtitle below and shrinks the font when
+            # a single unbreakable word would still overflow. Honours explicit
+            # \n breaks; Devanagari-aware font chosen on the whole title.
+            title_text = cover_data.get("title", "Report")
+            _tf = self._select_font(title_text, "Helvetica-Bold")
+            max_title_w = w - 2 * MARGIN - w * 0.15  # leave room for the panel
+            title_size = 30
+            longest_word = max(title_text.split(), key=len, default="")
+            while title_size > 16 and canvas.stringWidth(
+                    longest_word, _tf, title_size) > max_title_w:
+                title_size -= 1
+            title_lines = []
+            for raw in title_text.split("\n"):
+                cur = ""
+                for word in raw.split():
+                    test = (cur + " " + word).strip()
+                    if canvas.stringWidth(test, _tf, title_size) <= max_title_w:
+                        cur = test
+                    else:
+                        if cur:
+                            title_lines.append(cur)
+                        cur = word
+                title_lines.append(cur)
             y = h * 0.62
             canvas.setFillColor(BRAND.WHITE)
+            canvas.setFont(_tf, title_size)
             for line in title_lines:
-                canvas.setFont(self._select_font(line, "Helvetica-Bold"), 30)
                 canvas.drawString(MARGIN, y, line)
-                y -= 38
+                y -= title_size + 8
 
             # Subtitle (word-wrapped)
             subtitle = cover_data.get("subtitle", "")
