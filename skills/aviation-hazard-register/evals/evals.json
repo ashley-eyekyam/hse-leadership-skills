@@ -1,0 +1,39 @@
+{
+  "_comment": "Eval set for aviation-hazard-register (06-06 hse-aviation). Intake-gate + 5×5-via-shared-engine + HoC + the de-id CLEAN fixture case. The seeded deid-leak.md (auto-discovered by test_sector_deid_pairs) proves the de-id hard-fail.",
+  "skill": "aviation-hazard-register",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Add a hazard to our register.",
+      "files": [],
+      "expected_behavior": "Runs the intake; refuses to score until the named operator, the specific hazard, its evidence, and the severity/likelihood are captured.",
+      "expectations": [
+        "Runs the structured intake before scoring any hazard.",
+        "Refuses a generic entry — elicits the named operator/scope and the specific hazard with its evidence (specificity; each hazard traced to evidence).",
+        "Captures severity and likelihood on the ICAO axes before scoring."
+      ]
+    },
+    {
+      "query": "Risk-classify this hazard: bird strike on departure, severity Hazardous, likelihood Occasional — controls are currently a PPE briefing card only.",
+      "files": [],
+      "expected_behavior": "Scores the hazard via the shared risk_matrix engine with the ICAO 5×5 MatrixConfig, then HoC-ranks the mitigations and flags the PPE-only control as inadequate.",
+      "expectations": [
+        "Scores the hazard via risk_matrix.score() with the ICAO 5×5 MatrixConfig (KB-DATA-AVI-RISK-MATRIX) — does not invent a band or hand-roll a matrix.",
+        "Walks the hierarchy of controls and flags the PPE-only treatment as inadequate; proposes higher-order controls first.",
+        "Assigns a named owner and a target/review date to each mitigation (smart_actions), and reports the residual rating movement."
+      ]
+    },
+    {
+      "query": "Build the register entry from this occurrence report.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; any named crew/reporter in the evidence is pseudonymised to a role label; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — identifiers are listed up front.",
+        "Named crew/reporter, contact and base become role labels; no re-identification key is embedded.",
+        "No real name, contact, address or reporter identity in the circulated register (de_identification hard-fail on any leak)."
+      ]
+    }
+  ]
+}
