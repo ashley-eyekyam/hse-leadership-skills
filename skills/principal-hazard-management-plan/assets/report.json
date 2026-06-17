@@ -1,0 +1,34 @@
+{
+  "_comment": "PHMP report tree (A4 report.json). findings/hoc_table/recommendations per spec 3.3; house_template unset (D-04/CT-3).",
+  "title": "Principal-Hazard Management Plan",
+  "sections": [
+    {
+      "type": "meta",
+      "fields": [
+        "mine_name",
+        "principal_hazard",
+        "scenario"
+      ]
+    },
+    {
+      "type": "heading",
+      "text": "Executive summary"
+    },
+    {
+      "type": "findings",
+      "title": "Hazard analysis (risk-rated via risk_matrix)"
+    },
+    {
+      "type": "hoc_table",
+      "title": "Control suite (hierarchy-ranked; critical controls flagged + ICMM-CCM linked)"
+    },
+    {
+      "type": "recommendations",
+      "title": "Monitoring (owner + due)"
+    },
+    {
+      "type": "bullets",
+      "title": "Basis (ICMM CCM / mining principal-hazard framing)"
+    }
+  ]
+}
