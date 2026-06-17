@@ -12,9 +12,16 @@
       "name": "hse-chemicals",
       "skills": [
         "bowtie-builder",
+        "chemical-exposure-register",
+        "chemical-transport-safety",
+        "ghs-classification-sds-author",
         "hazid-facilitator",
         "hazop-facilitator",
+        "india-msihc-mah-pack",
         "lopa-worksheet",
+        "reactive-dust-explosion-assessment",
+        "tank-farm-bunding-controls",
+        "toxic-release-dispersion-scenario",
         "whatif-facilitator"
       ]
     },
