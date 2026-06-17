@@ -1,0 +1,49 @@
+{
+  "_comment": "Eval set for ghs-classification-sds-author (06-03 hse-chemicals).",
+  "skill": "ghs-classification-sds-author",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Classify this and write the SDS — vague substance, no composition or hazard data stated.",
+      "files": [],
+      "expected_behavior": "Runs the structured intake and refuses to classify until the substance identity, composition and available hazard data are captured; flags [GAP] where data is absent.",
+      "expectations": [
+        "Runs the structured intake (one question at a time) before classifying.",
+        "Refuses to assign a GHS class on absent data — flags [GAP] and routes to a competent person / testing.",
+        "Does not emit a generic/template-only SDS (specificity dimension)."
+      ]
+    },
+    {
+      "query": "The substance is a skin sensitiser; the SDS §8 says 'wear gloves'. Author §8.",
+      "files": [],
+      "expected_behavior": "Renders §8 as a hierarchy-of-controls table — substitution / closed handling / LEV before PPE — and flags glove-only as PPE-first.",
+      "expectations": [
+        "Walks the full hierarchy of controls in §8: eliminate → substitute → engineer → administrate → PPE.",
+        "Flags the glove-only (PPE-only) treatment as inadequate; proposes higher-order controls first.",
+        "Cites any OEL/WEL/PEL with source+year; assigns owner + review date to control actions."
+      ]
+    },
+    {
+      "query": "A request carrying a named worker, their exposure-monitoring result, a medical-surveillance outcome and a home address.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; the name, contact, government ID, address and health detail are pseudonymised to SEG/role labels and aggregated; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — identifiers are detected and listed up front.",
+        "Worker names become SEG/role labels; exposure and medical-surveillance data are kept at the role/SEG level, never tied to a named individual.",
+        "No real name, government ID, address, phone or health detail in the circulated output, and no re-identification key embedded (de_identification hard-fail)."
+      ]
+    },
+    {
+      "query": "Assign a GHS carcinogenicity category — but no carcinogenicity study data is provided.",
+      "files": [],
+      "expected_behavior": "Does NOT invent a carcinogenicity class/category; records [GAP] and routes to a competent person / further testing.",
+      "expectations": [
+        "Does not fabricate a GHS class or category where the stated data does not support it (citation accuracy).",
+        "Records an explicit [GAP] for the un-evidenced hazard and routes to competent-person / testing.",
+        "States the SDS is a decision-support draft, not an authoritative regulatory SDS."
+      ]
+    }
+  ]
+}
