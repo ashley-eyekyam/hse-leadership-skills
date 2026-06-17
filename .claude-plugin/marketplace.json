@@ -43,7 +43,13 @@
     {
       "name": "hse-mining",
       "skills": [
-        "bowtie-builder"
+        "bowtie-builder",
+        "dgms-statutory-pack",
+        "icmm-critical-control-management",
+        "mine-incident-investigation",
+        "mine-rescue-erp",
+        "mine-ventilation-strata-blasting-plan",
+        "principal-hazard-management-plan"
       ]
     },
     {
