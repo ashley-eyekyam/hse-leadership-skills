@@ -1,0 +1,39 @@
+{
+  "_comment": "Eval set for aviation-srb-minutes (06-06 hse-aviation). DE-ID LOAD-BEARING (attendees as role labels; reporter identity in hazard items). Intake-gate + decision-log-with-rationale + the de-id CLEAN fixture case. The seeded deid-leak.md (auto-discovered by test_sector_deid_pairs) carries a named attendee/reporter identity and MUST hard-fail.",
+  "skill": "aviation-srb-minutes",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Write up our safety meeting.",
+      "files": [],
+      "expected_behavior": "Runs the intake; refuses to draft until the named operator, the meeting date/scope, and the agenda items are captured.",
+      "expectations": [
+        "Runs the structured intake before drafting the minutes.",
+        "Refuses generic minutes — elicits the named operator and the meeting agenda (specificity).",
+        "Captures attendees to render as role labels (chair = Accountable Manager)."
+      ]
+    },
+    {
+      "query": "Produce the SRB minutes for our operator with the SPI review, hazard decisions, and actions.",
+      "files": [],
+      "expected_behavior": "Produces minutes with the SPI/SPT review, the hazard & risk decisions, the actions with owner+due, and a decision log where every decision carries a rationale and an accountable person; renders empty rows where inputs are not yet supplied.",
+      "expectations": [
+        "Produces the meeting metadata, SPI/SPT review, hazard & risk decisions, actions, AND a decision log.",
+        "Every decision in the decision log carries a rationale and an accountable person; every action has an owner and a due date.",
+        "Renders the attendance / decision / action tables with empty rows where the meeting inputs are not yet supplied (no fabricated decisions)."
+      ]
+    },
+    {
+      "query": "Minute the meeting and record this hazard report discussed by the board.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; attendees and any reporter named in a hazard item are pseudonymised to role labels; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — identifiers are listed up front.",
+        "Attendees and the reporter in the hazard item become role labels; no re-identification key is embedded.",
+        "No real name, contact, address or reporter identity in the circulated minutes (de_identification hard-fail on any leak)."
+      ]
+    }
+  ]
+}
