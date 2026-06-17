@@ -389,10 +389,14 @@ def _rule9_kb_resolution(report: Report, body: str, skill_dir: Path, repo: Path)
                 lr = entry["last_reviewed"]
                 if isinstance(lr, str):
                     lr = datetime.strptime(lr, "%Y-%m-%d").date()
-                if (today - lr).days > STALENESS_DAYS:
+                # D-05c (CT-4): a registry entry may set a per-fragment staleness_days
+                # override for a faster-decaying fragment (e.g. KB-REG-IN-OSH-CODE at 90d);
+                # absent the key, the 180-day global STALENESS_DAYS default applies.
+                window = entry.get("staleness_days", STALENESS_DAYS)
+                if (today - lr).days > window:
                     report.warn(
                         f"rule 9: volatile KB fragment '{kb_id}' last_reviewed {lr} "
-                        f"predates the {STALENESS_DAYS}-day window"
+                        f"predates the {window}-day window"
                     )
             # Source/year WARN (A3 §3.9) — a data-point with an empty source/year.
             if folder == "data-points":
