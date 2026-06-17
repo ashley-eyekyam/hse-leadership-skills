@@ -1,0 +1,39 @@
+{
+  "_comment": "permit-to-work evals (06-02). Intake/specificity; SIMOPS coordination + HoC; de-id CLEAN.",
+  "skill": "permit-to-work",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Write a permit to work.",
+      "files": [],
+      "expected_behavior": "Runs the intake; refuses until the named high-risk task, its location, the isolations, and any concurrent operations are captured.",
+      "expectations": [
+        "Runs the structured intake one question at a time before drafting.",
+        "Refuses 'a permit to work' — elicits the specific named task and its exact location (specificity).",
+        "Asks about concurrent operations (SIMOPS detection) and the energy isolations before drafting."
+      ]
+    },
+    {
+      "query": "Hot-work permit to weld on the pipe rack above Unit 100 while the unit is running and a crane is lifting nearby.",
+      "files": [],
+      "expected_behavior": "Builds the permit AND a SIMOPS coordination section for the concurrent welding / live unit / crane lift, with coordination controls and HoC-ranked isolations.",
+      "expectations": [
+        "Detects the concurrent operations (welding + live unit + crane lift) and builds the SIMOPS coordination section within the permit (D-01 — not a separate workflow).",
+        "Specifies coordination controls: sequencing, exclusion zones, a single point of coordination, and cross-permit references, with the authorizing authority.",
+        "HoC-ranks the isolations/safeguards (gas test, hot-work controls) — engineered isolation preferred over reliance on the permit alone; PPE last."
+      ]
+    },
+    {
+      "query": "Build the permit package from the attached job notes.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "De-identification runs FIRST; permit holders / signatories are role labels; no leaked identifier in the package.",
+      "expectations": [
+        "The de-identification scrub runs FIRST, before drafting.",
+        "Permit holders / authorizers are recorded as role labels, not personal names.",
+        "No real name, address, phone, government ID, or re-identification key — any leak is a de_identification hard-fail. The grader passes the clean fixture and CATCHES the paired seeded leak."
+      ]
+    }
+  ]
+}
