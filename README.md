@@ -34,78 +34,6 @@ HSE Leadership Skills is an open-source, cross-platform pack of **Agent Skills**
 
 ---
 
-## What's in the box (the catalog)
-
-Forty-eight consultant skills across **ten universal core skills** and **five sector packs** (presented as equal peers — India is one of five), plus the `hse-skill-forge` contribution on-ramp. Every fact below is drawn from each skill's own `metadata`/`description` — nothing here is hand-classified.
-
-**Audience legend:** **M** = manager · **E** = executive · **F** = frontline · **C** = consultant. **Tier 1** = stable core.
-
-### Core skills — bundle `hse-core`
-
-| Skill | What it does | Audience | Jurisdiction | Tier |
-|---|---|---|---|---|
-| [`risk-assessment`](skills/risk-assessment/) | Site/task-specific risk assessment, hierarchy-of-controls-driven (the flagship) | M, C, F | All | 1 |
-| [`job-safety-analysis`](skills/job-safety-analysis/) | Step-by-step JSA/JHA for physical task work, per-step hazards + controls | M, F, C | All | 1 |
-| [`toolbox-talk`](skills/toolbox-talk/) | A < 2-minute, specific frontline safety briefing + sign-off sheet | F, M | All | 1 |
-| [`rams-builder`](skills/rams-builder/) | Construction RAMS — risk assessment + method statement, CDM/BOCW-aware | M, C | All | 1 |
-| [`incident-investigation`](skills/incident-investigation/) | RCA-driven incident investigation (5-Whys/ICAM/SCAT…), de-id-first, CAPA-bearing | M, C | All | 1 |
-| [`safety-audit`](skills/safety-audit/) | Criteria-based safety audit, evidence-traced findings (ISO 45001 9.2) | M, F, C | All | 1 |
-| [`capa-manager`](skills/capa-manager/) | Corrective & preventive action lifecycle/register, cause-traced (ISO 45001 10.2) | M, C | All | 1 |
-| [`sop-writer`](skills/sop-writer/) | Literacy-level-targeted SOPs/SWPs with HoC embedded in steps (ISO 45001 8.1) | M, C | All | 1 |
-| [`board-safety-report`](skills/board-safety-report/) | Board/executive safety narrative with a HiPo/SIF lens — insight, not data | E | All | 1 |
-| [`incident-rate-calculator`](skills/incident-rate-calculator/) | Deterministic TRIR/LTIFR/DART rates (script-backed, single-threaded) | M, E | All | 1 |
-
-### Sector packs — equal-peer bundles
-
-| Pack | What it adds | Focus |
-|---|---|---|
-| [`hse-process`](skills/hse-process/) | Process safety: PSM 14-element, COMAH, HAZOP/HAZID/LOPA/What-If facilitators, bowtie/MoC, PESO | Oil & Gas / Process |
-| [`hse-chemicals`](skills/hse-chemicals/) | Chemicals: GHS/CLP SDS, exposure registers, dust & reactive chemistry, transport, MSIHC | Chemicals |
-| [`hse-india`](skills/hse-india/) | Cross-sector regional: the legacy-first state-form engine, BOCW/PESO/OSH-Code transition, DPDP-aware de-id | All (IN) |
-| [`hse-aviation`](skills/hse-aviation/) | ICAO Annex 19 SMS, SMS-manual builder, SPI/SPT, just-culture, Safety Review Board minutes, FDM/FOQA | Aviation |
-| [`hse-mining`](skills/hse-mining/) | Mines Act/DGMS notices & returns, ventilation/strata/blasting, mine-rescue ERP, ICMM critical-control | Mining |
-
-### Contribute a skill — `hse-skill-forge`
-
-> Author a new conformant skill in minutes: [`hse-skill-forge`](skills/hse-skill-forge/) (bundle `hse-systems`) scaffolds the six-block contract, the structured intake, the orchestration roster, the de-identification block, and the eval scaffold — born linter- and eval-shaped. See [`CONTRIBUTING.md`](./CONTRIBUTING.md) and [`docs/AUTHORING_GUIDE.md`](./docs/AUTHORING_GUIDE.md).
-
-### You need to… → use this skill → you get
-
-| You need to… | Use this skill | You get |
-|---|---|---|
-| Assess a specific task, site, activity, or asset | `risk-assessment` | HIRA/HIRARC, scored initial/residual risk, hierarchy-ranked controls, SMART actions |
-| Plan a physical job step by step | `job-safety-analysis` | Per-step hazards, risk scores, controls, residual risk, sign-off-ready JSA |
-| Brief a crew before work | `toolbox-talk` | Plain-language talk, discussion prompts, attendance/sign-off sheet |
-| Learn from an incident or near miss | `incident-investigation` | De-identified timeline, evidence log, RCA, CAPA, reportability prompt |
-| Audit a process or system against criteria | `safety-audit` | Objective evidence, conformities, major/minor NCs, risk-rated corrective actions |
-| Turn controls into a repeatable procedure | `sop-writer` | Version-controlled SOP/SWP with roles, competencies, embedded controls |
-| Brief the board on systemic risk | `board-safety-report` | Leadership narrative, HiPo/SIF themes, action visibility |
-
-### Use cases by leadership level
-
-| Reader | What they care about | What it gives them |
-|---|---|---|
-| Frontline supervisor | A fast briefing for today's job | Task-specific toolbox talks + sign-off sheets, no generic patter |
-| Shift / operations manager | Work proceeds only when risks are controlled | Residual risk, stop-work flags, owners, due dates, practical controls |
-| HSE officer / safety advisor | Defensible drafts, consistent method | Structured intake, de-identification, risk scoring, evidence trails |
-| HSE manager / EHS lead | Consistency across sites and audits | One way to produce HIRAs, investigations, audit findings, and CAPAs |
-| Plant manager / site leader | Material risk and accountability | Safety work turned into owned actions and visible controls |
-| Consultant / auditor | Evidence and professional review | Structured artifacts with objective evidence, assumptions, gaps, boundaries |
-| Executive / board member | Systemic themes and assurance | Incidents, audits, and high residual risk turned into leadership questions |
-
-### What makes it different
-
-1. **It does not accept vague safety work.** It forces exact task/site/asset context.
-2. **It treats PPE as the last line of defence.** It pushes higher-order controls first.
-3. **It is privacy-aware by design.** De-identification runs *before* drafting.
-4. **It is evidence-oriented.** Investigations and audits trace conclusions back to numbered evidence.
-5. **It creates action, not just prose.** Actions require owners, dates, measures, and links.
-6. **It understands HSE workflows.** HIRA, JSA, toolbox talk, incident RCA, audit, SOP each have a distinct method.
-7. **It produces professional deliverables.** A structured `report.json` renders to branded PDF and DOCX.
-8. **It is open source and extensible.** Authors use `hse-skill-forge` and the authoring guide to add new workflows.
-
----
-
 ## Install in 30 seconds
 
 Every skill is one portable `SKILL.md`, rendered into each host's format by the adapter build — so the same skill installs on Claude, ChatGPT, Gemini, Copilot, or any open-standard tool.
@@ -183,6 +111,78 @@ These blocks are **lifted verbatim** from each skill's emitted `adapters/<platfo
 </details>
 
 For local testing and the full setup walkthrough, see [`docs/USER_MANUAL.md`](docs/USER_MANUAL.md) (single-skill setup) and [`docs/USER_JOURNEYS.md`](docs/USER_JOURNEYS.md) (chaining skills for a real task).
+
+---
+
+## What's in the box (the catalog)
+
+Forty-eight consultant skills across **ten universal core skills** and **five sector packs** (presented as equal peers — India is one of five), plus the `hse-skill-forge` contribution on-ramp. Every fact below is drawn from each skill's own `metadata`/`description` — nothing here is hand-classified.
+
+**Audience legend:** **M** = manager · **E** = executive · **F** = frontline · **C** = consultant. **Tier 1** = stable core.
+
+### Core skills — bundle `hse-core`
+
+| Skill | What it does | Audience | Jurisdiction | Tier |
+|---|---|---|---|---|
+| [`risk-assessment`](skills/risk-assessment/) | Site/task-specific risk assessment, hierarchy-of-controls-driven (the flagship) | M, C, F | All | 1 |
+| [`job-safety-analysis`](skills/job-safety-analysis/) | Step-by-step JSA/JHA for physical task work, per-step hazards + controls | M, F, C | All | 1 |
+| [`toolbox-talk`](skills/toolbox-talk/) | A < 2-minute, specific frontline safety briefing + sign-off sheet | F, M | All | 1 |
+| [`rams-builder`](skills/rams-builder/) | Construction RAMS — risk assessment + method statement, CDM/BOCW-aware | M, C | All | 1 |
+| [`incident-investigation`](skills/incident-investigation/) | RCA-driven incident investigation (5-Whys/ICAM/SCAT…), de-id-first, CAPA-bearing | M, C | All | 1 |
+| [`safety-audit`](skills/safety-audit/) | Criteria-based safety audit, evidence-traced findings (ISO 45001 9.2) | M, F, C | All | 1 |
+| [`capa-manager`](skills/capa-manager/) | Corrective & preventive action lifecycle/register, cause-traced (ISO 45001 10.2) | M, C | All | 1 |
+| [`sop-writer`](skills/sop-writer/) | Literacy-level-targeted SOPs/SWPs with HoC embedded in steps (ISO 45001 8.1) | M, C | All | 1 |
+| [`board-safety-report`](skills/board-safety-report/) | Board/executive safety narrative with a HiPo/SIF lens — insight, not data | E | All | 1 |
+| [`incident-rate-calculator`](skills/incident-rate-calculator/) | Deterministic TRIR/LTIFR/DART rates (script-backed, single-threaded) | M, E | All | 1 |
+
+### Sector packs — equal-peer bundles
+
+| Pack | What it adds | Focus |
+|---|---|---|
+| [`hse-process`](skills/hse-process/) | Process safety: PSM 14-element, COMAH, HAZOP/HAZID/LOPA/What-If facilitators, bowtie/MoC, PESO | Oil & Gas / Process |
+| [`hse-chemicals`](skills/hse-chemicals/) | Chemicals: GHS/CLP SDS, exposure registers, dust & reactive chemistry, transport, MSIHC | Chemicals |
+| [`hse-india`](skills/hse-india/) | Cross-sector regional: the legacy-first state-form engine, BOCW/PESO/OSH-Code transition, DPDP-aware de-id | All (IN) |
+| [`hse-aviation`](skills/hse-aviation/) | ICAO Annex 19 SMS, SMS-manual builder, SPI/SPT, just-culture, Safety Review Board minutes, FDM/FOQA | Aviation |
+| [`hse-mining`](skills/hse-mining/) | Mines Act/DGMS notices & returns, ventilation/strata/blasting, mine-rescue ERP, ICMM critical-control | Mining |
+
+### Contribute a skill — `hse-skill-forge`
+
+> Author a new conformant skill in minutes: [`hse-skill-forge`](skills/hse-skill-forge/) (bundle `hse-systems`) scaffolds the six-block contract, the structured intake, the orchestration roster, the de-identification block, and the eval scaffold — born linter- and eval-shaped. See [`CONTRIBUTING.md`](./CONTRIBUTING.md) and [`docs/AUTHORING_GUIDE.md`](./docs/AUTHORING_GUIDE.md).
+
+### You need to… → use this skill → you get
+
+| You need to… | Use this skill | You get |
+|---|---|---|
+| Assess a specific task, site, activity, or asset | `risk-assessment` | HIRA/HIRARC, scored initial/residual risk, hierarchy-ranked controls, SMART actions |
+| Plan a physical job step by step | `job-safety-analysis` | Per-step hazards, risk scores, controls, residual risk, sign-off-ready JSA |
+| Brief a crew before work | `toolbox-talk` | Plain-language talk, discussion prompts, attendance/sign-off sheet |
+| Learn from an incident or near miss | `incident-investigation` | De-identified timeline, evidence log, RCA, CAPA, reportability prompt |
+| Audit a process or system against criteria | `safety-audit` | Objective evidence, conformities, major/minor NCs, risk-rated corrective actions |
+| Turn controls into a repeatable procedure | `sop-writer` | Version-controlled SOP/SWP with roles, competencies, embedded controls |
+| Brief the board on systemic risk | `board-safety-report` | Leadership narrative, HiPo/SIF themes, action visibility |
+
+### Use cases by leadership level
+
+| Reader | What they care about | What it gives them |
+|---|---|---|
+| Frontline supervisor | A fast briefing for today's job | Task-specific toolbox talks + sign-off sheets, no generic patter |
+| Shift / operations manager | Work proceeds only when risks are controlled | Residual risk, stop-work flags, owners, due dates, practical controls |
+| HSE officer / safety advisor | Defensible drafts, consistent method | Structured intake, de-identification, risk scoring, evidence trails |
+| HSE manager / EHS lead | Consistency across sites and audits | One way to produce HIRAs, investigations, audit findings, and CAPAs |
+| Plant manager / site leader | Material risk and accountability | Safety work turned into owned actions and visible controls |
+| Consultant / auditor | Evidence and professional review | Structured artifacts with objective evidence, assumptions, gaps, boundaries |
+| Executive / board member | Systemic themes and assurance | Incidents, audits, and high residual risk turned into leadership questions |
+
+### What makes it different
+
+1. **It does not accept vague safety work.** It forces exact task/site/asset context.
+2. **It treats PPE as the last line of defence.** It pushes higher-order controls first.
+3. **It is privacy-aware by design.** De-identification runs *before* drafting.
+4. **It is evidence-oriented.** Investigations and audits trace conclusions back to numbered evidence.
+5. **It creates action, not just prose.** Actions require owners, dates, measures, and links.
+6. **It understands HSE workflows.** HIRA, JSA, toolbox talk, incident RCA, audit, SOP each have a distinct method.
+7. **It produces professional deliverables.** A structured `report.json` renders to branded PDF and DOCX.
+8. **It is open source and extensible.** Authors use `hse-skill-forge` and the authoring guide to add new workflows.
 
 ---
 
