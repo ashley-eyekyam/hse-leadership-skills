@@ -1,0 +1,55 @@
+# platforms.yaml — per-platform adapter build config (C §3.7 / §3.9, D-10).
+#
+# One block per Tier-B target. The fit algorithm (build.py §3.7) is LIMIT-AGNOSTIC —
+# only these constants change. Read once via yaml.safe_load (analog:
+# template/metadata-vocab.yaml). stdlib + pyyaml only.
+#
+# D-10 (build invariant, NOT a fork): char_limit values MUST be verified against
+# each vendor's CURRENT published limit at build time — do NOT hard-code from memory.
+# The values below are the cited current constants as of this build:
+#   - chatgpt  8000  — CITED: OpenAI Custom GPT Instructions field cap.
+#   - copilot  8000  — CITED: learn.microsoft.com declarative-agent instructions;
+#                      manifest string props capped at 4000 (manifest_string_limit).
+#   - generic  6000  — conservative default (no single vendor; smallest reasonable field).
+#   - gemini   4000  — conservative: Google publishes NO hard cap for the Gem
+#                      instruction field (see the inline OWNER-VERIFY flag below).
+#
+# keep_markers: false  — strip-everywhere R2 default (Decision 1 / D-10). The
+# hse:block:* markers are stripped from every emitted instruction surface and
+# preserved ONLY in the uploaded knowledge SKILL.md copy.
+
+keep_markers: false
+
+platforms:
+  chatgpt:
+    char_limit: 8000          # CITED: OpenAI Custom GPT instructions cap
+    code_interpreter: true    # first-class file-producing Python — real A4/A7 engine path
+    manifest: chatgpt         # {name, description, instructions_file, knowledge_files[],
+                              #  code_interpreter, conversation_starters[]}
+    report_path: engine       # run generate_report.py in Code Interpreter
+
+  gemini:
+    # OWNER-VERIFY at build time per D-10 — Gemini Gem instruction cap is unpublished.
+    # 4000 is a conservative default (below ChatGPT/Copilot's confirmed 8000), generous
+    # enough for the lean bodies after spill. Confirm empirically before launch.
+    char_limit: 4000
+    code_interpreter: false   # no Python execution — markdown-report degradation
+    manifest: gemini          # {name, description, instructions_file, knowledge_files[],
+                              #  code_interpreter: false}
+    report_path: markdown     # structured markdown in A4 house-section order
+
+  copilot:
+    char_limit: 8000          # CITED: learn.microsoft.com declarative-agent instructions
+    manifest_string_limit: 4000  # CITED: per-string manifest property cap
+    code_interpreter: false   # declarative-agent path — markdown-report degradation
+    manifest: copilot         # declarative-agent shape {name, description, instructions,
+                              #  capabilities, knowledge_sources[]}, schema 1.7
+    manifest_schema: "1.7"
+    report_path: markdown
+
+  generic:
+    char_limit: 6000          # conservative — pastes into the smallest reasonable field
+    code_interpreter: false   # lowest-common-denominator — markdown-report degradation
+    manifest: generic         # minimal {name, description, system_prompt_file,
+                              #  knowledge_files[], notes}
+    report_path: markdown
