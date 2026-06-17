@@ -1,0 +1,39 @@
+{
+  "_comment": "Eval set for aviation-spi-spt-framework (06-06 hse-aviation). Intake-gate + every-SPI-has-threshold-and-owner + no-invented-figure + the de-id CLEAN fixture case. The seeded deid-leak.md (auto-discovered by test_sector_deid_pairs) proves the de-id hard-fail.",
+  "skill": "aviation-spi-spt-framework",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Set up some safety KPIs for us.",
+      "files": [],
+      "expected_behavior": "Runs the intake; refuses to draft until the named operator and the hazards/objectives the SPIs must track are captured.",
+      "expectations": [
+        "Runs the structured intake before designing any SPI.",
+        "Refuses a generic KPI list — elicits the named operator and the specific hazards/objectives each SPI must map to (specificity).",
+        "Captures whether each indicator is leading or lagging and any baseline data."
+      ]
+    },
+    {
+      "query": "Design SPIs for our unstabilised-approach and runway-excursion hazards.",
+      "files": [],
+      "expected_behavior": "Designs SPIs each with a defined alert level and target level, mapped to the owning hazard, and never invents a performance figure.",
+      "expectations": [
+        "Every SPI carries a defined alert level AND a target level (SPT) — flags any SPI without a threshold.",
+        "Every SPI maps to an owning hazard or safety objective — flags any orphan SPI.",
+        "Uses incident_rates / KB-DATA-TRIR-BENCHMARKS (source+year) for trend context and records any absent figure as [GAP] — does NOT fabricate a rate."
+      ]
+    },
+    {
+      "query": "Build the SPI framework from this occurrence dataset.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; any named crew/reporter in the occurrence data is pseudonymised to a role label; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — identifiers are listed up front.",
+        "Named crew/reporter and contact become role labels; no re-identification key is embedded.",
+        "No real name, contact, address or reporter identity in the circulated framework (de_identification hard-fail on any leak)."
+      ]
+    }
+  ]
+}
