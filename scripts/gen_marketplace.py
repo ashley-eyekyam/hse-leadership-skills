@@ -64,10 +64,17 @@ def build_manifest(repo: Path = REPO) -> Dict[str, Any]:
     bundles: Dict[str, List[str]] = {}
     for skill_dir in _iter_skills(repo):
         fm = _frontmatter(skill_dir / "SKILL.md")
-        plugin = (fm.get("metadata") or {}).get("plugin")
+        meta = fm.get("metadata") or {}
+        plugin = meta.get("plugin")
         if not plugin:
             continue
         bundles.setdefault(plugin, []).append(skill_dir.name)
+        # D-06 cross-bundle membership: a skill owned by one bundle (metadata.plugin)
+        # may also appear in others via metadata.bundled_in. The manifest stays derived
+        # from frontmatter alone (no second source of truth) — WR-05. rule-6 validates
+        # each bundled_in value is a registered bundle at lint time.
+        for extra in (meta.get("bundled_in") or []):
+            bundles.setdefault(extra, []).append(skill_dir.name)
 
     plugins: List[Dict[str, Any]] = []
     for name in sorted(bundles):

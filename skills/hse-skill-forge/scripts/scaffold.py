@@ -234,7 +234,8 @@ def _frontmatter(name: str, answers: dict) -> str:
         "license": "Apache-2.0",
         "metadata": {k: meta[k] for k in (
             "author", "version", "category", "tier", "audience", "industry",
-            "jurisdiction", "status", "plugin", "hse_reviewed_by", "hse_reviewed_date",
+            "jurisdiction", "status", "plugin", "bundled_in",
+            "hse_reviewed_by", "hse_reviewed_date",
         ) if k in meta},
     }
     body = yaml.safe_dump(fm, sort_keys=False, allow_unicode=True, default_flow_style=False)

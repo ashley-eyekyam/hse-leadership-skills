@@ -330,8 +330,16 @@ def _rule6_metadata(report: Report, fm: dict) -> None:
                 if val not in vocab.get(key, []):
                     report.error(f"rule 6: metadata.{key} value '{val}' not in controlled vocab")
     plugin = meta.get("plugin")
-    if plugin and plugin not in registered_bundles(vocab):
+    bundles = registered_bundles(vocab)
+    if plugin and plugin not in bundles:
         report.error(f"rule 6: metadata.plugin '{plugin}' not a registered marketplace bundle")
+    # D-06 cross-bundle membership: metadata.bundled_in is OPTIONAL; when present every
+    # value must resolve to a registered bundle (same single source as plugin — WR-05).
+    for extra in (meta.get("bundled_in") or []):
+        if extra not in bundles:
+            report.error(
+                f"rule 6: metadata.bundled_in '{extra}' not a registered marketplace bundle"
+            )
 
 
 def _rule7_length_and_license(report: Report, fm: dict, body: str) -> None:
