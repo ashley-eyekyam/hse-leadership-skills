@@ -28,6 +28,11 @@ SCRIPTS = Path(__file__).resolve().parent
 REPO = SCRIPTS.parent
 MANIFEST = REPO / ".claude-plugin" / "marketplace.json"
 
+# Bundles excluded from the synthesized `hse-all` meta-plugin (D-13): the
+# build-time forge (hse-systems) stays contributor-only and must NOT ship in the
+# one-line "install everything" consumer pack.
+EXCLUDE_FROM_META = {"hse-systems"}
+
 # The stable manifest header (everything except the generated `plugins` array).
 _HEADER = {
     "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
@@ -75,6 +80,21 @@ def build_manifest(repo: Path = REPO) -> Dict[str, Any]:
         # each bundled_in value is a registered bundle at lint time.
         for extra in (meta.get("bundled_in") or []):
             bundles.setdefault(extra, []).append(skill_dir.name)
+
+    # hse-all (D-13/D-14): the one-line "install everything" meta-plugin. Its
+    # membership is SYNTHESIZED here as the sorted union of every skill in any
+    # bundle except EXCLUDE_FROM_META (the forge) — the ONLY source of truth for
+    # hse-all (Pitfall 4 / WR-05). No skill declares `metadata.plugin: hse-all`;
+    # adding a future consultant skill auto-folds it in with zero frontmatter
+    # edits. The vocab registers the NAME only (so lint rule 6 accepts it).
+    meta_all = sorted({
+        skill
+        for plugin, skills in bundles.items()
+        if plugin not in EXCLUDE_FROM_META
+        for skill in skills
+    })
+    if meta_all:
+        bundles["hse-all"] = meta_all
 
     plugins: List[Dict[str, Any]] = []
     for name in sorted(bundles):

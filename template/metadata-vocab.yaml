@@ -53,3 +53,10 @@ plugin:
   # (Phase-4 04-01 Wave-0 blocker fix). Framing is build-time tooling, not a
   # consultant artifact bundle (D-01).
   - hse-systems
+  # hse-all — the SYNTHESIZED "install everything" meta-bundle (D-13/D-14): the
+  # union of all consultant bundles MINUS hse-systems (48 skills). Registered
+  # here as a NAME ONLY so registered_bundles()/lint rule 6 accept the synthesized
+  # plugin entry; its MEMBERSHIP is derived in gen_marketplace.build_manifest and
+  # is NEVER hand-listed (single source of truth, WR-05). No skill declares
+  # metadata.plugin: hse-all, so no per-skill frontmatter change is needed.
+  - hse-all
