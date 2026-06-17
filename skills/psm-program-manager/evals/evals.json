@@ -1,0 +1,39 @@
+{
+  "_comment": "psm-program-manager evals (06-02). Intake/specificity; HoC remediation; de-id CLEAN (paired leak proven by test_sector_deid_pairs).",
+  "skill": "psm-program-manager",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Sort out our process safety management.",
+      "files": [],
+      "expected_behavior": "Runs the intake; refuses until the named facility / covered process and the elements in scope are captured.",
+      "expectations": [
+        "Runs the structured intake one question at a time before any matrix.",
+        "Refuses the vague request — elicits the specific named facility / covered process and the elements in scope (specificity).",
+        "Asks for the evidence per element so status is evidence-based, not asserted."
+      ]
+    },
+    {
+      "query": "Our mechanical-integrity element is a gap; the only remediation we propose is 'remind operators to report leaks'.",
+      "files": [],
+      "expected_behavior": "Records the gap, gap-risk bands it, and HoC-ranks the remediation, flagging the administrative-only remediation as lower-order.",
+      "expectations": [
+        "Records the mechanical-integrity element as a gap with a gap-risk band (risk_matrix).",
+        "HoC-ranks the remediation: flags 'remind operators to report leaks' as administrative-only (controls.ppe_admin_only).",
+        "Prompts for a higher-order remediation first (an ITPM program with inspection schedules) and assigns an owner + due date (smart_actions)."
+      ]
+    },
+    {
+      "query": "Build the PSM status matrix from the attached element review.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "De-identification runs FIRST; named persons are role labels; no leaked identifier in the matrix.",
+      "expectations": [
+        "The de-identification scrub runs FIRST, before the matrix is built.",
+        "Element owners / reviewers are recorded as role labels, not personal names.",
+        "No real name, address, phone, government ID, or re-identification key — any leak is a de_identification hard-fail. The grader passes the clean fixture and CATCHES the paired seeded leak."
+      ]
+    }
+  ]
+}
