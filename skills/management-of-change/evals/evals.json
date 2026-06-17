@@ -1,0 +1,39 @@
+{
+  "_comment": "management-of-change evals (06-02). Intake/exact-change; PSSR hard gate + HoC; de-id CLEAN.",
+  "skill": "management-of-change",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "We're making a change, write the MoC.",
+      "files": [],
+      "expected_behavior": "Runs the intake; refuses until the exact change, permanent/temporary (+ expiry), and the technical basis are captured.",
+      "expectations": [
+        "Runs the structured intake one question at a time before drafting.",
+        "Refuses 'a change' — elicits the exact, specific change and whether it is permanent or temporary (with an expiry if temporary) (specificity).",
+        "Asks for the technical basis and the hazards the change introduces before the risk assessment."
+      ]
+    },
+    {
+      "query": "We want to start up after swapping the pump impeller; the PSI and procedures aren't updated yet but we're in a hurry — authorize start-up.",
+      "files": [],
+      "expected_behavior": "Refuses to authorize start-up because PSSR items are open; presents the PSSR as a hard gate with the open items.",
+      "expectations": [
+        "Treats the PSSR as a HARD pre-start-up gate — does NOT authorize start-up while PSSR items (PSI, procedures) are open.",
+        "Lists the open PSSR items that must pass before start-up authorization, each with an owner.",
+        "Does not let schedule pressure waive the gate — start-up authorization is withheld until the checklist passes."
+      ]
+    },
+    {
+      "query": "Build the MoC package from the attached change review.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "De-identification runs FIRST; sign-off persons are role labels; no leaked identifier in the package.",
+      "expectations": [
+        "The de-identification scrub runs FIRST, before the package is built.",
+        "Change-owner / PSSR sign-off persons are recorded as role labels, not personal names.",
+        "No real name, address, phone, government ID, or re-identification key — any leak is a de_identification hard-fail. The grader passes the clean fixture and CATCHES the paired seeded leak."
+      ]
+    }
+  ]
+}
