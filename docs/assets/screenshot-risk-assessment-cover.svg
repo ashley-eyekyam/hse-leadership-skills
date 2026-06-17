@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="640" viewBox="0 0 480 640" role="img" aria-label="De-identified sample: branded risk-assessment report cover for the synthetic T-402 confined-space scenario. Role labels only, no real names or sites.">
+  <title>Sample branded risk-assessment report cover (de-identified T-402)</title>
+  <defs>
+    <style>
+      .ff { font-family: 'Segoe UI', Arial, sans-serif; }
+      .h1 { font-size: 28px; font-weight: 800; fill: #1A7070; }
+      .h2 { font-size: 15px; fill: #2AADA8; font-weight: 600; }
+      .lab { font-size: 12px; fill: #555; }
+      .val { font-size: 13px; fill: #222; font-weight: 600; }
+      .foot { font-size: 11px; fill: #888; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="480" height="640" fill="#ffffff" stroke="#e0e0e0"/>
+  <!-- Brand top band -->
+  <rect x="0" y="0" width="480" height="14" fill="#2AADA8"/>
+  <circle cx="40" cy="62" r="14" fill="#2AADA8"/>
+  <circle cx="40" cy="62" r="7" fill="#47C4BE"/>
+  <text x="66" y="58" class="ff" style="font-size:18px;font-weight:800;fill:#1A7070;">Eyekyam</text>
+  <text x="66" y="74" class="ff foot">HSE Leadership, operationalised with AI.</text>
+
+  <line x1="40" y1="100" x2="440" y2="100" stroke="#47C4BE" stroke-width="1.5"/>
+
+  <text x="40" y="170" class="ff h2">RISK ASSESSMENT</text>
+  <text x="40" y="208" class="ff h1">Confined-space entry</text>
+  <text x="40" y="240" class="ff h1">Tank T-402, Plant 3</text>
+
+  <rect x="40" y="300" width="400" height="180" rx="8" fill="#E8F7F6" stroke="#47C4BE"/>
+  <text x="60" y="332" class="ff lab">Activity</text>
+  <text x="240" y="332" class="ff val">Tank cleaning — entry &amp; atmosphere control</text>
+  <text x="60" y="364" class="ff lab">Method</text>
+  <text x="240" y="364" class="ff val">5×5 matrix · baseline</text>
+  <text x="60" y="396" class="ff lab">Exposed groups</text>
+  <text x="240" y="396" class="ff val">Entry Operator · Standby Attendant (roles)</text>
+  <text x="60" y="428" class="ff lab">Prepared by</text>
+  <text x="240" y="428" class="ff val">HSE Officer (role label)</text>
+  <text x="60" y="460" class="ff lab">Status</text>
+  <text x="240" y="460" class="ff val" style="fill:#1A7070;">DRAFT — competent-person review required</text>
+
+  <rect x="40" y="520" width="400" height="40" rx="6" fill="#fff7e6" stroke="#e0b35a"/>
+  <text x="60" y="545" class="ff" style="font-size:12px;fill:#8a6d1f;">De-identified sample · role labels only · no real names, sites, or PII.</text>
+
+  <line x1="40" y1="600" x2="440" y2="600" stroke="#1A7070" stroke-width="1"/>
+  <text x="40" y="620" class="ff foot">Decision-support only — not legal advice. Eyekyam · eyekyam.com</text>
+</svg>

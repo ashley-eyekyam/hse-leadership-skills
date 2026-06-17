@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="560" viewBox="0 0 900 560" role="img" aria-label="HSE Leadership Skills architecture: contract and template feed the knowledge base, the deterministic engines, and the report engine, which feed the skills, which are rendered by the cross-platform adapters. De-identification, orchestration, and the company card are cross-cutting bands. The forge and the quality harness are the build-time spine.">
+  <title>HSE Leadership Skills — architecture layering</title>
+  <defs>
+    <style>
+      .lbl { font-family: 'Segoe UI', Arial, sans-serif; }
+      .layer { fill: #ffffff; stroke: #2AADA8; stroke-width: 2; }
+      .layerTitle { font-weight: 700; font-size: 16px; fill: #1A7070; }
+      .box { fill: #E8F7F6; stroke: #47C4BE; stroke-width: 1.5; }
+      .boxTxt { font-size: 12px; fill: #1A7070; }
+      .band { fill: #2AADA8; opacity: 0.12; stroke: #2AADA8; stroke-width: 1; stroke-dasharray: 5 4; }
+      .bandTxt { font-size: 12px; font-weight: 700; fill: #1A7070; }
+      .spine { fill: #1A7070; }
+      .spineTxt { font-size: 12px; font-weight: 700; fill: #ffffff; }
+      .arrow { stroke: #2AADA8; stroke-width: 2; fill: none; marker-end: url(#ah); }
+      .cap { font-size: 11px; fill: #555; }
+    </style>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#2AADA8"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="900" height="560" fill="#ffffff"/>
+  <text x="30" y="34" class="lbl layerTitle" style="font-size:20px;">HSE Leadership Skills — architecture</text>
+  <text x="30" y="54" class="lbl cap">Contract &#8594; knowledge base &#8594; engines + report engine &#8594; skills &#8594; cross-platform adapters</text>
+
+  <!-- Build-time spine (left) -->
+  <rect class="spine" x="30" y="80" width="150" height="430" rx="8"/>
+  <text x="105" y="105" text-anchor="middle" class="lbl spineTxt">Build-time spine</text>
+  <rect x="46" y="130" width="118" height="56" rx="6" fill="#ffffff" stroke="#47C4BE" stroke-width="1.5"/>
+  <text x="105" y="160" text-anchor="middle" class="lbl boxTxt">A10 hse-skill-forge</text>
+  <text x="105" y="176" text-anchor="middle" class="lbl cap">scaffolds skills</text>
+  <rect x="46" y="200" width="118" height="56" rx="6" fill="#ffffff" stroke="#47C4BE" stroke-width="1.5"/>
+  <text x="105" y="230" text-anchor="middle" class="lbl boxTxt">A8 quality harness</text>
+  <text x="105" y="246" text-anchor="middle" class="lbl cap">linter + evals gate</text>
+
+  <!-- Layer 1: contract / template (A2) -->
+  <rect class="layer" x="210" y="80" width="540" height="62" rx="8"/>
+  <text x="225" y="104" class="lbl layerTitle">A2 · Contract &amp; template</text>
+  <text x="225" y="126" class="lbl cap">the six-block SKILL.md contract + template/blocks (the single source every skill conforms to)</text>
+
+  <!-- Layer 2: knowledge base (A3) -->
+  <rect class="layer" x="210" y="160" width="540" height="62" rx="8"/>
+  <text x="225" y="184" class="lbl layerTitle">A3 · Knowledge base</text>
+  <text x="225" y="206" class="lbl cap">facet-resolved fragments — jurisdiction × industry × audience; ISO clause maps; India state-form engine</text>
+
+  <!-- Layer 3: engines + report engine (A7 + A4) -->
+  <rect class="layer" x="210" y="240" width="540" height="80" rx="8"/>
+  <text x="225" y="264" class="lbl layerTitle">A7 · Deterministic engines &#160;&#160;+&#160;&#160; A4 · Report engine</text>
+  <rect class="box" x="225" y="276" width="300" height="34" rx="5"/>
+  <text x="375" y="298" text-anchor="middle" class="lbl boxTxt">risk_matrix · controls · rca · smart_actions · incident_rates</text>
+  <rect class="box" x="535" y="276" width="200" height="34" rx="5"/>
+  <text x="635" y="298" text-anchor="middle" class="lbl boxTxt">report.json &#8594; DOCX + PDF</text>
+
+  <!-- Layer 4: skills (B + D) -->
+  <rect class="layer" x="210" y="338" width="540" height="80" rx="8"/>
+  <text x="225" y="362" class="lbl layerTitle">B · Core skills &#160;&#160;+&#160;&#160; D · Sector packs</text>
+  <rect class="box" x="225" y="374" width="250" height="34" rx="5"/>
+  <text x="350" y="396" text-anchor="middle" class="lbl boxTxt">10 universal core skills (hse-core)</text>
+  <rect class="box" x="485" y="374" width="250" height="34" rx="5"/>
+  <text x="610" y="396" text-anchor="middle" class="lbl boxTxt">process · chemicals · india · aviation · mining</text>
+
+  <!-- Layer 5: adapters (C) -->
+  <rect class="layer" x="210" y="436" width="540" height="74" rx="8"/>
+  <text x="225" y="460" class="lbl layerTitle">C · Cross-platform adapters</text>
+  <rect class="box" x="225" y="472" width="510" height="30" rx="5"/>
+  <text x="480" y="492" text-anchor="middle" class="lbl boxTxt">Claude-native &#183; ChatGPT &#183; Gemini &#183; Copilot &#183; generic (one SKILL.md, rendered per host)</text>
+
+  <!-- Cross-cutting bands (right) -->
+  <rect class="band" x="775" y="80" width="100" height="338" rx="8"/>
+  <text x="825" y="110" text-anchor="middle" class="lbl bandTxt">Cross-</text>
+  <text x="825" y="126" text-anchor="middle" class="lbl bandTxt">cutting</text>
+  <text x="825" y="190" text-anchor="middle" class="lbl boxTxt">A5 de-id</text>
+  <text x="825" y="250" text-anchor="middle" class="lbl boxTxt">A6 orchestration</text>
+  <text x="825" y="320" text-anchor="middle" class="lbl boxTxt">A9 company-card</text>
+
+  <!-- Flow arrows between layers -->
+  <path class="arrow" d="M480 142 L480 158"/>
+  <path class="arrow" d="M480 222 L480 238"/>
+  <path class="arrow" d="M480 320 L480 336"/>
+  <path class="arrow" d="M480 418 L480 434"/>
+
+  <!-- Spine influence arrows -->
+  <path class="arrow" d="M180 158 L208 158"/>
+  <path class="arrow" d="M180 376 L208 376"/>
+</svg>

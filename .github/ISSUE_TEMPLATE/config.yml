@@ -8,3 +8,11 @@ contact_links:
     # at the Discussions tab; update the URL when the repo goes public.
     url: https://github.com/ashley-eyekyam/hse-leadership-skills/discussions
     about: Ask and answer questions in GitHub Discussions (enabled in Phase E) — please don't open an issue for general questions.
+  - name: Contribute in 5 minutes with hse-skill-forge
+    # The skill-authoring on-ramp — referenced, not re-authored (A10 owns the forge).
+    url: https://github.com/ashley-eyekyam/hse-leadership-skills/blob/main/docs/AUTHORING_GUIDE.md
+    about: New to contributing? hse-skill-forge scaffolds a born-conformant skill — start with the Authoring Guide.
+  - name: Good first issues
+    # The contribution-funnel entry point (label convention in .github/LABELS.md).
+    url: https://github.com/ashley-eyekyam/hse-leadership-skills/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22
+    about: Small, well-scoped tasks ideal for a first-time contributor.
