@@ -9,6 +9,16 @@
   },
   "plugins": [
     {
+      "name": "hse-chemicals",
+      "skills": [
+        "bowtie-builder",
+        "hazid-facilitator",
+        "hazop-facilitator",
+        "lopa-worksheet",
+        "whatif-facilitator"
+      ]
+    },
+    {
       "name": "hse-core",
       "skills": [
         "board-safety-report",
@@ -21,6 +31,29 @@
         "safety-audit",
         "sop-writer",
         "toolbox-talk"
+      ]
+    },
+    {
+      "name": "hse-mining",
+      "skills": [
+        "bowtie-builder"
+      ]
+    },
+    {
+      "name": "hse-process",
+      "skills": [
+        "bowtie-builder",
+        "comah-safety-report-assistant",
+        "hazid-facilitator",
+        "hazop-facilitator",
+        "lopa-worksheet",
+        "management-of-change",
+        "mechanical-integrity",
+        "permit-to-work",
+        "peso-licensing-assistant",
+        "process-safety-kpi",
+        "psm-program-manager",
+        "whatif-facilitator"
       ]
     },
     {
