@@ -66,8 +66,11 @@ def test_no_bundled_in_leaves_single_bundle(tmp_path):
     by_name = {p["name"]: p["skills"] for p in manifest["plugins"]}
 
     assert by_name.get("hse-core") == ["risk-assessment"]
-    # No phantom bundles were minted.
-    assert set(by_name) == {"hse-core"}
+    # No phantom *bundled_in* bundles were minted. The synthesized hse-all
+    # meta-plugin (07-04, D-13/D-14) is expected: it is the union of every
+    # non-hse-systems bundle, so a lone hse-core skill folds into it.
+    assert set(by_name) == {"hse-core", "hse-all"}
+    assert by_name["hse-all"] == ["risk-assessment"]
 
 
 def test_real_repo_check_stays_clean():
