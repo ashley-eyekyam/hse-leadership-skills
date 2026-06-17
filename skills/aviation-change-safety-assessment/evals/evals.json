@@ -1,0 +1,39 @@
+{
+  "_comment": "Eval set for aviation-change-safety-assessment (06-06 hse-aviation). Intake-gate + must-identify-new-hazards + 5×5-via-shared-engine + HoC + the de-id CLEAN fixture case. The seeded deid-leak.md (auto-discovered by test_sector_deid_pairs) proves the de-id hard-fail.",
+  "skill": "aviation-change-safety-assessment",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "We're making a change — is it safe?",
+      "files": [],
+      "expected_behavior": "Runs the intake; refuses to assess until the named operator and the specific change are captured.",
+      "expectations": [
+        "Runs the structured intake before assessing.",
+        "Refuses a vague 'we're changing things' — elicits the named operator and the specific change (specificity).",
+        "Asks for the new/changed hazards the change introduces."
+      ]
+    },
+    {
+      "query": "Assess the safety of adding a new hot-and-high destination to our network; new hazards include unstabilised approaches; mitigation proposed is a crew briefing card only.",
+      "files": [],
+      "expected_behavior": "Identifies the new hazards, scores them via the shared risk_matrix engine with the ICAO 5×5, HoC-ranks the mitigations flagging the briefing-card-only control, and records an approve/decline decision with a rationale.",
+      "expectations": [
+        "Identifies the new/changed hazards the change introduces — does not approve a change with no new hazards considered.",
+        "Scores each new hazard via risk_matrix.score() with the ICAO 5×5 MatrixConfig (KB-DATA-AVI-RISK-MATRIX) — does not hand-roll a matrix.",
+        "HoC-ranks mitigations and flags the administrative-only briefing card; records an approve/decline decision with a rationale and named owners/dates (smart_actions)."
+      ]
+    },
+    {
+      "query": "Assess this change from the submitted change request.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; any named individual in the change request is pseudonymised to a role label; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — identifiers are listed up front.",
+        "Named individuals and contact become role labels; no re-identification key is embedded.",
+        "No real name, contact, address or identity in the circulated assessment (de_identification hard-fail on any leak)."
+      ]
+    }
+  ]
+}
