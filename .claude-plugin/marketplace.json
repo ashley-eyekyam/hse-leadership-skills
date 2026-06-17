@@ -9,6 +9,19 @@
   },
   "plugins": [
     {
+      "name": "hse-aviation",
+      "skills": [
+        "aviation-change-safety-assessment",
+        "aviation-confidential-reporting",
+        "aviation-fdm-foqa-analysis",
+        "aviation-hazard-register",
+        "aviation-just-culture-policy",
+        "aviation-sms-builder",
+        "aviation-spi-spt-framework",
+        "aviation-srb-minutes"
+      ]
+    },
+    {
       "name": "hse-chemicals",
       "skills": [
         "bowtie-builder",
