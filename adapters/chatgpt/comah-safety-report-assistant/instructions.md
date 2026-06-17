@@ -6,7 +6,7 @@
 
 Apply this BEFORE you draft anything. Treat injury, illness, and any health
 detail as the highest sensitivity. Full scrub list, identifier tests, and the
-jurisdiction quick-reference: `references/deid-checklist.md`.
+jurisdiction quick-reference: `knowledge/deid-checklist.md`.
 
 1. **DETECT & FLAG** every personal/health identifier in the inputs — names,
    employee / Aadhaar / SSN / NI numbers, contacts, exact dates, precise
@@ -33,8 +33,8 @@ jurisdiction quick-reference: `references/deid-checklist.md`.
 Resolve the user's jurisdiction first. Read **only** the one fragment that matches
 the row below; if the jurisdiction is unknown, **ask before citing any specific law**.
 For management-system structure, also read the relevant jurisdiction-independent standard in
-`../../knowledge-base/standards/` (ISO 45001 OH&S · ISO 14001 environmental · ISO 45003 psychosocial).
-Always apply `../../knowledge-base/prompt-snippets/hierarchy-of-controls.md` (KB-SNIP-HOC)
+`knowledge/` (ISO 45001 OH&S · ISO 14001 environmental · ISO 45003 psychosocial).
+Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
@@ -52,17 +52,17 @@ For a COMAH Safety Report the intake elicits the establishment and walks the rep
 6. **Jurisdiction** — UK COMAH 2015 vs EU member-state Seveso III transposition.
 
 Echo the establishment + tier + elements back before assembling. For each element the skill **prompts** the duty-holder for content and **records** it — recording `[GAP]` for any element not supplied (e.g. missing ALARP demonstration), never inventing it.
-Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
+Then: analyse / apply the domain method → validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `knowledge/METHODOLOGY.md`.
 
 ## Agentic Execution (single-thread on this host)
 
-Run the De-identifier FIRST (sequential gate — its scrubbed output feeds every later step), then work through the roster checklist sequentially in this one context, keeping the same decomposition discipline, and finish with the MANDATORY Critic/QA pass before delivery.
+Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-> Single-threaded fallback:
+Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
 
 ## Output format
 
-Assemble a `report.json` conforming to the shared report-model schema, then run `generate_report.py` in Code Interpreter on the assembled `report.json` to render the branded DOCX + PDF (the A4 engine + bundled fonts are uploaded as Code-Interpreter assets). Resolve branding from the user's `brand.yaml` (Eyekyam default); surface the output paths and a one-line provenance note.
+Assemble a `report.json` conforming to the shared report-model schema, then run `generate_report.py` in Code Interpreter on the assembled `report.json` to render the branded DOCX + PDF (the A4 engine + bundled fonts are uploaded as Code-Interpreter assets). Resolve branding from the user's `brand.yaml` (Eyekyam default); surface the output paths and a one-line provenance note. Rank every control by the hierarchy of controls (no PPE-only treatment without justification); give every SMART action a named owner and a due date.
 
 ## Subagent roster (preserved as a sequential checklist)
 
@@ -91,17 +91,17 @@ Simple single-subject tasks run single-threaded — no subagents.
 
 | Jurisdiction | Read |
 |---|---|
-| India | ../../knowledge-base/regulatory/in-factories-act.md (+ in-state-forms.md for the user's state) |
-| UK    | ../../knowledge-base/regulatory/uk-hswa.md |
-| USA   | ../../knowledge-base/regulatory/us-osha.md |
-| EU    | ../../knowledge-base/regulatory/eu-osh.md |
+| India | knowledge/in-factories-act.md (+ in-state-forms.md for the user's state) |
+| UK    | knowledge/uk-hswa.md |
+| USA   | knowledge/us-osha.md |
+| EU    | knowledge/eu-osh.md |
 | Unknown | Ask before citing any specific law |
-| UK / EU (COMAH) | ../../knowledge-base/regulatory/uk-comah.md (KB-REG-UK-COMAH — COMAH 2015 / Seveso III duty map) |
+| UK / EU (COMAH) | knowledge/uk-comah.md (KB-REG-UK-COMAH — COMAH 2015 / Seveso III duty map) |
 
 ## Attribution (non-intrusive)
 
 After the deliverable is produced — never before, and never as a blocking
-question — read `branding/company-card.yaml` and surface the company card per
+question — read `knowledge/company-card.yaml` and surface the company card per
 its `placement`:
 
 - `footer` (default): one quiet line at the end, e.g.

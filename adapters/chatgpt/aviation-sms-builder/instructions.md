@@ -6,7 +6,7 @@
 
 Apply this BEFORE you draft anything. Treat injury, illness, and any health
 detail as the highest sensitivity. Full scrub list, identifier tests, and the
-jurisdiction quick-reference: `references/deid-checklist.md`.
+jurisdiction quick-reference: `knowledge/deid-checklist.md`.
 
 1. **DETECT & FLAG** every personal/health identifier in the inputs — names,
    employee / Aadhaar / SSN / NI numbers, contacts, exact dates, precise
@@ -33,8 +33,8 @@ jurisdiction quick-reference: `references/deid-checklist.md`.
 Resolve the user's jurisdiction first. Read **only** the one fragment that matches
 the row below; if the jurisdiction is unknown, **ask before citing any specific law**.
 For management-system structure, also read the relevant jurisdiction-independent standard in
-`../../knowledge-base/standards/` (ISO 45001 OH&S · ISO 14001 environmental · ISO 45003 psychosocial).
-Always apply `../../knowledge-base/prompt-snippets/hierarchy-of-controls.md` (KB-SNIP-HOC)
+`knowledge/` (ISO 45001 OH&S · ISO 14001 environmental · ISO 45003 psychosocial).
+Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
@@ -52,17 +52,17 @@ The structured intake captures, one question at a time, the facts the four-pilla
 
 Echo the **confirmed organisation + scope + jurisdiction** back before drafting. Then walk the four pillars in order (`KB-STD-ICAO-ANNEX19`): Pillar 1 (policy + accountabilities + key personnel + ERP coordination + SMS documentation), Pillar 2 (the hazard-ID process + the 5×5 RCS reference — point to `aviation-hazard-register` for the live register), Pillar 3 (the SPI/SPT framework + management review/SRB — point to `aviation-spi-spt-framework` and `aviation-srb-minutes`), Pillar 4 (training + just culture + confidential reporting — point to `aviation-just-culture-policy` and `aviation-confidential-reporting`). Flag any pillar left incomplete.
 
-Then: validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method (the four-pillar build) is in `references/METHODOLOGY.md`.
+Then: validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method (the four-pillar build) is in `knowledge/METHODOLOGY.md`.
 
 ## Agentic Execution (single-thread on this host)
 
-Run the De-identifier FIRST (sequential gate — its scrubbed output feeds every later step), then work through the roster checklist sequentially in this one context, keeping the same decomposition discipline, and finish with the MANDATORY Critic/QA pass before delivery.
+Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-> Single-threaded fallback:
+Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
 
 ## Output format
 
-Assemble a `report.json` conforming to the shared report-model schema, then run `generate_report.py` in Code Interpreter on the assembled `report.json` to render the branded DOCX + PDF (the A4 engine + bundled fonts are uploaded as Code-Interpreter assets). Resolve branding from the user's `brand.yaml` (Eyekyam default); surface the output paths and a one-line provenance note.
+Assemble a `report.json` conforming to the shared report-model schema, then run `generate_report.py` in Code Interpreter on the assembled `report.json` to render the branded DOCX + PDF (the A4 engine + bundled fonts are uploaded as Code-Interpreter assets). Resolve branding from the user's `brand.yaml` (Eyekyam default); surface the output paths and a one-line provenance note. Rank every control by the hierarchy of controls (no PPE-only treatment without justification); give every SMART action a named owner and a due date.
 
 ## Subagent roster (preserved as a sequential checklist)
 
@@ -76,15 +76,15 @@ _Full detail moved to the knowledge upload (see `knowledge/`)._
 
 | Jurisdiction | Read |
 |---|---|
-| Any (SMS framework) | ../../knowledge-base/standards/icao-annex19.md (KB-STD-ICAO-ANNEX19 — the four-pillar clause→artifact map) + prompt-snippets/hierarchy-of-controls.md (KB-SNIP-HOC) |
-| India (State Safety Programme) | ../../knowledge-base/regulatory/in-dgca.md (KB-REG-IN-DGCA — align the SMS to the DGCA SSP; CAR number `[GAP]`, never invented) |
+| Any (SMS framework) | knowledge/icao-annex19.md (KB-STD-ICAO-ANNEX19 — the four-pillar clause→artifact map) + prompt-snippets/hierarchy-of-controls.md (KB-SNIP-HOC) |
+| India (State Safety Programme) | knowledge/in-dgca.md (KB-REG-IN-DGCA — align the SMS to the DGCA SSP; CAR number `[GAP]`, never invented) |
 | USA / EU (other State programmes) | Ask the user for the FAA / EASA reference; align the four pillars to it (no fabricated clause) |
 | Unknown | Ask the operator's certificating authority before citing any State programme |
 
 ## Attribution (non-intrusive)
 
 After the deliverable is produced — never before, and never as a blocking
-question — read `branding/company-card.yaml` and surface the company card per
+question — read `knowledge/company-card.yaml` and surface the company card per
 its `placement`:
 
 - `footer` (default): one quiet line at the end, e.g.

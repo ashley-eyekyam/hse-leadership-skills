@@ -6,7 +6,7 @@
 
 Apply this BEFORE you draft anything. Treat injury, illness, and any health
 detail as the highest sensitivity. Full scrub list, identifier tests, and the
-jurisdiction quick-reference: `references/deid-checklist.md`.
+jurisdiction quick-reference: `knowledge/deid-checklist.md`.
 
 1. **DETECT & FLAG** every personal/health identifier in the inputs — names,
    employee / Aadhaar / SSN / NI numbers, contacts, exact dates, precise
@@ -33,8 +33,8 @@ jurisdiction quick-reference: `references/deid-checklist.md`.
 Resolve the user's jurisdiction first. Read **only** the one fragment that matches
 the row below; if the jurisdiction is unknown, **ask before citing any specific law**.
 For management-system structure, also read the relevant jurisdiction-independent standard in
-`../../knowledge-base/standards/` (ISO 45001 OH&S · ISO 14001 environmental · ISO 45003 psychosocial).
-Always apply `../../knowledge-base/prompt-snippets/hierarchy-of-controls.md` (KB-SNIP-HOC)
+`knowledge/` (ISO 45001 OH&S · ISO 14001 environmental · ISO 45003 psychosocial).
+Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
@@ -51,13 +51,13 @@ The structured intake captures, one question at a time, the facts each register 
 
 Echo the **confirmed operator + hazards** back before scoring. Then for each entry: call `risk_matrix.score(severity, likelihood, matrix=AVIATION_5X5)` (the `KB-DATA-AVI-RISK-MATRIX` config) for the initial rating, propose mitigations and HoC-rank them with `controls.rank_controls()` (flagging PPE/admin-only), score the residual rating and report the movement with `risk_matrix.residual_delta()`, and validate every mitigation owner/date with `smart_actions.validate_register()`.
 
-Then: validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method (the register build + 5×5 wiring) is in `references/METHODOLOGY.md`.
+Then: validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method (the register build + 5×5 wiring) is in `knowledge/METHODOLOGY.md`.
 
 ## Agentic Execution (single-thread on this host)
 
-Run the De-identifier FIRST (sequential gate — its scrubbed output feeds every later step), then work through the roster checklist sequentially in this one context, keeping the same decomposition discipline, and finish with the MANDATORY Critic/QA pass before delivery.
+Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-> Single-threaded fallback:
+Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
 
 ## Output format
 
@@ -96,14 +96,14 @@ Simple single-subject tasks run single-threaded — no subagents.
 
 | Jurisdiction | Read |
 |---|---|
-| Any (SMS Pillar 2) | ../../knowledge-base/standards/icao-annex19.md (KB-STD-ICAO-ANNEX19 — Pillar 2 Safety Risk Management) + prompt-snippets/hierarchy-of-controls.md (KB-SNIP-HOC) |
-| Any (5×5 matrix) | ../../knowledge-base/data-points/aviation-risk-matrix.md (KB-DATA-AVI-RISK-MATRIX — the ICAO 5×5 MatrixConfig for risk_matrix.score()) |
+| Any (SMS Pillar 2) | knowledge/icao-annex19.md (KB-STD-ICAO-ANNEX19 — Pillar 2 Safety Risk Management) + prompt-snippets/hierarchy-of-controls.md (KB-SNIP-HOC) |
+| Any (5×5 matrix) | knowledge/aviation-risk-matrix.md (KB-DATA-AVI-RISK-MATRIX — the ICAO 5×5 MatrixConfig for risk_matrix.score()) |
 | Unknown | Ask the operator's certificating authority before citing any State programme |
 
 ## Attribution (non-intrusive)
 
 After the deliverable is produced — never before, and never as a blocking
-question — read `branding/company-card.yaml` and surface the company card per
+question — read `knowledge/company-card.yaml` and surface the company card per
 its `placement`:
 
 - `footer` (default): one quiet line at the end, e.g.

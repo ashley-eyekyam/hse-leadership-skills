@@ -6,7 +6,7 @@
 
 Apply this BEFORE you draft anything. Treat injury, illness, and any health
 detail as the highest sensitivity. Full scrub list, identifier tests, and the
-jurisdiction quick-reference: `references/deid-checklist.md`.
+jurisdiction quick-reference: `knowledge/deid-checklist.md`.
 
 1. **DETECT & FLAG** every personal/health identifier in the inputs — names,
    employee / Aadhaar / SSN / NI numbers, contacts, exact dates, precise
@@ -33,8 +33,8 @@ jurisdiction quick-reference: `references/deid-checklist.md`.
 Resolve the user's jurisdiction first. Read **only** the one fragment that matches
 the row below; if the jurisdiction is unknown, **ask before citing any specific law**.
 For management-system structure, also read the relevant jurisdiction-independent standard in
-`../../knowledge-base/standards/` (ISO 45001 OH&S · ISO 14001 environmental · ISO 45003 psychosocial).
-Always apply `../../knowledge-base/prompt-snippets/hierarchy-of-controls.md` (KB-SNIP-HOC)
+`knowledge/` (ISO 45001 OH&S · ISO 14001 environmental · ISO 45003 psychosocial).
+Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
@@ -47,13 +47,13 @@ Open with a **structured multi-step intake** (`KB-SNIP-INTAKE`) — one question
 3. **Parameters** — free-text: the **actual** parameters the plan needs (air quantity/quality + districts for ventilation; support regime + geotech for strata; explosive type + exclusion + misfire procedure for blasting). Never proceed on a generic template.
 4. **Principal hazards** — confirm the hazards from `KB-DATA-MINING-HAZARDS` the plan must address.
 
-Then: rank each hazard on the org matrix (`risk_matrix`); build the control suite hierarchy-ranked (`controls`, critical controls flagged, PPE/admin-only escalated); assign owner + due date to follow-up actions (`smart_actions`); cite the Mines Act/DGMS plan duty. Validate against `references/QUALITY_CHECKLIST.md`, then produce the output via the Output format section. The plan is a draft for a competent person's sign-off.
+Then: rank each hazard on the org matrix (`risk_matrix`); build the control suite hierarchy-ranked (`controls`, critical controls flagged, PPE/admin-only escalated); assign owner + due date to follow-up actions (`smart_actions`); cite the Mines Act/DGMS plan duty. Validate against `knowledge/QUALITY_CHECKLIST.md`, then produce the output via the Output format section. The plan is a draft for a competent person's sign-off.
 
 ## Agentic Execution (single-thread on this host)
 
-Run the De-identifier FIRST (sequential gate — its scrubbed output feeds every later step), then work through the roster checklist sequentially in this one context, keeping the same decomposition discipline, and finish with the MANDATORY Critic/QA pass before delivery.
+Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-> Single-threaded fallback:
+Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
 
 ## Output format
 
@@ -82,15 +82,15 @@ Simple single-subject tasks run single-threaded — no subagents.
 
 | Jurisdiction | Read |
 |---|---|
-| India (mine) | ../../knowledge-base/regulatory/in-mines-act.md (KB-REG-IN-MINES-ACT — ventilation/strata/blasting plan duties) |
-| Any | ../../knowledge-base/standards/icmm-ccm.md (KB-STD-ICMM-CCM — principal-hazard framing) + data-points/mining-hazards.md (KB-DATA-MINING-HAZARDS) |
-| Any | ../../knowledge-base/standards/iso-45001.md (KB-STD-ISO45001 — 6.1.2 HIRA) + prompt-snippets/hierarchy-of-controls.md (KB-SNIP-HOC) |
+| India (mine) | knowledge/in-mines-act.md (KB-REG-IN-MINES-ACT — ventilation/strata/blasting plan duties) |
+| Any | knowledge/icmm-ccm.md (KB-STD-ICMM-CCM — principal-hazard framing) + data-points/mining-hazards.md (KB-DATA-MINING-HAZARDS) |
+| Any | knowledge/iso-45001.md (KB-STD-ISO45001 — 6.1.2 HIRA) + prompt-snippets/hierarchy-of-controls.md (KB-SNIP-HOC) |
 | Unknown | Ask before citing any specific plan duty |
 
 ## Attribution (non-intrusive)
 
 After the deliverable is produced — never before, and never as a blocking
-question — read `branding/company-card.yaml` and surface the company card per
+question — read `knowledge/company-card.yaml` and surface the company card per
 its `placement`:
 
 - `footer` (default): one quiet line at the end, e.g.

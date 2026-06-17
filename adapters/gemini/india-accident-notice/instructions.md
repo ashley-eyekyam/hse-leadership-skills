@@ -6,7 +6,7 @@
 
 Apply this BEFORE you draft anything. Treat injury, illness, and any health
 detail as the highest sensitivity. Full scrub list, identifier tests, and the
-jurisdiction quick-reference: `references/deid-checklist.md`.
+jurisdiction quick-reference: `knowledge/deid-checklist.md`.
 
 1. **DETECT & FLAG** every personal/health identifier in the inputs — names,
    employee / Aadhaar / SSN / NI numbers, contacts, exact dates, precise
@@ -33,8 +33,8 @@ jurisdiction quick-reference: `references/deid-checklist.md`.
 Resolve the user's jurisdiction first. Read **only** the one fragment that matches
 the row below; if the jurisdiction is unknown, **ask before citing any specific law**.
 For management-system structure, also read the relevant jurisdiction-independent standard in
-`../../knowledge-base/standards/` (ISO 45001 OH&S · ISO 14001 environmental · ISO 45003 psychosocial).
-Always apply `../../knowledge-base/prompt-snippets/hierarchy-of-controls.md` (KB-SNIP-HOC)
+`knowledge/` (ISO 45001 OH&S · ISO 14001 environmental · ISO 45003 psychosocial).
+Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
@@ -53,13 +53,13 @@ Open with a **structured multi-step intake** — MCQ where the answer space is e
 
 Echo the **confirmed state + establishment type + incident severity** back. Then read the matched accident-notice row (`KB-REG-IN-STATEFORMS`; for a mine, the DGMS layer), assemble the **filled notification** under its prescribed `form` / `rule` / `due` (e.g. MH Form 24 within 24h + Form 24A; TN Form 18 + Form 26 register; DGMS 24h notice + Form J), and use `smart_actions` to validate that each follow-up notification action carries a named owner + a deadline (the 24h timing is the load-bearing one). Append the OSH-Code transition note (the accident-notice duty is retained), surface the `KB-REG-IN-PORTALS` pointer, and **point the user to `incident-investigation` for the RCA** (this skill does not re-run it). Every unverified field/form is a literal `[GAP]`, never fabricated.
 
-Then: validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method is in `references/METHODOLOGY.md`.
+Then: validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method is in `knowledge/METHODOLOGY.md`.
 
 ## Agentic Execution (single-thread on this host)
 
-Run the De-identifier FIRST (sequential gate — its scrubbed output feeds every later step), then work through the roster checklist sequentially in this one context, keeping the same decomposition discipline, and finish with the MANDATORY Critic/QA pass before delivery.
+Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-> Single-threaded fallback:
+Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
 
 ## Output format
 
@@ -92,17 +92,17 @@ Simple single-subject tasks run single-threaded — no subagents.
 
 | Jurisdiction | Read |
 |---|---|
-| India (state notice) | ../../knowledge-base/regulatory/in-state-forms.md (KB-REG-IN-STATEFORMS — the accident-notice rows; **mandatory state detection**) + in-factories-act.md |
-| India (mine notice) | ../../knowledge-base/regulatory/in-mines-act.md (KB-REG-IN-MINES-ACT) + in-dgms.md (KB-REG-IN-DGMS — 24h notice + Form J register; region-resolved) |
-| India (OSH transition) | ../../knowledge-base/regulatory/in-osh-code.md (KB-REG-IN-OSH-CODE — accident-notice duty retained; legacy-first note) |
-| India (portal) | ../../knowledge-base/regulatory/in-portals.md (KB-REG-IN-PORTALS — state authority / DGMS portal; verify locally) |
-| Any   | ../../knowledge-base/standards/iso-45001.md + prompt-snippets/hierarchy-of-controls.md (KB-SNIP-HOC) |
+| India (state notice) | knowledge/in-state-forms.md (KB-REG-IN-STATEFORMS — the accident-notice rows; **mandatory state detection**) + in-factories-act.md |
+| India (mine notice) | knowledge/in-mines-act.md (KB-REG-IN-MINES-ACT) + in-dgms.md (KB-REG-IN-DGMS — 24h notice + Form J register; region-resolved) |
+| India (OSH transition) | knowledge/in-osh-code.md (KB-REG-IN-OSH-CODE — accident-notice duty retained; legacy-first note) |
+| India (portal) | knowledge/in-portals.md (KB-REG-IN-PORTALS — state authority / DGMS portal; verify locally) |
+| Any   | knowledge/iso-45001.md + prompt-snippets/hierarchy-of-controls.md (KB-SNIP-HOC) |
 | Unknown | Ask before citing any specific law (confirm the **state** first) |
 
 ## Attribution (non-intrusive)
 
 After the deliverable is produced — never before, and never as a blocking
-question — read `branding/company-card.yaml` and surface the company card per
+question — read `knowledge/company-card.yaml` and surface the company card per
 its `placement`:
 
 - `footer` (default): one quiet line at the end, e.g.

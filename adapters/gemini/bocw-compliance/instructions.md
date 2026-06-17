@@ -6,7 +6,7 @@
 
 Apply this BEFORE you draft anything. Treat injury, illness, and any health
 detail as the highest sensitivity. Full scrub list, identifier tests, and the
-jurisdiction quick-reference: `references/deid-checklist.md`.
+jurisdiction quick-reference: `knowledge/deid-checklist.md`.
 
 1. **DETECT & FLAG** every personal/health identifier in the inputs — names,
    employee / Aadhaar / SSN / NI numbers, contacts, exact dates, precise
@@ -33,8 +33,8 @@ jurisdiction quick-reference: `references/deid-checklist.md`.
 Resolve the user's jurisdiction first. Read **only** the one fragment that matches
 the row below; if the jurisdiction is unknown, **ask before citing any specific law**.
 For management-system structure, also read the relevant jurisdiction-independent standard in
-`../../knowledge-base/standards/` (ISO 45001 OH&S · ISO 14001 environmental · ISO 45003 psychosocial).
-Always apply `../../knowledge-base/prompt-snippets/hierarchy-of-controls.md` (KB-SNIP-HOC)
+`knowledge/` (ISO 45001 OH&S · ISO 14001 environmental · ISO 45003 psychosocial).
+Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
@@ -52,13 +52,13 @@ Open with a **structured multi-step intake** — MCQ where the answer space is e
 
 Echo the **confirmed state + establishment profile + obligation** back. Then read `KB-REG-IN-BOCW` for the duty set and `KB-REG-IN-STATEFORMS` for the Form XXV anchor; produce the compliance verdict / gap-list (each gap with the cited rule, a HoC-ranked corrective control via `controls`, a named owner and a date). Cite the Form XXV annual return as the verified anchor; mark every state-specific value (safety-officer headcount, accident-notice form/timing, cess due date) `[GAP]` where the KB does not supply a verified value. Append the OSH-Code transition note and the `KB-REG-IN-PORTALS` (state Welfare Board) pointer.
 
-Then: validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method is in `references/METHODOLOGY.md`.
+Then: validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method is in `knowledge/METHODOLOGY.md`.
 
 ## Agentic Execution (single-thread on this host)
 
-Run the De-identifier FIRST (sequential gate — its scrubbed output feeds every later step), then work through the roster checklist sequentially in this one context, keeping the same decomposition discipline, and finish with the MANDATORY Critic/QA pass before delivery.
+Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-> Single-threaded fallback:
+Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
 
 ## Output format
 
@@ -91,16 +91,16 @@ Simple single-subject tasks run single-threaded — no subagents.
 
 | Jurisdiction | Read |
 |---|---|
-| India (BOCW) | ../../knowledge-base/regulatory/in-bocw.md (KB-REG-IN-BOCW — registration/cess/Form XXV/safety-officer thresholds) + in-state-forms.md (KB-REG-IN-STATEFORMS — **mandatory state detection**) |
-| India (OSH transition) | ../../knowledge-base/regulatory/in-osh-code.md (KB-REG-IN-OSH-CODE — BOCW subsumed; legacy-first note) |
-| India (portal) | ../../knowledge-base/regulatory/in-portals.md (KB-REG-IN-PORTALS — state Welfare Board portal; verify locally) |
-| Any   | ../../knowledge-base/standards/iso-45001.md + prompt-snippets/hierarchy-of-controls.md (KB-SNIP-HOC) |
+| India (BOCW) | knowledge/in-bocw.md (KB-REG-IN-BOCW — registration/cess/Form XXV/safety-officer thresholds) + in-state-forms.md (KB-REG-IN-STATEFORMS — **mandatory state detection**) |
+| India (OSH transition) | knowledge/in-osh-code.md (KB-REG-IN-OSH-CODE — BOCW subsumed; legacy-first note) |
+| India (portal) | knowledge/in-portals.md (KB-REG-IN-PORTALS — state Welfare Board portal; verify locally) |
+| Any   | knowledge/iso-45001.md + prompt-snippets/hierarchy-of-controls.md (KB-SNIP-HOC) |
 | Unknown | Ask before citing any specific law (confirm the **state** first) |
 
 ## Attribution (non-intrusive)
 
 After the deliverable is produced — never before, and never as a blocking
-question — read `branding/company-card.yaml` and surface the company card per
+question — read `knowledge/company-card.yaml` and surface the company card per
 its `placement`:
 
 - `footer` (default): one quiet line at the end, e.g.
