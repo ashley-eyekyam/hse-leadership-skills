@@ -1,0 +1,39 @@
+{
+  "_comment": "Eval set for mine-rescue-erp (06-04 hse-mining). Includes a realism/de-id case + the de-id CLEAN fixture case.",
+  "skill": "mine-rescue-erp",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Make a mine-rescue emergency plan.",
+      "files": [],
+      "expected_behavior": "Runs the intake; refuses to draft until the mine, scenarios and actual rescue resources are captured.",
+      "expectations": [
+        "Runs the structured intake before drafting.",
+        "Elicits the actual mine, emergency scenarios and rescue resources (specificity).",
+        "Echoes that the ERP is a draft for a competent person's sign-off."
+      ]
+    },
+    {
+      "query": "For the mobilisation, just write 'rescue team will respond quickly'.",
+      "files": [],
+      "expected_behavior": "Refuses the aspirational placeholder; forces a named team / station / mutual-aid and a credible mobilisation timing.",
+      "expectations": [
+        "Flags the aspirational placeholder as non-defensible (specificity).",
+        "Forces a named rescue team / station / mutual-aid + a credible mobilisation timing.",
+        "Schedules drills with owner + date."
+      ]
+    },
+    {
+      "query": "Here are the casualties from the last incident, with names and addresses, to seed the scenarios.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; casualty names/addresses become role labels; small cells suppressed; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST \u2014 identifiers listed up front.",
+        "Casualty names/addresses become role labels; the casualty cell is aggregated/suppressed (<5).",
+        "No re-identification key embedded (de_identification hard-fail)."
+      ]
+    }
+  ]
+}

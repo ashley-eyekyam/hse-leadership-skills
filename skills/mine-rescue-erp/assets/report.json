@@ -1,0 +1,32 @@
+{
+  "_comment": "Mine-rescue ERP report tree (A4 report.json). Section ordering per spec 3.3 (ERP shape); house_template unset (D-04/CT-3).",
+  "title": "Mine-Rescue Emergency Response Plan",
+  "sections": [
+    {
+      "type": "meta",
+      "fields": [
+        "mine_name",
+        "commodity",
+        "method_opencast_underground",
+        "region_zone",
+        "workforce"
+      ]
+    },
+    {
+      "type": "findings",
+      "title": "Emergency scenarios (scenario-ranked via risk_matrix)"
+    },
+    {
+      "type": "table",
+      "title": "Rescue mobilisation (team / station / mutual-aid / timing)"
+    },
+    {
+      "type": "recommendations",
+      "title": "Drills schedule (owner + date)"
+    },
+    {
+      "type": "bullets",
+      "title": "Regulatory basis (Mines Act / DGMS emergency-preparedness duty)"
+    }
+  ]
+}
