@@ -1,0 +1,39 @@
+{
+  "_comment": "mechanical-integrity evals (06-02). Intake/specificity; HoC remediation; de-id CLEAN.",
+  "skill": "mechanical-integrity",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Set up mechanical integrity for us.",
+      "files": [],
+      "expected_behavior": "Runs the intake; refuses until the named equipment population/unit and the criticality/integrity basis are captured.",
+      "expectations": [
+        "Runs the structured intake one question at a time before any register.",
+        "Refuses 'for us' — elicits the specific named equipment population and unit (specificity).",
+        "Asks for the criticality factors (consequence/likelihood) and the ITPM basis before ranking."
+      ]
+    },
+    {
+      "query": "Our relief-valve population has an integrity deficiency; the only remediation we propose is 'operators keep an eye on it'.",
+      "files": [],
+      "expected_behavior": "Criticality-ranks the population, records the deficiency, and HoC-ranks the remediation, flagging the administrative-only remediation.",
+      "expectations": [
+        "Criticality-ranks the relief-valve population with risk_matrix (consequence of failure × likelihood).",
+        "HoC-ranks the deficiency remediation: flags 'operators keep an eye on it' as administrative-only (controls.ppe_admin_only).",
+        "Prompts for a higher-order remediation first (a scheduled test/inspection program with an interval) with an owner + due date (smart_actions)."
+      ]
+    },
+    {
+      "query": "Build the integrity register from the attached equipment review.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "De-identification runs FIRST; reviewers are role labels; no leaked identifier in the register.",
+      "expectations": [
+        "The de-identification scrub runs FIRST, before the register is built.",
+        "Inspectors / owners are recorded as role labels, not personal names.",
+        "No real name, address, phone, government ID, or re-identification key — any leak is a de_identification hard-fail. The grader passes the clean fixture and CATCHES the paired seeded leak."
+      ]
+    }
+  ]
+}
