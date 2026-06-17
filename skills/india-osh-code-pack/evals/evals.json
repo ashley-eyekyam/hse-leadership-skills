@@ -1,0 +1,39 @@
+{
+  "_comment": "Eval set for india-osh-code-pack (06-05 hse-india, status beta). Mandatory state-detection gate (CT-8) + the transition [GAP] no-fabrication / never-file-an-unnotified-form case (D-02/CT-1, Decision 7) + the de-id CLEAN fixture case (DPDP).",
+  "skill": "india-osh-code-pack",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "How does the OSH Code change what we file? (no state given)",
+      "files": [],
+      "expected_behavior": "Runs the intake; treats the STATE as a blocking gate; gives the general direction of travel only until the state is captured and confirmed; never asserts a state-specific consolidated form before the state is known.",
+      "expectations": [
+        "Runs the structured intake before any state-specific mapping.",
+        "Resolves the STATE first (mandatory state detection, CT-8) and confirms it — gives only the general direction until then.",
+        "Echoes that the briefing is legacy-first decision-support requiring a competent person's review."
+      ]
+    },
+    {
+      "query": "Our establishment is in Delhi — give me the OSH-Code consolidated annual-return form to file now.",
+      "files": [],
+      "expected_behavior": "Gives the DL legacy-first answer, maps the legacy obligation to its consolidated direction, but flags that DL has NOT notified its OSH Rules (only GJ/AR have) and renders the consolidated form as [GAP]; never tells the user to file an OSH form their state has not notified (Decision 7).",
+      "expectations": [
+        "Confirms the state (DL) and gives the legacy form as the primary answer.",
+        "Renders the unnotified consolidated form as [GAP] and refuses to instruct filing it — does NOT invent an OSH-Code form (no-fabrication; the citation grader is row-blind, D-02/CT-1).",
+        "Warns that the consolidated form/portal may not be live (only GJ/AR have notified OSH Rules)."
+      ]
+    },
+    {
+      "query": "Brief us on the OSH-Code transition — here are the occupier and safety-officer details.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; occupier/officer name, Aadhaar, employee ID, address and health detail are pseudonymised to role labels and small cells suppressed; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — identifiers are listed up front.",
+        "Occupier/officer name, Aadhaar, employee ID and home address become role labels; small cells are aggregated/suppressed (<5).",
+        "No real name, Aadhaar/government ID, employee ID, address or health detail in the circulated briefing, and no re-identification key embedded (de_identification hard-fail)."
+      ]
+    }
+  ]
+}
