@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/assets/logo.svg" alt="HSE Leadership Skills" width="420" />
+<img src="docs/assets/logo.svg" alt="HSE Leadership Skills" width="260" />
 
 # HSE Leadership Skills
 
@@ -235,6 +235,16 @@ The line above is quoted verbatim from [`DISCLAIMER.md`](./DISCLAIMER.md) — re
 Make every output your own by editing **two files**: `brand.yaml` (your colours, logo, fonts — the visual theme) and `company-card.yaml` (your name, tagline, contact — the attribution). One edit re-brands the whole pack. It ships with the **Eyekyam default**, so it looks finished out of the box.
 
 See [`docs/BRANDING.md`](docs/BRANDING.md) for the full how-to (the two-file override, the report-branding default, logo usage, and how to regenerate the visual assets).
+
+## About Eyekyam
+
+<div align="center">
+  <img src="docs/eyekyam-logo.png" alt="Eyekyam Risk Resolutions Pvt. Ltd. logo" width="260" />
+</div>
+
+This public repo is built and maintained by **Eyekyam Risk Resolutions Pvt. Ltd.**, registered office at Gurugram, India.
+
+For questions, custom skills, or training, contact [ashley@eyekyam.com](mailto:ashley@eyekyam.com).
 
 ---
 

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc" viewBox="0 0 260 120">
+  <title id="title">HSE Leadership Skills logo</title>
+  <desc id="desc">A simplified teal Eyekyam-inspired diamond and eye mark for HSE Leadership Skills.</desc>
+  <defs>
+    <linearGradient id="teal" x1="63" y1="18" x2="197" y2="102" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#47c4be"/>
+      <stop offset="1" stop-color="#1a7070"/>
+    </linearGradient>
+  </defs>
+
+  <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M130 14 202 60 130 106 58 60Z" stroke="url(#teal)" stroke-width="8"/>
+    <path d="M70 60c35-24 85-24 120 0-35 24-85 24-120 0Z" stroke="#0b1f2a" stroke-width="5"/>
+    <path d="M88 60c26-14 58-14 84 0" stroke="#47c4be" stroke-width="4"/>
+  </g>
+
+  <circle cx="130" cy="60" r="20" fill="#66c9c6"/>
+  <path d="M121 45c9-5 21-4 29 3-7 2-14 7-19 15-4-7-7-13-10-18Z" fill="#0b1f2a"/>
+  <path d="M143 69c5 1 9 0 13-3-2 7-7 12-14 14-6 2-12 1-17-2 7-1 13-4 18-9Z" fill="#0b1f2a"/>
+</svg>
