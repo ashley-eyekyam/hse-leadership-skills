@@ -93,6 +93,9 @@ B5_ROSTER = """\
   reaches a systemic factor, reportability cited conservatively to the matched KB row, every
   CAPA traces to a cause with owner+date, no PPE/admin-only without justification, and ZERO
   PII/health leak (no residual identifier, no <5 cell, no re-id key in the output).
+- **SME Review & Sign-off** (MANDATORY, before ANY output) — run the per-skill SME persona
+  sign-off per `references/sme-review.md`; this is decision-support and precedes — never
+  replaces — the human competent-person review.
 """
 
 SINGLE_THREAD_ROSTER = """\
@@ -103,6 +106,9 @@ SINGLE_THREAD_ROSTER = """\
 
 - Single-threaded by design — no subagents. (Replace with this skill's named
   fan-out jobs if the triage gate warrants them.)
+- **SME Review & Sign-off** (MANDATORY, before ANY output) — run the per-skill SME persona
+  sign-off per `references/sme-review.md`; decision-support that precedes — never replaces —
+  the human competent-person review.
 """
 
 MODERATE_ROSTER = """\
@@ -120,6 +126,9 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+- **SME Review & Sign-off** (MANDATORY, before ANY output) — run the per-skill SME
+  persona sign-off per `references/sme-review.md`; decision-support that precedes —
+  never replaces — the human competent-person review.
 
 Simple single-subject tasks run single-threaded — no subagents.
 """
@@ -306,6 +315,8 @@ def _skill_md(name: str, answers: dict, draft_overview: Optional[str] = None) ->
         "\n## Reference material\n\n"
         "On-demand pointers (read only when needed):\n\n"
         "- `references/METHODOLOGY.md` — the domain method this skill applies.\n"
+        "- `references/intake.md` — the structured-intake coverage contract + Q-table.\n"
+        "- `references/sme-review.md` — the per-skill SME sign-off personas + checklist.\n"
         "- `references/deid-checklist.md` — the full de-identification checklist (A5).\n"
         "- `references/QUALITY_CHECKLIST.md` — the pre-output validation gate.\n"
         "- `references/_skill-kb.md` — the knowledge-base fragments this skill resolves.\n"
@@ -342,6 +353,31 @@ def _skill_kb_manifest(name: str, answers: dict) -> str:
         "| ID | Use | Path |\n|---|---|---|\n"
         f"{rows_md}\n"
     )
+
+
+def _intake_md(name: str, answers: dict) -> str:
+    """Emit the born-conformant `references/intake.md` (FND-06 / D-03 emit half).
+
+    Reads the Wave-1 template `templates/intake.md` byte-for-byte (universal-only
+    `covers`, all 9 conditionals omitted-with-reason, the 3-row typed Q-table, the
+    echo-back + refuse-on-vague cues — already born-conformant against Rules 11). The
+    only substitution is the `<skill>` heading placeholder -> the real skill name; the
+    `intake-coverage:` front-matter manifest is left untouched. `answers` is accepted
+    for signature parity but ignored (answers.json threading is DEFERRED, research §5.4)."""
+    text = _read(FORGE_TEMPLATES / "intake.md")
+    return text.replace("# Structured intake — <skill>", f"# Structured intake — {name}")
+
+
+def _sme_review_md(name: str, answers: dict) -> str:
+    """Emit the born-conformant `references/sme-review.md` (FND-06 / D-03 emit half).
+
+    Reads the Wave-1 template `templates/sme-review.md` byte-for-byte (1 generic
+    HSE-SME-Reviewer persona with non-empty role/expertise/lens + a >=3-item domain
+    checklist — already born-conformant against Rule 12). Substitutes only the
+    `<skill>` heading placeholder. `answers` is accepted for signature parity but
+    ignored (answers.json threading is DEFERRED, research §5.4)."""
+    text = _read(FORGE_TEMPLATES / "sme-review.md")
+    return text.replace("# SME Review & Sign-off — <skill>", f"# SME Review & Sign-off — {name}")
 
 
 def _evals_json(name: str) -> str:
@@ -444,6 +480,10 @@ def scaffold_skill(
     for fname in ("METHODOLOGY.md", "QUALITY_CHECKLIST.md", "deid-checklist.md"):
         shutil.copyfile(FORGE_TEMPLATES / "references" / fname, refs / fname)
     (refs / "_skill-kb.md").write_text(_skill_kb_manifest(name, answers), encoding="utf-8")
+    # born-conformant elicitation-coverage + SME-review references (FND-06 / D-03 emit
+    # half): the fully TODO-stubbed Wave-1 templates, born-passing Rules 11/12.
+    (refs / "intake.md").write_text(_intake_md(name, answers), encoding="utf-8")
+    (refs / "sme-review.md").write_text(_sme_review_md(name, answers), encoding="utf-8")
 
     # assets/ (+ a stub report.json) ------------------------------------------------
     assets = skill_dir / "assets"
