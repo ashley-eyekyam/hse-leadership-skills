@@ -10,7 +10,10 @@ The frozen `examples/risk-assessment/` is EXEMPT inside `validate_skill`, so the
 rule-level fixtures call `_rule12_sme_review` DIRECTLY on the mutated fixture
 skill_dir — bypassing the exemption gate (research §6 "Fixture layout").
 
-Rules 11/12 are WARN this phase, so findings land in `report.warnings`.
+Rules 11/12 are HARD this phase; the `rule12()` helper reads
+`report.errors + report.warnings` level-agnostically so the fixtures survive the
+WARN→HARD flip. The optional SME-02 boundary-phrase check stays a WARN and asserts
+on `report.warnings` directly.
 
 This test file asserts behavior; it NEVER edits `lint_skills.py`.
 
@@ -127,12 +130,16 @@ def make_skill(tmp_path, sme_text=CLEAN_SME, roster_references=True):
 
 def rule12(skill_dir):
     """Run `_rule12_sme_review` DIRECTLY on the fixture skill_dir (bypassing the
-    validate_skill exemption gate) and return the rule-12 findings (WARN this
-    phase)."""
+    validate_skill exemption gate) and return the rule-12 findings.
+
+    Level-agnostic: collects from `report.errors + report.warnings` so the suite
+    survives the WARN→HARD flip. NOTE: the OPTIONAL SME-02 boundary-phrase check
+    (further down this file) stays a WARN regardless of the flip and asserts on
+    `report.warnings` directly — do not route it through this helper."""
     report = lint_skills.Report(skill="fixture-skill")
     body = (skill_dir / "SKILL.md").read_text(encoding="utf-8")
     lint_skills._rule12_sme_review(report, body, skill_dir)
-    return [w for w in report.warnings if w.startswith("rule 12")]
+    return [m for m in (report.errors + report.warnings) if m.startswith("rule 12")]
 
 
 # --- clean pass ----------------------------------------------------------------

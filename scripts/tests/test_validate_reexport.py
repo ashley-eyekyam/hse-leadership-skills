@@ -64,14 +64,15 @@ def test_rules_11_12_inherited_by_reexport():
     """FND-05 — Rules 11/12 (added to lint_skills.py only) are inherited by the forge
     re-export FOR FREE: validating a skill missing references/intake.md through the
     forge `validate_repo_skill.validate_skill` produces the EXACT SAME findings as
-    `lint_skills.validate_skill` (same object => same rule-11/12 warnings). Proves no
-    fork; the forge sees what CI sees."""
+    `lint_skills.validate_skill` (same object => same rule-11/12 findings). Proves no
+    fork; the forge sees what CI sees. As of the Phase-10 HARD cutover the missing-
+    intake finding is a HARD ERROR (RULE_11_12_LEVEL == 'error')."""
     answers = json.loads((FIXTURES / "probe_answers.json").read_text(encoding="utf-8"))
     name = "ztest-reexport-r1112"
     skill_dir = None
     try:
         skill_dir = scaffold.scaffold_skill(name, answers, force=True)
-        # Break born-conformance: remove the intake reference so Rule 11 fires (WARN).
+        # Break born-conformance: remove the intake reference so Rule 11 fires (HARD).
         (skill_dir / "references" / "intake.md").unlink()
 
         via_forge = validate_repo_skill.validate_skill(skill_dir)
@@ -80,8 +81,8 @@ def test_rules_11_12_inherited_by_reexport():
         # The forge re-export and CI agree on every finding (identity => same engine).
         assert via_forge.errors == via_lint.errors
         assert via_forge.warnings == via_lint.warnings
-        # And the rule-11 missing-intake warning is among them (Rule 11 reached the forge).
-        assert any(w.startswith("rule 11") for w in via_forge.warnings), via_forge.warnings
+        # And the rule-11 missing-intake finding is among the HARD errors (Rule 11 reached the forge).
+        assert any(e.startswith("rule 11") for e in via_forge.errors), via_forge.errors
     finally:
         if skill_dir is not None:
             shutil.rmtree(skill_dir, ignore_errors=True)

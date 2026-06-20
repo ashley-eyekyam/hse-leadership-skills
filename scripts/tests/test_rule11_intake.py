@@ -10,7 +10,8 @@ Because the frozen `examples/risk-assessment/` is EXEMPT inside `validate_skill`
 DIRECTLY on a mutated fixture skill_dir — bypassing the exemption gate so the
 rule logic is tested on its own (research §6 "Fixture layout").
 
-Rules 11/12 are WARN this phase, so findings land in `report.warnings`.
+Rules 11/12 are HARD this phase; the helpers read `report.errors + report.warnings`
+level-agnostically so the fixtures survive the WARN→HARD flip.
 
 This test file asserts behavior; it NEVER edits `lint_skills.py`. The bad-Type
 literal is constructed in test code and is written ONLY into a tmp_path fixture,
@@ -154,12 +155,16 @@ def make_skill(tmp_path, intake_text=CLEAN_INTAKE, with_pointer=True):
 
 def rule11(skill_dir):
     """Run `_rule11_intake_coverage` DIRECTLY on the fixture skill_dir (bypassing
-    the validate_skill exemption gate) and return the rule-11 findings (WARN this
-    phase)."""
+    the validate_skill exemption gate) and return the rule-11 findings.
+
+    Level-agnostic: collects from `report.errors + report.warnings` so the suite
+    survives the WARN→HARD flip (findings move from warnings to errors when
+    RULE_11_12_LEVEL == "error"). The errors+warnings union is a superset, so
+    warnings-only findings (pre-flip) still match."""
     report = lint_skills.Report(skill="fixture-skill")
     body = (skill_dir / "SKILL.md").read_text(encoding="utf-8")
     lint_skills._rule11_intake_coverage(report, body, skill_dir, REPO)
-    return [w for w in report.warnings if w.startswith("rule 11")]
+    return [m for m in (report.errors + report.warnings) if m.startswith("rule 11")]
 
 
 # --- clean pass ----------------------------------------------------------------
@@ -341,11 +346,14 @@ def test_missing_intake_file_fires(tmp_path):
 
 def _rule11_against_repo(skill_dir, repo):
     """Run _rule11_intake_coverage directly with an explicit `repo` arg and return
-    the rule-11 findings (WARN this phase)."""
+    the rule-11 findings.
+
+    Level-agnostic: collects from `report.errors + report.warnings` so the suite
+    survives the WARN→HARD flip."""
     report = lint_skills.Report(skill="fixture-skill")
     body = (skill_dir / "SKILL.md").read_text(encoding="utf-8")
     lint_skills._rule11_intake_coverage(report, body, skill_dir, repo)
-    return [w for w in report.warnings if w.startswith("rule 11")]
+    return [m for m in (report.errors + report.warnings) if m.startswith("rule 11")]
 
 
 def test_missing_taxonomy_fires(tmp_path):

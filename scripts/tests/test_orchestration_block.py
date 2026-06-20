@@ -33,7 +33,7 @@ ORCH_REGION_RE = re.compile(
 
 REQUIRED_SUBSTRINGS = [
     "### Step 0",
-    "### Step 4 — Critic",
+    "### Step 4 — SME Review",
     "MAX=6",
     "Single-threaded fallback",
     "De-identif",

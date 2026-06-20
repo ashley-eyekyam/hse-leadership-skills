@@ -117,23 +117,24 @@ def test_spacing_folds():
     assert b in lint_skills._VALID_Q_TYPES
 
 
-# --- the WARN-not-HARD staging guard -----------------------------------------------
+# --- the HARD-cutover severity guard -----------------------------------------------
 
-def test_rule_level_is_warn():
-    """Rules 11/12 land as WARN this phase so the repo stays GREEN (D-02 staged
-    rollout). Phase 10 flips this single token to 'error' — do NOT change it here."""
-    assert lint_skills.RULE_11_12_LEVEL == "warn"
+def test_rule_level_is_error():
+    """Rules 11/12 are HARD (error) as of the Phase-10 cutover (GATE-01). The D-02
+    staged rollout landed them as WARN through Phase 9; Phase 10 flipped this single
+    token to 'error'."""
+    assert lint_skills.RULE_11_12_LEVEL == "error"
 
 
-def test_missing_intake_is_warning_not_error(tmp_path):
+def test_missing_intake_is_hard_error(tmp_path):
     """A skill with a `references/` dir but no `intake.md`, run through
-    `_rule11_intake_coverage`, yields a WARNING (not an error) — proving the
-    severity constant routes rule-11 findings to warnings this phase."""
+    `_rule11_intake_coverage`, yields a HARD ERROR (not a warning) — proving the
+    severity constant routes rule-11 findings to errors as of the cutover."""
     skill_dir = tmp_path / "fixture-skill"
     (skill_dir / "references").mkdir(parents=True)
     # No intake.md written — the rule-11 presence step (1) must fire.
     report = lint_skills.Report(skill="fixture-skill")
     lint_skills._rule11_intake_coverage(report, "", skill_dir, REPO)
-    assert report.errors == [], "missing intake.md must NOT be a hard error this phase"
-    assert report.warnings, "missing intake.md must produce a WARNING this phase"
-    assert any(w.startswith("rule 11") for w in report.warnings)
+    assert report.warnings == [], "missing intake.md must NOT be a soft warning post-cutover"
+    assert report.errors, "missing intake.md must produce a HARD ERROR post-cutover"
+    assert any(e.startswith("rule 11") for e in report.errors)

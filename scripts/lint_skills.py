@@ -58,12 +58,12 @@ STALENESS_DAYS = 180
 
 # --- Rules 11/12 severity (FND-04 / D-02 staged rollout) -----------------------
 # The elicitation-coverage (rule 11) + sme-review (rule 12) findings route through
-# _emit() at this single level. This phase they land as WARN so the repo stays
-# GREEN under `lint --all` while the 48 skills are backfilled (Phase 9). The
-# Phase-10 HARD flip = change this single token to "error" (one-line atomic edit);
-# the CLI/CI invocation is unchanged (no --strict, no env var) so D-11 holds and
-# none of the 8 branch-protection CI contexts move.
-RULE_11_12_LEVEL = "warn"
+# _emit() at this single level. As of the Phase-10 HARD cutover they land as
+# ERROR (HARD) — the 48 in-scope skills were backfilled HARD-clean in Phase 9 and
+# carry the promoted block, so `lint --all` stays GREEN. The flip was the single
+# token below ("warn" -> "error"); the CLI/CI invocation is unchanged (no --strict,
+# no env var) so D-11 holds and none of the 8 branch-protection CI contexts move.
+RULE_11_12_LEVEL = "error"
 
 
 def _emit(report: Report, msg: str) -> None:

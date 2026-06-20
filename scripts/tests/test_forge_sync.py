@@ -114,3 +114,48 @@ def test_sync_idempotent_after_heal(skill):
     assert rc == 0
     assert "already clean" in out
     assert md.read_text(encoding="utf-8") == healed
+
+
+# --- repo-wide idempotency (FND-08 / GATE-03) ----------------------------------
+#
+# The per-skill `test_sync_idempotent_after_heal` proves a single drifted skill
+# heals to a no-op. GATE-03 wants the REPO-WIDE guarantee on the real tree: after
+# the Phase-10 block promotion + --sync landed, re-stamping ALL 48 in-scope skills
+# introduces ZERO drift, and a second --sync reports "already clean" for every dir
+# with byte-identical SKILL.md. The 48 in-scope dirs = `skills/*` MINUS
+# `hse-skill-forge` (Rules 11/12-exempt) and any `examples/` path (frozen, D-08) —
+# the same enumeration the cutover --sync uses.
+
+def _in_scope_skill_dirs():
+    dirs = sorted(
+        d for d in (REPO / "skills").iterdir()
+        if d.is_dir() and (d / "SKILL.md").is_file() and d.name != "hse-skill-forge"
+    )
+    return dirs
+
+
+def test_sync_idempotent_repo_wide():
+    dirs = _in_scope_skill_dirs()
+    assert len(dirs) == 48, f"expected 48 in-scope skills, found {len(dirs)}"
+
+    # Snapshot every SKILL.md, run --sync over the whole set (re-stamp), then assert
+    # NO drift was introduced (the block is already in place from the cutover).
+    before = {d: (d / "SKILL.md").read_text(encoding="utf-8") for d in dirs}
+    for d in dirs:
+        rc, out = _run_sync(d)
+        assert rc == 0, f"--sync rc != 0 for {d.name}: {out}"
+        assert (d / "SKILL.md").read_text(encoding="utf-8") == before[d], (
+            f"--sync introduced drift in {d.name} (block region not already canonical)"
+        )
+
+    # SECOND run over the whole set = no-op on every dir: "already clean" + identical
+    # bytes (idempotency).
+    for d in dirs:
+        rc, out = _run_sync(d)
+        assert rc == 0, f"second --sync rc != 0 for {d.name}: {out}"
+        assert "already clean" in out, (
+            f"second --sync did not report 'already clean' for {d.name}: {out}"
+        )
+        assert (d / "SKILL.md").read_text(encoding="utf-8") == before[d], (
+            f"second --sync changed bytes in {d.name}"
+        )
