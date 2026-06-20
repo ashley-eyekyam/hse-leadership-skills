@@ -73,16 +73,19 @@ def test_no_hardcoded_passing_badge(readme_text):
 
 
 def test_all_e_section_headers_present(readme_text):
-    """Every E §3.1 section must appear, in order: hero → catalog → install →
-    60-sec example → trust band → customize/brand → roadmap/community."""
+    """Every E §3.1 section must appear, in the README's canonical order:
+    hero → install (30s) → catalog → 60-sec example → trust band →
+    customize/brand → roadmap/community. The README is the source of truth;
+    these anchors track its actual headers (install precedes catalog, and the
+    catalog header carries its full "(the catalog)" parenthetical)."""
     ordered_anchors = [
-        "# HSE Leadership Skills",          # 1 · hero
-        "## What's in the box",             # 2 · catalog
-        "## Install in 30 seconds",         # 3 · install
-        '## A 60-second "try it"',          # 4 · worked example
-        "## Trust & safety",                # 5 · trust band
-        "## Customize & brand",             # 6 · brand
-        "## Roadmap & community",           # 7 · roadmap/community
+        "# HSE Leadership Skills",              # 1 · hero
+        "## Install in 30 seconds",             # 2 · install (30s quick start)
+        "## What's in the box (the catalog)",   # 3 · catalog
+        '## A 60-second "try it"',              # 4 · worked example
+        "## Trust & safety",                    # 5 · trust band
+        "## Customize & brand",                 # 6 · brand
+        "## Roadmap & community",               # 7 · roadmap/community
     ]
     last = -1
     for anchor in ordered_anchors:

@@ -1,82 +1,76 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="560" height="420" viewBox="0 0 560 420" role="img" aria-label="De-identified sample: risk-assessment findings and hierarchy-of-controls table for the synthetic T-402 scenario. Controls ranked elimination-first; PPE-only flagged; role-owners with due dates.">
-  <title>Sample findings &amp; hierarchy-of-controls table (de-identified T-402)</title>
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="470" viewBox="0 0 560 470" role="img" aria-label="De-identified sample: risk-assessment findings, hierarchy-of-controls, and recommendations tables for the synthetic T-402 scenario. Controls ranked elimination-first; owners are role labels with due dates; no real names, sites, or PII.">
+  <title>Sample findings, hierarchy of controls &amp; recommendations (de-identified T-402)</title>
   <defs>
     <style>
       .ff { font-family: 'Segoe UI', Arial, sans-serif; }
-      .th { font-size: 12px; font-weight: 700; fill: #ffffff; }
+      .th { font-size: 11px; font-weight: 700; fill: #ffffff; }
       .td { font-size: 11px; fill: #222; }
-      .cap { font-size: 11px; fill: #888; }
-      .badgeHi { fill: #c0392b; }
-      .badgeLo { fill: #27867a; }
+      .sec { font-size: 14px; font-weight: 800; fill: #1A7070; }
+      .cap { font-size: 10.5px; fill: #888; }
+      .hi { fill: #c0392b; font-weight: 700; }
+      .med { fill: #e0941f; font-weight: 700; }
     </style>
   </defs>
-  <rect x="0" y="0" width="560" height="420" fill="#ffffff" stroke="#e0e0e0"/>
-  <rect x="0" y="0" width="560" height="10" fill="#2AADA8"/>
-  <text x="24" y="40" class="ff" style="font-size:15px;font-weight:800;fill:#1A7070;">Findings &amp; hierarchy of controls — Tank T-402</text>
+  <rect x="0" y="0" width="560" height="470" fill="#ffffff" stroke="#e0e0e0"/>
+  <!-- running header bar -->
+  <rect x="0" y="0" width="560" height="26" fill="#2AADA8"/>
+  <text x="536" y="18" text-anchor="end" class="ff" style="font-size:11px;font-weight:700;fill:#ffffff;">Confined-Space Entry — Risk Assessment</text>
 
-  <!-- Header row -->
-  <rect x="24" y="56" width="512" height="26" fill="#2AADA8"/>
-  <text x="34" y="74" class="ff th">Hazard</text>
-  <text x="170" y="74" class="ff th">Initial</text>
-  <text x="224" y="74" class="ff th">Control (HoC)</text>
-  <text x="408" y="74" class="ff th">Resid.</text>
-  <text x="456" y="74" class="ff th">Owner · Due</text>
+  <!-- Key findings -->
+  <text x="24" y="54" class="ff sec">Key findings</text>
+  <rect x="24" y="64" width="512" height="22" fill="#2AADA8"/>
+  <text x="34" y="79" class="ff th">Finding</text>
+  <text x="200" y="79" class="ff th">Risk</text>
+  <text x="300" y="79" class="ff th">Evidence</text>
+  <rect x="24" y="86" width="512" height="24" fill="#F4FBFA"/>
+  <text x="34" y="102" class="ff td">Oxygen deficiency</text>
+  <text x="200" y="102" class="ff td hi">High</text>
+  <text x="300" y="102" class="ff td">Gas log 2026-06-10</text>
+  <rect x="24" y="110" width="512" height="24" fill="#ffffff"/>
+  <text x="34" y="126" class="ff td">Hot-work ignition</text>
+  <text x="200" y="126" class="ff td med">Medium</text>
+  <text x="300" y="126" class="ff td">LEL sample 2026-06-11</text>
 
-  <!-- Row 1 -->
-  <rect x="24" y="82" width="512" height="46" fill="#F4FBFA"/>
-  <text x="34" y="100" class="ff td">Oxygen-deficient</text>
-  <text x="34" y="114" class="ff td">atmosphere</text>
-  <rect x="166" y="92" width="40" height="18" rx="4" class="badgeHi"/>
-  <text x="186" y="105" text-anchor="middle" class="ff th">20</text>
-  <text x="224" y="100" class="ff td">ELIMINATE: avoid entry —</text>
-  <text x="224" y="114" class="ff td">clean-in-place where feasible</text>
-  <rect x="404" y="92" width="40" height="18" rx="4" class="badgeLo"/>
-  <text x="424" y="105" text-anchor="middle" class="ff th">4</text>
-  <text x="456" y="100" class="ff td">Entry Sup.</text>
-  <text x="456" y="114" class="ff td">+7 days</text>
+  <!-- Hierarchy of controls -->
+  <text x="24" y="162" class="ff sec">Hierarchy of controls</text>
+  <rect x="24" y="172" width="512" height="22" fill="#2AADA8"/>
+  <text x="34" y="187" class="ff th">Control</text>
+  <text x="300" y="187" class="ff th">Tier</text>
+  <text x="440" y="187" class="ff th">Owner</text>
+  <rect x="24" y="194" width="512" height="22" fill="#F4FBFA"/>
+  <text x="34" y="209" class="ff td">Eliminate entry — clean externally</text>
+  <text x="300" y="209" class="ff td">Elimination</text>
+  <text x="440" y="209" class="ff td">Process Eng</text>
+  <rect x="24" y="216" width="512" height="22" fill="#ffffff"/>
+  <text x="34" y="231" class="ff td">Continuous forced-air ventilation</text>
+  <text x="300" y="231" class="ff td">Engineering</text>
+  <text x="440" y="231" class="ff td">Maintenance</text>
+  <rect x="24" y="238" width="512" height="22" fill="#F4FBFA"/>
+  <text x="34" y="253" class="ff td">Entry permit + standby attendant</text>
+  <text x="300" y="253" class="ff td">Administrative</text>
+  <text x="440" y="253" class="ff td">HSE Officer</text>
 
-  <!-- Row 2 -->
-  <rect x="24" y="128" width="512" height="46" fill="#ffffff"/>
-  <text x="34" y="146" class="ff td">Toxic residue</text>
-  <text x="34" y="160" class="ff td">vapour</text>
-  <rect x="166" y="138" width="40" height="18" rx="4" class="badgeHi"/>
-  <text x="186" y="151" text-anchor="middle" class="ff th">16</text>
-  <text x="224" y="146" class="ff td">ENGINEERING: forced</text>
-  <text x="224" y="160" class="ff td">ventilation + continuous gas test</text>
-  <rect x="404" y="138" width="40" height="18" rx="4" class="badgeLo"/>
-  <text x="424" y="151" text-anchor="middle" class="ff th">5</text>
-  <text x="456" y="146" class="ff td">HSE Officer</text>
-  <text x="456" y="160" class="ff td">+3 days</text>
+  <!-- Recommendations -->
+  <text x="24" y="289" class="ff sec">Recommendations (SMART actions)</text>
+  <rect x="24" y="299" width="512" height="22" fill="#2AADA8"/>
+  <text x="34" y="314" class="ff th">Action</text>
+  <text x="280" y="314" class="ff th">Priority</text>
+  <text x="370" y="314" class="ff th">Owner</text>
+  <text x="460" y="314" class="ff th">Due</text>
+  <rect x="24" y="321" width="512" height="22" fill="#F4FBFA"/>
+  <text x="34" y="336" class="ff td">Install fixed gas monitor</text>
+  <text x="280" y="336" class="ff td">P1</text>
+  <text x="370" y="336" class="ff td">HSE Officer</text>
+  <text x="460" y="336" class="ff td">+11 days</text>
+  <rect x="24" y="343" width="512" height="22" fill="#ffffff"/>
+  <text x="34" y="358" class="ff td">Revise confined-space SOP</text>
+  <text x="280" y="358" class="ff td">P2</text>
+  <text x="370" y="358" class="ff td">HSE Officer</text>
+  <text x="460" y="358" class="ff td">+25 days</text>
 
-  <!-- Row 3 -->
-  <rect x="24" y="174" width="512" height="46" fill="#F4FBFA"/>
-  <text x="34" y="192" class="ff td">Engulfment /</text>
-  <text x="34" y="206" class="ff td">entrapment</text>
-  <rect x="166" y="184" width="40" height="18" rx="4" class="badgeHi"/>
-  <text x="186" y="197" text-anchor="middle" class="ff th">12</text>
-  <text x="224" y="192" class="ff td">ADMIN: permit-to-work +</text>
-  <text x="224" y="206" class="ff td">standby attendant + rescue plan</text>
-  <rect x="404" y="184" width="40" height="18" rx="4" class="badgeLo"/>
-  <text x="424" y="197" text-anchor="middle" class="ff th">6</text>
-  <text x="456" y="192" class="ff td">Standby Att.</text>
-  <text x="456" y="206" class="ff td">+1 day</text>
+  <text x="24" y="392" class="ff cap">Controls ranked elimination-first; PPE-only treatments flagged for justification — the core value made visible.</text>
+  <text x="24" y="410" class="ff cap">Every owner is a role label — de-identified sample, synthetic T-402 scenario. No real names, sites, or PII.</text>
 
-  <!-- Row 4 (PPE-only flagged) -->
-  <rect x="24" y="220" width="512" height="46" fill="#fff7e6"/>
-  <text x="34" y="238" class="ff td">Skin contact</text>
-  <text x="34" y="252" class="ff td">on contact</text>
-  <rect x="166" y="230" width="40" height="18" rx="4" fill="#e0941f"/>
-  <text x="186" y="243" text-anchor="middle" class="ff th">9</text>
-  <text x="224" y="238" class="ff td" style="fill:#8a6d1f;">PPE-ONLY — flagged: justify</text>
-  <text x="224" y="252" class="ff td" style="fill:#8a6d1f;">or add higher-order control</text>
-  <rect x="404" y="230" width="40" height="18" rx="4" fill="#e0941f"/>
-  <text x="424" y="243" text-anchor="middle" class="ff th">6</text>
-  <text x="456" y="238" class="ff td">HSE Officer</text>
-  <text x="456" y="252" class="ff td">+2 days</text>
-
-  <text x="24" y="300" class="ff cap">Controls ranked elimination-first; PPE-only treatments flagged for justification (the core value made visible).</text>
-  <text x="24" y="320" class="ff cap">All owners are role labels — de-identified sample, synthetic T-402 scenario. No real names, sites, or PII.</text>
-
-  <line x1="24" y1="360" x2="536" y2="360" stroke="#1A7070" stroke-width="1"/>
-  <text x="24" y="382" class="ff cap" style="fill:#1A7070;">DRAFT — every output must be reviewed and signed off by a competent person. Eyekyam · eyekyam.com</text>
+  <line x1="24" y1="440" x2="536" y2="440" stroke="#1A7070" stroke-width="1"/>
+  <text x="24" y="460" class="ff cap" style="fill:#1A7070;">DRAFT — every output must be reviewed and signed off by a competent person. Eyekyam · eyekyam.com</text>
 </svg>
