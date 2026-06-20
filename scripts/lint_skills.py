@@ -56,6 +56,20 @@ import yaml
 # --- single config constant (A3 §3.10 / Phase-2 D-05) --------------------------
 STALENESS_DAYS = 180
 
+# --- Rules 11/12 severity (FND-04 / D-02 staged rollout) -----------------------
+# The elicitation-coverage (rule 11) + sme-review (rule 12) findings route through
+# _emit() at this single level. This phase they land as WARN so the repo stays
+# GREEN under `lint --all` while the 48 skills are backfilled (Phase 9). The
+# Phase-10 HARD flip = change this single token to "error" (one-line atomic edit);
+# the CLI/CI invocation is unchanged (no --strict, no env var) so D-11 holds and
+# none of the 8 branch-protection CI contexts move.
+RULE_11_12_LEVEL = "warn"
+
+
+def _emit(report: Report, msg: str) -> None:
+    """Route a rule-11/12 finding to error or warn per RULE_11_12_LEVEL."""
+    (report.error if RULE_11_12_LEVEL == "error" else report.warn)(msg)
+
 # scripts/ -> repo root
 REPO = Path(__file__).resolve().parent.parent
 TEMPLATE = REPO / "template"
@@ -229,6 +243,115 @@ def resolve_kb_id(kb_id: str, repo: Path = REPO) -> bool:
     if not folder:
         return False
     return kb_id in _registry_ids(folder, repo)
+
+
+# --- Rules 11/12 helpers (FND-04: elicitation-coverage + sme-review) -----------
+
+# FROZEN normalized Q-type whitelist (rule 11 step 6, D-01). Built once from the
+# six family-rollout specs by gathering every distinct `Type` cell of every
+# branched Q-table and normalizing it (strip whitespace, lowercase):
+#     grep '^|' docs/.../2026-06-20-elicitation-sme/0[1-6]-*.md | awk -F'|' '$4!="Type"{print $4}'
+#     | <normalize: re.sub(r"\s+","",s.strip().lower())>
+# 19 raw strings folded to the 17 normalized entries below; frozen 2026-06-20.
+# D-01 accepted trade-off: a genuinely-new Phase-9 Type variant absent from all
+# family specs will NOT auto-normalize through — it must be ADDED here by editing
+# this set. Because rules 11/12 are WARN in Phase 9, such a stray variant surfaces
+# as a WARN (not a hard block) before the Phase-10 HARD flip. The two arrow entries
+# (free-text->role, mcq->confirm) carry a literal U+2192 that survives normalization.
+_VALID_Q_TYPES = {
+    "free-text",
+    "free-text(date-time)",
+    "free-text(ints)",
+    "free-text(number)mandatory",
+    "free-text(optional)",
+    "free-text(structured)",
+    "free-text+mcq",
+    "free-text/mcq-if-enumerable",
+    "free-text/mcqmulti",
+    "free-text→role",
+    "mcq",
+    "mcq+free-text",
+    "mcqmulti",
+    "mcqmulti-select",
+    "mcqmulti-select+free-text",
+    "mcqperendpoint",
+    "mcq→confirm",
+}
+
+# The persona never emits sign-off language — the optional rule-12 boundary WARN
+# guards these phrases (kept in sync with scripts/sme_review.py:SIGN_OFF_FORBIDDEN,
+# SME-02). Always WARN regardless of RULE_11_12_LEVEL.
+SIGN_OFF_FORBIDDEN = (
+    "approved by a competent person",
+    "competent-person sign-off",
+    "competent person sign-off",
+    "signed off by a competent person",
+    "reviewed and approved",
+)
+
+
+def _norm_qtype(s: str) -> str:
+    """Normalize a Q-table Type cell for _VALID_Q_TYPES membership (D-01)."""
+    return re.sub(r"\s+", "", str(s).strip().lower())
+
+
+def _taxonomy_ids(repo: Path) -> set:
+    """Every ELI-* id in knowledge-base/elicitation-taxonomy.yaml (its OWN
+    namespace — not routed through PREFIX_FOLDER / resolve_kb_id / rule 9).
+    Empty set if the file is absent."""
+    f = repo / "knowledge-base" / "elicitation-taxonomy.yaml"
+    if not f.is_file():
+        return set()
+    return {e["id"] for e in (yaml.safe_load(_read(f)) or []) if "id" in e}
+
+
+def _taxonomy_universals(repo: Path) -> set:
+    """The `universal: true` ELI-* ids (the floor for rule 11 step 3). Read from
+    the SAME file so the floor stays single-sourced (never hard-coded)."""
+    f = repo / "knowledge-base" / "elicitation-taxonomy.yaml"
+    if not f.is_file():
+        return set()
+    return {e["id"] for e in (yaml.safe_load(_read(f)) or []) if e.get("universal")}
+
+
+def _parse_q_table(text: str) -> List[dict]:
+    """Parse the branched intake Q-table into a list of row dicts.
+
+    Columns: | # | Question | Type | Options / prompt | Dim | Asked-when |.
+    Skips the header row and the |---| separator row; trims cells; keys each data
+    row by the header cells (tolerating the 4th-column label variance
+    `Options` vs `Options / prompt`). Positional aliases are ALSO set
+    (Type = 3rd data cell, Dim = 5th) so corpus variance can't break access.
+    Never raises on a malformed row."""
+    rows: List[dict] = []
+    header: Optional[List[str]] = None
+    for line in text.split("\n"):
+        stripped = line.strip()
+        if not stripped.startswith("|"):
+            continue
+        cells = [c.strip() for c in stripped.strip("|").split("|")]
+        # separator row: all cells are dashes/colons.
+        if cells and all(set(c) <= set("-: ") and c for c in cells):
+            continue
+        if header is None:
+            header = cells
+            continue
+        row: dict = {}
+        for i, val in enumerate(cells):
+            key = header[i] if i < len(header) else f"col{i}"
+            row[key] = val
+        # positional fallbacks (3rd data cell = Type, 5th = Dim) per Open Q2.
+        if len(cells) > 2:
+            row.setdefault("Type", cells[2])
+        if len(cells) > 4:
+            row.setdefault("Dim", cells[4])
+        # tolerate the 4th-column label variance.
+        if "Options / prompt" not in row and "Options" in row:
+            row["Options / prompt"] = row["Options"]
+        elif "Options" not in row and "Options / prompt" in row:
+            row["Options"] = row["Options / prompt"]
+        rows.append(row)
+    return rows
 
 
 # --- the rules -----------------------------------------------------------------
@@ -417,6 +540,198 @@ def _rule10_time_sensitive(report: Report, body: str) -> None:
             break  # one warning is enough to surface the issue
 
 
+def _rule11_intake_coverage(report: Report, body: str, skill_dir: Path, repo: Path) -> None:
+    """FND-04 rule 11 — the elicitation-coverage contract on references/intake.md.
+
+    Every finding routes through _emit() (WARN this phase). Steps per research §4.3.
+    `body` is the SKILL.md body (for the lean-pointer step); the manifest + Q-table
+    live in references/intake.md."""
+    # 1. Presence.
+    f = skill_dir / "references" / "intake.md"
+    if not f.is_file():
+        _emit(report, "rule 11: missing references/intake.md")
+        return
+    # 2. Parse manifest (YAML front-matter, §3.4 convention).
+    fm, intake_body = _split_frontmatter(_read(f))
+    mani = fm.get("intake-coverage")
+    if not isinstance(mani, dict):
+        _emit(report, "rule 11: intake-coverage manifest absent/unparseable")
+        return
+    covers = set(mani.get("covers") or [])
+    omits = mani.get("omits") or {}
+    if not isinstance(omits, dict):
+        omits = {}
+    branches = mani.get("branches") or []
+    if not isinstance(branches, list):
+        branches = []
+
+    all_ids = _taxonomy_ids(repo)
+    universals = _taxonomy_universals(repo)
+    conditionals = all_ids - universals
+
+    # 3. Universal floor.
+    for uid in sorted(universals):
+        if uid not in covers:
+            _emit(report, f"rule 11: covers must include the universal dimension {uid}")
+    # 4. ID resolution.
+    for cid in sorted(covers):
+        if all_ids and cid not in all_ids:
+            _emit(report, f"rule 11: unknown elicitation dimension '{cid}'")
+    for oid in sorted(omits):
+        if all_ids and oid not in all_ids:
+            _emit(report, f"rule 11: unknown elicitation dimension '{oid}'")
+    # 5. Conditional completeness.
+    for cid in sorted(conditionals):
+        if cid in covers:
+            continue
+        if cid in omits:
+            reason = omits.get(cid)
+            if not (isinstance(reason, str) and reason.strip()):
+                _emit(report, f"rule 11: omits['{cid}'] needs a non-empty reason")
+        else:
+            _emit(
+                report,
+                f"rule 11: conditional dimension '{cid}' must be in covers or omits-with-reason",
+            )
+
+    # 6. Q-table typing + Dim binding (D-01). Q-table lives in the intake.md body.
+    qrows = _parse_q_table(intake_body)
+    for row in qrows:
+        num = row.get("#", "?")
+        qtype = row.get("Type", "")
+        if _norm_qtype(qtype) not in _VALID_Q_TYPES:
+            _emit(report, f"rule 11: Q-row '{num}' has untyped/invalid Type '{qtype}'")
+        dim_cell = row.get("Dim", "") or ""
+        for piece in re.split(r"[/,]", dim_cell):
+            did = piece.strip()
+            if not did:
+                continue
+            if did not in covers:
+                _emit(report, f"rule 11: Q-row '{num}' Dim '{did}' not in covers")
+
+    # Index the Q-rows by their declared id for branch integrity (step 7/8).
+    q_by_id = {}
+    for row in qrows:
+        qid = (row.get("#", "") or "").strip()
+        if qid:
+            q_by_id[qid] = row
+
+    def _options_of(row: dict) -> List[str]:
+        cell = row.get("Options / prompt", row.get("Options", "")) or ""
+        return [o.strip() for o in re.split(r"[/,;]", cell) if o.strip()]
+
+    # 7. Branch integrity.
+    for br in branches:
+        if not isinstance(br, dict):
+            _emit(report, "rule 11: branch entry is not a mapping")
+            continue
+        trig_q = str(br.get("when") or br.get("ask") or "").strip()
+        trig_opt = str(br.get("option") or br.get("equals") or "").strip()
+        # trigger references a real prior Q id; if an option is given it must be valid.
+        if trig_q and trig_q not in q_by_id:
+            _emit(report, f"rule 11: branch trigger references unknown question/option '{trig_q}'")
+        elif trig_q and trig_opt:
+            opts_norm = [o.lower() for o in _options_of(q_by_id[trig_q])]
+            if trig_opt.lower() not in opts_norm:
+                _emit(
+                    report,
+                    f"rule 11: branch trigger references unknown question/option '{trig_opt}'",
+                )
+        for tgt in (br.get("activates_questions") or []):
+            if str(tgt).strip() not in q_by_id:
+                _emit(
+                    report,
+                    f"rule 11: branch activates_questions target '{tgt}' has no matching Q-row",
+                )
+
+    # 8. Mandatory India->state branch.
+    if "ELI-JURIS" in covers:
+        juris_rows = [
+            r for r in qrows
+            if any(d.strip() == "ELI-JURIS" for d in re.split(r"[/,]", r.get("Dim", "") or ""))
+        ]
+        has_india = any("india" in (" ".join(_options_of(r))).lower() for r in juris_rows)
+        if has_india:
+            ok = False
+            for br in branches:
+                if not isinstance(br, dict):
+                    continue
+                trig = str(br.get("option") or br.get("equals") or br.get("when") or "").lower()
+                if "india" not in trig:
+                    continue
+                for tgt in (br.get("activates_questions") or []):
+                    row = q_by_id.get(str(tgt).strip())
+                    if not row:
+                        continue
+                    blob = (row.get("Question", "") + " " + " ".join(_options_of(row))).lower()
+                    if "state" in blob:
+                        ok = True
+            if not ok:
+                _emit(report, "rule 11: ELI-JURIS covers India but no mandatory India->state branch")
+
+    # 9. Echo-back + refuse-on-vague present.
+    if not re.search(r"(?i)echo.{0,20}(back|the captured|confirm)", intake_body):
+        _emit(report, "rule 11: intake.md missing echo-back cue")
+    if not re.search(r"(?i)refuse|never proceed on (a )?vague|specificity anchor", intake_body):
+        _emit(report, "rule 11: intake.md missing refuse-on-vague cue")
+
+    # 10. SKILL.md lean pointer.
+    if "references/intake.md" not in body:
+        _emit(report, "rule 11: SKILL.md missing lean pointer to references/intake.md")
+
+
+def _rule12_sme_review(report: Report, body: str, skill_dir: Path) -> None:
+    """FND-04 rule 12 — the per-skill SME sign-off contract on
+    references/sme-review.md. Every finding via _emit() (WARN this phase). Steps
+    per research §4.4; the boundary phrase check is ALWAYS a WARN (SME-02)."""
+    # 1. Presence.
+    f = skill_dir / "references" / "sme-review.md"
+    if not f.is_file():
+        _emit(report, "rule 12: missing references/sme-review.md")
+        return
+    # 2. Parse manifest.
+    fm, sme_body = _split_frontmatter(_read(f))
+    mani = fm.get("sme-review")
+    if not isinstance(mani, dict):
+        _emit(report, "rule 12: sme-review manifest absent/unparseable")
+        return
+    # 3. Persona count + fields.
+    personas = mani.get("personas")
+    if not isinstance(personas, list) or not (1 <= len(personas) <= 2):
+        n = len(personas) if isinstance(personas, list) else 0
+        _emit(report, f"rule 12: sme-review needs 1-2 personas (got {n})")
+    else:
+        for i, persona in enumerate(personas):
+            p = persona if isinstance(persona, dict) else {}
+            if not all(
+                isinstance(p.get(k), str) and p.get(k).strip()
+                for k in ("role", "expertise", "lens")
+            ):
+                _emit(report, f"rule 12: persona {i} missing role/expertise/lens")
+    # 4. Domain checklist >=3 items.
+    checklist_items = 0
+    in_section = False
+    for line in sme_body.split("\n"):
+        if re.match(r"^\s*#{1,6}\s", line):
+            in_section = bool(re.search(r"(?i)checklist|domain checks", line))
+            continue
+        if in_section and re.match(r"^\s*[-*]\s", line):
+            checklist_items += 1
+    if checklist_items < 3:
+        _emit(report, "rule 12: sme-review.md domain checklist missing or <3 items")
+    # 5. Roster references the file.
+    if "references/sme-review.md" not in _below_end(body, "orchestration"):
+        _emit(report, "rule 12: orchestration roster does not reference references/sme-review.md")
+    # Optional boundary WARN — ALWAYS report.warn (SME-02), regardless of level.
+    low = sme_body.lower()
+    for phrase in SIGN_OFF_FORBIDDEN:
+        if phrase in low:
+            report.warn(
+                f"rule 12: sme-review.md contains sign-off boundary phrase '{phrase}'"
+            )
+            break
+
+
 # --- public API ----------------------------------------------------------------
 
 def validate_skill(path: Path, repo: Path = REPO) -> Report:
@@ -441,6 +756,18 @@ def validate_skill(path: Path, repo: Path = REPO) -> Report:
     _rule8_dead_refs(report, body, skill_dir)
     _rule9_kb_resolution(report, body, skill_dir, repo)
     _rule10_time_sensitive(report, body)
+
+    # Rules 11/12 (FND-04) — behind a TWO-PRONGED exemption gate: the forge
+    # (plugin == hse-systems) OR the frozen examples/risk-assessment/ path. The
+    # frozen example is plugin: hse-core (NOT hse-systems), so a plugin-only gate
+    # would miss it — the path prong is mandatory. Gate lives INSIDE validate_skill
+    # (not _iter_skill_dirs) so a direct lint of the exempt skill still runs the
+    # other 10 rules. Findings route through _emit (WARN this phase, RULE_11_12_LEVEL).
+    plugin = (fm.get("metadata") or {}).get("plugin")
+    is_frozen_example = skill_dir.resolve() == (repo / "examples" / "risk-assessment").resolve()
+    if plugin != "hse-systems" and not is_frozen_example:
+        _rule11_intake_coverage(report, body, skill_dir, repo)
+        _rule12_sme_review(report, body, skill_dir)
     return report
 
 
