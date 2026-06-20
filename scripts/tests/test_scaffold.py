@@ -72,6 +72,41 @@ def test_born_conformant(answers, scaffolded):
     assert report.ok, report.errors
 
 
+def test_fresh_scaffold_is_born_conformant(answers, scaffolded):
+    """FND-06 — a freshly scaffolded skill is born-conformant for Rules 11/12.
+
+    Per research §5.3 + Pitfall 2: WARN alone does not raise scaffold's `_self_lint`
+    gate (it gates on report.errors only), so born-conformance must be asserted as
+    `report.errors == []` AND zero `rule 11`/`rule 12` warnings. The fresh scaffold
+    must also emit references/intake.md + references/sme-review.md and cite both in
+    SKILL.md (the elicitation-coverage + SME-sign-off half of D-03)."""
+    d = scaffolded("bornconf", answers)
+
+    # (a) both reference files are emitted.
+    assert (d / "references" / "intake.md").exists(), "fresh scaffold must emit references/intake.md"
+    assert (d / "references" / "sme-review.md").exists(), (
+        "fresh scaffold must emit references/sme-review.md"
+    )
+
+    # (b) the SKILL.md cites both (lean pointers — rule 11/12 SKILL.md checks).
+    body = (d / "SKILL.md").read_text(encoding="utf-8")
+    assert "references/intake.md" in body, "SKILL.md must cite references/intake.md"
+    assert "references/sme-review.md" in body, "SKILL.md must cite references/sme-review.md"
+
+    # (c) born-conformant: validate via the forge re-export, 0 errors AND
+    #     0 rule-11/12 warnings (the HARD-ready bar).
+    report = lint_skills.validate_skill(d)
+    assert report.errors == [], report.errors
+    assert [w for w in report.warnings if w.startswith("rule 11")] == [], (
+        "fresh scaffold raised rule-11 warnings: "
+        f"{[w for w in report.warnings if w.startswith('rule 11')]}"
+    )
+    assert [w for w in report.warnings if w.startswith("rule 12")] == [], (
+        "fresh scaffold raised rule-12 warnings: "
+        f"{[w for w in report.warnings if w.startswith('rule 12')]}"
+    )
+
+
 def test_blocks_byte_match(answers, scaffolded):
     """Each of the 5 inline regions in the output equals template/blocks/* after
     _normalize — proving scaffold COPIES the canonical blocks (rule-1, D1)."""
