@@ -89,3 +89,18 @@
   last_reviewed: 2026-06-14
   volatile: false
   supersedes: null
+
+- id: KB-SNIP-SME-QA
+  file: sme-signoff.md
+  title: "SME Review & Sign-off — canonical mandatory-gate pattern"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [sme-review, sign-off, mandatory-gate, critic-qa, decision-support]
+    audience: [M, C, F]
+  summary: "The mandatory pre-output review gate: adopt the skill's SME persona (or the generic HSE-SME-Reviewer), apply the universal hard gates + the persona checklist, pass before ANY output (markdown or rendered). Decision-support; precedes — never replaces — the human competent-person sign-off."
+  source: "A6 orchestration §3 / A8 §4.5 SME-review"
+  year: 2026
+  last_reviewed: 2026-06-20
+  volatile: false
+  supersedes: null

@@ -1,0 +1,55 @@
+# knowledge-base/elicitation-taxonomy.yaml
+# The fixed elicitation-dimension taxonomy the intake-coverage contract resolves against (rule 11).
+# 3 universal (every skill covers) + 9 conditional (cover OR omit-with-reason).
+- id: ELI-SCOPE
+  name: "Assessment / output scope"
+  definition: "What is being assessed or produced, and its boundary (e.g. occupational vs environmental; baseline vs issue-based)."
+  universal: true
+- id: ELI-SUBJECT
+  name: "Named task / site / asset"
+  definition: "The specific task broken into steps, and the site/area/asset it occurs on — the specificity anchor."
+  universal: true
+- id: ELI-OUTPUT
+  name: "Output artifact + reader"
+  definition: "The deliverable wanted and its audience (leadership / consultant / frontline) — drives format + calibration."
+  universal: true
+- id: ELI-JURIS
+  name: "Jurisdiction (+ mandatory India->state)"
+  definition: "The legal jurisdiction; when India, the STATE is mandatory (resolved via KB-REG-IN-STATEFORMS)."
+  universal: false
+- id: ELI-INDUSTRY
+  name: "Industry / sector"
+  definition: "The sector (construction / manufacturing / O&G / chemicals / mining / aviation / general) — selects sector hazards + KB facets."
+  universal: false
+- id: ELI-LOCATION
+  name: "Physical location / environment"
+  definition: "The work environment and physical conditions relevant to the hazard set (confined space, height, ATEX zone, weather)."
+  universal: false
+- id: ELI-EXPOSURE
+  name: "Exposed population"
+  definition: "Who/what is exposed (own workers, contractors, public, community, environment receptors)."
+  universal: false
+- id: ELI-BASELINE
+  name: "Existing controls / current state"
+  definition: "Controls already in place / the current baseline (seeds initial-vs-residual scoring)."
+  universal: false
+- id: ELI-EVIDENCE
+  name: "Evidence / source data"
+  definition: "Observations, measurements, incident history, documents, lab data supporting the analysis (source + year)."
+  universal: false
+- id: ELI-OBLIGATIONS
+  name: "Compliance obligations"
+  definition: "Permits, consent limits, statutory duties, standards in force that the artifact must satisfy."
+  universal: false
+- id: ELI-SCORING
+  name: "Scoring / matrix configuration"
+  definition: "Risk-matrix size + likelihood/severity scales, or the rating scheme the org uses."
+  universal: false
+- id: ELI-COMPETENCY
+  name: "Competent persons / roles"
+  definition: "Named accountable roles/owners and the competent person who will review/sign off (de-identified to roles)."
+  universal: false
+- id: ELI-TEMPORAL
+  name: "Temporal / review cadence"
+  definition: "Dates, deadlines, review/re-assessment triggers, reporting timelines, validity period."
+  universal: false
