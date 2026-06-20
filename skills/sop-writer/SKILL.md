@@ -129,37 +129,18 @@ Open with a **structured multi-step intake** — MCQ where the answer space is e
 
 ### Step 0 — Structured intake (run this first, one question at a time)
 
-Run the question set below following `KB-SNIP-INTAKE` — one question at a time,
-branch on the answers. The two **specificity anchors** are the **task/operation (Q3)**
-and the **procedure steps (Q8)**: **refuse to proceed on a vague task or generic/missing
-steps** — ask again, or record `[GAP]` / `[ASSUMPTION]`; never invent. Q4 is the
-**ingest gate** (ingest a B1 RA / B2 JSA vs elicit hazards inline). Echo the captured
-facts back before authoring. (Worked examples + the full intake rationale:
-`references/METHODOLOGY.md`.)
-
-| # | Question | Type | Options / prompt |
-|---|---|---|---|
-| Q1 | Jurisdiction | MCQ | India · UK · USA · EU · Other/Unknown (India → Q1a) |
-| Q1a | *(India only)* Which state? | MCQ | Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Other — **mandatory state detection; confirm before citing any duty** |
-| Q2 | Industry / sector | MCQ + free-text | Construction · Manufacturing · Oil & Gas · Chemicals · Mining · General/Other (+ detail) |
-| Q3 | **The task/operation this SOP covers, and its boundaries** | **free-text** | "Describe the exact task or operation, and what is explicitly in/out of scope." — **specificity anchor (a); refuse a vague answer** (example: METHODOLOGY.md) |
-| Q4 | **Hazard/control source** | MCQ | I have a **JSA** (B2) for this task · I have a **risk assessment** (B1) · Neither — elicit hazards with me | **the ingest gate**: JSA/RA → ingest its hazards + rated controls (do NOT re-score); Neither → elicit inline (Q6/Q7) + flag a formal RA/JSA is more rigorous |
-| Q5 | Location / asset | free-text | "Which specific site/area/equipment/asset does this procedure apply to?" |
-| Q6 | Hazards present in this task | free-text *(asked when Q4 = Neither; pre-filled from the ingested RA/JSA otherwise)* | "What hazards arise during this task? (energy sources, substances, environment, human factors)" |
-| Q7 | Existing / required controls & PPE/permits | free-text | "What controls, PPE, and permits already apply or are required?" — seeds the control set + names the higher-order controls the procedure sits within |
-| Q8 | **The procedure steps, in order** | **free-text** | "List the actual steps to perform the task, in order." — **specificity anchor (b); refuse generic/missing steps** (example: METHODOLOGY.md) |
-| Q9 | Roles & competencies | MCQ multi-select + free-text | Operator/technician · Supervisor · Authorised person (PTW) · Competent person (named role) · Other (+ free-text) — who executes/authorises/verifies (role labels); the competencies/training each role needs |
-| Q10 | Target literacy level / language register | MCQ | Frontline operator (plain, short imperatives) · Technician · Supervisor/technical · Bilingual note (India) — **literacy calibration (KB-SNIP-AUDIENCE)** |
-| Q11 | Review cycle / revision control | MCQ + free-text | Annual · 2-yearly · On change (MoC-triggered) · Other (+ free-text) — feeds the revision/approval block |
-| Q12 | Output document type | MCQ | Full SOP · Short work instruction (single task) · Procedure within a larger manual — scopes breadth + triage |
-
-After the last applicable question, **echo a captured-facts summary** (task, location,
-hazard source, ordered steps, roles, literacy level, review cycle) and only then
-proceed. If Q4 = Neither, the echo-back flags that a formal RA/JSA is the more rigorous
-hazard source and that hazards were elicited inline. **If the user gives no review
-cycle (Q11), record "review on change (MoC-triggered) or at minimum annually" and flag
-it `[ASSUMPTION]`** for the competent-person reviewer. (Echo-back example:
-`references/METHODOLOGY.md`.)
+The full typed, branched intake — the `intake-coverage` manifest, the question table
+(jurisdiction · industry · the task/operation anchor Q3 · the **ingest gate Q4** ·
+location · hazards · controls/PPE/permits · standards/limits · the **procedure-steps
+anchor Q8** · roles & competencies · literacy register · review cycle · output type),
+the **ingest branches** (Q4 = have JSA / have RA → ingest hazards + rated controls, do
+NOT re-score; Q4 = Neither → elicit Q6/Q7 inline), the **mandatory India→state branch**
+(Q1 = India → Q1a), the **no-review branch** (Q11 blank → review-on-change `[ASSUMPTION]`),
+the echo-back, and the refuse-on-vague anchors — lives in **`references/intake.md`**. Run
+it one question at a time, branch on the answers, **echo the captured facts back before
+authoring**, and **refuse to proceed on a vague task (Q3) or generic/missing steps
+(Q8)** — record `[GAP]` / `[ASSUMPTION]`, never invent. (Worked examples + the full
+intake rationale: `references/METHODOLOGY.md`.)
 
 ### The SOP-authoring method (ISO 45001 8.1 operational-control loop)
 
@@ -302,6 +283,11 @@ point the user at B1/B2 if no rating exists.) Archetypes: `KB-SNIP-ARCHETYPES`.
   (consumes the De-identifier's scrubbed text + any ingested RA/JSA + the A7 `controls`
   ranking + the Researcher's evidence). SCOPE-OUT: gathering evidence (Researcher);
   ranking controls (A7 `controls` script).
+- **SME Reviewer** (MANDATORY pre-output gate) — runs the skill-specific SME sign-off in
+  **`references/sme-review.md`** (operations / technical-procedure author) before any
+  output: controls embedded INTO each risk-bearing step (not a generic PPE list at the
+  end), the higher-order controls the procedure sits within surfaced, RA/JSA ingested (not
+  re-scored), and written to the stated reader's literacy level.
 - **Critic/QA** (MANDATORY) — every step specific and ordered (no generic boilerplate);
   every risk-bearing step has its controls/PPE/checks embedded; the higher-order controls
   the procedure sits within are surfaced; no PPE/admin-only treatment without

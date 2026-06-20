@@ -93,16 +93,16 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-For an exposure register the intake elicits the SEGs, agents and data BEFORE any band is computed:
-
-1. **The SEG / task list** — the similar-exposure groups and tasks at the named site (free-text; specific).
-2. **Agents present** — the chemical agents + CAS per SEG (free-text + CAS).
-3. **Exposure route** — MCQ: inhalation / dermal / ingestion (multi-select).
-4. **Available monitoring data** — MCQ: measured / modelled / none (drives band confidence; none → `[GAP]` + monitoring action).
-5. **Jurisdiction** — sets which OEL/WEL/PEL applies (cite with source+year; India → referenced value flagged non-statutory).
-6. **Risk-matrix size** — the org matrix or the default 5×5 for the exposure-risk band.
-
-Echo the SEGs + agents + data availability back before banding. Each limit is cited with source+year (`KB-DATA-OEL-LIMITS`); the exposure band is `risk_matrix`-computed; the control tier is HoC-ranked (`controls`); per-worker surveillance cells <5 are suppressed.
+**Run the full structured intake in `references/intake.md`** — the typed/branched
+Q-table, its intake-coverage manifest, the echo-back, and the refuse-on-vague anchors
+live there. It elicits the SEGs, agents and monitoring data BEFORE any band is computed:
+name the SEGs (refuse "all workers"), the agents + CAS per SEG (refuse "various
+solvents"), exposure routes, carcinogen/sensitiser flags, monitoring data
+(none → `[GAP]` + monitoring action), existing controls, surveillance status,
+jurisdiction (**India → resolve the state, mandatory** — `references/intake.md` Q13),
+and the matrix. Echo the captured facts back and confirm before banding. Each limit is
+cited with source+year (`KB-DATA-OEL-LIMITS`); the band is `risk_matrix`-computed; the
+control tier is HoC-ranked (`controls`); per-worker surveillance cells <5 are suppressed.
 
 Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
 
@@ -162,6 +162,11 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+- **SME Review & Sign-off** (MANDATORY, before ANY output) — run the skill-specific
+  persona, domain checklist, and boundary in `references/sme-review.md` (occupational
+  hygienist lens: correct OEL/averaging-period, dermal/sensitiser routes, SEG
+  homogeneity, measured-vs-`[GAP]` band confidence). Decision-support only; precedes —
+  never replaces — the human competent-person review.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

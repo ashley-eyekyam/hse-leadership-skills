@@ -90,17 +90,32 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 ## Workflow
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+### Step 0 — Structured intake (run this first, one question at a time)
 
-**MANDATORY state detection (CT-8) — the state is a BLOCKING gate before any Welfare-Board return/portal is cited:**
+Open with a **structured multi-step intake** (`KB-SNIP-INTAKE`) — the full typed/branched
+Q-table, coverage manifest, echo-back, and refuse-on-vague anchors live in
+**`references/intake.md`**. Run ONE question at a time, branch on the answers, and **echo the
+captured facts back before any gap-list**. Never proceed on vague or missing inputs.
 
-1. **State (MANDATORY, ask FIRST)** — MCQ: TN / KA / MH / DL / GJ / Other (specify) / Unknown.
-   - You **may infer** the state from a supplied site address — but **echo it back and confirm** before citing (a wrong state = a wrong Welfare Board return/portal).
-   - If the state is **Unknown or unseeded** → record `[GAP]` for any state-specific value, "verify with the state Welfare Board / a competent person", and **refuse to invent a national form**.
-2. **Establishment profile** — free-text: nature of construction work, worker headcount (drives the Safety-Officer/Committee thresholds and the ≥10-worker registration trigger), and the cost of construction (drives the 1% cess). De-identify per the block above; aggregate small counts.
-3. **Obligation focus** — MCQ: registration / cess / annual-return (Form XXV) / safety-officer-committee / accident-notice / full gap-list.
+Must-ask dimensions: `ELI-JURIS` (**MANDATORY India→state detection — the state is a BLOCKING
+gate, asked FIRST; the BOCW return/portal is administered by the state Welfare Board, so it is
+state-specific; unseeded → state-specific values `[GAP]`**) · `ELI-EXPOSURE` (the three
+threshold drivers as **separate numbered facts** — peak headcount (≥10 → registration; notified
+threshold → Safety Officer/Committee), **cost of construction** (→ 1% cess), and the
+**direct-vs-contract split**) · `ELI-BASELINE` (what's already in place — the gap-list is
+computed against it) · `ELI-COMPETENCY` (**principal employer vs contractor** — who registers,
+who pays cess) · `ELI-OBLIGATIONS` (which duties to check) · `ELI-TEMPORAL` (filing-cycle
+position — Form XXV due ~15 Feb) · `ELI-INDUSTRY` / `ELI-OUTPUT` / `ELI-SCOPE` / `ELI-SUBJECT`.
+State MCQ set: `Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Gujarat · Other (specify)
+· Unknown` (GJ first-class).
 
-Echo the **confirmed state + establishment profile + obligation** back. Then read `KB-REG-IN-BOCW` for the duty set and `KB-REG-IN-STATEFORMS` for the Form XXV anchor; produce the compliance verdict / gap-list (each gap with the cited rule, a HoC-ranked corrective control via `controls`, a named owner and a date). Cite the Form XXV annual return as the verified anchor; mark every state-specific value (safety-officer headcount, accident-notice form/timing, cess due date) `[GAP]` where the KB does not supply a verified value. Append the OSH-Code transition note and the `KB-REG-IN-PORTALS` (state Welfare Board) pointer.
+Once the **confirmed state + establishment profile + obligation** are echoed back: read
+`KB-REG-IN-BOCW` for the duty set and `KB-REG-IN-STATEFORMS` for the Form XXV anchor; produce
+the compliance verdict / gap-list (each gap with the cited rule, a HoC-ranked corrective
+control via `controls`, a named owner and a date). Cite the Form XXV annual return as the
+verified anchor; mark every state-specific value (Safety-Officer headcount, accident-notice
+form/timing, cess due date) `[GAP]` where the KB does not supply a verified value. Append the
+OSH-Code transition note and the `KB-REG-IN-PORTALS` (state Welfare Board) pointer.
 
 Then: validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method is in `references/METHODOLOGY.md`.
 
@@ -160,6 +175,10 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+- **SME Review & Sign-off (MANDATORY, before any output)** — run the skill-specific
+  BOCW / construction-labour-welfare persona + checklist in `references/sme-review.md`
+  (right state Welfare Board, right duty-holder, correct cess base). Decision-support
+  only; it precedes — never replaces — the competent-person review.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

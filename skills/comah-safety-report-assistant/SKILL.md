@@ -94,16 +94,17 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-For a COMAH Safety Report the intake elicits the establishment and walks the report elements:
+### Step 0 — Structured intake (run this first, one question at a time)
 
-1. **The establishment** — the named upper-tier site (specific; not 'our sites').
-2. **Tier** — confirm lower-tier (MAPP only) vs upper-tier (full Safety Report).
-3. **Substances & thresholds** — the named dangerous substances and the tier determination.
-4. **Elements to assemble** — MAPP, SMS, establishment & environs description, major-accident scenario identification, ALARP demonstration, internal emergency plan.
-5. **Evidence sources** — where the QRA / consequence modelling / ALARP numbers come from (external; the skill records, does not compute).
-6. **Jurisdiction** — UK COMAH 2015 vs EU member-state Seveso III transposition.
+The full typed, branched intake — the `intake-coverage` manifest, the question table
+(establishment · regime/tier · substances & thresholds · the six Safety-Report elements
+of `KB-REG-UK-COMAH` · external QRA/ALARP provenance · environs receptors · author ·
+review trigger), the EU-Seveso member-state branch, the lower-tier MAPP-only branch, the
+echo-back, and the refuse-on-vague anchors — lives in **`references/intake.md`**. Run it
+before any assembly: confirm the **tier** first, elicit the inputs for each Safety-Report
+element, and **record `[GAP]`** for any element or QRA/ALARP figure not supplied (the skill
+records external numbers, it never computes or invents them).
 
-Echo the establishment + tier + elements back before assembling. For each element the skill **prompts** the duty-holder for content and **records** it — recording `[GAP]` for any element not supplied (e.g. missing ALARP demonstration), never inventing it.
 Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
 
 <!-- hse:block:orchestration:start -->
@@ -159,6 +160,10 @@ For a non-trivial task the triage gate may fan out to:
   requirements, and the relevant standards, from the scrubbed inputs only.
 - **Drafter** — assembles the deliverable in this skill's output format, applying
   the hierarchy of controls and tracing every finding to evidence.
+- **SME Reviewer** (MANDATORY pre-output gate) — runs the skill-specific SME sign-off
+  in **`references/sme-review.md`** (COMAH/Seveso Safety-Report author + QRA-provenance
+  lens) before ANY output: COMAH-element completeness, ALARP-as-demonstration, and every
+  quantitative figure externally sourced — never computed or invented.
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.

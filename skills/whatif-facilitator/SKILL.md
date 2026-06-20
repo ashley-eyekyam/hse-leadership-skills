@@ -94,15 +94,18 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-For a What-If the intake elicits the scope and seeds the question set, recording the team's answers:
+### Step 0 — Structured intake (run this first, one question at a time)
 
-1. **The scope** — the named process / operation / procedure under study (free-text; bounded scope, not 'the site').
-2. **The question set** — confirm the systematic 'What if …?' prompts to walk (loss of utility, wrong sequence, wrong material, human error, external event).
-3. **The team** — the multidisciplinary participants and competencies (the assistive evidence). If absent, the skill structures the question set but records the study as **not yet performed**.
-4. **Risk matrix** — the org matrix or the default 5×5 with process-safety descriptors.
-5. **Jurisdiction** — only to cite the grounding standard/duty.
+The full typed/branched intake — the bounded **scope** + its **kind** (procedure / system /
+operation / a specific change → cross-pointer to `management-of-change`), What-If-only vs
+What-If/Checklist hybrid, the systematic **question seeds**, existing safeguards, source
+documents, the **TEAM** (the assistive evidence — no full team → the worksheet is structured
+and marked *"study not yet performed"*), risk matrix, jurisdiction (India → mandatory state),
+and the output/audience gate — lives in **[`references/intake.md`](references/intake.md)**
+(the elicitation-coverage manifest + Q-table). Run it one question at a time, branch on the
+answers, **echo the scope + question set + team back before any analysis**, and **refuse a
+vague scope** ("run a What-If" / "the site") — record `[GAP]`, never invent.
 
-Echo the scope + question set + team back before recording answers. For each question the skill **prompts** the team and **records** their hazard/consequence/safeguard judgement — never inventing a consequence (records `[GAP]`).
 Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
 
 <!-- hse:block:orchestration:start -->
@@ -154,6 +157,10 @@ de-identification leak. Fix everything it raises before delivery.
 
 - Single-threaded by design — no subagents. (Replace with this skill's named
   fan-out jobs if the triage gate warrants them.)
+- **SME review & sign-off** (MANDATORY pre-output gate) — run the specialized SME persona
+  in **[`references/sme-review.md`](references/sme-review.md)** (PHA / What-If facilitator)
+  before presenting ANY output; decision-support only, it precedes and never replaces the
+  human competent-person review.
 
 <!-- hse:block:report-output:start -->## Output format
 

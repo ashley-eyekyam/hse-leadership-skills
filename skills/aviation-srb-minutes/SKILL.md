@@ -90,15 +90,14 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-The structured intake captures, one question at a time, the facts the minutes need:
-
-1. **Named operator + meeting (free-text)** — the named operator and the SRB/SAG meeting date/scope.
-2. **Attendees (free-text → role labels)** — who attended; the chair (typically the Accountable Manager). De-identify any individual per the block above — attendees appear as **role labels** in the minutes.
-3. **SPI/SPT status (free-text)** — each SPI reviewed vs its alert/target level, the trend, the breach status (from `aviation-spi-spt-framework` where it exists).
-4. **Hazard / risk decisions (free-text)** — each hazard item, its current 5×5 rating, and the decision taken.
-5. **Actions (free-text)** — each action with an owner and a due date.
-
-Echo the **confirmed operator + meeting** back. Then assemble the minutes: meeting metadata (attendees as role labels, quorum), the SPI/SPT review, the hazard & risk decisions, the actions ({action, owner, due}), and the **decision log** ({decision, rationale, accountable person}) — every decision MUST carry a rationale and an accountable person. Where the meeting inputs are not yet supplied, render the attendance / decision / action tables with **empty rows** for the meeting to fill. De-identification runs first: no reporter named in a hazard item is identified.
+The full typed/branched intake Q-table — the **output-mode** branch (minute a held meeting /
+draft a blank agenda + empty tables / review a draft), the SRB/SAG body, the named operator +
+meeting date/scope, the attendees (**role labels only**), the multi-select agenda items (each
+activating its content question: SPI status, hazard/risk decisions, prior-action carry-forward),
+the actions ({action, owner, due}), and the decision log ({decision, rationale, accountable
+person}) — lives in **`references/intake.md`** (the `intake-coverage` manifest + echo-back +
+refuse-on-vague anchors). Run it one question at a time, branch on the answers, and **echo the
+confirmed operator + meeting back before any drafting**. Then assemble the minutes: meeting metadata (attendees as role labels, quorum), the SPI/SPT review, the hazard & risk decisions, the actions ({action, owner, due}), and the **decision log** ({decision, rationale, accountable person}) — every decision MUST carry a rationale and an accountable person. Where the meeting inputs are not yet supplied, render the attendance / decision / action tables with **empty rows** for the meeting to fill. De-identification runs first: no reporter named in a hazard item is identified.
 
 Then: validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method (the minute structure + decision log) is in `references/METHODOLOGY.md`.
 
@@ -154,7 +153,9 @@ de-identification leak. Fix everything it raises before delivery.
   no reporter in a hazard item is identified), then the minutes + decision log are assembled, then
   the MANDATORY Critic/QA pass runs in this same context — the Aviation-SMS persona
   (`KB-SNIP-ARCHETYPES`) checks every decision has a rationale + an accountable person, every action
-  has an owner + due date, and no individual is named.
+  has an owner + due date, and no individual is named. The Critic/QA pass runs the per-skill SME
+  sign-off checklist in `references/sme-review.md` (decision-support; precedes — never replaces —
+  the human competent-person review).
 
 <!-- hse:block:report-output:start -->## Output format
 

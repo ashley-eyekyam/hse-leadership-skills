@@ -98,16 +98,19 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-For a bowtie the intake elicits the hazard, the top event, and the barrier evidence:
+### Step 0 — Structured intake (run this first, one question at a time)
 
-1. **The hazard** — the named energy/material with potential to harm (specific).
-2. **The top event** — the loss-of-control / release point (the centre of the bowtie).
-3. **Threats** — the causes that could release the top event (one threat per line).
-4. **Consequences** — phrased '**[Damage] due to [Event]**'.
-5. **Barriers** — preventive (threat side) and mitigative (consequence side); for each, the team's **effective · independent · auditable** judgement and a **performance standard** (records `[GAP]` if no evidence). Critical controls (CCM) get a verification activity + owner.
-6. **Risk matrix** — for the residual band.
+The full typed/branched intake — the **bowtie vs CCM** scope gate, the sector frame (Mining →
+principal-hazard framing), the named **hazard** + **top event**, the **threats** and
+**consequences**, the **barrier** inventory (each effective · independent · auditable with a
+**performance standard**, else `[GAP]`), the critical-control verification table (CCM), the
+barrier-judgement **owner**, risk matrix, jurisdiction (India → mandatory state), and the
+output/audience gate — lives in **[`references/intake.md`](references/intake.md)** (the
+elicitation-coverage manifest + Q-table). Run it one question at a time, branch on the
+answers, **echo the hazard + top event + threats/consequences back before any analysis**,
+and **refuse a vague hazard / top event** ("a bowtie for the plant") — never declare a
+barrier effective without a performance standard; record `[GAP]`, never invent.
 
-Echo the hazard + top event + threats/consequences back before drawing barriers. The skill **records** the team's barrier judgements — it never declares a barrier effective without the performance-standard evidence (records `[GAP]`).
 Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
 
 <!-- hse:block:orchestration:start -->
@@ -166,6 +169,10 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+- **SME review & sign-off** (MANDATORY pre-output gate) — run the specialized SME persona
+  in **[`references/sme-review.md`](references/sme-review.md)** (barrier / bowtie-method &
+  ICMM-CCM specialist) before presenting ANY output; decision-support only, it precedes and
+  never replaces the human competent-person review.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

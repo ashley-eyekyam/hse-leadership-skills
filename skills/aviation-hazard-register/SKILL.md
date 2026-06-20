@@ -91,14 +91,14 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-The structured intake captures, one question at a time, the facts each register entry needs:
-
-1. **Named operator/scope (free-text)** — the named operator/airport/AMO and the operation/area the register covers. A generic "an airline" is refused.
-2. **The hazard(s) (free-text)** — the specific hazard(s) under analysis, with the supporting evidence (occurrence reports, audit findings, FDM/FOQA summaries). Each hazard must trace to evidence.
-3. **Consequence + existing controls (free-text)** — the credible consequence and the controls already in place, per hazard.
-4. **Severity + likelihood (MCQ on the ICAO axes)** — severity (Negligible / Minor / Major / Hazardous / Catastrophic) × likelihood (Extremely Improbable / Improbable / Remote / Occasional / Frequent). The model only *chooses* these; `risk_matrix.score()` does the rest.
-
-Echo the **confirmed operator + hazards** back before scoring. Then for each entry: call `risk_matrix.score(severity, likelihood, matrix=AVIATION_5X5)` (the `KB-DATA-AVI-RISK-MATRIX` config) for the initial rating, propose mitigations and HoC-rank them with `controls.rank_controls()` (flagging PPE/admin-only), score the residual rating and report the movement with `risk_matrix.residual_delta()`, and validate every mitigation owner/date with `smart_actions.validate_register()`.
+The full typed/branched intake Q-table — the build/add/review scope, the named operator/area,
+the CAA/SSP jurisdiction branch (India → `KB-REG-IN-DGCA`, FAA/EASA → ask-the-reference, never
+fabricate), each hazard + its evidence + how it was surfaced (reactive/proactive/predictive),
+the exposed population, the consequence + existing controls, the ICAO 5×5 severity/likelihood
+(the **band is the engine's, never the model's**), and the mitigation owner — lives in
+**`references/intake.md`** (the `intake-coverage` manifest + echo-back + refuse-on-vague
+anchors). Run it one question at a time, branch on the answers, and **echo the confirmed
+operator + hazards back before scoring**. Then for each entry: call `risk_matrix.score(severity, likelihood, matrix=AVIATION_5X5)` (the `KB-DATA-AVI-RISK-MATRIX` config) for the initial rating, propose mitigations and HoC-rank them with `controls.rank_controls()` (flagging PPE/admin-only), score the residual rating and report the movement with `risk_matrix.residual_delta()`, and validate every mitigation owner/date with `smart_actions.validate_register()`.
 
 Then: validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method (the register build + 5×5 wiring) is in `references/METHODOLOGY.md`.
 
@@ -163,7 +163,9 @@ Moderate fan-out (the De-identifier runs FIRST as a sequential dependency):
   and validate owner/date (`smart_actions`). SCOPE-OUT: does not re-score risk.
 - **Critic/QA** (MANDATORY) — the Aviation-SMS persona (`KB-SNIP-ARCHETYPES`): every hazard
   evidence-traced + 5×5-rated, no PPE/admin-only mitigation unjustified, every mitigation
-  owner/date-stamped, and ZERO identity leak.
+  owner/date-stamped, and ZERO identity leak. Runs the per-skill SME sign-off checklist in
+  `references/sme-review.md` (decision-support; precedes — never replaces — the human
+  competent-person review).
 
 Simple single-subject tasks run single-threaded — no subagents.
 

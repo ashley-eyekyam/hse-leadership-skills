@@ -85,13 +85,27 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 ## Workflow
 
-Open with a **structured multi-step intake** (`KB-SNIP-INTAKE`) — one question at a time, branch, echo the captured facts before any analysis. **De-identification runs FIRST** (the orchestration block below) — injured/deceased-miner identity, witness detail, exact pit/shaft locations and small (<5) fatality/injury cells are scrubbed to role labels and suppressed before any analysis.
+Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open; one question at a time, branch on the answers, echo the captured facts before any analysis; refuse on a vague subject and never invent (`KB-SNIP-INTAKE`).
 
-1. **Mine + region** — commodity, opencast/underground, and the **DGMS region/zone** (**mandatory** — ask or infer-from-location-then-confirm; region precedes any form citation).
-2. **Event** — free-text: the de-identified incident facts (what/when/where/sequence).
-3. **RCA method** — MCQ, **ICAM default** (5-Whys / ICAM / SCAT / Fishbone / Swiss-Cheese); every causal claim cites an evidence item and the RCA **reaches a systemic/organisational factor** (not 'miner error').
+### Step 0 — Structured intake (run this first, one question at a time)
 
-Then (B5 pattern + DGMS overlay): reconstruct the timeline + evidence log; run the RCA (`rca`, reaches_systemic); **resolve DGMS reportability** — the **24-hour accident notice + Form J** register entry for a DGMS-reportable accident/dangerous occurrence (`KB-REG-IN-DGMS`), region-resolved; cite **only** the verified DGMS anchors as values, any other form id `[GAP]`, never invented; draft the **HoC-tagged CAPA** (`controls` / `smart_actions`), each tracing to a named cause with owner + due date. `incident_rates` is context only. Validate against `references/QUALITY_CHECKLIST.md`, then produce the output via the Output format section. A competent (DGMS-qualified) person reviews it.
+**De-identification runs FIRST** (the orchestration block below) — injured/deceased-miner
+identity, witness detail, exact pit/shaft locations and small (<5) fatality/injury cells are
+scrubbed to **role labels** and suppressed **before** any analysis; **the intake echo-back
+shows personnel as role labels only.** The full typed, branched Q-table — the mandatory DGMS
+region/zone gate, the event-class branch (which gates DGMS reportability + de-id intensity),
+the exposure counts, the de-identified facts, the evidence multi-select, the RCA-method
+selection, and the echo-back / refuse-on-vague anchors — lives in **`references/intake.md`**.
+Must-ask dimensions: the **event class + datetime**, the **DGMS region/zone** (mandatory
+gate), the **involved-persons counts** (drives <5 suppression), and the **RCA method**
+(ICAM default). Then (B5 pattern + DGMS overlay): reconstruct the timeline + evidence log;
+run the RCA (`rca`, `reaches_systemic`); **resolve DGMS reportability** — the **24-hour
+accident notice + Form J** entry for a DGMS-reportable accident/dangerous occurrence
+(`KB-REG-IN-DGMS`), region-resolved; cite **only** the verified DGMS anchors as values, any
+other form id `[GAP]`, never invented; draft the **HoC-tagged CAPA** (`controls` /
+`smart_actions`), each tracing to a named cause with owner + due date. `incident_rates` is
+context only. Validate against `references/QUALITY_CHECKLIST.md`, then produce the output. A
+competent (DGMS-qualified) person reviews it.
 
 <!-- hse:block:orchestration:start -->
 ## Agentic Execution (Orchestration Block)
@@ -158,6 +172,11 @@ de-identification leak. Fix everything it raises before delivery.
   reaches a systemic factor, reportability cited conservatively to the matched KB row, every
   CAPA traces to a cause with owner+date, no PPE/admin-only without justification, and ZERO
   PII/health leak (no residual identifier, no <5 cell, no re-id key in the output).
+
+**Step 4 — SME review & sign-off (MANDATORY, before any output):** run the skill-specific
+SME persona sign-off in **`references/sme-review.md`** (the mining-incident lead investigator,
+ICAM-trained) — model QA, decision-support, FLAGs non-blocking; it precedes and never
+replaces the DGMS-qualified competent-person review / statutory inquiry.
 
 <!-- hse:block:report-output:start -->## Output format
 

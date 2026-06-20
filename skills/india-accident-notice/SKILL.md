@@ -91,18 +91,35 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 ## Workflow
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+### Step 0 — Structured intake (run this first, one question at a time)
 
-**MANDATORY state detection (CT-8) — the state (and, for a mine, the DGMS region) is a BLOCKING gate before any notice form is cited:**
+Open with a **structured multi-step intake** (`KB-SNIP-INTAKE`) — the full typed/branched
+Q-table, coverage manifest, echo-back, and refuse-on-vague anchors live in
+**`references/intake.md`**. Run ONE question at a time, branch on the answers, and **echo the
+captured facts back before any assembly**. Never proceed on vague or missing inputs.
 
-1. **State (MANDATORY, ask FIRST)** — MCQ: TN / KA / MH / DL / GJ / Other (specify) / Unknown.
-   - You **may infer** the state from a supplied site address — but **echo it back and confirm** before citing any notice form (a wrong state = a wrong statutory notice).
-   - If the state is **Unknown or unseeded** → record `[GAP]`, "verify the accident form with a competent person", and **refuse to invent a national form**.
-2. **Establishment type (MANDATORY)** — MCQ: factory / construction / **mine** / other.
-   - For a **mine**, also resolve the **DGMS region/zone** first and cross-reference `KB-REG-IN-MINES-ACT` / `KB-REG-IN-DGMS` (the 24h notice + Form J register; any unverified DGMS form id is `[GAP]`, never invented).
-3. **Incident facts** — free-text: the incident particulars + severity (fatal / serious / dangerous occurrence — drives the form and the deadline). De-identify the injured-party/witness PII per the block above; aggregate small cells (<5).
+Must-ask dimensions: `ELI-JURIS` (**MANDATORY India→state detection — the state is a BLOCKING
+gate, asked FIRST, infer-then-confirm; unseeded → `[GAP]`, refuse a national form — PLUS a
+SECOND mandatory gate: for a mine, resolve the DGMS region/zone FIRST**) · `ELI-SCORING`
+(**severity / class as its own question — fatal / serious / dangerous occurrence sets the form
+and the deadline**) · `ELI-TEMPORAL` (**the incident date-time that starts the 24-hour clock —
+a PRESERVED exact fact, not scrubbed**) · `ELI-COMPETENCY` (the statutory notifier / signatory)
+· `ELI-EXPOSURE` (persons injured / killed — counts only) · `ELI-EVIDENCE` (records held) ·
+`ELI-INDUSTRY` / `ELI-SUBJECT` / `ELI-OUTPUT`. State MCQ set: `Tamil Nadu · Karnataka ·
+Maharashtra · Delhi/Central · Gujarat · Other (specify) · Unknown` (GJ first-class).
 
-Echo the **confirmed state + establishment type + incident severity** back. Then read the matched accident-notice row (`KB-REG-IN-STATEFORMS`; for a mine, the DGMS layer), assemble the **filled notification** under its prescribed `form` / `rule` / `due` (e.g. MH Form 24 within 24h + Form 24A; TN Form 18 + Form 26 register; DGMS 24h notice + Form J), and use `smart_actions` to validate that each follow-up notification action carries a named owner + a deadline (the 24h timing is the load-bearing one). Append the OSH-Code transition note (the accident-notice duty is retained), surface the `KB-REG-IN-PORTALS` pointer, and **point the user to `incident-investigation` for the RCA** (this skill does not re-run it). Every unverified field/form is a literal `[GAP]`, never fabricated.
+Once the **confirmed state + establishment type + incident severity** are echoed back: read the
+matched accident-notice row (`KB-REG-IN-STATEFORMS`; for a mine, the DGMS layer) and assemble
+the **filled notification** under its prescribed `form` / `rule` / `due` — **MH Form 24 within
+24h + Form 24A** (seeded/verified). **`[GAP]` — TN / DL accident-notice form-ids:**
+`KB-REG-IN-STATEFORMS` seeds only the MH accident-notice row, so the TN and DL accident-notice
+forms (and the mine **Form J** / DGMS 24h-notice form id) are carried forward as literal `[GAP]`
+(verify against the live state Factory / Mines Rules — see `references/intake.md`); do **not**
+assert a number. Use `smart_actions` to validate that each follow-up notification action carries
+a named owner + a deadline (the 24h timing is the load-bearing one). Append the OSH-Code
+transition note (the accident-notice duty is retained), surface the `KB-REG-IN-PORTALS` pointer,
+and **point the user to `incident-investigation` for the RCA** (this skill does not re-run it).
+Every unverified field/form is a literal `[GAP]`, never fabricated.
 
 Then: validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method is in `references/METHODOLOGY.md`.
 
@@ -162,6 +179,13 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+- **SME Review & Sign-off (MANDATORY, before any output)** — run the skill-specific
+  statutory accident-notification persona + checklist in `references/sme-review.md`
+  (right notice form + 24h deadline for the resolved state; **a second DGMS-region mining-
+  statute lens is invoked when the establishment is a mine** — routed through DGMS, not a
+  state Factories form; every unverified form-id — incl. the TN / DL forms — honestly
+  `[GAP]`). Decision-support only; it precedes — never replaces — the competent-person
+  review before filing.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

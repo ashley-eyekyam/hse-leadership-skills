@@ -108,22 +108,20 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-### Intake question set (one at a time; branch; echo back; never proceed on vague)
+### Step 0 — Structured intake (one at a time; branch; echo back; never proceed on vague)
 
-Ask these in order, ONE at a time, following `KB-SNIP-INTAKE`. **Q-Scope and Q-Crit are load-bearing** — refuse to proceed on a vague scope ("general site audit") or an undeclared criteria set: ask, or record `[GAP]`. An audit with no defined boundary is unauditable; an audit with no criteria set cannot classify a finding.
-
-| # | Question | Type | Options / prompt | Feeds |
-|---|---|---|---|---|
-| Q-Juris | Jurisdiction | MCQ | India · UK · USA · EU · Other/Unknown | India → Q-Juris-a; the kb-selection row |
-| Q-Juris-a | *(India only)* Which state? | MCQ | Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Other | resolves `KB-REG-IN-STATEFORMS`; **mandatory state detection** — confirm before citing a form |
-| **Q-Scope** | **The site / system / process audited, and its boundary** | free-text | "Describe the exact subject and its boundary (e.g. 'the permit-to-work system at the Plant 3 maintenance shop — issuance, isolation, sign-off, close-out; excludes hot-work permits')." | **the specificity anchor — refuse a vague answer** |
-| **Q-Crit** | **The standard / criteria to audit against** | MCQ + free-text | **ISO 45001 (MS standard) · A regulatory regime (OSHA / Factories Act / HSWA) · A custom checklist (paste / describe it)** | **the criteria gate** — resolves the clause/checklist set walked finding-by-finding; *Regulatory* → leans on the Q-Juris fragment; *Custom* → free-text items, no external clause cited |
-| **Q-Type** | **Audit type** | MCQ | Compliance (vs law) · Management-system (vs ISO 45001 / a MS standard) · Process (vs an SOP / process spec) | tunes the evidence-sufficiency bar + classification lens |
-| Q-Evid | Evidence available | free-text | "What evidence can you provide or did you gather? (documents/records, observations, interview notes by role, photos, prior audit/CAPA history)." | step 3 evidence assessment; flags `[GAP]` criteria |
-| Q-Industry | Industry / sector | MCQ + free-text | Construction · Manufacturing · Oil & Gas · Chemicals · Mining · General/Other | tunes criteria emphasis + nonconformity risk descriptors |
-| Q-NCrate | Org risk-matrix size (rating nonconformities) | MCQ | 3×3 · 4×4 · **5×5 (default)** · Supply our matrix | → `MatrixConfig` for `risk_matrix` (step 4) |
-
-After the last applicable question, **echo a captured-facts summary** ("Auditing: the PTW system at the Plant 3 maintenance shop (issuance → isolation → sign-off → close-out, hot-work excluded), against ISO 45001 clause 8.1 operational control + the org's PTW procedure, management-system type, Maharashtra, 5×5 matrix — correct?") and only then proceed.
+The full typed, branched intake — the `intake-coverage` manifest, the question table
+(jurisdiction · the **scope/boundary anchor Q-Scope** · the **criteria gate Q-Crit** ·
+audit type · evidence available · industry · nonconformity-rating matrix · the **audit
+team / lead auditor Q-Team** · the **audit date + CAPA cycle Q-When** · physical location),
+the **mandatory India→state branch** (Q-Juris = India → Q-Juris-a), the **criteria-gate
+branches** (Q-Crit = ISO 45001 → `KB-STD-ISO45001`; A regulatory regime → the jurisdiction
+fragment; A custom checklist → no external clause), the echo-back, and the refuse-on-vague
+anchors — lives in **`references/intake.md`**. Run it one question at a time, branch on
+the answers, **echo the captured facts back before any analysis**, and **refuse to
+proceed** on a vague scope ("general site audit") or an undeclared criteria set (Q-Scope
+and Q-Crit are load-bearing — record `[GAP]`, never invent a clause). An audit with no
+defined boundary is unauditable; one with no criteria set cannot classify a finding.
 
 ### The audit method (ISO 45001 9.2 internal-audit loop)
 
@@ -199,6 +197,7 @@ The standard **moderate roster** (A6 "moderate = 2–3"). The De-identifier is t
 - **Evidence-Assessor** — for each criterion in the resolved criteria set, assess the scrubbed objective evidence against that specific clause/checklist item: what it shows, sufficiency, what is missing; cite the specific evidence item per assessment; flag `[GAP]` where evidence is absent. SCOPE-OUT: law/criteria wording (Regulatory-Checker owns it), drafting the report (Drafter owns it). (Conformity rating is NOT a subagent — it is the A7 `risk_matrix`/`controls` scripts.)
 - **Regulatory-Checker** — for the resolved jurisdiction + criteria, return the applicable duty + clause/section + (India → resolved STATE first) the state form via `KB-REG-IN-STATEFORMS`, and confirm each cited clause exists; conservative — flag `[GAP]` when unsure. SCOPE-OUT: assessing evidence (Evidence-Assessor), drafting (Drafter), inventing a form number.
 - **Drafter** — write the clause-by-clause findings + nonconformity log + conformity summary + corrective-action plan + CAPA register to the output template using role placeholders; each finding tagged its classification + evidence trail, each control tagged its `KB-SNIP-HOC` tier (consumes the De-identifier's scrubbed text + the Evidence-Assessor's per-criterion assessments + the A7 `risk_matrix`/`controls` ratings + the Regulatory-Checker's verdict). SCOPE-OUT: assessing evidence (Evidence-Assessor), checking law (Regulatory-Checker).
+- **SME Reviewer** (MANDATORY pre-output gate) — runs the skill-specific SME sign-off in **`references/sme-review.md`** (lead auditor, ISO 19011 / ISO 45001 9.2) before any output: every finding traced to OBJECTIVE evidence against a named criterion, classified correctly (major vs minor NC vs observation vs OFI), every nonconformity risk-rated, and the emitted CAPA register handoff-clean for the B6→B7 seam.
 - **Critic/QA** (MANDATORY) — every criterion assessed or `[GAP]`-flagged, every finding classified + traced to objective evidence, every nonconformity risk-rated (via the A7 engine), every corrective action HoC-ranked + owned + dated + finding-linked, no PPE/admin-only treatment without justification, every cited clause traces to the KB, zero PII/health leak. PASS/FAIL.
 
 Single-thread fallback (the block's canonical line): on a host with no subagent capability, the same jobs run sequentially in one context — De-identifier scrub first, the A7 rating/ranking/validation calls still made deterministically, scope discipline kept, the Critic/QA pass still performed. (This skill is *not* single-threaded-by-design; it ships the roster above.)

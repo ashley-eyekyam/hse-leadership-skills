@@ -127,27 +127,19 @@ intake Q1; an "Other" topic with no matching fragment degrades to general hazard
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-B3 runs the **leanest defensible intake in the pack** (Decision 2) — ~6–7 questions,
-MCQ-heavy, with only **two** free-text prompts (the task/site and the optional recent
-incident). Ask ONE at a time, branch on the answers, **echo the captured facts back**
-before assembling, and **never invent** a fact. The cut is *quantity of questions*,
-never *specificity*: every surviving question is load-bearing for a defensible talk.
-
 ### Step 0 — Lean structured intake (run first, one question at a time)
 
-| # | Question | Type | Options / prompt |
-|---|---|---|---|
-| Q1 | **Topic / primary hazard** of this talk | MCQ + free-text | Working at height · Confined space · Manual handling · Electrical / LOTO · Hot work · Mobile plant / vehicles · Hazardous substances · Slips/trips/housekeeping · Lifting operations · Heat/cold stress · Other (free-text) — drives the `data-points/` hazard-fact lookup |
-| Q2 | **Trade / crew** receiving the talk | MCQ + free-text | Construction/general · Maintenance · Electrical · Mechanical/fitters · Operators/process · Drivers/logistics · Cleaners/housekeeping · Mixed crew · Other (free-text) — calibrates language + which controls are foregrounded |
-| Q3 | **Site / area & the specific task today** | **free-text** | "Name the site/area and the exact task — e.g. 're-roofing Bay 3, cherry-picker out of service, working off the leading edge'." — **the load-bearing specificity anchor; refuse a vague answer** ("general site work") — ask again or record `[GAP]`; never proceed generic |
-| Q4 | **Duration target** for the talk | MCQ | **<5 min (default)** · 5–10 min · 10–15 min — caps script length; <5 min is the frontline norm |
-| Q5 | **A recent relevant incident / near-miss** | free-text (optional) | "Optional — a recent near-miss/incident relevant to this hazard, on this site or in your org. Leave blank and a clearly-labelled *typical* example is used instead." — if supplied, **de-id scrub before use** (Decision 6); if blank, a labelled illustrative example, **never a fabricated local event** |
-| Q6 | **Reading level / language** for the crew | MCQ | Plain / simple English (default) · Standard · ESL-friendly (short sentences) · Other language (name it, free-text) |
-| Q7 | **Jurisdiction** (light-touch) | MCQ | India (which state?) · UK · USA · EU · **Not jurisdiction-specific (default)** — used only if the talk must name a local rule; India → ask the state (mandatory state detection) only if a statutory point is actually raised |
-
-After the last applicable question, **echo a captured-facts summary** ("Talk on:
-working at height — re-roofing Bay 3, cherry-picker out of service, mixed crew, <5 min,
-plain English — correct?") and only then assemble.
+B3 runs the **leanest defensible intake in the pack** (Decision 2) — ~6–7 questions,
+MCQ-heavy, with only **two** free-text prompts. The full typed, branched intake — the
+`intake-coverage` manifest, the 7-row question table (topic/hazard · trade/crew · **site &
+specific task today [the specificity anchor]** · duration · **recent incident [never
+fabricated]** · reading level/language · light-touch jurisdiction), the light-touch
+**India→state branch** (Q7 = India, mandatory only if a statutory point is raised), the
+**never-invent-a-local-incident** discipline (Q5 blank → a clearly-labelled *typical*
+example), the echo-back, and the refuse-on-vague anchors — lives in
+**`references/intake.md`**. Run it one question at a time, branch on the answers, **echo the
+captured facts back** before assembling, and **never invent** a fact (the cut is *quantity of
+questions*, never *specificity* — every surviving question is load-bearing).
 
 ### The talk-assembly method (single-threaded — no fan-out)
 
@@ -235,12 +227,17 @@ de-identification leak. Fix everything it raises before delivery.
      ~2-min skill copy this line verbatim. -->
 
 - Single-threaded by design — no subagents.
+- **SME Reviewer** (MANDATORY pre-output gate, run inline) — the skill-specific SME sign-off
+  in **`references/sme-review.md`** (frontline safety supervisor / crew lead): is the talk
+  about THIS task/crew/site today, deliverable in the target time, with real controls and a
+  real (or clearly-labelled typical) incident — not generic patter? FLAG-only; does not block.
 
 The Step-0 triage gate keeps B3 single-threaded (all three single-thread conditions
 hold: it is a short/frontline ~2-min artifact, its parts are tightly dependent, and the
 input fits one context window), so the orchestration block self-deactivates at runtime
 and the skill assembles the talk directly. The inline **de-identification scrub still
-runs first** and the **mandatory Critic/QA pass still runs** (a single adversarial
+runs first**, the inline **SME Reviewer pass** (`references/sme-review.md`) runs before
+output, and the **mandatory Critic/QA pass still runs** (a single adversarial
 self-check that the talk is specific, HoC-ranked, evidence-based, and PII-free before
 delivery). On a host with no subagent capability nothing changes — B3 was already
 single-threaded, the cleanest demonstration that the block degrades to nothing while

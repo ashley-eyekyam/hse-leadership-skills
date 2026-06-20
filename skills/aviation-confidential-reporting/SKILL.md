@@ -93,15 +93,15 @@ Open with a **structured multi-step intake** — MCQ where the answer space is e
 
 **De-identification is LOAD-BEARING and runs FIRST — reporter-identity protection is the point of the artifact:**
 
-The structured intake captures, one question at a time, the facts the reporting-system design needs:
-
-1. **Named operator/scope (free-text)** — the named operator/airport/AMO and the workforce the scheme covers.
-2. **Confidential vs voluntary vs anonymous (MCQ)** — confidential (identity known to a custodian, protected) / voluntary (de-identified at intake) / anonymous (no identity captured). This shapes the handling workflow.
-3. **Custodian + re-identification key handling (free-text)** — who holds any re-identification key (a named custodian, NOT the circulated document), and the access controls.
-4. **Feedback loop (MCQ)** — how reporters learn the outcome (de-identified safety bulletin / direct-to-reporter via the custodian / both).
-5. **Any sample report to design against (free-text, optional)** — de-identify any reporter detail FIRST (name, role/route/base/flight, exact dates) into role labels before reasoning about it.
-
-Echo the **confirmed operator + the scheme type + the custodian arrangement** back. Then design (a) the intake form, (b) the de-identification + handling workflow (de-id at the earliest point; the re-identification key held by the named custodian, apart from the circulated design), (c) the feedback loop, and (d) the reporter-protection assurances. **No reporter is ever named in the circulated design; no re-identification key is embedded.**
+The full typed/branched intake Q-table — the named operator, the **scheme-type** branch
+(confidential/voluntary/anonymous — the de-identification trigger), the protection-basis
+jurisdiction branch (India → `KB-REG-IN-DGCA`, Unknown → Annex 19 Appendix 3 + legal-review
+flag, never assert immunity the law doesn't grant), the MOR interface, the named custodian +
+re-id-key handling, the feedback loop, the SLA/retention, and the optional de-identified sample
+report — lives in **`references/intake.md`** (the `intake-coverage` manifest + de-id-aware
+echo-back, role labels only + refuse-on-vague anchors). Run it one question at a time, branch on
+the answers, and **echo the confirmed operator + scheme type + custodian arrangement back
+(role labels only, never a reporter name) before any drafting**. Then design (a) the intake form, (b) the de-identification + handling workflow (de-id at the earliest point; the re-identification key held by the named custodian, apart from the circulated design), (c) the feedback loop, and (d) the reporter-protection assurances. **No reporter is ever named in the circulated design; no re-identification key is embedded.**
 
 Then: validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method (the reporting-system design) is in `references/METHODOLOGY.md`.
 
@@ -165,7 +165,9 @@ the load-bearing job, not a formality):
   reporter-protection assurances; no reporter named, no key embedded. SCOPE-OUT: does not re-identify.
 - **Critic/QA** (MANDATORY) — the Aviation-SMS persona (`KB-SNIP-ARCHETYPES`): the design protects
   reporter identity (role labels, no narrative re-identification, key held separately), the feedback
-  loop is real, and ZERO reporter-identity leak (a leak is a de-id hard-fail, not a FLAG).
+  loop is real, and ZERO reporter-identity leak (a leak is a de-id hard-fail, not a FLAG). Runs the
+  per-skill SME sign-off checklist in `references/sme-review.md` (decision-support; precedes —
+  never replaces — the human competent-person review).
 
 Simple single-subject tasks run single-threaded — no subagents.
 

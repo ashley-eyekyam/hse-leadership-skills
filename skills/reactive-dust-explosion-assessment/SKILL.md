@@ -94,15 +94,18 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-For a reactive / dust-explosion assessment the intake elicits the material and scope BEFORE any basis of safety:
-
-1. **Process / material** — the named process and material(s) (free-text; specific).
-2. **Hazard scope** — MCQ: reactive chemistry / combustible dust / explosive vapour atmosphere / combination. Branches to DSEAR vs NFPA 652·660 vs ATEX rows.
-3. **Available test data** — MCQ: have Kst/Pmax/MIE/MIT (with lab source) / `[GAP]`. **`[GAP]` → the parameter is not invented; route to testing.**
-4. **Area for zoning** — the area/equipment to classify (free-text).
-5. **Jurisdiction** — DSEAR/ATEX (UK/EU) vs NFPA (US) emphasis.
-
-Echo material + hazard scope + data availability + area back before setting the basis of safety. Dust parameters are resolved with source+year or `[GAP]`; the **reactive/deflagration study is handed to `hazop-facilitator`** (grounded in `KB-STD-IEC-61882`); controls are HoC-ranked — eliminate/substitute and inherently-safer design before engineering, engineering before admin/PPE.
+**Run the full structured intake in `references/intake.md`** — the typed/branched
+Q-table (dust + reactivity data elicited **per parameter**, not one MCQ), its
+intake-coverage manifest, the echo-back, and the refuse-on-vague anchors live there. It
+elicits the named process + material (refuse "some powder"), the hazard scope (branches
+DSEAR vs NFPA 652·660 vs ATEX), the dust-generating equipment, per-parameter
+characterisation data with lab source+year (`[GAP]` → **not invented**, route to
+testing), existing safeguards, the zoning target + adjacent connected vessels, and the
+jurisdiction emphasis. Echo material + scope + data availability + area back before
+setting the basis of safety. The **reactive/deflagration study is handed to
+`hazop-facilitator`** (`KB-STD-IEC-61882`); any ATEX zone is justified not defaulted;
+controls are HoC-ranked — inherently-safer/eliminate/substitute before engineering,
+engineering before admin/PPE.
 
 Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
 
@@ -162,6 +165,11 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+- **SME Review & Sign-off** (MANDATORY, before ANY output) — run the skill-specific
+  persona, domain checklist, and boundary in `references/sme-review.md` (combustible-dust
+  / DSEAR-ATEX & reactive-chemistry lens: basis of safety stated and justified; the zone
+  DERIVED not defaulted; every dust parameter sourced or `[GAP]` — never invented).
+  Decision-support only; precedes — never replaces — the human competent-person review.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

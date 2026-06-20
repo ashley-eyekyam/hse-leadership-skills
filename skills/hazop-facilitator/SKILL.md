@@ -94,16 +94,18 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-For a HAZOP the intake refuses to proceed on "do a HAZOP" — it elicits the specific study scope and the team, one question at a time:
+### Step 0 — Structured intake (run this first, one question at a time)
 
-1. **The node** — which named P&ID section / node is under study? (free-text; a HAZOP needs a bounded node, not "the plant").
-2. **The design intent** — the node's normal operating intent (flow/pressure/temperature/level/composition) so deviations are meaningful.
-3. **Parameters & guidewords** — confirm the parameter set (flow, pressure, temperature, level, composition, …) and guidewords (No, More, Less, Reverse, As-well-as, Part-of, Other-than).
-4. **The team** — the multidisciplinary participants and competencies present (the assistive evidence — who performs the engineering judgement). If no team is present, the skill structures the worksheet but records that the study is **not yet performed**.
-5. **Risk matrix** — the org's risk matrix (or the default 5×5 with process-safety consequence descriptors — loss of containment, escalation).
-6. **Jurisdiction** — only to cite the grounding standard/duty (IEC 61882; COMAH/PSM where a regulatory frame applies).
+The full typed/branched intake — the **New / Revalidation / Write-up** scope gate, the
+bounded **node**, design intent, parameters & guidewords, the multidisciplinary **team**
+(the assistive evidence — no full team → the worksheet is structured and marked *"study
+not yet performed"*), existing safeguards, source documents, risk matrix, jurisdiction
+(India → mandatory state), and the output/audience gate — lives in
+**[`references/intake.md`](references/intake.md)** (the elicitation-coverage manifest +
+Q-table). Run it one question at a time, branch on the answers, **echo the captured node +
+intent + team back before any analysis**, and **refuse a vague node** ("do a HAZOP" / "the
+plant") — record `[GAP]`, never invent.
 
-Echo the captured node + intent + team back before building the matrix. For each guideword×parameter cell the skill **prompts** the team for a deviation and **records** their cause/consequence/safeguard judgement — it never fills a cell the team did not address (records `[GAP]`).
 Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
 
 <!-- hse:block:orchestration:start -->
@@ -162,6 +164,10 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+- **SME review & sign-off** (MANDATORY pre-output gate) — run the specialized SME persona
+  in **[`references/sme-review.md`](references/sme-review.md)** (certified HAZOP chair /
+  process-safety engineer) before presenting ANY output; decision-support only, it
+  precedes and never replaces the human competent-person review.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

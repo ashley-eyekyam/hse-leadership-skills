@@ -94,15 +94,19 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-For a HAZID the intake refuses a vague scope and elicits the breadth of hazard categories and the team:
+### Step 0 — Structured intake (run this first, one question at a time)
 
-1. **The installation / project phase** — the named scope under study (free-text; a HAZID needs a bounded installation/phase).
-2. **Hazard-category breadth** — confirm the categories to sweep: process, mechanical, electrical, **external/natural** (flood, seismic, high wind), **environmental** (release to land/water/air), utilities loss, neighbouring-installation knock-on.
-3. **The team** — the multidisciplinary participants and competencies (the assistive evidence). If absent, the skill structures the register but records the study as **not yet performed**.
-4. **Risk matrix** — the org matrix or the default 5×5 with process-safety consequence descriptors.
-5. **Jurisdiction** — only to cite the grounding standard/duty.
+The full typed/branched intake — the bounded **installation + life-cycle stage**, the
+**hazard-category breadth** sweep (process / mechanical / electrical / external-natural /
+environmental / utilities-loss / knock-on), the **receptors** (mandatory where an external
+or environmental category is selected), siting context, the multidisciplinary **team** (the
+assistive evidence — no full team → the register is structured and marked *"study not yet
+performed"*), risk matrix, jurisdiction (India → mandatory state), and the output/audience
+gate — lives in **[`references/intake.md`](references/intake.md)** (the elicitation-coverage
+manifest + Q-table). Run it one question at a time, branch on the answers, **echo the scope
++ categories + team back before any analysis**, and **refuse an unbounded scope** ("all our
+hazards") — record `[GAP]`, never invent.
 
-Echo the scope + categories + team back before building the register. For each category the skill **prompts** the team and **records** their hazard/cause/consequence/control judgement — never inventing a hazard (records `[GAP]`).
 Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
 
 <!-- hse:block:orchestration:start -->
@@ -161,6 +165,10 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+- **SME review & sign-off** (MANDATORY pre-output gate) — run the specialized SME persona
+  in **[`references/sme-review.md`](references/sme-review.md)** (HAZID facilitator / lead
+  process-safety engineer) before presenting ANY output; decision-support only, it
+  precedes and never replaces the human competent-person review.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

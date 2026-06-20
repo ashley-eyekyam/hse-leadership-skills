@@ -136,25 +136,19 @@ the engine's fixed bases. The rule-9 manifest is `references/_skill-kb.md`.
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-B10 runs a lean, MCQ-heavy intake — the counts, the **mandatory** denominator, and the
-period. Ask ONE at a time, branch on the answers, **echo the captured facts back** before
-computing, and **never invent a count or a denominator**. The hours worked is not optional:
-without it there is no rate.
-
 ### Step 0 — Lean structured intake (run first, one question at a time)
 
-| # | Question | Type | Options / prompt |
-|---|---|---|---|
-| Q1 | **Which rate(s)** do you need | MCQ (multi-select) | TRIR (recordables) · DART (days-away/restricted/transfer) · LTIFR (lost-time injuries) · **All three (default)** — selects which `incident_rates` calls run |
-| Q2 | **Site / scope & reporting period** | **free-text** | "Name the site/scope and the exact period — e.g. 'Plant 2, Q1 2026 (Jan–Mar)'." — the specificity anchor; a rate with no named scope+period is not defensible. Refuse a vague answer; record `[GAP]` if truly unavailable, never fabricate |
-| Q3 | **Recordable / DART / lost-time counts** for the period | free-text (numbers) | "How many OSHA-recordable cases? Of those, how many DART cases? How many lost-time injuries? Enter the integer counts for the rates you selected." — counts are non-negative integers; if a count is unknown say so (the engine never guesses) |
-| Q4 | **Total hours worked** in the period | **free-text (number) — MANDATORY** | "Total employee-hours worked across the scope for this exact period (actual hours-to-date — NOT annualized). This is the denominator; **there is no rate without it.**" — **refuse to proceed if blank or ≤ 0**; never substitute a default, never annualize a partial period |
-| Q5 | **Base convention** | MCQ | **OSHA standard (200,000 for TRIR/DART, 1,000,000 for LTIFR) — default** · (other conventions are out of scope for v1.0) — the base is an engine constant; this only confirms the convention, it is never user-arithmetic |
-| Q6 | **Industry benchmark** to compare against (optional) | free-text (optional) | "Optional — an industry benchmark rate to compare against, WITH its publishing body + year + sector (e.g. '2.7 — BLS SOII manufacturing, 2023'). Leave blank to skip." — a benchmark is only used if it carries its source + year; a bare number is recorded `[GAP]`, never invented |
-
-After the last applicable question, **echo a captured-facts summary** ("Computing TRIR + DART
-+ LTIFR for Plant 2, Q1 2026: 3 recordables / 1 DART / 0 lost-time over 290,000 hours, OSHA
-base — correct?") and only then call the engine.
+B10 runs a lean, MCQ-heavy intake — the counts, the **mandatory** denominator, the period,
+and the recordability standard. The full typed, branched intake — the `intake-coverage`
+manifest, the question table (which rate(s) · **site/scope & period [anchor]** · recordability
+standard → **India→state** · counts · **total hours worked [HARD refuse if blank/≤0]** · base
+convention · optional benchmark), the **mandatory hours-gate** (Q4 blank/≤0 → hard refuse, no
+rate without the denominator), the **mandatory India→state branch** (Q2b = India → Q2c), the
+**severity-rate deferred `[GAP]`** discipline (D-03), the echo-back, and the refuse-on-vague
+anchors — lives in **`references/intake.md`**. Run it one question at a time, branch on the
+answers, **echo the captured facts back** before computing, and **never invent a count or a
+denominator** — the hours worked is not optional; without it there is no rate, and **the model
+never does the arithmetic** (the figure is the engine's returned value, verbatim).
 
 ### The calculation method (single-threaded — the model NEVER computes a rate)
 
@@ -243,13 +237,19 @@ de-identification leak. Fix everything it raises before delivery.
      B3 being that B10 DOES wire the incident_rates engine via scripts/. -->
 
 - Single-threaded by design — no subagents.
+- **SME Reviewer** (MANDATORY pre-output gate, run inline) — the skill-specific SME sign-off
+  in **`references/sme-review.md`** (OSHA/RIDDOR recordability & safety-statistics SME): is
+  each count classified to the right recordability rule, the denominator real and period-actual
+  (not annualized), the base correct, and the figure presented as the engine returned it —
+  never re-computed in prose? FLAG-only; does not block.
 
 The Step-0 triage gate keeps B10 single-threaded (all three single-thread conditions hold: it
 is a short deterministic ~2-min artifact, its parts are tightly dependent — the rate cannot be
 presented before the engine returns it — and the input fits one context window), so the
 orchestration block self-deactivates at runtime and the skill computes and presents the rates
 directly. The inline **de-identification scrub still runs first** (any pasted case log is
-reduced to aggregate counts before computation) and the **mandatory Critic/QA pass still runs**
+reduced to aggregate counts before computation), the inline **SME Reviewer pass**
+(`references/sme-review.md`) runs before output, and the **mandatory Critic/QA pass still runs**
 inline (a single adversarial self-check that the figure came from the engine — not from
 in-prompt arithmetic — that the denominator is real, and that no per-case line or <5 cell
 leaked). On a host with no subagent capability nothing changes — B10 was already

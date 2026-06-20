@@ -93,15 +93,18 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-For a permit-to-work the intake elicits the task, the isolations, and any concurrent operations (SIMOPS):
+### Step 0 — Structured intake (run this first, one question at a time)
 
-1. **The task** — the named high-risk task (hot work / confined space / line breaking / excavation / height) and its exact location (specific).
-2. **The hazards & isolations** — the energy sources to isolate (LOTO), the atmosphere (gas test for confined space / hot work), the safeguards.
-3. **Concurrent operations (SIMOPS detection)** — are other operations happening simultaneously in the same area (e.g. welding while the unit runs, lifting over live equipment)? If YES, the **SIMOPS coordination section** is built: the conflicting activities, the coordination controls (sequencing, exclusion zones, a single point of coordination, cross-permit references), and the authority that authorizes the simultaneous work.
-4. **Permit conditions** — the conditions that must hold for the permit to be valid, and the validity period.
-5. **Jurisdiction** — only to cite the grounding element/standard.
+The full typed, branched intake — the `intake-coverage` manifest, the question table
+(permit type · task + exact location · isolations/LOTO + gas test · the **type-specific
+control gate** · **SIMOPS detection** · issuer/PA/gas-tester/rescue · conditions + validity
+· jurisdiction), the **permit-type branch** (confined-space gas test + attendant + rescue;
+hot-work fire watch; excavation buried-services scan + shoring), the **SIMOPS coordination
+branch** (Q5 = Yes → the in-skill coordination section), the India→state branch, the
+echo-back, and the refuse-on-vague anchors — lives in **`references/intake.md`**. The
+permit is **not valid** until isolations and (where SIMOPS) coordination controls are
+confirmed in place; SIMOPS is handled in-skill, never deferred to a separate workflow.
 
-Echo the task + isolations + concurrent operations back before drafting. If SIMOPS is detected, the package always includes the SIMOPS coordination section; the permit is not valid until the coordination controls are in place.
 Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
 
 <!-- hse:block:orchestration:start -->
@@ -157,6 +160,10 @@ For a non-trivial task the triage gate may fan out to:
   requirements, and the relevant standards, from the scrubbed inputs only.
 - **Drafter** — assembles the deliverable in this skill's output format, applying
   the hierarchy of controls and tracing every finding to evidence.
+- **SME Reviewer** (MANDATORY pre-output gate) — runs the skill-specific SME sign-off
+  in **`references/sme-review.md`** (control-of-work / PTW issuing authority) before ANY
+  output: isolations engineered (not permit-paper alone), and every concurrent operation
+  actually coordinated rather than left as an uncontrolled clash.
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.

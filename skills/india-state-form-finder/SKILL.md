@@ -90,18 +90,26 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 ## Workflow
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+### Step 0 — Structured intake (run this first, one question at a time)
 
-**MANDATORY state detection (CT-8) — the state is a BLOCKING gate before any form is cited:**
+Open with a **structured multi-step intake** (`KB-SNIP-INTAKE`) — the full typed/branched
+Q-table, coverage manifest, echo-back, and refuse-on-vague anchors live in
+**`references/intake.md`**. Run ONE question at a time, branch on the answers, and **echo the
+captured facts back before any resolution**. Never proceed on vague or missing inputs.
 
-1. **State (MANDATORY, ask FIRST)** — MCQ: TN / KA / MH / DL / GJ / Other (specify) / Unknown.
-   - You **may infer** the state from a supplied site address — but you MUST **echo it back and confirm** before citing any form (a wrong state = a wrong statutory form; never silently assume).
-   - If the state is **Unknown or unseeded** (anything outside TN/KA/MH/DL/GJ) → record a literal `[GAP]`, state "verify the state form with a competent person", and **refuse to emit a national form number**. Do NOT invent a row.
-2. **Law (MANDATORY)** — MCQ: factories-act / bocw / (other — defer to the owning pack).
-3. **Obligation (MANDATORY)** — MCQ: annual-return / half-yearly-return / accident-notice / register / license.
-4. **Establishment** — free-text: the named establishment (de-identified per the block above).
+Must-ask dimensions: `ELI-SCOPE` (identify-vs-assemble) · `ELI-JURIS` (**MANDATORY India→state
+detection — the state is a BLOCKING gate, asked FIRST, infer-then-confirm; unseeded → `[GAP]`,
+refuse a national form**) · `ELI-INDUSTRY` (establishment type — a mine routes to DGMS) ·
+`ELI-SUBJECT` (the obligation) · `ELI-TEMPORAL` (filing year / half) · `ELI-OUTPUT` (reader).
+State MCQ set: `Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Gujarat · Other (specify)
+· Unknown` (GJ first-class). The GJ form value is `[GAP]` (verified-absent) — surface it,
+never substitute.
 
-Echo the **confirmed state + law + obligation** back before resolving. Then read the matched `KB-REG-IN-STATEFORMS` row and return its `form` / `rule` / `due` / `portal` as the primary (legacy-first) answer, append the row's `osh_transition` note (and point to `india-osh-code-pack` for the transition mapping), and surface the `KB-REG-IN-PORTALS` pointer. If the matched row's `form` is `[GAP]` (e.g. the GJ row), say so explicitly — never substitute a guessed value.
+Once the **confirmed state + law + obligation** are echoed back: read the matched
+`KB-REG-IN-STATEFORMS` row and return its `form` / `rule` / `due` / `portal` as the primary
+(legacy-first) answer, append the row's `osh_transition` note (point to `india-osh-code-pack`
+for the transition mapping), and surface the `KB-REG-IN-PORTALS` pointer. If the matched row's
+`form` is `[GAP]` (e.g. the GJ row), say so explicitly — never substitute a guessed value.
 
 Then: validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method (the resolution algorithm) is in `references/METHODOLOGY.md`.
 
@@ -154,6 +162,10 @@ de-identification leak. Fix everything it raises before delivery.
 
 - Single-threaded by design — no subagents. (Replace with this skill's named
   fan-out jobs if the triage gate warrants them.)
+- **SME Review & Sign-off (MANDATORY, before any output)** — run the skill-specific
+  domain persona + checklist in `references/sme-review.md`. Single-threaded skill: the
+  SME pass runs inline via the orchestration single-thread fallback, not as a spawned
+  subagent. Decision-support only; it precedes — never replaces — the competent-person review.
 
 <!-- hse:block:report-output:start -->## Output format
 

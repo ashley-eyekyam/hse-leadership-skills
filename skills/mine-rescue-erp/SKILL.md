@@ -83,13 +83,24 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 ## Workflow
 
-Open with a **structured multi-step intake** (`KB-SNIP-INTAKE`) — one question at a time, branch, echo the captured facts before drafting.
+Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open; one question at a time, branch on the answers, echo the captured facts before drafting; refuse on a vague subject and never invent (`KB-SNIP-INTAKE`).
 
-1. **Mine** — commodity, opencast/underground, workforce size, and (for India) the DGMS region.
-2. **Emergency scenarios** — MCQ multi-select from `KB-DATA-MINING-HAZARDS` (fire/explosion, inrush/inundation, strata failure, irrespirable atmosphere, entrapment, mobile-plant event).
-3. **Rescue resources** — free-text: the **actual** rescue team / station / mutual-aid links and the mobilisation route. Reject an aspirational placeholder — the realism is the point.
+### Step 0 — Structured intake (run this first, one question at a time)
 
-Then: scenario-rank each emergency on the org matrix (`risk_matrix`); build the mobilisation sequence (team → station → mutual-aid → NDMA/DGMS alignment) with credible timing; schedule drills with owner + date (`smart_actions`); cite the Mines Act/DGMS emergency-preparedness duty. Validate against `references/QUALITY_CHECKLIST.md`, then produce the output via the Output format section. The ERP is a draft for a competent person's sign-off.
+De-identification runs first (`METHODOLOGY.md`). The full typed, branched Q-table — the
+build-vs-review fork, the commodity × mine-type × workforce-band selection, the India DGMS
+region/state resolution, the scenario multi-select, the rescue-team capability (reject
+aspirational), station + mutual-aid links, drill cadence, and the echo-back / refuse-on-vague
+anchors — lives in **`references/intake.md`**. Must-ask dimensions: the **rescue-team
+capability** (trained-rescuer count, apparatus, certification — the realism anchor), the
+**station + mutual-aid links with travel timing**, and the **drill cadence + last-drill
+date**; for India the **DGMS region/state** is resolved infer-then-confirm. Then:
+scenario-rank each emergency on the org matrix (`risk_matrix`); build the mobilisation
+sequence (team → station → mutual-aid → NDMA/DGMS) with credible timing; schedule drills with
+owner + date (`smart_actions`); cite the Mines Act/DGMS emergency-preparedness duty. Reject an
+aspirational placeholder; an unknown timing is `[GAP]`, never fabricated. Validate against
+`references/QUALITY_CHECKLIST.md`, then produce the output. The ERP is a draft for a competent
+person's sign-off.
 
 <!-- hse:block:orchestration:start -->
 ## Agentic Execution (Orchestration Block)
@@ -147,6 +158,11 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+
+**Step 4 — SME review & sign-off (MANDATORY, before any output):** run the skill-specific
+SME persona sign-off in **`references/sme-review.md`** (the mine-rescue superintendent /
+emergency-preparedness officer — the timing-realism lens) — model QA, decision-support, FLAGs
+non-blocking; a competent person must validate mobilisation realism and sign off.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

@@ -84,14 +84,23 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 ## Workflow
 
-Open with a **structured multi-step intake** (`KB-SNIP-INTAKE`) — one question at a time, branch, echo the captured facts before drafting.
+Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open; one question at a time, branch on the answers, echo the captured facts before drafting; refuse on a vague subject and never invent (`KB-SNIP-INTAKE`).
 
-1. **Mine** — commodity, **opencast / underground**, and (for India) the DGMS region (free-text; specific).
-2. **Plan type** — MCQ: ventilation plan · strata- / ground-control plan · blasting / shotfiring plan.
-3. **Parameters** — free-text: the **actual** parameters the plan needs (air quantity/quality + districts for ventilation; support regime + geotech for strata; explosive type + exclusion + misfire procedure for blasting). Never proceed on a generic template.
-4. **Principal hazards** — confirm the hazards from `KB-DATA-MINING-HAZARDS` the plan must address.
+### Step 0 — Structured intake (run this first, one question at a time)
 
-Then: rank each hazard on the org matrix (`risk_matrix`); build the control suite hierarchy-ranked (`controls`, critical controls flagged, PPE/admin-only escalated); assign owner + due date to follow-up actions (`smart_actions`); cite the Mines Act/DGMS plan duty. Validate against `references/QUALITY_CHECKLIST.md`, then produce the output via the Output format section. The plan is a draft for a competent person's sign-off.
+The full typed, branched Q-table — the plan-type fork (which activates **exactly one** of the
+ventilation / strata / blasting parameter sets Q4V / Q4S / Q4B), the commodity × mine-type
+branch driver, the India DGMS region/state resolution, the principal-hazard confirm, the
+sign-off competent-person role, and the echo-back / refuse-on-vague anchors — lives in
+**`references/intake.md`**. Must-ask dimensions: the **plan type** (decomposes into the
+concrete parameter set — the highest-value upgrade), the **commodity / mine type**, and the
+**sign-off competent-person role**; the **parameters are the plan** (refuse a generic
+template). Then: rank each hazard on the org matrix (`risk_matrix`); build the control suite
+hierarchy-ranked (`controls`, critical controls flagged, PPE/admin-only escalated); assign
+owner + due date to follow-up actions (`smart_actions`); cite the Mines Act/DGMS plan duty. A
+missing engineering value is `[GAP]`, never fabricated. Validate against
+`references/QUALITY_CHECKLIST.md`, then produce the output. The plan is a draft for a
+competent person's sign-off.
 
 <!-- hse:block:orchestration:start -->
 ## Agentic Execution (Orchestration Block)
@@ -149,6 +158,13 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+
+**Step 4 — SME review & sign-off (MANDATORY, before any output):** run the skill-specific
+SME persona sign-off in **`references/sme-review.md`** — this skill carries **two** justified
+lenses (a ventilation / strata-control engineer and a shotfirer / blasting engineer, distinct
+DGMS competencies). **Matching-lens scoping:** when the user selects only one plan type, run
+only the matching lens (MAX-2 discipline). Model QA, decision-support, FLAGs non-blocking; a
+competent person owns the engineering judgement and signs off.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

@@ -92,14 +92,18 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-For a dispersion **scenario** (assistive) the intake elicits the release facts and the target study:
-
-1. **Released substance + inventory** — substance/CAS + the inventory at risk (free-text; specific).
-2. **Release scenario** — MCQ: catastrophic / continuous / instantaneous.
-3. **Receptors** — MCQ multi-select: on-site / public / environment.
-4. **Target study** — MCQ: bowtie / LOPA / QRA input.
-
-**Echo back that the output is scenario framing for a competent-person study / modelling, NOT a quantitative result.** The skill records `[GAP]` for any un-modelled value (distance, concentration), develops the consequence side with **`bowtie-builder`** / **`lopa-worksheet`** by name, and never runs PHAST/ALOHA or invents a dispersion figure. `risk_matrix` gives a qualitative consequence band only.
+**Run the full structured intake in `references/intake.md`** — the typed/branched
+Q-table, its intake-coverage manifest, the echo-back, and the refuse-on-vague anchors
+live there. This skill is **assistive-only and the most omit-heavy in the family** (its
+short `omits` list is correct by design). It elicits the released substance + CAS +
+inventory at risk (refuse "a toxic gas"), physical state + storage P/T, the release
+scenario, whether a release rate is **supplied or `[GAP]` for the modeller** (never
+computed here), the toxicity benchmark, the release/receptor geometry + weather, the
+receptors, and the target study. **Echo back that the output is scenario framing for a
+competent-person study / modelling, NOT a quantitative result.** It records `[GAP]` for
+any un-modelled value, hands the consequence side to **`bowtie-builder`** /
+**`lopa-worksheet`** by name, never runs PHAST/ALOHA or invents a dispersion figure;
+`risk_matrix` gives a qualitative consequence band only.
 
 Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
 
@@ -159,6 +163,12 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+- **SME Review & Sign-off** (MANDATORY, before ANY output) — run the skill-specific
+  persona, domain checklist, and boundary in `references/sme-review.md`
+  (consequence-modelling / dispersion specialist lens: is this honest SCENARIO FRAMING
+  for the modelling team — source term captured not computed, no invented distance /
+  concentration, downstream owners named). Decision-support only; precedes — never
+  replaces — the human competent-person review.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

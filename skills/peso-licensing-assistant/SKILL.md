@@ -91,15 +91,19 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-For a PESO package the intake elicits the installation, the licence type, and the state:
+### Step 0 — Structured intake (run this first, one question at a time)
 
-1. **The installation** — the named installation (petroleum storage class, explosives, gas-cylinder filling, pressure vessel) and its capacity (specific).
-2. **Licence type** — which PESO instrument applies (Petroleum Rules 2002 / Explosives Rules 2008 / Gas Cylinder Rules 2016 / SMPV(U) Rules 2016).
-3. **MAH determination** — is the installation a Major Accident Hazard (MSIHC thresholds)? If so, the on-site emergency plan is in scope.
-4. **State detection (MANDATORY where state-specific)** — resolve the site **state** for siting / state-consent / factory interactions (ask, or infer-from-address-then-confirm — never silently assume).
-5. **OSH-Code transition** — note the transition status (legacy-first; the instrument is still filed today).
+The full typed, branched intake — the `intake-coverage` manifest, the question table
+(task · installation + capacity · PESO instrument · MAH/MSIHC determination · **mandatory
+state detection** · documents held · validity/renewal · competent person · output), the
+**mandatory India→state branch** (ask, or infer-from-address-then-confirm — never silently
+assume), the MSIHC on-site-emergency-plan branch, the renewal-timeline branch, the
+echo-back, and the refuse-on-vague anchors — lives in **`references/intake.md`**. This
+skill is India statutory: resolve the **state** before citing any state-specific
+obligation, cite every form **from the matched KB row** (no hard-coded national number),
+and keep any unverified PESO form-id (Form E / Form F / LS-1A) as literal **`[GAP]`** with
+a verification path — never invented.
 
-Echo the installation + licence type + state back before resolving. Every form is cited from the matched KB row (no hard-coded national number); a state-specific obligation with an unknown state is asked, not assumed.
 Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
 
 <!-- hse:block:orchestration:start -->
@@ -155,6 +159,11 @@ For a non-trivial task the triage gate may fan out to:
   requirements, and the relevant standards, from the scrubbed inputs only.
 - **Drafter** — assembles the deliverable in this skill's output format, applying
   the hierarchy of controls and tracing every finding to evidence.
+- **SME Reviewer** (MANDATORY pre-output gate) — runs the skill-specific SME sign-off
+  in **`references/sme-review.md`** (two lenses: Indian PESO licensing specialist +
+  India state-form / legacy-first compliance reviewer) before ANY output: the right
+  instrument→form→authority match, mandatory state resolution, and every form from the
+  KB row (unverified form-ids stay `[GAP]`).
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.

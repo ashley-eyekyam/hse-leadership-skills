@@ -90,16 +90,20 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-For a mechanical-integrity program the intake elicits the equipment and the integrity basis:
+### Step 0 — Structured intake (run this first, one question at a time)
 
-1. **The equipment population / unit** — the named equipment (vessels, piping, relief devices, rotating equipment) and the unit (specific).
-2. **Criticality factors** — consequence of failure (loss of containment, escalation) and likelihood (age, service, corrosion) for `risk_matrix` ranking.
-3. **ITPM basis** — the inspection/test/PM intervals and methods (RBI where used) and the integrity-operating-windows.
-4. **Deficiencies** — open integrity deficiencies and their interim risk.
-5. **Risk matrix** — the org matrix or the default 5×5 for criticality.
-6. **Jurisdiction** — only to cite the grounding element/standard.
+The full typed/branched intake — the **task** scope gate (rank criticality / set ITPM / manage
+deficiencies / build full programme), the named **equipment population**, the **equipment
+classes** (relief devices → PRV test-interval branch), the consequence-of-failure + likelihood
+**criticality drivers**, the **current ITPM basis** (RBI / IOWs), the **inspection / MI
+records** held, **open deficiencies** + interim risk, the **inspection authority / owner**,
+risk matrix, statutory **examination obligations** + cadence, jurisdiction (India → mandatory
+state; USA → PSM element j), and the output/audience gate — lives in
+**[`references/intake.md`](references/intake.md)** (the elicitation-coverage manifest +
+Q-table). Run it one question at a time, branch on the answers, **echo the equipment +
+criticality factors back before any analysis**, and **refuse a vague equipment population**
+("our equipment") — an item with no integrity basis reads `[GAP]`, never assumed fit-for-service.
 
-Echo the equipment + criticality factors back before ranking. A deficiency is HoC-ranked and given an owner + date; an equipment item with no integrity basis is `[GAP]`, not assumed fit-for-service.
 Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
 
 <!-- hse:block:orchestration:start -->
@@ -158,6 +162,10 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+- **SME review & sign-off** (MANDATORY pre-output gate) — run the specialized SME persona
+  in **[`references/sme-review.md`](references/sme-review.md)** (asset-integrity / inspection
+  engineer, API 510/570/580) before presenting ANY output; decision-support only, it precedes
+  and never replaces the human competent-person review.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

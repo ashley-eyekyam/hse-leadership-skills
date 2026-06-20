@@ -92,13 +92,18 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-For an MSIHC / MAH pack the intake elicits the inventory and the STATE BEFORE any verdict:
-
-1. **Site + stored/handled hazardous chemicals + quantities** — the inventory against the MSIHC Schedule thresholds (free-text; specific). Drives MAH yes/no.
-2. **State (MANDATORY)** — MCQ TN / KA / MH / DL / Other → resolve via `KB-REG-IN-STATEFORMS`; **confirm the state before citing any form**. Never assume a national form.
-3. **Existing emergency plan** — MCQ: yes / no / partial.
-
-Echo the inventory + the **confirmed state** + existing-plan status back before the MAH verdict. The MAH status follows the Schedule thresholds (`KB-REG-IN-MSIHC`); the state form resolves from `KB-REG-IN-STATEFORMS`; an unresolved threshold/form is `[GAP]`-flagged; the OSH-Code transition is noted; PESO licensing pointers reference `KB-REG-IN-PESO`.
+**Run the full structured intake in `references/intake.md`** — the typed/branched
+Q-table, its intake-coverage manifest, the echo-back, and the refuse-on-vague anchors
+live there. This is the **always-India** pack, so `ELI-JURIS` is the spine: the intake
+elicits the site + inventory + max quantities (refuse "various chemicals"), and the
+**Indian state (MANDATORY — `references/intake.md` Q5)** resolved via
+`KB-REG-IN-STATEFORMS`, **confirmed before citing any form** ("Other"/"Unknown" → literal
+`[GAP]`, never a national form), plus licences, MAH/notification status, off-site
+receptors, the on-site plan, occupier, and deadlines. Echo the inventory + the
+**confirmed state** + plan status back before the MAH verdict. The MAH status follows the
+Schedule thresholds (`KB-REG-IN-MSIHC`); an unresolved threshold or unverified form-id is
+literal `[GAP]`; the OSH-Code transition is noted; PESO pointers reference
+`KB-REG-IN-PESO`.
 
 Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
 
@@ -158,6 +163,12 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+- **SME Review & Sign-off** (MANDATORY, before ANY output) — run the skill-specific
+  persona, domain checklist, and boundary in `references/sme-review.md` (Indian MAH /
+  MSIHC regulatory lens: MAH status derived from the Schedule thresholds; the state
+  resolved BEFORE any form is cited; the cited form the legacy STATE form — never a
+  hard-coded/fabricated national form). Decision-support only; precedes — never
+  replaces — the human competent-person review.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

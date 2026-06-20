@@ -91,13 +91,17 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-For a transport-safety cross-walk the intake elicits the substance, mode and packaging:
-
-1. **Substance + UN number if known** — substance/CAS + UN number (free-text / MCQ); resolve the UN entry from the user's Dangerous Goods List, never assumed.
-2. **Mode** — MCQ: road-ADR / road-US-DOT / sea-IMDG / multimodal. **Rail (RID) and air (IATA/ICAO-TI) are out of scope for v1.0 — flagged, not guessed.**
-3. **Packaging** — the intended packaging / IBC / tank (free-text).
-
-Echo substance + mode + packaging back before the cross-walk. The transport class / UN number / packing group is resolved from the regime table (`KB-REG-EU-ADR` / `KB-REG-US-DOT-HMR` / `KB-STD-IMDG`), cross-walked from the GHS class (`KB-STD-GHS`); an unknown entry is `[GAP]`-flagged; loading/unloading controls are HoC-ranked.
+**Run the full structured intake in `references/intake.md`** — the typed/branched
+Q-table, its intake-coverage manifest, the echo-back, and the refuse-on-vague anchors
+live there. It elicits the substance/CAS + UN number (resolve the UN entry from the
+user's DG list, never assumed; unknown → `[GAP]`), physical state/flashpoint, quantity
+per package + total consignment, the transport mode + regime
+(**road-India (CMVR) → resolve the state, mandatory** — `references/intake.md` Q6; rail
+& air OUT OF SCOPE, flagged not guessed), packaging, the GHS/§14 basis
+(neither → `[GAP]`, route to `ghs-classification-sds-author`), and route detail. Echo
+substance + mode + packaging back before the cross-walk. The class / UN / packing group
+is resolved from the regime table (`KB-REG-EU-ADR` / `KB-REG-US-DOT-HMR` / `KB-STD-IMDG`),
+cross-walked from the GHS class; loading/unloading controls are HoC-ranked.
 
 Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
 
@@ -150,6 +154,12 @@ de-identification leak. Fix everything it raises before delivery.
 
 - Single-threaded by design — no subagents. (Replace with this skill's named
   fan-out jobs if the triage gate warrants them.)
+- **SME Review & Sign-off** (MANDATORY, before ANY output) — run the skill-specific
+  persona, domain checklist, and boundary in `references/sme-review.md` (dangerous-goods
+  transport SME / DGSA lens: UN entry resolved from the DG List not assumed; the
+  GHS→transport cross-walk correct for the chosen mode; rail/air flagged out of scope
+  not guessed). Decision-support only; precedes — never replaces — the human
+  competent-person / DGSA review.
 
 <!-- hse:block:report-output:start -->## Output format
 

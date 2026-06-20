@@ -93,15 +93,13 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-The structured intake captures, one question at a time, the facts the four-pillar SMS needs before any drafting:
-
-1. **Organisation type (MCQ)** — aircraft operator / airport / approved maintenance organisation (AMO) / approved training organisation (ATO) / other (specify). The SMS scope and the certificating authority follow from this.
-2. **Named scope (free-text)** — the named operator/airport/AMO and the operation type (e.g. scheduled passenger, cargo, GA, ground handling). De-identify any individual per the block above. A generic "an airline" is refused — the manual must name *this* operator's hazards.
-3. **Jurisdiction / State Safety Programme (MCQ)** — India (DGCA SSP) / USA (FAA) / EU (EASA) / other (specify) / Unknown. For India, align to `KB-REG-IN-DGCA` (mark the exact CAR number `[GAP]` to verify). For others, ask the user for the reference — never fabricate a clause.
-4. **Build vs review (MCQ)** — build a new SMS manual / review an existing one / structure an SMS-acceptance submission.
-5. **Existing inputs (free-text)** — any existing safety policy, key-personnel appointments, hazard data, or SPIs the user already has (the manual cites *their* facts, not invented ones).
-
-Echo the **confirmed organisation + scope + jurisdiction** back before drafting. Then walk the four pillars in order (`KB-STD-ICAO-ANNEX19`): Pillar 1 (policy + accountabilities + key personnel + ERP coordination + SMS documentation), Pillar 2 (the hazard-ID process + the 5×5 RCS reference — point to `aviation-hazard-register` for the live register), Pillar 3 (the SPI/SPT framework + management review/SRB — point to `aviation-spi-spt-framework` and `aviation-srb-minutes`), Pillar 4 (training + just culture + confidential reporting — point to `aviation-just-culture-policy` and `aviation-confidential-reporting`). Flag any pillar left incomplete.
+The full typed/branched intake Q-table — the org type, named scope, the State Safety
+Programme / jurisdiction branch (India → `KB-REG-IN-DGCA`, FAA/EASA → ask-the-reference,
+never fabricate), the **Accountable Manager + Safety Manager** appointments, the
+build/review/submission scope, and the audience/distribution gate — lives in
+**`references/intake.md`** (the `intake-coverage` manifest + echo-back + refuse-on-vague
+anchors). Run it one question at a time, branch on the answers, and **echo the confirmed
+organisation + scope + jurisdiction + the two appointments back before any drafting**. Then walk the four pillars in order (`KB-STD-ICAO-ANNEX19`): Pillar 1 (policy + accountabilities + key personnel + ERP coordination + SMS documentation), Pillar 2 (the hazard-ID process + the 5×5 RCS reference — point to `aviation-hazard-register` for the live register), Pillar 3 (the SPI/SPT framework + management review/SRB — point to `aviation-spi-spt-framework` and `aviation-srb-minutes`), Pillar 4 (training + just culture + confidential reporting — point to `aviation-just-culture-policy` and `aviation-confidential-reporting`). Flag any pillar left incomplete.
 
 Then: validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method (the four-pillar build) is in `references/METHODOLOGY.md`.
 
@@ -168,7 +166,9 @@ Moderate fan-out (the De-identifier runs FIRST as a sequential dependency):
   an input. SCOPE-OUT: does not check the SSP alignment (the Regulatory-Checker owns it).
 - **Critic/QA** (MANDATORY) — the Aviation-SMS persona (`KB-SNIP-ARCHETYPES`): every pillar
   complete, the Accountable Manager named, SSP alignment cited not invented, no PPE/admin-only
-  mitigation unjustified, and ZERO reporter-identity leak.
+  mitigation unjustified, and ZERO reporter-identity leak. Runs the per-skill SME sign-off
+  checklist in `references/sme-review.md` (decision-support; precedes — never replaces — the
+  human competent-person review).
 
 Simple single-subject tasks run single-threaded — no subagents.
 

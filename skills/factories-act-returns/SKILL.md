@@ -90,18 +90,32 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 ## Workflow
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+### Step 0 — Structured intake (run this first, one question at a time)
 
-**MANDATORY state detection (CT-8) — the state is a BLOCKING gate before any form is assembled:**
+Open with a **structured multi-step intake** (`KB-SNIP-INTAKE`) — the full typed/branched
+Q-table, coverage manifest, echo-back, and refuse-on-vague anchors live in
+**`references/intake.md`**. Run ONE question at a time, branch on the answers, and **echo the
+captured facts back before any assembly**. Never proceed on vague or missing inputs.
 
-1. **State (MANDATORY, ask FIRST)** — MCQ: TN / KA / MH / DL / GJ / Other (specify) / Unknown.
-   - You **may infer** the state from a supplied site address — but **echo it back and confirm** before assembling any return (a wrong state = a wrong statutory form).
-   - If the state is **Unknown or unseeded** → record a literal `[GAP]`, "verify the state form with a competent person", and **refuse to assemble a national form**. Do NOT invent a row.
-   - If the matched row's `form` is itself a literal `[GAP]` (the **GJ** annual-return row) → assemble the return **as far as the verified fields allow** but render the form id as `[GAP]` (verify the Gujarat form with a competent person) — never substitute a guessed Gujarat form number.
-2. **Obligation (MANDATORY)** — MCQ: annual-return / half-yearly-return / register.
-3. **Establishment + return data** — free-text: the named establishment + the prescribed return fields (employment / accident / leave figures). De-identify per the block above; aggregate small injury cells (<5).
+Must-ask dimensions: `ELI-JURIS` (**MANDATORY India→state detection — the state is a BLOCKING
+gate, asked FIRST, infer-then-confirm; unseeded → `[GAP]`, refuse a national form**) ·
+`ELI-EVIDENCE` (the return fields elicited **field-group by field-group** — accident tally by
+class, leave-with-wages, OSH appointments — never one blob) · `ELI-EXPOSURE` (avg/max workers +
+man-days — drive thresholds and the return body) · `ELI-COMPETENCY` (the **occupier / factory
+manager** who signs — a load-bearing named role) · `ELI-BASELINE` (first filing vs correction) ·
+`ELI-INDUSTRY` (hazardous-process?) · `ELI-TEMPORAL` (return year / half) · `ELI-SCOPE` /
+`ELI-SUBJECT` / `ELI-OUTPUT`. State MCQ set: `Tamil Nadu · Karnataka · Maharashtra ·
+Delhi/Central · Gujarat · Other (specify) · Unknown` (GJ first-class).
 
-Echo the **confirmed state + obligation + establishment** back. Then read the matched `KB-REG-IN-STATEFORMS` row, assemble the return under its prescribed `form` / `rule` / `due` (TN Form 22 / KA Form 20 / MH Form 27 / DL Form 21; **GJ = `[GAP]`**), append the row's `osh_transition` note and a pointer to `india-osh-code-pack`, and surface the `KB-REG-IN-PORTALS` (state factory-department) pointer. Every field absent from the source is a literal `[GAP]`, never fabricated.
+Once the **confirmed state + obligation + establishment** are echoed back: read the matched
+`KB-REG-IN-STATEFORMS` row and assemble the return under its prescribed `form` / `rule` / `due`
+(TN Form 22 / KA Form 20 / DL Form 21; **GJ = `[GAP]`**). **`[GAP]` — MH annual-return form-id:**
+`KB-REG-IN-STATEFORMS` seeds MH only for accident-notice, with no seeded MH annual-return row,
+so the MH annual-return form is carried forward as a literal `[GAP]` (verify against the live
+Maharashtra Factory Rules 1963 / seed the row — see `references/intake.md`); do **not** assert a
+number. Append the row's `osh_transition` note and a pointer to `india-osh-code-pack`, and
+surface the `KB-REG-IN-PORTALS` (state factory-department) pointer. Every field absent from the
+source is a literal `[GAP]`, never fabricated.
 
 Then: validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method is in `references/METHODOLOGY.md`.
 
@@ -161,6 +175,11 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+- **SME Review & Sign-off (MANDATORY, before any output)** — run the skill-specific
+  Indian factory / occupational-safety compliance persona + checklist in
+  `references/sme-review.md` (correct STATE form for the occupier; every unverified field —
+  incl. the MH annual-return form-id — honestly `[GAP]`). Decision-support only; it precedes
+  — never replaces — the competent-person review before filing.
 
 Simple single-subject tasks run single-threaded — no subagents.
 
