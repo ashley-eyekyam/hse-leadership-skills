@@ -1,6 +1,8 @@
 {
   "code_interpreter": true,
-  "conversation_starters": [],
+  "conversation_starters": [
+    "a) Org's existing matrix / b) Default 5×5  — confirm"
+  ],
   "description": "Builds a site-specific ventilation plan, strata- (ground-) control plan, or blasting plan for a mine — hazard-ranked on the org risk matrix, with critical controls hierarchy-ranked, grounded in the Mines Act / DGMS plan duties and the ICMM principal-hazard framing. Use it to draft a mine ventilation plan, a strata/ground-control plan, or a blasting/shotfiring plan for a specific opencast or underground mine. Decision-support that drafts a reviewable plan; a competent person owns the engineering judgement and signs off.",
   "instructions_file": "instructions.md",
   "knowledge_files": [
@@ -15,8 +17,10 @@
     "knowledge/icmm-ccm.md",
     "knowledge/in-mines-act.md",
     "knowledge/intake-interview.md",
+    "knowledge/intake.md",
     "knowledge/iso-45001.md",
     "knowledge/mining-hazards.md",
+    "knowledge/sme-review.md",
     "knowledge/subagent-archetypes.md"
   ],
   "name": "mine-ventilation-strata-blasting-plan"

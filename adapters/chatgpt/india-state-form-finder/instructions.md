@@ -38,28 +38,27 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — india-state-form-finder
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | What do you need — *which* form applies, or help *assembling/filing* it? | MCQ | Identify the form (stay here) · Assemble a Factories return (→ `factories-act-returns`) · Assemble an accident notice (→ `india-accident-notice`) · Understand the OSH-Code change (→ `india-osh-code-pack`) | ELI-SCOPE | always (first) |
+| Q1a | Which **jurisdiction** is the establishment in? *(this skill is India-default; a non-India jurisdiction is out of scope and routed onward.)* | MCQ | India, Other / Unknown — India activates the mandatory state gate (Q2) | ELI-JURIS | always |
+| Q2 | **Which Indian state** is the establishment in? *(I may infer it from an address you give me, but I will confirm before citing any form — a wrong state is a wrong statutory form.)* | MCQ | Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Gujarat · Other (specify) · Unknown | ELI-JURIS | iff Q1a = India — **BLOCKING gate** |
+| Q3 | What **kind of establishment** is it? *(this decides which law's form applies — a mine routes to DGMS, not a Factories form.)* | MCQ | Factory (Factories Act) · Construction site (BOCW) · Mine (Mines Act / DGMS) · Other (specify) | ELI-INDUSTRY | always |
+| Q4 | Which **statutory obligation** are you resolving? | MCQ | Annual return · Half-yearly return · Accident / dangerous-occurrence notice · Statutory register · Licence/registration | ELI-SUBJECT | always |
+| Q4a | Which **half-year period**? | MCQ | 1st half (Jan–Jun) · 2nd half (Jul–Dec) · Not sure | ELI-TEMPORAL | iff Q4 = half-yearly |
+| Q5 | For which **filing year / period** do you need the due date? | free-text | e.g. "annual return for CY2025" | ELI-TEMPORAL | always |
+| Q6 | Name the **establishment** (for the memo header — I will de-identify any worker PII). | free-text | establishment name only | ELI-SUBJECT | always |
+| Q7 | Who is this **for**, and how will it circulate? | MCQ | Internal note · Client/consultant memo · Filed with the document | ELI-OUTPUT | always |
 
-**MANDATORY state detection (CT-8) — the state is a BLOCKING gate before any form is cited:**
-
-1. **State (MANDATORY, ask FIRST)** — MCQ: TN / KA / MH / DL / GJ / Other (specify) / Unknown.
-   - You **may infer** the state from a supplied site address — but you MUST **echo it back and confirm** before citing any form (a wrong state = a wrong statutory form; never silently assume).
-   - If the state is **Unknown or unseeded** (anything outside TN/KA/MH/DL/GJ) → record a literal `[GAP]`, state "verify the state form with a competent person", and **refuse to emit a national form number**. Do NOT invent a row.
-2. **Law (MANDATORY)** — MCQ: factories-act / bocw / (other — defer to the owning pack).
-3. **Obligation (MANDATORY)** — MCQ: annual-return / half-yearly-return / accident-notice / register / license.
-4. **Establishment** — free-text: the named establishment (de-identified per the block above).
-
-Echo the **confirmed state + law + obligation** back before resolving. Then read the matched `KB-REG-IN-STATEFORMS` row and return its `form` / `rule` / `due` / `portal` as the primary (legacy-first) answer, append the row's `osh_transition` note (and point to `india-osh-code-pack` for the transition mapping), and surface the `KB-REG-IN-PORTALS` pointer. If the matched row's `form` is `[GAP]` (e.g. the GJ row), say so explicitly — never substitute a guessed value.
-
-Then: validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method (the resolution algorithm) is in `knowledge/METHODOLOGY.md`.
+answers; **echo the captured facts back before any resolution**; **refuse on a vague or
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -74,20 +73,14 @@ Assemble a `report.json` conforming to the shared report-model schema, then run 
 
 - Single-threaded by design — no subagents. (Replace with this skill's named
   fan-out jobs if the triage gate warrants them.)
+- **SME Review & Sign-off (MANDATORY, before any output)** — run the skill-specific
+  domain persona + checklist in `knowledge/sme-review.md`. Single-threaded skill: the
+  SME pass runs inline via the orchestration single-thread fallback, not as a spawned
+  subagent. Decision-support only; it precedes — never replaces — the competent-person review.
 
 ## Jurisdiction routing
 
-<!-- The jurisdiction ROWS below live BELOW the :end marker: per-skill, presence-only
-     (rule-2 presence check, never byte-diffed). Author the rows for the jurisdictions
-     this skill serves; rule-9 checks every path/ID resolves against the KB registries. -->
-
-| Jurisdiction | Read |
-|---|---|
-| India (state form) | knowledge/in-state-forms.md (KB-REG-IN-STATEFORMS — the (law,state,obligation) engine; **mandatory state detection**) + in-factories-act.md |
-| India (OSH transition) | knowledge/in-osh-code.md (KB-REG-IN-OSH-CODE — append the legacy-first transition note) |
-| India (portal) | knowledge/in-portals.md (KB-REG-IN-PORTALS — state filing-portal pointer; verify locally) |
-| Any   | knowledge/iso-45001.md + prompt-snippets/hierarchy-of-controls.md (KB-SNIP-HOC) |
-| Unknown | Ask before citing any specific law (confirm the **state** first) |
+_Full detail moved to the knowledge upload (see `knowledge/`)._
 
 ## Attribution (non-intrusive)
 

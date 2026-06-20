@@ -38,42 +38,30 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — board-safety-report
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | **Reporting period** | free-text + MCQ | "Which period does this report cover?" — Monthly / Quarterly / Half-year / Annual / Other (+ the exact dates, e.g. 'FY2025' or 'Q2 2026'). Sets the subtitle + the `period` label passed to `incident_rates`; the comparison baseline. | ELI-TEMPORAL | always |
+| Q2 | **Audience body** | MCQ | Board of directors / Executive committee / Senior leadership team. Tunes register/depth (board = most strategic, least operational) — the narrative altitude. *(The audience facet stays `[E]`; this only tunes the register.)* | ELI-OUTPUT | always |
+| Q3 | **Safety data / metrics available** | free-text (structured) | "Provide the period's safety metrics — recordable / lost-time / DART counts **and hours worked** (for rates), plus any leading indicators: training %, audit/inspection closure, near-miss reporting rate, action closure." The **hours + counts gate the `incident_rates` call**; leading indicators are synthesized. | ELI-EVIDENCE | always |
+| Q4 | **Key events of the period** | free-text | "Summarize the significant HSE events of the period (serious incidents, notable near-misses, regulatory contacts, audits). **These will be de-identified AND aggregated — do not name individuals; a single event will be rolled up, never narrated as an anecdote.**" Flagged for **immediate** de-id + aggregation (step 1). | ELI-SUBJECT | always |
+| Q5 | **HiPo / SIF events** | free-text | "List any **high-potential (HiPo) incidents** and **serious-injury-or-fatality (SIF) precursors** in the period — events that *could* have been life-altering regardless of actual outcome." Drives the **D-01 HiPo/SIF lens** (step 4); de-identified + aggregated like Q4. | ELI-SUBJECT | always |
+| Q6 | **Strategic priorities** | free-text | "What are the organisation's current HSE strategic priorities or objectives?" Frames the narrative against objectives (ISO 45001 9.3) + the strategic-actions section. | ELI-SUBJECT | always |
+| Q6b | **Accountability for strategic asks** | free-text | "For each strategic priority/ask, which executive is accountable? (role-level — sharpens the governance asks; optional)" — accountability sharpens the *output* ask (ELI-COMPETENCY is omitted by design: a board paper names asks, not an action register). | ELI-OUTPUT | always |
+| Q7 | **Prior-period comparison data** | free-text | "Provide the prior period's figures for trend comparison (or say if unavailable)." Absent → trends flagged `[GAP]`, never invented. | ELI-EVIDENCE | always |
+| Q8 | **Benchmark target** | free-text | "Which benchmark should performance be compared against (industry/sector average, an internal target)? If you have a figure, state it **with its source**; otherwise the skill reads the KB benchmark with its source + year." Resolves `KB-DATA-TRIR-BENCHMARKS`; absent → `[GAP]`. | ELI-OBLIGATIONS | always |
+| Q9 | **Environmental metrics?** (optional) | MCQ + free-text | No / Yes ; (if Yes, list them) — "Are environmental events/metrics in scope for this board paper?" then a **single** optional ISO 14001 9.1.2 env-performance line (D-02); **not** a full ESG branch. | ELI-EXPOSURE | always |
+| Q10 | **Jurisdiction** | MCQ | India / UK / USA / EU / Other-or-Unknown. Mostly context (B9 is narrative); **India → resolve the state (Q10a)** only if a statutory figure is cited. | ELI-JURIS | always |
+| Q10a | *(India only, if a statutory figure is cited)* **Which state?** | MCQ | Tamil Nadu / Karnataka / Maharashtra / Delhi-Central / Gujarat / Other — **mandatory state detection; confirm the state before citing any statutory figure or form** (never a national form number). | ELI-JURIS | Q10 == India |
 
-### Step 0 — Structured intake (run first, one question at a time)
-
-Run B9's question set one at a time, MCQ where enumerable and free-text where open,
-branch on the answers, and **echo the captured facts back for confirmation before any
-analysis**. Never proceed on a vague period or audience — ask, or record
-`[ASSUMPTION]` / `[GAP]`. **Never invent a figure or a benchmark.**
-
-| # | Question | Type | Options / prompt |
-|---|---|---|---|
-| Q1 | **Reporting period** | free-text (+ MCQ shape) | "Which period does this report cover?" — Monthly · Quarterly · Half-year · Annual · Other (+ the exact dates, e.g. 'FY2025' or 'Q2 2026'). Sets the subtitle + the `period` label passed to `incident_rates`; the comparison baseline. |
-| Q2 | **Audience body** | MCQ | Board of directors · Executive committee · Senior leadership team. Tunes register/depth (board = most strategic, least operational) — the narrative altitude. *(The audience facet stays `[E]`; this only tunes the register.)* |
-| Q3 | **Safety data / metrics available** | free-text (structured) | "Provide the period's safety metrics — recordable / lost-time / DART counts **and hours worked** (for rates), plus any leading indicators: training %, audit/inspection closure, near-miss reporting rate, action closure." The **hours + counts gate the `incident_rates` call** (see the method); leading indicators are synthesized. |
-| Q4 | **Key events of the period** | free-text | "Summarize the significant HSE events of the period (serious incidents, notable near-misses, regulatory contacts, audits). **These will be de-identified AND aggregated — do not name individuals; a single event will be rolled up, never narrated as an anecdote.**" Flagged for **immediate** de-id + aggregation (step 1). |
-| Q5 | **HiPo / SIF events** | free-text | "List any **high-potential (HiPo) incidents** and **serious-injury-or-fatality (SIF) precursors** in the period — events that *could* have been life-altering regardless of actual outcome." Drives the **D-01 HiPo/SIF lens** (step 4); de-identified + aggregated like Q4. |
-| Q6 | **Strategic priorities** | free-text | "What are the organisation's current HSE strategic priorities or objectives?" Frames the narrative against objectives (ISO 45001 9.3) + the strategic-actions section. |
-| Q7 | **Prior-period comparison data** | free-text | "Provide the prior period's figures for trend comparison (or say if unavailable)." Absent → trends flagged `[GAP]`, never invented. |
-| Q8 | **Benchmark target** | free-text + KB | "Which benchmark should performance be compared against (industry/sector average, an internal target)? If you have a figure, state it **with its source**; otherwise the skill reads the KB benchmark with its source + year." Resolves `KB-DATA-TRIR-BENCHMARKS`; absent → `[GAP]`. |
-| Q9 | **Environmental metrics?** (optional) | MCQ + free-text | "Are environmental events/metrics in scope for this board paper? (No / Yes — then list them.)" Yes → a **single** optional ISO 14001 9.1.2 env-performance line (D-02); **not** a full ESG branch. |
-| Q10 | **Jurisdiction** | MCQ | India (which state?) · UK · USA · EU · Other/Unknown. Mostly context (B9 is narrative); India → resolve the state only if a statutory figure is cited. |
-
-After the last applicable question, **echo a captured-facts summary** ("Board safety
-report for FY2025, for the Board of directors; lagging metrics + training/audit
-leading indicators provided; key events + HiPo/SIF to be aggregated; priorities =
-contractor safety + psychosocial; comparison vs FY2024; benchmark = sector TRIR
-[source, year] — correct?") and only then proceed — **after** the de-id/aggregation
-scrub (step 1).
+## Refuse-on-vague anchors
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 

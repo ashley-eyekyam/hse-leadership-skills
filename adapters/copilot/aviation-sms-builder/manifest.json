@@ -14,6 +14,8 @@
     "knowledge/icao-annex19.md",
     "knowledge/in-dgca.md",
     "knowledge/intake-interview.md",
+    "knowledge/intake.md",
+    "knowledge/sme-review.md",
     "knowledge/subagent-archetypes.md"
   ],
   "name": "aviation-sms-builder",

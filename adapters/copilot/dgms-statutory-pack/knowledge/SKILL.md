@@ -85,13 +85,21 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 ## Workflow
 
-Open with a **structured multi-step intake** (`KB-SNIP-INTAKE`) — one question at a time, branch on the answers, echo the captured facts before any drafting. The obligation is the **runtime gate**: resolve it, then drive to the prescribed form.
+Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open; one question at a time, branch on the answers, echo the captured facts before any drafting; refuse on a vague subject and never invent (`KB-SNIP-INTAKE`).
 
-1. **Mine + region** — the named mine, commodity, opencast/underground, and the **DGMS region/zone** (free-text; **mandatory** — ask, or infer-from-location-then-confirm, never silently assume). Region resolution precedes any form citation (`KB-REG-IN-STATEFORMS`).
-2. **Obligation** — MCQ: 24h accident/dangerous-occurrence notice · Form J register entry · Form B register · annual return (~20 Jan) · statutory appointment letter.
-3. **Facts** — free-text: the de-identified facts the obligation needs (event/role/date for a notice; personnel counts for a register; appointment role for an appointment).
+### Step 0 — Structured intake (run this first, one question at a time)
 
-Resolve the obligation → the matched `KB-REG-IN-MINES-ACT` duty row → the **form** from `KB-REG-IN-DGMS`. Cite **only** the five verified anchors (Form J, Form B, 24h notice, annual return ~20 Jan, statutory Manager appointment) as values; for **any other** DGMS form, emit a literal `[GAP]` (e.g. `(DGMS-prescribed — verify per mine) [GAP]`), **never a fabricated number**. Append the OSH-Code transition note (legacy-first). `smart_actions` owner+dates any follow-up. Validate against `references/QUALITY_CHECKLIST.md`, then produce the output via the Output format section.
+The full typed, branched Q-table — obligation gate (Q1), the mandatory DGMS
+region/zone resolution (Q4), the per-obligation follow-ups (Q5a–Q5d), the echo-back
+and the refuse-on-vague anchors — lives in **`references/intake.md`**. Must-ask
+dimensions: the **obligation** (the runtime gate) and the **DGMS region/zone** (a
+mandatory gate that must be confirmed before any form is cited). Resolve the obligation
+→ the `KB-REG-IN-MINES-ACT` duty row → the **form** from `KB-REG-IN-DGMS`; cite **only**
+the five verified anchors (Form J, Form B, 24h notice, annual return ~20 Jan, statutory
+Manager appointment) as values, and for **any other** DGMS form emit a literal
+`(DGMS-prescribed — verify per mine) [GAP]`, **never a fabricated number**. Append the
+OSH-Code transition note (legacy-first); `smart_actions` owner+dates any follow-up;
+validate against `references/QUALITY_CHECKLIST.md`, then produce the output.
 
 <!-- hse:block:orchestration:start -->
 ## Agentic Execution (Orchestration Block)
@@ -125,14 +133,23 @@ this conversation — paste ALL needed context into its prompt. Per-subagent ske
 Gather the outputs, resolve conflicts explicitly (state which source wins), de-duplicate,
 and assemble the deliverable in this skill's output format.
 
-### Step 4 — Critic / QA (MANDATORY — this is regulatory/safety output)
-Spawn ONE Critic: give it the draft + the inputs + the output contract. It finds errors,
-unsupported claims, missed regulatory triggers, lower-order-only controls, and any
-de-identification leak. Fix everything it raises before delivery.
+### Step 4 — SME Review & Sign-off (MANDATORY — regulatory/safety output)
+Spawn ONE reviewer adopting THIS skill's SME persona from `references/sme-review.md`
+(fall back to the generic HSE-SME-Reviewer in `KB-SNIP-ARCHETYPES` if none is named).
+Give it the draft + the inputs + the output contract. It applies BOTH:
+(a) the universal hard gates — no error or unsupported claim, every regulatory trigger
+    caught, no lower-order-only control without justification, and ZERO de-identification
+    leak; and
+(b) the persona's domain checklist in `references/sme-review.md`.
+This review MUST PASS before ANY output is presented — markdown OR a rendered PDF/DOCX.
+Fix everything it raises and re-run until clean. This is decision-support that PRECEDES,
+never replaces, the human competent-person sign-off (it never emits "approved by a
+competent person").
 
-> Single-threaded fallback: if your host has no subagent capability, execute each job
-> sequentially in THIS context — run the de-identification scrub first, keep the scope
-> discipline, and still perform the required Critic/QA pass before delivery.
+> Single-threaded fallback: if your host has no subagent capability, perform the SME
+> Review & Sign-off pass yourself in THIS context — run the de-identification scrub
+> first, keep the scope discipline, apply the persona checklist + universal gates, and
+> pass the review before presenting any output (markdown or rendered).
 <!-- hse:block:orchestration:end -->
 
 ### Subagent roster for THIS skill
@@ -149,6 +166,11 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+
+**Step 4 — SME review & sign-off (MANDATORY, before any output):** run the skill-specific
+SME persona sign-off in **`references/sme-review.md`** (the DGMS statutory-compliance
+specialist) — model QA, decision-support, FLAGs non-blocking; it precedes and never
+replaces the human DGMS-qualified competent-person review.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

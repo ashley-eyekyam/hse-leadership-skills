@@ -1,6 +1,8 @@
 {
   "code_interpreter": true,
-  "conversation_starters": [],
+  "conversation_starters": [
+    "bund-sizing / containment-plan / controls-review"
+  ],
   "description": "Assess bulk-storage, tank-farm and bunding controls — secondary containment sizing basis, segregation of incompatible substances, overfill protection, drainage and firewater containment. Use it to assess a tank farm, size a bund, plan secondary containment, or review overfill / segregation controls for bulk chemical storage. Containment basis and controls are hierarchy-of-controls ranked and traced to evidence with named owners and dates; flammable-atmosphere area control grounds in DSEAR; India storage licensing pointers reference PESO. Decision-support only; a competent person must review the output.",
   "instructions_file": "instructions.md",
   "knowledge_files": [
@@ -16,7 +18,9 @@
     "knowledge/in-peso.md",
     "knowledge/in-state-forms.md",
     "knowledge/intake-interview.md",
+    "knowledge/intake.md",
     "knowledge/iso-45001.md",
+    "knowledge/sme-review.md",
     "knowledge/subagent-archetypes.md"
   ],
   "name": "tank-farm-bunding-controls"

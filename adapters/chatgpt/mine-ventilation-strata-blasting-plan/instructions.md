@@ -38,22 +38,28 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — mine-ventilation-strata-blasting-plan
 
-Open with a **structured multi-step intake** (`KB-SNIP-INTAKE`) — one question at a time, branch, echo the captured facts before drafting.
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | Which plan + new or review? | MCQ | ventilation / strata-ground-control / blasting-shotfiring / draft-new / review-existing | ELI-SCOPE | always |
+| Q2 | Commodity + mine type? | MCQ | a) Coal — UG / b) Coal — opencast / c) Metalliferous — UG / d) Metalliferous — opencast / e) Other | ELI-INDUSTRY | always (branch driver) |
+| Q3 | DGMS region / state (India)? | MCQ→confirm | infer-then-confirm the DGMS region and the **state** if the jurisdiction is India | ELI-JURIS/ELI-LOCATION | India |
+| Q4V | Ventilation parameters | free-text | "Gas regime / seam gassiness category, required air quantity & quality, method (forcing/exhausting/booster), districts, gas-monitoring setup" | ELI-SUBJECT/ELI-EVIDENCE | Q1=ventilation |
+| Q4S | Strata parameters | free-text | "Seam/orebody geology + depth, roof/highwall conditions, support regime (bolt/prop/standing), geotech/convergence data" | ELI-SUBJECT/ELI-EVIDENCE | Q1=strata |
+| Q4B | Blasting parameters | free-text | "Explosive type, blast design (burden/spacing/charge/delay), exclusion zone, misfire procedure, vibration/flyrock limits" | ELI-SUBJECT/ELI-EVIDENCE | Q1=blasting |
+| Q5 | Principal hazards to address? | mcqmulti-select | confirm from `KB-DATA-MINING-HAZARDS` for the selected plan type | ELI-SUBJECT | always |
+| Q6 | Sign-off competent person (role)? | free-text | "Ventilation officer / shotfirer / geotech engineer / mine manager — as a role label" | ELI-COMPETENCY | always |
+| Q7 | Risk-rating scheme? | MCQ | a) Org's existing matrix / b) Default 5×5 (D-02 bands) — confirm | ELI-SCORING | always |
+| Q8 | Output + distribution? | MCQ | a) Plan document / b) Plan + gap-check / c) Review notes | ELI-OUTPUT | always |
 
-1. **Mine** — commodity, **opencast / underground**, and (for India) the DGMS region (free-text; specific).
-2. **Plan type** — MCQ: ventilation plan · strata- / ground-control plan · blasting / shotfiring plan.
-3. **Parameters** — free-text: the **actual** parameters the plan needs (air quantity/quality + districts for ventilation; support regime + geotech for strata; explosive type + exclusion + misfire procedure for blasting). Never proceed on a generic template.
-4. **Principal hazards** — confirm the hazards from `KB-DATA-MINING-HAZARDS` the plan must address.
-
-Then: rank each hazard on the org matrix (`risk_matrix`); build the control suite hierarchy-ranked (`controls`, critical controls flagged, PPE/admin-only escalated); assign owner + due date to follow-up actions (`smart_actions`); cite the Mines Act/DGMS plan duty. Validate against `knowledge/QUALITY_CHECKLIST.md`, then produce the output via the Output format section. The plan is a draft for a competent person's sign-off.
+facts back before any drafting**; **refuse on a vague subject** — a generic-template request
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -61,22 +67,7 @@ Assemble a `report.json` conforming to the shared report-model schema, then run 
 
 ## Subagent roster (preserved as a sequential checklist)
 
-### Subagent roster for THIS skill
-
-<!-- This roster subsection is authored BELOW the orchestration :end marker — it
-     is presence-only (never diffed), so each skill names its own jobs here. -->
-
-For a non-trivial task the triage gate may fan out to:
-
-- **Researcher** — gathers the task/site facts, the resolved jurisdiction's
-  requirements, and the relevant standards, from the scrubbed inputs only.
-- **Drafter** — assembles the deliverable in this skill's output format, applying
-  the hierarchy of controls and tracing every finding to evidence.
-- **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
-  output: specificity, hierarchy of controls, defensibility, de-identification, and
-  citation accuracy.
-
-Simple single-subject tasks run single-threaded — no subagents.
+_Full detail moved to the knowledge upload (see `knowledge/`)._
 
 ## Jurisdiction routing
 

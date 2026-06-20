@@ -38,27 +38,32 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — bowtie-builder
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | Build a **plain bowtie**, or a **Critical Control Management (ICMM CCM)** plan? | MCQ | Bowtie diagram / CCM critical-control plan / Both | ELI-SCOPE | always |
+| Q2 | Which **sector** frames this? | MCQ | Process / Chemicals / Mining (principal hazard) / Aviation / Other | ELI-INDUSTRY | always |
+| Q3 | Name the **hazard** (the energy / material with potential to harm). | free-text | Specific, not "operations"; the specificity anchor. | ELI-SUBJECT | always |
+| Q4 | Name the **top event** (the loss-of-control / release point — the centre). | free-text | One top event per bowtie. | ELI-SUBJECT | always |
+| Q5 | List the **threats** (causes that release the top event), one per line. | free-text | Left side of the bowtie. | ELI-SUBJECT | always |
+| Q6 | List the **consequences**, phrased "[Damage] due to [Event]". | free-text | Right side of the bowtie. | ELI-SUBJECT | always |
+| Q7 | For each **barrier** (preventive + mitigative): is it **effective · independent · auditable**, and what is its **performance standard**? | free-text | The team's judgement; `[GAP]` if no evidence — never declared effective without a performance standard. | ELI-BASELINE | always |
+| Q8 | For each **critical control**: the **verification activity**, **owner**, and **frequency**. | free-text | CCM defensibility — the critical-control verification table. | ELI-EVIDENCE | Q1 == CCM critical-control plan |
+| Q9 | Who is the **team / owner** supplying the barrier judgements, and how recent are they? | free-text | The assistive-evidence anchor (named role for defensibility) + last-reviewed date. | ELI-COMPETENCY | always |
+| Q10 | Which **risk matrix** for the residual band? | MCQ | Our matrix (paste) , Default 5×5 | ELI-SCORING | always |
+| Q11 | Which **jurisdiction** for the grounding citation? | MCQ | UK , USA , EU , India , None | ELI-JURIS | always |
+| Q11a | *(India only)* Which **state** is the installation in? | MCQ | Tamil Nadu / Karnataka / Maharashtra / Delhi-Central / Gujarat / Other / Unknown — **mandatory state detection**; confirm before citing any statutory filing; "Other"/"Unknown" → literal `[GAP]`, never a national-form fallback | ELI-JURIS | Q11 == India |
+| Q12 | What **output**, for whom, how widely shared? | MCQ+free-text | Bowtie diagram / CCM plan / Full report // audience M (management) or C (consultant) // internal vs circulated externally | ELI-OUTPUT | always |
+| Q13 | When was this barrier set **last reviewed / verified**, and when is the next review due? | free-text | The performance-standard verification cadence (CCM). | ELI-TEMPORAL | always |
 
-For a bowtie the intake elicits the hazard, the top event, and the barrier evidence:
-
-1. **The hazard** — the named energy/material with potential to harm (specific).
-2. **The top event** — the loss-of-control / release point (the centre of the bowtie).
-3. **Threats** — the causes that could release the top event (one threat per line).
-4. **Consequences** — phrased '**[Damage] due to [Event]**'.
-5. **Barriers** — preventive (threat side) and mitigative (consequence side); for each, the team's **effective · independent · auditable** judgement and a **performance standard** (records `[GAP]` if no evidence). Critical controls (CCM) get a verification activity + owner.
-6. **Risk matrix** — for the residual band.
-
-Echo the hazard + top event + threats/consequences back before drawing barriers. The skill **records** the team's barrier judgements — it never declares a barrier effective without the performance-standard evidence (records `[GAP]`).
-Then: analyse / apply the domain method → validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `knowledge/METHODOLOGY.md`.
+> **echo the captured facts back before any analysis**, and **refuse a vague hazard / top
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -66,22 +71,7 @@ This host has no Code Interpreter, so emit the deliverable as a **structured mar
 
 ## Subagent roster (preserved as a sequential checklist)
 
-### Subagent roster for THIS skill
-
-<!-- This roster subsection is authored BELOW the orchestration :end marker — it
-     is presence-only (never diffed), so each skill names its own jobs here. -->
-
-For a non-trivial task the triage gate may fan out to:
-
-- **Researcher** — gathers the task/site facts, the resolved jurisdiction's
-  requirements, and the relevant standards, from the scrubbed inputs only.
-- **Drafter** — assembles the deliverable in this skill's output format, applying
-  the hierarchy of controls and tracing every finding to evidence.
-- **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
-  output: specificity, hierarchy of controls, defensibility, de-identification, and
-  citation accuracy.
-
-Simple single-subject tasks run single-threaded — no subagents.
+_Full detail moved to the knowledge upload (see `knowledge/`)._
 
 ## Jurisdiction routing
 

@@ -138,33 +138,16 @@ Open with a **structured multi-step intake** — MCQ where the answer space is e
 
 ### Step 0 — Structured intake (run this first, one question at a time)
 
-Run the question set below one at a time, branch on the answers, and **echo the
-captured facts back for confirmation before any analysis**. The **two load-bearing
-free-text questions are the job/task (Q3) and its ordered step sequence (Q4) — the
-spine**. **Refuse to proceed on a vague job or an empty/one-line step list** — ask the
-user to break the job into its actual sequence of steps, or record `[ASSUMPTION]` /
-`[GAP]`; **never invent a step**. A JSA with no steps is not a JSA.
-
-| # | Question | Type | Options / prompt |
-|---|---|---|---|
-| Q1 | Jurisdiction | MCQ | India · UK · USA · EU · Other/Unknown (India → Q1a) |
-| Q1a | *(India only)* Which state? | MCQ | Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Other — **mandatory state detection; confirm before citing any form** |
-| Q2 | Industry / sector | MCQ + free-text | Manufacturing · Oil & Gas · Construction · Mining · Other physical-work sector (+ detail) |
-| **Q3** | **The job/task being analysed** | **free-text** | "Name the exact job/task — e.g. 'clean and inspect storage tank T-402, Plant 3'." — **specificity anchor (a); refuse a vague answer** |
-| **Q4** | **The job's steps, in the order performed** | **free-text** | "List the steps in sequence — e.g. '1. isolate & lockout · 2. purge/ventilate · 3. gas-test · 4. enter · 5. clean · 6. exit & restore'. One step per line." — **specificity anchor (b), THE SPINE; each step becomes a JSA row; refuse an empty/one-line list — ask the user to decompose** |
-| Q5 | Tools / equipment / materials used | free-text | "What tools, plant, equipment, or materials does this job use (e.g. cherry-picker, angle grinder, solvent, scaffold)?" (introduces equipment/substance hazards into the relevant steps) |
-| Q6 | Who performs the job, and their competencies | MCQ multi-select + free-text | Own workers · Contractors · Specialist/licensed trade · Mixed crew (+ required competencies/permits — confined-space entry permit, hot-work permit) |
-| Q7 | Environment / conditions | MCQ multi-select + free-text | Working at height · Confined space · Hot/cold/outdoor · Live plant nearby · Public/traffic nearby · Restricted access · Other — flags permit-to-work triggers |
-| Q8 | Location / site | free-text | "Which specific site/area/asset?" |
-| Q9 | Likelihood band (org scale) | MCQ | 1 Rare · 2 Unlikely · 3 Possible · 4 Likely · 5 Almost certain |
-| Q10 | Severity band (org scale) | MCQ | 1 Negligible · 2 Minor · 3 Moderate · 4 Major · 5 Catastrophic |
-| Q11 | Org risk-matrix size | MCQ | 3×3 · 4×4 · **5×5 (default)** · Supply our matrix |
-
-After Q11, **echo a captured-facts summary** ("Analysing: clean & inspect tank T-402,
-Plant 3, Maharashtra, 6 steps (isolate/lockout → purge → gas-test → enter → clean →
-exit), own workers + confined-space-permitted contractors, cherry-picker + solvent, 5×5
-matrix — correct?") and only then proceed. Q9/Q10 establish the org scale; **each step's
-hazard is scored individually at Workflow step 4**.
+The full typed, branched intake — the `intake-coverage` manifest, the question table
+(jurisdiction · industry · the job anchor Q3 · the **ordered step sequence Q4 — THE
+SPINE** · tools/materials · SDS held · who-performs + competencies · environment ·
+permits-to-work · location · likelihood/severity/matrix · review trigger), the
+**mandatory India→state branch** (Q1 = India → Q1a), the **SDS-evidence branch** (Q5
+names a substance → Q5b), the echo-back, and the refuse-on-vague anchors — lives in
+**`references/intake.md`**. Run it one question at a time, branch on the answers, **echo
+the captured facts back before any analysis**, and **refuse to proceed on a vague job or
+an empty/one-line step list** (Q3/Q4 are the spine — record `[ASSUMPTION]` / `[GAP]`,
+never invent a step). A JSA with no steps is not a JSA.
 
 ### The JSA method (ISO 45001 6.1.2 loop, run PER STEP)
 
@@ -257,14 +240,23 @@ this conversation — paste ALL needed context into its prompt. Per-subagent ske
 Gather the outputs, resolve conflicts explicitly (state which source wins), de-duplicate,
 and assemble the deliverable in this skill's output format.
 
-### Step 4 — Critic / QA (MANDATORY — this is regulatory/safety output)
-Spawn ONE Critic: give it the draft + the inputs + the output contract. It finds errors,
-unsupported claims, missed regulatory triggers, lower-order-only controls, and any
-de-identification leak. Fix everything it raises before delivery.
+### Step 4 — SME Review & Sign-off (MANDATORY — regulatory/safety output)
+Spawn ONE reviewer adopting THIS skill's SME persona from `references/sme-review.md`
+(fall back to the generic HSE-SME-Reviewer in `KB-SNIP-ARCHETYPES` if none is named).
+Give it the draft + the inputs + the output contract. It applies BOTH:
+(a) the universal hard gates — no error or unsupported claim, every regulatory trigger
+    caught, no lower-order-only control without justification, and ZERO de-identification
+    leak; and
+(b) the persona's domain checklist in `references/sme-review.md`.
+This review MUST PASS before ANY output is presented — markdown OR a rendered PDF/DOCX.
+Fix everything it raises and re-run until clean. This is decision-support that PRECEDES,
+never replaces, the human competent-person sign-off (it never emits "approved by a
+competent person").
 
-> Single-threaded fallback: if your host has no subagent capability, execute each job
-> sequentially in THIS context — run the de-identification scrub first, keep the scope
-> discipline, and still perform the required Critic/QA pass before delivery.
+> Single-threaded fallback: if your host has no subagent capability, perform the SME
+> Review & Sign-off pass yourself in THIS context — run the de-identification scrub
+> first, keep the scope discipline, apply the persona checklist + universal gates, and
+> pass the review before presenting any output (markdown or rendered).
 <!-- hse:block:orchestration:end -->
 
 ### Subagent roster for THIS skill
@@ -297,6 +289,10 @@ Workflow steps 4/5/6 (`risk_matrix`, `controls`), never LLM fan-out work. Archet
   `KB-SNIP-HOC` tier (consumes the De-identifier's scrubbed text + the A7
   `risk_matrix`/`controls` per-step scores + the Regulatory-Checker's verdict). SCOPE-OUT:
   gathering evidence (Researcher), checking law (Regulatory-Checker).
+- **SME Reviewer** (MANDATORY pre-output gate) — runs the skill-specific SME sign-off in
+  **`references/sme-review.md`** (frontline safety / work-method & permit-to-work
+  specialist) before any output: the job decomposed into REAL ordered steps, each step's
+  hazards controlled at step granularity (no PPE-only step) and the right permits triggered.
 - **Critic/QA** (MANDATORY) — every step decomposed + confirmed (none invented), every
   step's hazards scored (via the A7 engine), every step's controls HoC-ranked, no step left
   PPE/admin-only without justification, every action owned + dated + step/hazard-linked,

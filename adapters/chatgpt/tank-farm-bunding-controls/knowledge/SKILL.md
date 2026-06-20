@@ -91,14 +91,17 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-For a tank-farm / bunding assessment the intake elicits the storage facts BEFORE any sizing basis:
-
-1. **Stored substances + volumes** — the substances and tank volumes (free-text; specific). Incompatibilities matter for segregation.
-2. **Storage configuration** — MCQ: atmospheric / pressurised / refrigerated; single / bunded group.
-3. **Existing containment** — the current bund, drainage, overfill protection, firewater (free-text).
-4. **Jurisdiction** — India → resolve the **state** (mandatory) for PESO/state storage licensing.
-
-Echo the substances + volumes + configuration back before stating the containment basis. The containment sizing basis is **resolved (not assumed)**; segregation respects incompatibilities; controls are HoC-ranked (`controls`); India licensing pointers reference `KB-REG-IN-PESO`.
+**Run the full structured intake in `references/intake.md`** — the typed/branched
+Q-table, its intake-coverage manifest, the echo-back, and the refuse-on-vague anchors
+live there. It elicits each stored substance + tank volume (refuse "bulk solvents",
+flag the largest tank), tanks-per-bund + incompatible pairs, DG class/flashpoint,
+storage configuration, existing containment, receptor proximity
+(watercourse/drain/boundary), the containment-sizing rule (**resolved from the rule,
+never an assumed %**), and the jurisdiction (**India → resolve the state, mandatory** —
+`references/intake.md` Q10, for PESO/state storage licensing; "Other"/"Unknown" →
+literal `[GAP]`). Echo the substances + volumes + configuration back before stating the
+containment basis. Segregation respects incompatibilities; controls are HoC-ranked
+(`controls`); India pointers reference `KB-REG-IN-PESO`.
 
 Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
 
@@ -134,14 +137,23 @@ this conversation — paste ALL needed context into its prompt. Per-subagent ske
 Gather the outputs, resolve conflicts explicitly (state which source wins), de-duplicate,
 and assemble the deliverable in this skill's output format.
 
-### Step 4 — Critic / QA (MANDATORY — this is regulatory/safety output)
-Spawn ONE Critic: give it the draft + the inputs + the output contract. It finds errors,
-unsupported claims, missed regulatory triggers, lower-order-only controls, and any
-de-identification leak. Fix everything it raises before delivery.
+### Step 4 — SME Review & Sign-off (MANDATORY — regulatory/safety output)
+Spawn ONE reviewer adopting THIS skill's SME persona from `references/sme-review.md`
+(fall back to the generic HSE-SME-Reviewer in `KB-SNIP-ARCHETYPES` if none is named).
+Give it the draft + the inputs + the output contract. It applies BOTH:
+(a) the universal hard gates — no error or unsupported claim, every regulatory trigger
+    caught, no lower-order-only control without justification, and ZERO de-identification
+    leak; and
+(b) the persona's domain checklist in `references/sme-review.md`.
+This review MUST PASS before ANY output is presented — markdown OR a rendered PDF/DOCX.
+Fix everything it raises and re-run until clean. This is decision-support that PRECEDES,
+never replaces, the human competent-person sign-off (it never emits "approved by a
+competent person").
 
-> Single-threaded fallback: if your host has no subagent capability, execute each job
-> sequentially in THIS context — run the de-identification scrub first, keep the scope
-> discipline, and still perform the required Critic/QA pass before delivery.
+> Single-threaded fallback: if your host has no subagent capability, perform the SME
+> Review & Sign-off pass yourself in THIS context — run the de-identification scrub
+> first, keep the scope discipline, apply the persona checklist + universal gates, and
+> pass the review before presenting any output (markdown or rendered).
 <!-- hse:block:orchestration:end -->
 
 ### Subagent roster for THIS skill
@@ -158,6 +170,12 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+- **SME Review & Sign-off** (MANDATORY, before ANY output) — run the skill-specific
+  persona, domain checklist, and boundary in `references/sme-review.md` (bulk-storage /
+  secondary-containment engineer lens: the containment basis traced to a stated rule not
+  an assumed %; segregation, overfill independence and firewater containment hold against
+  the actual inventory). Decision-support only; precedes — never replaces — the human
+  competent-person review.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

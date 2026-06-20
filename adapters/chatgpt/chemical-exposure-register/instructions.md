@@ -38,28 +38,34 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — chemical-exposure-register
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | What do you need — build a new exposure register, add agents to an existing one, or plan a monitoring/surveillance schedule from an existing register? | MCQ | new register / extend register / monitoring-plan-only | ELI-SCOPE | always |
+| Q2 | Name the site and the similar-exposure groups (SEGs) / tasks to cover. | free-text | "e.g. Packing line operators; Drum decanting; Lab analysts" — refuse "all workers" | ELI-SUBJECT | always |
+| Q3 | For each SEG, the chemical agents present + CAS. | free-text | agent + CAS per SEG; refuse "various solvents" | ELI-SUBJECT | always |
+| Q4 | Approx. number of workers in each SEG. | free-text | integer per SEG (drives <5 suppression + surveillance threshold) | ELI-EXPOSURE | always |
+| Q5 | Exposure route(s) for each agent. | MCQ multi-select | inhalation / dermal / ingestion / injection | ELI-EXPOSURE | always |
+| Q6 | Task duration & frequency per shift. | free-text | "e.g. 2h decanting × 3/shift" — drives TWA vs STEL framing | ELI-EXPOSURE | per SEG |
+| Q7 | Any agent a known carcinogen, mutagen, repro-toxin, respiratory/skin sensitiser, or RCS/lead/asbestos? | MCQ multi-select | carcinogen / mutagen / reprotoxin / sensitiser / RCS / lead / asbestos / none | ELI-EVIDENCE | always |
+| Q8 | Do you hold exposure-monitoring data? | MCQ | measured (personal) / measured (static) / modelled / none | ELI-EVIDENCE | always |
+| Q9 | Sampling method/standard and metric. | free-text | "e.g. MDHS 14/4, 8-hr TWA + STEL" | ELI-EVIDENCE | if Q8≠none |
+| Q10 | Existing controls already in place per SEG. | MCQ multi-select + free-text | LEV / enclosure / substitution / RPE programme / none | ELI-BASELINE | always |
+| Q11 | Is health surveillance already running for any agent? | MCQ | yes / no / partial | ELI-OBLIGATIONS | always |
+| Q12 | Jurisdiction (sets which OEL/WEL/PEL applies). | MCQ | UK (WEL/COSHH) / EU (REACH/DNEL) / US (OSHA PEL / ACGIH TLV) / India / other | ELI-JURIS | always |
+| Q13 | Which Indian state? | MCQ | Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Gujarat · Other · Unknown — mandatory state detection; confirm before citing any form; "Other"/"Unknown" → literal `[GAP]`, never a national-form fallback | ELI-JURIS | if Q12==India |
+| Q14 | Risk-matrix to band exposure. | MCQ | org matrix / default 5×5 | ELI-SCORING | always |
+| Q15 | Who owns the monitoring/surveillance actions, and what review cycle? | free-text | role-label owner + interval | ELI-COMPETENCY / ELI-TEMPORAL | always |
+| Q16 | Industry / sector + work environment for the SEG. | MCQ + free-text | manufacturing / O&G / chemicals / pharma / general (+ work-area detail: packing hall, lab, decant bay) | ELI-INDUSTRY / ELI-LOCATION | always |
 
-For an exposure register the intake elicits the SEGs, agents and data BEFORE any band is computed:
-
-1. **The SEG / task list** — the similar-exposure groups and tasks at the named site (free-text; specific).
-2. **Agents present** — the chemical agents + CAS per SEG (free-text + CAS).
-3. **Exposure route** — MCQ: inhalation / dermal / ingestion (multi-select).
-4. **Available monitoring data** — MCQ: measured / modelled / none (drives band confidence; none → `[GAP]` + monitoring action).
-5. **Jurisdiction** — sets which OEL/WEL/PEL applies (cite with source+year; India → referenced value flagged non-statutory).
-6. **Risk-matrix size** — the org matrix or the default 5×5 for the exposure-risk band.
-
-Echo the SEGs + agents + data availability back before banding. Each limit is cited with source+year (`KB-DATA-OEL-LIMITS`); the exposure band is `risk_matrix`-computed; the control tier is HoC-ranked (`controls`); per-worker surveillance cells <5 are suppressed.
-
-Then: analyse / apply the domain method → validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `knowledge/METHODOLOGY.md`.
+**refuse on a vague subject** (record `[ASSUMPTION]`/`[GAP]`, never invent). Canonical
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -67,37 +73,11 @@ Assemble a `report.json` conforming to the shared report-model schema, then run 
 
 ## Subagent roster (preserved as a sequential checklist)
 
-### Subagent roster for THIS skill
-
-<!-- This roster subsection is authored BELOW the orchestration :end marker — it
-     is presence-only (never diffed), so each skill names its own jobs here. -->
-
-For a non-trivial task the triage gate may fan out to:
-
-- **Researcher** — gathers the task/site facts, the resolved jurisdiction's
-  requirements, and the relevant standards, from the scrubbed inputs only.
-- **Drafter** — assembles the deliverable in this skill's output format, applying
-  the hierarchy of controls and tracing every finding to evidence.
-- **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
-  output: specificity, hierarchy of controls, defensibility, de-identification, and
-  citation accuracy.
-
-Simple single-subject tasks run single-threaded — no subagents.
+_Full detail moved to the knowledge upload (see `knowledge/`)._
 
 ## Jurisdiction routing
 
-<!-- The jurisdiction ROWS below live BELOW the :end marker: per-skill, presence-only
-     (rule-2 presence check, never byte-diffed). Author the rows for the jurisdictions
-     this skill serves; rule-9 checks every path/ID resolves against the KB registries. -->
-
-| Jurisdiction | Read |
-|---|---|
-| EU    | knowledge/eu-clp-reach.md (KB-REG-EU-REACH exposure scenarios) + data-points/oel-limits.md |
-| UK    | knowledge/uk-hswa.md (COSHH) + data-points/oel-limits.md (EH40 WEL) |
-| USA   | knowledge/us-osha.md (PEL) + data-points/oel-limits.md |
-| India | knowledge/in-factories-act.md (+ in-state-forms.md) + data-points/oel-limits.md (referenced limits — flag non-statutory) |
-| Any   | knowledge/oel-limits.md (KB-DATA-OEL-LIMITS) + standards/iso-45001.md (6.1.2) + prompt-snippets/hierarchy-of-controls.md |
-| Unknown | Ask before citing any specific law |
+_Full detail moved to the knowledge upload (see `knowledge/`)._
 
 ## Attribution (non-intrusive)
 

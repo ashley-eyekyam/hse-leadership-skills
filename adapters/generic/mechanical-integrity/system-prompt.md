@@ -38,27 +38,32 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — mechanical-integrity
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | What's the **task**? | MCQ | Rank equipment criticality / Set-justify ITPM intervals / Manage integrity deficiencies / Build full MI programme | ELI-SCOPE | always |
+| Q2 | Name the **equipment population / unit**. | free-text | Refuse "our equipment"; the specificity anchor. | ELI-SUBJECT | always |
+| Q3 | Which **equipment classes** are in scope? | MCQ multi-select | Pressure vessels , Piping , Relief devices-PRVs , Storage tanks , Rotating equipment , Heat exchangers , Instruments-SIS , Fired equipment | ELI-SUBJECT | always |
+| Q4 | What is the **consequence of failure** and the **likelihood drivers** (age, service, corrosion, damage mechanism)? | free-text | For the `risk_matrix` criticality scoring. | ELI-SCORING | always |
+| Q5 | What is the **current ITPM basis** per class — intervals, methods, **RBI** if used, and **IOWs**? | free-text | Class-specific (vessels → thickness/CML; relief → test interval; tanks → API 653). | ELI-BASELINE | always |
+| Q6 | What **inspection / MI records** do you hold? | MCQ multi-select | Inspection history-reports , Thickness-CML data , RBI study , Corrosion-rate data , PRV test records , None | ELI-EVIDENCE | always |
+| Q7 | What **open deficiencies** exist and their **interim risk**? | free-text | Each gets a HoC-rank + named owner + due date. | ELI-SUBJECT | Q1 == Manage integrity deficiencies |
+| Q8 | Who is the **inspection authority / owner** of the ITPM basis? | free-text | e.g. API-authorised inspector, statutory competent person (named as a role). | ELI-COMPETENCY | always |
+| Q9 | Which **risk matrix** for criticality? | MCQ | Our matrix (paste) , Default 5×5 | ELI-SCORING | always |
+| Q10 | Which **jurisdiction** (statutory inspection hook) for the grounding citation? | MCQ | USA (PSM element j) , UK , EU , India (Factories Act statutory examination) , None | ELI-JURIS | always |
+| Q10a | *(India only)* Which **state** is the installation in? | MCQ | Tamil Nadu / Karnataka / Maharashtra / Delhi-Central / Gujarat / Other / Unknown — **mandatory state detection**; confirm before citing any statutory examination form; "Other"/"Unknown" → literal `[GAP]`, never a national-form fallback | ELI-JURIS | Q10 == India |
+| Q11 | What **statutory inspection / examination obligations** apply (and their due dates)? | free-text | e.g. pressure-vessel statutory examination interval, PRV test due date — the compliance hook. | ELI-OBLIGATIONS | always |
+| Q12 | What is the **ITPM / re-inspection cadence** and the next due date per class? | free-text | The temporal driver behind "overdue" / trend status. | ELI-TEMPORAL | always |
+| Q13 | What **output**, for whom, how widely shared? | MCQ+free-text | Criticality register / ITPM schedule / Deficiency plan / Full report // audience M (management) or C (consultant) // internal vs circulated externally | ELI-OUTPUT | always |
 
-For a mechanical-integrity program the intake elicits the equipment and the integrity basis:
-
-1. **The equipment population / unit** — the named equipment (vessels, piping, relief devices, rotating equipment) and the unit (specific).
-2. **Criticality factors** — consequence of failure (loss of containment, escalation) and likelihood (age, service, corrosion) for `risk_matrix` ranking.
-3. **ITPM basis** — the inspection/test/PM intervals and methods (RBI where used) and the integrity-operating-windows.
-4. **Deficiencies** — open integrity deficiencies and their interim risk.
-5. **Risk matrix** — the org matrix or the default 5×5 for criticality.
-6. **Jurisdiction** — only to cite the grounding element/standard.
-
-Echo the equipment + criticality factors back before ranking. A deficiency is HoC-ranked and given an owner + date; an equipment item with no integrity basis is `[GAP]`, not assumed fit-for-service.
-Then: analyse / apply the domain method → validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `knowledge/METHODOLOGY.md`.
+> **echo the captured facts back before any analysis**, and **refuse a vague equipment
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -66,22 +71,7 @@ This host has no Code Interpreter, so emit the deliverable as a **structured mar
 
 ## Subagent roster (preserved as a sequential checklist)
 
-### Subagent roster for THIS skill
-
-<!-- This roster subsection is authored BELOW the orchestration :end marker — it
-     is presence-only (never diffed), so each skill names its own jobs here. -->
-
-For a non-trivial task the triage gate may fan out to:
-
-- **Researcher** — gathers the task/site facts, the resolved jurisdiction's
-  requirements, and the relevant standards, from the scrubbed inputs only.
-- **Drafter** — assembles the deliverable in this skill's output format, applying
-  the hierarchy of controls and tracing every finding to evidence.
-- **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
-  output: specificity, hierarchy of controls, defensibility, de-identification, and
-  citation accuracy.
-
-Simple single-subject tasks run single-threaded — no subagents.
+_Full detail moved to the knowledge upload (see `knowledge/`)._
 
 ## Jurisdiction routing
 

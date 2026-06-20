@@ -130,34 +130,17 @@ Open with a **structured multi-step intake** — MCQ where the answer space is e
 
 ### Step 0 — Structured intake (run this first, one question at a time)
 
-Run the question set below, **one question at a time**, MCQ where the answer space is
-enumerable and free-text where it is open; branch on the answers; **echo the captured
-facts back for confirmation before any analysis**. The **two specificity anchors** are
-**Q2 (the construction activity)** and **Q-S (the sequence of works)** — the Workflow
-**refuses to proceed** on a vague activity or an unsequenced method; ask again, or
-record `[ASSUMPTION]` / `[GAP]`; never invent. Full method in
-`references/METHODOLOGY.md`.
-
-| # | Question | Type | Options / prompt |
-|---|---|---|---|
-| Q1 | Jurisdiction | MCQ | UK · India · USA · EU · Other/Unknown — UK → CDM 2015 (Reg 13) duty path; India → Q1a + BOCW |
-| Q1a | *(India only)* Which state? | MCQ | Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Other — **mandatory state detection; confirm before citing any form** |
-| **Q2** | **The construction activity / works being assessed** | **free-text** | "Describe the exact works and the structure/element (e.g. 'erect a mobile tower to replace cladding panels on the south elevation, levels 2–4')." — **specificity anchor #1; refuse a vague answer** |
-| Q3 | Site & environment | free-text | "Which specific site/area? What's around it — occupied building, public footpath, live traffic, other trades, overhead/buried services, ground conditions, weather exposure?" |
-| **Q-S** | **Sequence of works (the ordered steps, start to finish)** | **free-text** | "List the work steps in order, set-up to clear-down (e.g. 'mobilise & set exclusion zone → inspect & erect tower → transfer materials → remove old panels → fit new panels → inspect → dismantle → clear site')." — **specificity anchor #2; refuse an unsequenced answer** |
-| Q-P | Plant & equipment | MCQ multi-select + free-text | Access (scaffold/tower/MEWP/ladder) · Lifting (crane/telehandler/hoist) · Excavation (excavator/breaker) · Power tools · Welding/hot-work kit · Other (+ detail) |
-| Q-C | Personnel & competencies / cards | free-text | "Who does each step, and what competency/cards do they hold (CSCS, CPCS, IPAF, PASMA, appointed-person for lifts)? **Name the competent persons for the sign-off record.**" — **never invent a card the user did not state** (record `[GAP]`) |
-| Q-W | Permits-to-work required | MCQ multi-select | None · Hot work · Excavation/ground disturbance · Confined space · Working at height/suspended access · Lifting operations · Electrical isolation · Other |
-| Q4 | Existing controls already in place | free-text | "What site-wide or activity controls already exist (site induction, traffic-management plan, edge protection, the Construction Phase Plan)?" |
-| Q5 | Org risk-matrix size | MCQ | 3×3 · 4×4 · **5×5 (default)** · Supply our matrix |
-| Q6 | **CDM / contractor role** *(asked for UK; offered elsewhere)* | MCQ | Principal contractor · Contractor / sub-contractor · Principal designer · Client · Not applicable — tunes the CDM 2015 duty cited (Reg 13 PC / Reg 15 contractor) + the CPP linkage; for India maps to the BOCW principal-employer/contractor duty |
-
-After the last applicable question, **echo a captured-facts summary** ("RAMS for:
-erecting a mobile tower to replace south-elevation cladding (levels 2–4), occupied
-building with a public footpath alongside, 8-step sequence set-up→clear-down, tower +
-MEWP, PASMA + IPAF operatives, working-at-height permit, UK / principal contractor,
-5×5 matrix — correct?") and only then proceed. Likelihood/severity bands are applied
-**per-hazard** at scoring time (step 3) on the org's matrix.
+The full typed, branched intake — the `intake-coverage` manifest, the question table
+(jurisdiction · the construction-activity anchor Q2 · site & environment · the **ordered
+sequence-of-works anchor Q-S** · plant & equipment · personnel & competency cards Q-C ·
+permits-to-work · existing controls / CPP · CPP/RAMS/SDS to ingest · matrix · CDM role ·
+works window / RAMS validity), the **two jurisdiction paths** (UK → CDM 2015 Reg 13;
+India → Q1a + BOCW, mandatory state detection), the **role-duty branch** (Q6 → Reg 13 /
+Reg 15), the echo-back, and the refuse-on-vague anchors — lives in
+**`references/intake.md`**. Run it one question at a time, branch on the answers, **echo
+the captured facts back before any analysis**, and **refuse to proceed** on a vague
+activity (Q2) or an unsequenced method (Q-S) — record `[ASSUMPTION]` / `[GAP]`, never
+invent a step or a competency card. Full method in `references/METHODOLOGY.md`.
 
 ### The RA + Method-Statement method
 
@@ -282,14 +265,23 @@ this conversation — paste ALL needed context into its prompt. Per-subagent ske
 Gather the outputs, resolve conflicts explicitly (state which source wins), de-duplicate,
 and assemble the deliverable in this skill's output format.
 
-### Step 4 — Critic / QA (MANDATORY — this is regulatory/safety output)
-Spawn ONE Critic: give it the draft + the inputs + the output contract. It finds errors,
-unsupported claims, missed regulatory triggers, lower-order-only controls, and any
-de-identification leak. Fix everything it raises before delivery.
+### Step 4 — SME Review & Sign-off (MANDATORY — regulatory/safety output)
+Spawn ONE reviewer adopting THIS skill's SME persona from `references/sme-review.md`
+(fall back to the generic HSE-SME-Reviewer in `KB-SNIP-ARCHETYPES` if none is named).
+Give it the draft + the inputs + the output contract. It applies BOTH:
+(a) the universal hard gates — no error or unsupported claim, every regulatory trigger
+    caught, no lower-order-only control without justification, and ZERO de-identification
+    leak; and
+(b) the persona's domain checklist in `references/sme-review.md`.
+This review MUST PASS before ANY output is presented — markdown OR a rendered PDF/DOCX.
+Fix everything it raises and re-run until clean. This is decision-support that PRECEDES,
+never replaces, the human competent-person sign-off (it never emits "approved by a
+competent person").
 
-> Single-threaded fallback: if your host has no subagent capability, execute each job
-> sequentially in THIS context — run the de-identification scrub first, keep the scope
-> discipline, and still perform the required Critic/QA pass before delivery.
+> Single-threaded fallback: if your host has no subagent capability, perform the SME
+> Review & Sign-off pass yourself in THIS context — run the de-identification scrub
+> first, keep the scope discipline, apply the persona checklist + universal gates, and
+> pass the review before presenting any output (markdown or rendered).
 <!-- hse:block:orchestration:end -->
 
 ### Subagent roster for THIS skill
@@ -327,6 +319,11 @@ deterministic A7 script calls at Workflow steps 3/4/5 (`risk_matrix`, `controls`
   control tagged its `KB-SNIP-HOC` tier (consumes the De-identifier's scrubbed text + the
   A7 `risk_matrix`/`controls` scores + the Regulatory-Checker's verdict). SCOPE-OUT:
   gathering evidence (Researcher), checking law (Regulatory-Checker).
+- **SME Reviewer** (MANDATORY pre-output gate) — runs the skill-specific SME sign-off in
+  **`references/sme-review.md`** (construction safety manager + CDM 2015 / BOCW duty-holder
+  compliance adviser — its two lenses) before any output: a REAL sequenced safe system of
+  work with bidirectional RA↔MS cross-reference and activity-specific rescue, AND the right
+  construction-law duty cited for the stated role with the India state resolved before any form.
 - **Critic/QA** (MANDATORY) — every hazard scored (via the A7 engine), every control
   HoC-ranked, no PPE/admin-only treatment without justification, **every method step
   cross-referenced to the RA and every RA hazard addressed by a step**, named competent

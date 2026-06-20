@@ -38,44 +38,31 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — incident-investigation
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | **What happened?** (the core narrative — the sequence of events) | free-text | The investigation's seed; the factual account, not conclusions. | ELI-SUBJECT | always |
+| Q2 | **When and where?** (date, time, location/asset) | free-text | Flagged for de-id (exact date + precise location are quasi-identifiers). | ELI-LOCATION / ELI-TEMPORAL | always |
+| Q3 | **Incident type / classification** | MCQ | injury / illness / near-miss / property damage / environmental release / dangerous occurrence — branches the reporting logic + the rate context (Q10). | ELI-SCOPE | always |
+| Q4 | **Severity / outcome** | MCQ | fatality / lost-time injury / medical-treatment / first-aid / no-injury near-miss / property-only / environmental-only — drives reportability urgency + the RCA-method suggestion. | ELI-SCOPE | always |
+| Q5 | **People involved** | free-text | **Flagged for IMMEDIATE de-identification** — names, roles, witnesses captured here are pseudonymized in step 2 before any analysis; the intake echoes them back as role labels ("Worker A", witness "W-1"). | ELI-EXPOSURE | always |
+| Q6 | **Immediate / obvious causes** (what visibly went wrong) | free-text | The *starting point* for RCA, never the endpoint — the skill drives past these to systemic factors. | ELI-SUBJECT | always |
+| Q7 | **Evidence available** | free-text | statements, photos, logs, readings, maintenance records, procedures → becomes the numbered evidence log; `[GAP]` recorded for anything missing. | ELI-EVIDENCE | always |
+| Q7b | **Permits / procedures in force at the time** | free-text | "Any PTW, isolation, or procedure that was supposed to be in force for this task at the time? (informs causation, not blame)" — optional. | ELI-OBLIGATIONS | always |
+| Q8 | **RCA method preference** | MCQ | **Five A7-validated options, each with a one-line "when to pick":** **5-Whys** — quick single causal chain; minor events. **ICAM** — systems-based, organisational focus; serious/high-potential events. **SCAT** — Loss-Causation model linking to management-system control failures. **Fishbone (Ishikawa)** — categorise causes across Man/Machine/Method/Material/Measurement/Environment when factors span domains. **Swiss-Cheese (Reason)** — trace failed/absent defence layers to latent organisational influences; barrier/defence-in-depth events. *Branch:* ICAM → prompt for organisational-factor evidence; SCAT → management-system context; Fishbone → evidence across the non-Man branches; Swiss-Cheese → the failed barrier at each layer. | ELI-SCORING | always |
+| Q9 | **Jurisdiction** | MCQ | India / UK / USA / EU / Other-or-Unknown. **India → ask the STATE** (Q9a, mandatory) → triggers `KB-REG-IN-STATEFORMS`; Unknown → the reporting step defers to "ask before citing." | ELI-JURIS | always |
+| Q9a | *(India only)* **Which state?** | MCQ | Tamil Nadu / Karnataka / Maharashtra / Delhi-Central / Gujarat / Other — **mandatory state detection; confirm the state before citing any accident form** (never a national form number; an un-seeded state → `[GAP]`). | ELI-JURIS | Q9 == India |
+| Q9b | **Investigation team / investigator** | free-text | "Who is conducting this investigation (role/competence)? Who will own the corrective actions? (named role — no 'TBD')" | ELI-COMPETENCY | always |
+| Q10 | *(optional; branch on type = injury/illness)* **Period exposure hours + recordable counts** | free-text | Only if the user wants the contextual rate; otherwise **skipped** — `incident_rates` is omitted rather than fabricating a denominator. | ELI-SCORING | Q3 == injury / illness |
 
-### Step 0 — Structured intake (run this first, one question at a time)
-
-Run the B5 question set below, one question at a time, MCQ where the answer space is
-enumerable and free-text where it is open, branching on the answers (`KB-SNIP-INTAKE`).
-**Never proceed on vague inputs**; record `[GAP]` for missing evidence and
-`[ASSUMPTION]` for anything inferred. **Never invent evidence or causes.** Q5
-("people involved") is **flagged for IMMEDIATE de-identification** — it is scrubbed in
-Workflow step 2 before any analysis, and the intake echoes those facts back as role
-labels.
-
-| # | Question | Type | Options / branch |
-|---|---|---|---|
-| Q1 | **What happened?** (the core narrative — the sequence of events) | free-text | The investigation's seed; the factual account, not conclusions. |
-| Q2 | **When and where?** (date, time, location/asset) | free-text | Flagged for de-id (exact date + precise location are quasi-identifiers). |
-| Q3 | **Incident type / classification** | MCQ | injury · illness · near-miss · property damage · environmental release · dangerous occurrence — branches the reporting logic (step 7) + the rate context (Q10). |
-| Q4 | **Severity / outcome** | MCQ | fatality · lost-time injury · medical-treatment · first-aid · no-injury near-miss · property-only · environmental-only — drives reportability urgency + the RCA-method suggestion. |
-| Q5 | **People involved** | free-text | **Flagged for IMMEDIATE de-identification** — names, roles, witnesses captured here are pseudonymized in step 2 before any analysis; the intake echoes them back as role labels ("Worker A", witness "W-1"). |
-| Q6 | **Immediate / obvious causes** (what visibly went wrong) | free-text | The *starting point* for RCA, never the endpoint — the skill drives past these to systemic factors. |
-| Q7 | **Evidence available** | free-text | statements, photos, logs, readings, maintenance records, procedures → becomes the numbered evidence log; `[GAP]` recorded for anything missing. |
-| Q8 | **RCA method preference** | MCQ | **Five A7-validated options, each with a one-line "when to pick":** **5-Whys** — quick single causal chain; minor events. **ICAM** — systems-based, organisational focus; serious/high-potential events. **SCAT** — Loss-Causation model linking to management-system control failures. **Fishbone (Ishikawa)** — categorise causes across Man/Machine/Method/Material/Measurement/Environment when factors span domains. **Swiss-Cheese (Reason)** — trace failed/absent defence layers to latent organisational influences; barrier/defence-in-depth events. *Branch:* ICAM → prompt for organisational-factor evidence; SCAT → management-system context; Fishbone → evidence across the non-Man branches; Swiss-Cheese → the failed barrier at each layer. |
-| Q9 | **Jurisdiction** | MCQ | India · UK · USA · EU · Other/Unknown. **India → ask the STATE** (mandatory) → triggers `KB-REG-IN-STATEFORMS`; Unknown → the reporting step defers to "ask before citing." |
-| Q10 | *(optional; branch on type=injury/illness)* **Period exposure hours + recordable counts** | free-text | Only if the user wants the contextual rate; otherwise **skipped** — `incident_rates` is omitted rather than fabricating a denominator. |
-
-After the last applicable question (and **after** the step-2 de-id scrub), **echo the
-captured, de-identified facts back** ("Here is what I have: a lost-time injury to
-Worker A on [date], at [location], witnessed by W-1; evidence E-1…E-4; method ICAM;
-jurisdiction India/Maharashtra — confirm before I analyse?") and proceed only on
-confirmation.
+## Refuse-on-vague anchors
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 

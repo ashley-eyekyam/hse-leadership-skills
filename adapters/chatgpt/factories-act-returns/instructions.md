@@ -38,28 +38,31 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — factories-act-returns
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q0 | Which **jurisdiction** is the factory registered in? *(India-default skill; a non-India jurisdiction is out of scope.)* | MCQ | India, Other / Unknown — India activates the mandatory state gate (Q2) | ELI-JURIS | always |
+| Q1 | What are you producing? | MCQ | Annual return · Half-yearly return · A statutory register | ELI-SCOPE / ELI-SUBJECT | always (first) |
+| Q1a | Which **half-year period**? | MCQ | 1st (Jan–Jun) · 2nd (Jul–Dec) | ELI-TEMPORAL | iff Q1 = half-yearly |
+| Q1b | For which **return year**? | free-text | e.g. CY2025 | ELI-TEMPORAL | always |
+| Q2 | **Which state** is the factory registered in? *(infer-from-address allowed; I confirm before assembling — a wrong state is a wrong form.)* | MCQ | Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Gujarat · Other (specify) · Unknown | ELI-JURIS | iff Q0 = India — **BLOCKING** |
+| Q3 | Is it a **hazardous-process** factory (Sch. I / Sec. 2(cb))? | MCQ | Yes · No · Not sure | ELI-INDUSTRY | always |
+| Q4 | **Worker employment figures** for the period — average & max workers, man-days worked. | free-text (structured) | "avg 240, max 310, man-days 71,200" | ELI-EXPOSURE | always |
+| Q5 | **Accident / dangerous-occurrence tally** for the period (counts by class — fatal / reportable / minor). I will aggregate any cell < 5. | free-text (structured) | counts only, no names | ELI-EVIDENCE | iff the return form requires it |
+| Q6 | **Leave-with-wages / welfare** figures the form requires (if applicable). | free-text | per the form's schedule | ELI-EVIDENCE | iff applicable to the form |
+| Q7 | **OSH appointments** held — Safety Officer, factory medical officer, welfare officer? | MCQ multi | Safety Officer · FMO · Welfare Officer · None | ELI-EVIDENCE | always |
+| Q8 | Have you **filed this return before** (is this an original or a correction)? | MCQ | First filing · Routine annual · Correction/revised | ELI-BASELINE | always |
+| Q9 | Who is the **occupier / factory manager** signing this return? (role label — I de-identify the person.) | free-text → role | "Occupier" / "Factory Manager" | ELI-COMPETENCY | always |
+| Q10 | Establishment name + who the assembled return is for. | free-text | name + audience | ELI-SUBJECT / ELI-OUTPUT | always |
 
-**MANDATORY state detection (CT-8) — the state is a BLOCKING gate before any form is assembled:**
-
-1. **State (MANDATORY, ask FIRST)** — MCQ: TN / KA / MH / DL / GJ / Other (specify) / Unknown.
-   - You **may infer** the state from a supplied site address — but **echo it back and confirm** before assembling any return (a wrong state = a wrong statutory form).
-   - If the state is **Unknown or unseeded** → record a literal `[GAP]`, "verify the state form with a competent person", and **refuse to assemble a national form**. Do NOT invent a row.
-   - If the matched row's `form` is itself a literal `[GAP]` (the **GJ** annual-return row) → assemble the return **as far as the verified fields allow** but render the form id as `[GAP]` (verify the Gujarat form with a competent person) — never substitute a guessed Gujarat form number.
-2. **Obligation (MANDATORY)** — MCQ: annual-return / half-yearly-return / register.
-3. **Establishment + return data** — free-text: the named establishment + the prescribed return fields (employment / accident / leave figures). De-identify per the block above; aggregate small injury cells (<5).
-
-Echo the **confirmed state + obligation + establishment** back. Then read the matched `KB-REG-IN-STATEFORMS` row, assemble the return under its prescribed `form` / `rule` / `due` (TN Form 22 / KA Form 20 / MH Form 27 / DL Form 21; **GJ = `[GAP]`**), append the row's `osh_transition` note and a pointer to `india-osh-code-pack`, and surface the `KB-REG-IN-PORTALS` (state factory-department) pointer. Every field absent from the source is a literal `[GAP]`, never fabricated.
-
-Then: validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method is in `knowledge/METHODOLOGY.md`.
+back before any assembly**; **refuse to proceed on a vague or unconfirmed state, and never
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -67,26 +70,21 @@ Assemble a `report.json` conforming to the shared report-model schema, then run 
 
 ## Subagent roster (preserved as a sequential checklist)
 
-### Subagent roster for THIS skill
-
-<!-- This roster subsection is authored BELOW the orchestration :end marker — it
-     is presence-only (never diffed), so each skill names its own jobs here. -->
-
-For a non-trivial task the triage gate may fan out to:
-
-- **Researcher** — gathers the task/site facts, the resolved jurisdiction's
-  requirements, and the relevant standards, from the scrubbed inputs only.
-- **Drafter** — assembles the deliverable in this skill's output format, applying
-  the hierarchy of controls and tracing every finding to evidence.
-- **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
-  output: specificity, hierarchy of controls, defensibility, de-identification, and
-  citation accuracy.
-
-Simple single-subject tasks run single-threaded — no subagents.
+_Full detail moved to the knowledge upload (see `knowledge/`)._
 
 ## Jurisdiction routing
 
-_Full detail moved to the knowledge upload (see `knowledge/`)._
+<!-- The jurisdiction ROWS below live BELOW the :end marker: per-skill, presence-only
+     (rule-2 presence check, never byte-diffed). Author the rows for the jurisdictions
+     this skill serves; rule-9 checks every path/ID resolves against the KB registries. -->
+
+| Jurisdiction | Read |
+|---|---|
+| India (state form) | knowledge/in-state-forms.md (KB-REG-IN-STATEFORMS — the (law,state,obligation) engine; **mandatory state detection**) + in-factories-act.md (KB-REG-IN-FACTORIES — statutory framing) |
+| India (OSH transition) | knowledge/in-osh-code.md (KB-REG-IN-OSH-CODE — append the legacy-first transition note) |
+| India (portal) | knowledge/in-portals.md (KB-REG-IN-PORTALS — state factory-department portal; verify locally) |
+| Any   | knowledge/iso-45001.md + prompt-snippets/hierarchy-of-controls.md (KB-SNIP-HOC) |
+| Unknown | Ask before citing any specific law (confirm the **state** first) |
 
 ## Attribution (non-intrusive)
 

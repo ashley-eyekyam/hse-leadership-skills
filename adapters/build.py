@@ -200,15 +200,15 @@ def has_a7(skill_dir: Path) -> bool:
     return (Path(skill_dir) / "scripts" / "hse_components").exists()
 
 
-def _extract_intake(body: str) -> str:
-    """The §2.7 structured-intake question set — the ``## Workflow`` preamble through
-    the end of the ``### Step 0 — … intake`` subsection (bounded before the
-    ``### … method`` subsection so it carries the intake question set, NOT the full
-    domain method prose, which is movable and lives in references/METHODOLOGY.md).
+def _extract_intake_workflow(body: str) -> str:
+    """LEGACY fallback — the §2.7 question set from the inline SKILL.md ``## Workflow``
+    preamble through the end of the ``### Step 0 — … intake`` subsection.
 
-    Presence-driven: every skill's Workflow opens with a one-at-a-time intake table
-    (verified across risk-assessment, toolbox-talk, incident-investigation). Captured
-    verbatim; the build never edits a question (C §3.0)."""
+    Used ONLY for skills that carry NO ``references/intake.md`` — the build-time
+    ``hse-skill-forge`` meta-skill, whose ``## Workflow`` is its own author-interview
+    (categorically distinct from a §2.7 runtime intake — A10 D4), never relocated to an
+    intake.md. Domain HSE skills use the ``references/intake.md`` Q-table source instead
+    (Phase-9 INTK-01)."""
     m = re.search(r"(?m)^##[ \t]+Workflow\b", body)
     if not m:
         return ""
@@ -227,6 +227,64 @@ def _extract_intake(body: str) -> str:
     if top:
         end = min(end, m.end() + top.start())
     return body[start:end].strip()
+
+
+def _extract_intake(body: str, skill_dir: Optional[Path] = None) -> str:
+    """The §2.7 structured-intake question set — sourced from
+    ``skills/<name>/references/intake.md`` (the Phase-9 INTK-01 home), NOT the inline
+    SKILL.md ``## Workflow`` table (Phase 9 emptied that to a lean Step-0 pointer).
+
+    Captures ONLY the typed Q-table REGION — the ``# Structured intake — …`` heading +
+    the contiguous ``|...|`` table block + one refuse-on-vague anchor line. It does NOT
+    embed the whole intake.md: the prose intro / echo-back / evidence sections push the
+    irreducible core past the ChatGPT/Copilot 8,000 cap (RESEARCH Pitfall 3: the full
+    file overflows 35/48; the Q-table region is 0 overflow on all 4 platforms). The
+    full intake.md still ships as an uploaded ``knowledge/intake.md`` copy.
+
+    The MCQ row shape (``| … | MCQ | opt / opt | … |``) is preserved verbatim so
+    ``_conversation_starters`` (l. 593) still lifts ChatGPT starters from the first MCQ
+    row (RESEARCH Pitfall 5). Captured verbatim; the build never edits a question
+    (C §3.0).
+
+    Falls back to the LEGACY inline ``## Workflow`` extraction for any skill with NO
+    ``references/intake.md`` (the build-time ``hse-skill-forge`` meta-skill, A10 D4)."""
+    intake_path = Path(skill_dir) / "references" / "intake.md" if skill_dir else None
+    if intake_path is None or not intake_path.is_file():
+        # No relocated intake.md → the inline Workflow IS the intake (forge meta-skill).
+        return _extract_intake_workflow(body)
+    _fm, intake_body = _split_frontmatter(_read(intake_path))
+
+    # Anchor on the "# Structured intake — …" heading.
+    hm = re.search(r"(?m)^#[ \t]+Structured intake\b.*$", intake_body)
+    if not hm:
+        return _extract_intake_workflow(body)
+    heading = hm.group(0).strip()
+
+    # The contiguous Markdown table block AFTER the heading — consecutive lines that
+    # start with a ``|`` (the typed Q-table; keeps every MCQ ``opt / opt`` cell intact).
+    lines = intake_body[hm.end():].splitlines()
+    table: List[str] = []
+    started = False
+    for ln in lines:
+        if ln.lstrip().startswith("|"):
+            table.append(ln.rstrip())
+            started = True
+        elif started:
+            break  # first non-table line after the table ends the contiguous block
+    if not table:
+        return _extract_intake_workflow(body)
+
+    # One refuse-on-vague anchor line (the §2.7 specificity gate — "refuse … vague").
+    refuse = ""
+    for ln in intake_body.splitlines():
+        if re.search(r"refuse.*vague|vague.*refuse", ln, re.IGNORECASE):
+            refuse = ln.strip()
+            break
+
+    parts = [heading, "", "\n".join(table)]
+    if refuse:
+        parts += ["", refuse]
+    return "\n".join(parts).strip()
 
 
 def _kb_refs_in(text: str, anchor: Path, repo: Path) -> List[Path]:
@@ -360,7 +418,7 @@ def load_skill(skill_dir: Path, repo: Path = REPO) -> AdaptedSkill:
         # orchestration block can otherwise drag in that block's :start marker — §3.2).
         roster_prose=_clean(_below_end(body, "orchestration")).strip(),
         jurisdiction_rows=_clean(_rows_below_end(body, "kb-selection")).strip(),
-        intake_questions=_clean(_extract_intake(body)).strip(),
+        intake_questions=_clean(_extract_intake(body, skill_dir)).strip(),
         knowledge_files=_resolve_knowledge_files(skill_dir, repo),
         has_a7=has_a7(skill_dir),
     )
@@ -456,9 +514,9 @@ _FALLBACK_RE = re.compile(r"(?m)^>[ \t]*Single-threaded fallback:.*(?:\n>.*)*")
 
 def _orchestration_instruction(block: str) -> str:
     """The irreducible orchestration instruction: the De-identifier-first sequencing
-    + the single-thread fallback line + the mandatory Critic/QA pass — a compact
-    directive, not the full multi-step block (which spills to the roster checklist /
-    knowledge)."""
+    + the single-thread fallback line + the mandatory SME Review & Sign-off pass — a
+    compact directive, not the full multi-step block (which spills to the roster
+    checklist / knowledge)."""
     fallback = ""
     m = _FALLBACK_RE.search(block)
     if m:
@@ -470,11 +528,12 @@ def _orchestration_instruction(block: str) -> str:
         fallback = " ".join(ln for ln in lines if ln)
     # The compact lead-in frames the single-thread host + roster checklist; the captured
     # fallback (the skill's own words — WR-01) carries the De-identifier-first sequencing,
-    # scope discipline, and the MANDATORY Critic/QA pass, so the two no longer duplicate
-    # that prose (which would inflate the irreducible core past tight char limits — §3.7
-    # "a compact directive"). The validator check 6 (single-thread · de-identif · Critic/QA)
-    # is satisfied by the fallback prose. If a skill ever lacks a fallback line, the
-    # hardcoded discipline below is emitted instead so the non-negotiables never vanish.
+    # scope discipline, and the MANDATORY SME Review & Sign-off pass, so the two no longer
+    # duplicate that prose (which would inflate the irreducible core past tight char limits
+    # — §3.7 "a compact directive"). The validator check 6 (single-thread · de-identif ·
+    # SME Review & Sign-off) is satisfied by the fallback prose. If a skill ever lacks a
+    # fallback line, the hardcoded discipline below is emitted instead so the
+    # non-negotiables never vanish.
     if fallback:
         return (
             "## Agentic Execution (single-thread on this host)\n\n"
@@ -486,7 +545,7 @@ def _orchestration_instruction(block: str) -> str:
         "Run the De-identifier FIRST (sequential gate — its scrubbed output feeds every "
         "later step), then work through the roster checklist sequentially in this one "
         "context, keeping the same decomposition discipline, and finish with the "
-        "MANDATORY Critic/QA pass before delivery."
+        "MANDATORY SME Review & Sign-off pass before delivery."
     ).strip()
 
 

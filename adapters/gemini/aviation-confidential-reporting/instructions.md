@@ -38,29 +38,29 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — aviation-confidential-reporting
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | Name the operator/airport/AMO and the workforce the scheme covers. | free-text | refused if generic | ELI-SUBJECT | always |
+| Q2 | What scheme type? (this sets the de-identification trigger) | MCQ | Confidential/identity known to a custodian, protected, Voluntary/de-identified at intake, Anonymous/no identity captured | ELI-OUTPUT | always |
+| Q3 | What legal/regulatory protection basis applies? | MCQ | India/DGCA CAR, EU/Reg 376-2014, FAA/ASAP, Annex19/Appendix 3 principles only, Other, Unknown | ELI-JURIS / ELI-OBLIGATIONS | always |
+| Q3a | *(India only)* Which Indian operations / which State Safety Programme layer frames the protection basis? | free-text | aligns the DGCA State Safety Programme layer (`KB-REG-IN-DGCA`); exact CAR number `[GAP]` to verify | ELI-JURIS | Q3==India |
+| Q4 | How does this interface with mandatory occurrence reporting (MOR)? | MCQ | SeparateVoluntary/scheme only, VoluntaryPlusMandatory/a distinct mandatory channel, MORElsewhere/handled elsewhere, Unsure | ELI-OBLIGATIONS | always |
+| Q5 | Who is the custodian of any re-identification key, and the access controls? | free-text | a named custodian *role*, NOT the circulated document | ELI-COMPETENCY | Q2==Confidential |
+| Q6 | Who triages reports and closes the feedback loop? | free-text | role labels (safety officer / review panel) | ELI-COMPETENCY | always |
+| Q7 | What intake channels? | MCQ multi-select | Paper form · Web portal · App · Hotline · Via line manager | ELI-SUBJECT | always |
+| Q8 | How do reporters learn the outcome? | MCQ | De-identified safety bulletin · Direct-to-reporter via custodian · Both | ELI-OUTPUT | always |
+| Q9 | What feedback SLA and report-retention period? | free-text | e.g. acknowledge in N days; retain for M years | ELI-TEMPORAL | always |
+| Q10 | A sample report to design against? | free-text | optional; **de-identify reporter detail (name, role/route/base/flight, exact dates) FIRST** | ELI-EVIDENCE | optional |
 
-**De-identification is LOAD-BEARING and runs FIRST — reporter-identity protection is the point of the artifact:**
-
-The structured intake captures, one question at a time, the facts the reporting-system design needs:
-
-1. **Named operator/scope (free-text)** — the named operator/airport/AMO and the workforce the scheme covers.
-2. **Confidential vs voluntary vs anonymous (MCQ)** — confidential (identity known to a custodian, protected) / voluntary (de-identified at intake) / anonymous (no identity captured). This shapes the handling workflow.
-3. **Custodian + re-identification key handling (free-text)** — who holds any re-identification key (a named custodian, NOT the circulated document), and the access controls.
-4. **Feedback loop (MCQ)** — how reporters learn the outcome (de-identified safety bulletin / direct-to-reporter via the custodian / both).
-5. **Any sample report to design against (free-text, optional)** — de-identify any reporter detail FIRST (name, role/route/base/flight, exact dates) into role labels before reasoning about it.
-
-Echo the **confirmed operator + the scheme type + the custodian arrangement** back. Then design (a) the intake form, (b) the de-identification + handling workflow (de-id at the earliest point; the re-identification key held by the named custodian, apart from the circulated design), (c) the feedback loop, and (d) the reporter-protection assurances. **No reporter is ever named in the circulated design; no re-identification key is embedded.**
-
-Then: validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method (the reporting-system design) is in `knowledge/METHODOLOGY.md`.
+**refuse on a vague subject** (record `[ASSUMPTION]`/`[GAP]`, never invent). Canonical
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -86,7 +86,9 @@ the load-bearing job, not a formality):
   reporter-protection assurances; no reporter named, no key embedded. SCOPE-OUT: does not re-identify.
 - **Critic/QA** (MANDATORY) — the Aviation-SMS persona (`KB-SNIP-ARCHETYPES`): the design protects
   reporter identity (role labels, no narrative re-identification, key held separately), the feedback
-  loop is real, and ZERO reporter-identity leak (a leak is a de-id hard-fail, not a FLAG).
+  loop is real, and ZERO reporter-identity leak (a leak is a de-id hard-fail, not a FLAG). Runs the
+  per-skill SME sign-off checklist in `knowledge/sme-review.md` (decision-support; precedes —
+  never replaces — the human competent-person review).
 
 Simple single-subject tasks run single-threaded — no subagents.
 

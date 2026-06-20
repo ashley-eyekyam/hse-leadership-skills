@@ -138,30 +138,19 @@ Open with a **structured multi-step intake** — MCQ where the answer space is e
 
 ### Step 0 — Structured intake (run first, one question at a time)
 
-Run B9's question set one at a time, MCQ where enumerable and free-text where open,
-branch on the answers, and **echo the captured facts back for confirmation before any
-analysis**. Never proceed on a vague period or audience — ask, or record
-`[ASSUMPTION]` / `[GAP]`. **Never invent a figure or a benchmark.**
-
-| # | Question | Type | Options / prompt |
-|---|---|---|---|
-| Q1 | **Reporting period** | free-text (+ MCQ shape) | "Which period does this report cover?" — Monthly · Quarterly · Half-year · Annual · Other (+ the exact dates, e.g. 'FY2025' or 'Q2 2026'). Sets the subtitle + the `period` label passed to `incident_rates`; the comparison baseline. |
-| Q2 | **Audience body** | MCQ | Board of directors · Executive committee · Senior leadership team. Tunes register/depth (board = most strategic, least operational) — the narrative altitude. *(The audience facet stays `[E]`; this only tunes the register.)* |
-| Q3 | **Safety data / metrics available** | free-text (structured) | "Provide the period's safety metrics — recordable / lost-time / DART counts **and hours worked** (for rates), plus any leading indicators: training %, audit/inspection closure, near-miss reporting rate, action closure." The **hours + counts gate the `incident_rates` call** (see the method); leading indicators are synthesized. |
-| Q4 | **Key events of the period** | free-text | "Summarize the significant HSE events of the period (serious incidents, notable near-misses, regulatory contacts, audits). **These will be de-identified AND aggregated — do not name individuals; a single event will be rolled up, never narrated as an anecdote.**" Flagged for **immediate** de-id + aggregation (step 1). |
-| Q5 | **HiPo / SIF events** | free-text | "List any **high-potential (HiPo) incidents** and **serious-injury-or-fatality (SIF) precursors** in the period — events that *could* have been life-altering regardless of actual outcome." Drives the **D-01 HiPo/SIF lens** (step 4); de-identified + aggregated like Q4. |
-| Q6 | **Strategic priorities** | free-text | "What are the organisation's current HSE strategic priorities or objectives?" Frames the narrative against objectives (ISO 45001 9.3) + the strategic-actions section. |
-| Q7 | **Prior-period comparison data** | free-text | "Provide the prior period's figures for trend comparison (or say if unavailable)." Absent → trends flagged `[GAP]`, never invented. |
-| Q8 | **Benchmark target** | free-text + KB | "Which benchmark should performance be compared against (industry/sector average, an internal target)? If you have a figure, state it **with its source**; otherwise the skill reads the KB benchmark with its source + year." Resolves `KB-DATA-TRIR-BENCHMARKS`; absent → `[GAP]`. |
-| Q9 | **Environmental metrics?** (optional) | MCQ + free-text | "Are environmental events/metrics in scope for this board paper? (No / Yes — then list them.)" Yes → a **single** optional ISO 14001 9.1.2 env-performance line (D-02); **not** a full ESG branch. |
-| Q10 | **Jurisdiction** | MCQ | India (which state?) · UK · USA · EU · Other/Unknown. Mostly context (B9 is narrative); India → resolve the state only if a statutory figure is cited. |
-
-After the last applicable question, **echo a captured-facts summary** ("Board safety
-report for FY2025, for the Board of directors; lagging metrics + training/audit
-leading indicators provided; key events + HiPo/SIF to be aggregated; priorities =
-contractor safety + psychosocial; comparison vs FY2024; benchmark = sector TRIR
-[source, year] — correct?") and only then proceed — **after** the de-id/aggregation
-scrub (step 1).
+The full typed, branched B9 intake — the `intake-coverage` manifest, the question table
+(reporting period · audience body · safety data/metrics + **hours-gate** · **key events
+[IMMEDIATE de-id + aggregation]** · **HiPo/SIF [D-01 lens]** · strategic priorities ·
+accountability · prior-period comparison · benchmark · optional env metrics · jurisdiction →
+**India→state**), the **hours+counts rates-guard**, the **HiPo/SIF interpret-not-list lens**,
+the optional **ISO 14001 9.1.2 env-performance line** (D-02), the **mandatory India→state
+branch** (Q10 = India → Q10a), the **de-identified + aggregated echo-back**, and the
+refuse-on-vague anchors — lives in **`references/intake.md`**. Run it one question at a time,
+branch on the answers, and **never proceed on a vague period or audience** (record
+`[ASSUMPTION]` / `[GAP]` — never invent a figure or a benchmark). **Q4 (key events) and Q5
+(HiPo/SIF) are de-identified AND aggregated in Workflow step 1 *before* any analysis**, so the
+echo-back in `references/intake.md` shows aggregated facts only — no individual incident, no
+named site (ELI-LOCATION is omitted by design), no `<5` cell.
 
 ### The synthesis-to-narrative method (the core lever: insight, not data dump)
 
@@ -258,14 +247,23 @@ this conversation — paste ALL needed context into its prompt. Per-subagent ske
 Gather the outputs, resolve conflicts explicitly (state which source wins), de-duplicate,
 and assemble the deliverable in this skill's output format.
 
-### Step 4 — Critic / QA (MANDATORY — this is regulatory/safety output)
-Spawn ONE Critic: give it the draft + the inputs + the output contract. It finds errors,
-unsupported claims, missed regulatory triggers, lower-order-only controls, and any
-de-identification leak. Fix everything it raises before delivery.
+### Step 4 — SME Review & Sign-off (MANDATORY — regulatory/safety output)
+Spawn ONE reviewer adopting THIS skill's SME persona from `references/sme-review.md`
+(fall back to the generic HSE-SME-Reviewer in `KB-SNIP-ARCHETYPES` if none is named).
+Give it the draft + the inputs + the output contract. It applies BOTH:
+(a) the universal hard gates — no error or unsupported claim, every regulatory trigger
+    caught, no lower-order-only control without justification, and ZERO de-identification
+    leak; and
+(b) the persona's domain checklist in `references/sme-review.md`.
+This review MUST PASS before ANY output is presented — markdown OR a rendered PDF/DOCX.
+Fix everything it raises and re-run until clean. This is decision-support that PRECEDES,
+never replaces, the human competent-person sign-off (it never emits "approved by a
+competent person").
 
-> Single-threaded fallback: if your host has no subagent capability, execute each job
-> sequentially in THIS context — run the de-identification scrub first, keep the scope
-> discipline, and still perform the required Critic/QA pass before delivery.
+> Single-threaded fallback: if your host has no subagent capability, perform the SME
+> Review & Sign-off pass yourself in THIS context — run the de-identification scrub
+> first, keep the scope discipline, apply the persona checklist + universal gates, and
+> pass the review before presenting any output (markdown or rendered).
 <!-- hse:block:orchestration:end -->
 
 ### Subagent roster for THIS skill
@@ -297,6 +295,13 @@ For a full board report the triage gate fans out to the moderate roster:
   lens interpreted** (D-01); the strategic actions/asks; the outlook. Insight, not
   tables. SCOPE-OUT: does **not** compute or alter the figures (consumes the
   Synthesizer's numbers verbatim) — it must not invent or "round" a metric.
+- **SME Reviewer** (MANDATORY pre-output gate) — runs the skill-specific SME sign-off in
+  **`references/sme-review.md`** (board-level HSE governance advisor + safety-performance
+  statistician) before any output: does the paper let a board GOVERN (decision-grade
+  narrative, leading/lagging balance, explicit asks — not a wall of numbers), are the
+  indicators read HONESTLY (no false assurance from a falling lagging rate while HiPo/SIF
+  precursors say otherwise), and is every single-incident anecdote aggregated away? FLAG-only;
+  does not block on a flag.
 - **Critic/QA** (MANDATORY) — adversarial read-only review: is this INSIGHT, not a data
   dump (every figure carries a reading; the report leads with the narrative +
   decisions)? Is the HiPo/SIF lens present AND interpreted, not merely listed? Does

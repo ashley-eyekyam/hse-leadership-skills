@@ -38,26 +38,31 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — tank-farm-bunding-controls
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | What do you need — size/verify a bund, plan secondary containment, or review overfill/segregation controls? | MCQ | bund-sizing / containment-plan / controls-review | ELI-SCOPE | always |
+| Q2 | List each stored substance + tank volume; flag the **largest single tank**. | free-text | per-tank volume + largest; refuse "bulk solvents" | ELI-SUBJECT | always |
+| Q3 | How many tanks share the bund, and any incompatible pairs? | free-text | drives segregation | ELI-SUBJECT | always |
+| Q4 | Substance flashpoint / DG class for each (flammable / toxic / corrosive). | MCQ multi-select + free-text | flammable / toxic / corrosive / inert | ELI-EVIDENCE | always |
+| Q5 | Storage configuration. | MCQ | atmospheric / pressurised / refrigerated · single / bunded-group | ELI-SUBJECT | always |
+| Q6 | Existing containment + overfill protection + drainage + firewater. | free-text | current bund %, overfill trip, drainage interceptor, firewater retention | ELI-BASELINE | always |
+| Q7 | Proximity to watercourse, surface drain, or site boundary? | MCQ + free-text | watercourse / drain / boundary / none — spill-migration receptor | ELI-EXPOSURE | always |
+| Q8 | Which containment-sizing rule applies (or should I resolve it)? | MCQ | largest-tank+freeboard / 110% local rule / PESO-OISD / resolve-for-me | ELI-SCORING | always |
+| Q9 | Jurisdiction — India? | MCQ | UK/EU / US / India / other | ELI-JURIS | always |
+| Q10 | Which Indian state? | MCQ | Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Gujarat · Other · Unknown — mandatory state detection; confirm before citing any PESO/state form; "Other"/"Unknown" → literal `[GAP]`, never a national-form fallback | ELI-JURIS | if Q9==India |
+| Q11 | PESO/storage licence held + validity, and bund inspection cycle? | free-text | licence + dates | ELI-OBLIGATIONS / ELI-TEMPORAL | always |
+| Q12 | Site location / tank-farm layout, and who owns the containment actions? | free-text | site/area + role-label owner | ELI-LOCATION / ELI-COMPETENCY | always |
+| Q13 | Industry / sector context for the stored inventory. | MCQ + free-text | O&G terminal / chemicals / fuel depot / general (+ detail) | ELI-INDUSTRY | always |
 
-For a tank-farm / bunding assessment the intake elicits the storage facts BEFORE any sizing basis:
-
-1. **Stored substances + volumes** — the substances and tank volumes (free-text; specific). Incompatibilities matter for segregation.
-2. **Storage configuration** — MCQ: atmospheric / pressurised / refrigerated; single / bunded group.
-3. **Existing containment** — the current bund, drainage, overfill protection, firewater (free-text).
-4. **Jurisdiction** — India → resolve the **state** (mandatory) for PESO/state storage licensing.
-
-Echo the substances + volumes + configuration back before stating the containment basis. The containment sizing basis is **resolved (not assumed)**; segregation respects incompatibilities; controls are HoC-ranked (`controls`); India licensing pointers reference `KB-REG-IN-PESO`.
-
-Then: analyse / apply the domain method → validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `knowledge/METHODOLOGY.md`.
+**refuse on a vague subject** (record `[ASSUMPTION]`/`[GAP]`, never invent a sizing %).
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -79,6 +84,12 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+- **SME Review & Sign-off** (MANDATORY, before ANY output) — run the skill-specific
+  persona, domain checklist, and boundary in `knowledge/sme-review.md` (bulk-storage /
+  secondary-containment engineer lens: the containment basis traced to a stated rule not
+  an assumed %; segregation, overfill independence and firewater containment hold against
+  the actual inventory). Decision-support only; precedes — never replaces — the human
+  competent-person review.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

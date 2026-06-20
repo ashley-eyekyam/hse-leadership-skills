@@ -92,15 +92,15 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-The structured intake captures, one question at a time, the facts the SPI/SPT framework needs:
-
-1. **Named operator/scope (free-text)** — the named operator/airport/AMO and the operation type. A generic "an airline" is refused.
-2. **Hazards / safety objectives (free-text)** — the hazards and safety objectives the SPIs must track (each SPI must map to one). Pull from `aviation-hazard-register` where it exists.
-3. **Leading vs lagging (MCQ per indicator)** — for each candidate SPI, is it leading (precursor) or lagging (outcome)? A balanced set is preferred.
-4. **Baseline data (free-text)** — any existing rate/occurrence data for trend context (used via `incident_rates`; quote `KB-DATA-TRIR-BENCHMARKS` source+year, never invent a figure).
-5. **Jurisdiction (MCQ)** — India (align to DGCA SSP ALoSP) / FAA / EASA / other / Unknown.
-
-Echo the **confirmed operator + the hazards/objectives** back. Then for each SPI: define it, set an **alert level** and a **target level** (the SPT), map it to its owning hazard/objective, and use `incident_rates` for the trend context. **Every SPI must carry a defined threshold and an owner** — an SPI with no alert/target level or no owning hazard is flagged. Never invent a performance figure; an absent datum is `[GAP]`.
+The full typed/branched intake Q-table — the design/review scope, the named operator, the
+CAA/SSP ALoSP-basis jurisdiction branch (India → `KB-REG-IN-DGCA` DGCA SSP ALoSP, FAA/EASA →
+ask-the-reference, never fabricate), the hazards/objectives each SPI tracks, leading-vs-lagging
+per SPI, the measurement period, the baseline data (via `incident_rates`; quote
+`KB-DATA-TRIR-BENCHMARKS` source+year, never invent), the alert/target-derivation branch
+(HistoricalBaseline → baseline data becomes required), and the per-SPI owner — lives in
+**`references/intake.md`** (the `intake-coverage` manifest + echo-back + refuse-on-vague
+anchors). Run it one question at a time, branch on the answers, and **echo the confirmed
+operator + the hazards/objectives back before any analysis**. Then for each SPI: define it, set an **alert level** and a **target level** (the SPT), map it to its owning hazard/objective, and use `incident_rates` for the trend context. **Every SPI must carry a defined threshold and an owner** — an SPI with no alert/target level or no owning hazard is flagged. Never invent a performance figure; an absent datum is `[GAP]`.
 
 Then: validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method (the SPI/SPT design) is in `references/METHODOLOGY.md`.
 
@@ -136,14 +136,23 @@ this conversation — paste ALL needed context into its prompt. Per-subagent ske
 Gather the outputs, resolve conflicts explicitly (state which source wins), de-duplicate,
 and assemble the deliverable in this skill's output format.
 
-### Step 4 — Critic / QA (MANDATORY — this is regulatory/safety output)
-Spawn ONE Critic: give it the draft + the inputs + the output contract. It finds errors,
-unsupported claims, missed regulatory triggers, lower-order-only controls, and any
-de-identification leak. Fix everything it raises before delivery.
+### Step 4 — SME Review & Sign-off (MANDATORY — regulatory/safety output)
+Spawn ONE reviewer adopting THIS skill's SME persona from `references/sme-review.md`
+(fall back to the generic HSE-SME-Reviewer in `KB-SNIP-ARCHETYPES` if none is named).
+Give it the draft + the inputs + the output contract. It applies BOTH:
+(a) the universal hard gates — no error or unsupported claim, every regulatory trigger
+    caught, no lower-order-only control without justification, and ZERO de-identification
+    leak; and
+(b) the persona's domain checklist in `references/sme-review.md`.
+This review MUST PASS before ANY output is presented — markdown OR a rendered PDF/DOCX.
+Fix everything it raises and re-run until clean. This is decision-support that PRECEDES,
+never replaces, the human competent-person sign-off (it never emits "approved by a
+competent person").
 
-> Single-threaded fallback: if your host has no subagent capability, execute each job
-> sequentially in THIS context — run the de-identification scrub first, keep the scope
-> discipline, and still perform the required Critic/QA pass before delivery.
+> Single-threaded fallback: if your host has no subagent capability, perform the SME
+> Review & Sign-off pass yourself in THIS context — run the de-identification scrub
+> first, keep the scope discipline, apply the persona checklist + universal gates, and
+> pass the review before presenting any output (markdown or rendered).
 <!-- hse:block:orchestration:end -->
 
 ### Subagent roster for THIS skill
@@ -163,7 +172,8 @@ Moderate fan-out (the De-identifier runs FIRST as a sequential dependency):
   any absent figure — never invents one. SCOPE-OUT: does not review SRB decisions.
 - **Critic/QA** (MANDATORY) — the Aviation-SMS persona (`KB-SNIP-ARCHETYPES`): every SPI has an
   alert/target level and an owning hazard/objective, no performance figure is fabricated, and ZERO
-  identity leak.
+  identity leak. Runs the per-skill SME sign-off checklist in `references/sme-review.md`
+  (decision-support; precedes — never replaces — the human competent-person review).
 
 Simple single-subject tasks run single-threaded — no subagents.
 

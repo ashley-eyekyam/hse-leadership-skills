@@ -38,26 +38,28 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — toxic-release-dispersion-scenario
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | What is the scenario framing for — a bowtie, a LOPA, a QRA input, or an emergency-plan/siting study? | MCQ | bowtie / LOPA / QRA-input / emergency-plan-zone | ELI-SCOPE | always |
+| Q2 | Released substance + CAS + the inventory at risk (mass). | free-text | substance + mass; refuse "a toxic gas" | ELI-SUBJECT | always |
+| Q3 | Physical state + storage pressure/temperature. | MCQ + free-text | gas / liquefied-gas / liquid; P, T | ELI-EVIDENCE | always |
+| Q4 | Release scenario. | MCQ | catastrophic (full-bore) / continuous (leak) / instantaneous (puff) | ELI-SUBJECT | always |
+| Q5 | Do you hold a release rate / hole size, or should the modeller derive it? | MCQ + free-text | supplied (give value) / for-modeller (`[GAP]`) | ELI-EVIDENCE | always |
+| Q6 | Toxicity benchmark you want zoned against. | MCQ | AEGL / ERPG / IDLH / SLOT-SLOD / unknown | ELI-EVIDENCE | always |
+| Q7 | Release point + receptor distance/direction + typical weather (wind, stability). | free-text | scenario geometry for the modeller | ELI-LOCATION | always |
+| Q8 | Receptors at risk. | MCQ multi-select | on-site workers / public / environment | ELI-EXPOSURE | always |
+| Q9 | Output format / reader for the scenario brief. | MCQ | modelling-input brief / siting-study input / emergency-plan-zone framing | ELI-OUTPUT | always |
+| Q10 | Org consequence band scheme for the qualitative consequence axis. | MCQ | org scheme / default 5×5 — qualitative band only, NOT a modelled result | ELI-SCORING | always |
 
-For a dispersion **scenario** (assistive) the intake elicits the release facts and the target study:
-
-1. **Released substance + inventory** — substance/CAS + the inventory at risk (free-text; specific).
-2. **Release scenario** — MCQ: catastrophic / continuous / instantaneous.
-3. **Receptors** — MCQ multi-select: on-site / public / environment.
-4. **Target study** — MCQ: bowtie / LOPA / QRA input.
-
-**Echo back that the output is scenario framing for a competent-person study / modelling, NOT a quantitative result.** The skill records `[GAP]` for any un-modelled value (distance, concentration), develops the consequence side with **`bowtie-builder`** / **`lopa-worksheet`** by name, and never runs PHAST/ALOHA or invents a dispersion figure. `risk_matrix` gives a qualitative consequence band only.
-
-Then: analyse / apply the domain method → validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `knowledge/METHODOLOGY.md`.
+**refuse on a vague subject** (record `[ASSUMPTION]`/`[GAP]`, never invent a dispersion
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -65,22 +67,7 @@ Assemble a `report.json` conforming to the shared report-model schema, then run 
 
 ## Subagent roster (preserved as a sequential checklist)
 
-### Subagent roster for THIS skill
-
-<!-- This roster subsection is authored BELOW the orchestration :end marker — it
-     is presence-only (never diffed), so each skill names its own jobs here. -->
-
-For a non-trivial task the triage gate may fan out to:
-
-- **Researcher** — gathers the task/site facts, the resolved jurisdiction's
-  requirements, and the relevant standards, from the scrubbed inputs only.
-- **Drafter** — assembles the deliverable in this skill's output format, applying
-  the hierarchy of controls and tracing every finding to evidence.
-- **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
-  output: specificity, hierarchy of controls, defensibility, de-identification, and
-  citation accuracy.
-
-Simple single-subject tasks run single-threaded — no subagents.
+_Full detail moved to the knowledge upload (see `knowledge/`)._
 
 ## Jurisdiction routing
 

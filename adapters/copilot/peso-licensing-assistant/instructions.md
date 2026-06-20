@@ -38,26 +38,29 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — peso-licensing-assistant
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | What's the **task**? | MCQ | New licence application / Renewal or amendment / Compliance check / MSIHC on-site emergency plan | ELI-SCOPE | always |
+| Q2 | Name the **installation** and its **capacity**. | free-text | petroleum storage class / explosives / gas-cylinder filling / pressure vessel + quantity — the specificity anchor; refuse a capacity-less installation | ELI-SUBJECT | always |
+| Q3 | Which **PESO instrument** applies? | MCQ | Petroleum Rules 2002 · Explosives Rules 2008 · Gas Cylinder Rules 2016 · SMPV(U) Rules 2016 · Not sure (help me resolve) | ELI-OBLIGATIONS | always |
+| Q4 | Is the installation a **Major Accident Hazard** (MSIHC thresholds)? | MCQ | Yes (MAH — on-site emergency plan in scope) / No / Not sure (check thresholds) | ELI-JURIS | always |
+| Q4a | Confirm the **jurisdiction** for this licensing artefact. | MCQ | India / Other (non-India — out of scope; PESO is the Indian statutory regulator) | ELI-JURIS | always |
+| Q5 | **Which state** is the site in? *(mandatory — state detection)* | MCQ + free-text | Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Gujarat · Other · Unknown — or infer from the address then **confirm**; never silently assume the state before citing any state-specific form | ELI-LOCATION | always (mandatory where state-specific) |
+| Q6 | What **documents** do you hold? | MCQ multi-select | Site/plot plan · Capacity / MAWP / design calcs · Existing licence · NOC (fire/pollution/local) · None yet | ELI-EVIDENCE | always |
+| Q7 | What is the **current licence validity / renewal deadline** (if any)? | free-text | surfaces the temporal obligation | ELI-TEMPORAL | Q1 in [Renewal or amendment, Compliance check] |
+| Q8 | Who is the **licensed competent person / point of contact** for the authority? | free-text | the competency anchor (de-identified to a role) | ELI-COMPETENCY | always |
+| Q9 | What **output**, for whom, and what **sector** frames it? | MCQ + free-text | Full licence package · Form + checklist · MSIHC on-site emergency plan · Compliance gap report // M / C // sector (petroleum · explosives · industrial gases · chemicals) | ELI-OUTPUT | always |
+| Q10 | Which **sector / installation type** frames the licence? | MCQ | Petroleum / fuel storage · Explosives · Industrial / compressed gases · Chemicals · Other | ELI-INDUSTRY | always |
 
-For a PESO package the intake elicits the installation, the licence type, and the state:
-
-1. **The installation** — the named installation (petroleum storage class, explosives, gas-cylinder filling, pressure vessel) and its capacity (specific).
-2. **Licence type** — which PESO instrument applies (Petroleum Rules 2002 / Explosives Rules 2008 / Gas Cylinder Rules 2016 / SMPV(U) Rules 2016).
-3. **MAH determination** — is the installation a Major Accident Hazard (MSIHC thresholds)? If so, the on-site emergency plan is in scope.
-4. **State detection (MANDATORY where state-specific)** — resolve the site **state** for siting / state-consent / factory interactions (ask, or infer-from-address-then-confirm — never silently assume).
-5. **OSH-Code transition** — note the transition status (legacy-first; the instrument is still filed today).
-
-Echo the installation + licence type + state back before resolving. Every form is cited from the matched KB row (no hard-coded national number); a state-specific obligation with an unknown state is asked, not assumed.
-Then: analyse / apply the domain method → validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `knowledge/METHODOLOGY.md`.
+## Refuse-on-vague anchors
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -65,22 +68,7 @@ This host has no Code Interpreter, so emit the deliverable as a **structured mar
 
 ## Subagent roster (preserved as a sequential checklist)
 
-### Subagent roster for THIS skill
-
-<!-- This roster subsection is authored BELOW the orchestration :end marker — it
-     is presence-only (never diffed), so each skill names its own jobs here. -->
-
-For a non-trivial task the triage gate may fan out to:
-
-- **Researcher** — gathers the task/site facts, the resolved jurisdiction's
-  requirements, and the relevant standards, from the scrubbed inputs only.
-- **Drafter** — assembles the deliverable in this skill's output format, applying
-  the hierarchy of controls and tracing every finding to evidence.
-- **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
-  output: specificity, hierarchy of controls, defensibility, de-identification, and
-  citation accuracy.
-
-Simple single-subject tasks run single-threaded — no subagents.
+_Full detail moved to the knowledge upload (see `knowledge/`)._
 
 ## Jurisdiction routing
 

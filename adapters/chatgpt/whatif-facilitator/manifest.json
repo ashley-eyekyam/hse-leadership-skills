@@ -1,6 +1,8 @@
 {
   "code_interpreter": true,
-  "conversation_starters": [],
+  "conversation_starters": [
+    "What-If question set , What-If-Checklist hybrid"
+  ],
   "description": "Structures a disciplined What-If question-set workshop and records the team's responses and actions: What-If question, hazard/consequence, existing safeguards, risk rank, and recommendations tracked to closure. Assistive: it structures the question set and records the team's analysis, never inventing a consequence or fabricating a risk rank, recording [GAP] instead. Decision-support only; a competent person must review the output.",
   "instructions_file": "instructions.md",
   "knowledge_files": [
@@ -16,7 +18,9 @@
     "knowledge/iec-61882.md",
     "knowledge/in-factories-act.md",
     "knowledge/intake-interview.md",
+    "knowledge/intake.md",
     "knowledge/iso-45001.md",
+    "knowledge/sme-review.md",
     "knowledge/subagent-archetypes.md",
     "knowledge/uk-hswa.md",
     "knowledge/us-osha.md"

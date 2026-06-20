@@ -38,26 +38,29 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — whatif-facilitator
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | What is the **bounded scope**, and what **kind** is it? | MCQ+free-text | Procedure-SOP / Operation-activity / System-equipment / A specific change ; then name the specific scope | ELI-SCOPE | always |
+| Q2 | Run **What-If only**, or **What-If + Checklist** (hybrid)? | MCQ | What-If question set , What-If-Checklist hybrid | ELI-SCOPE | always |
+| Q3 | Confirm or extend the **question seeds**. | MCQ multi-select | Loss of utility / Wrong sequence / Wrong material or quantity / Human error or omission / Equipment failure / External event / Start-up-shutdown-abnormal / Other (specify) | ELI-SUBJECT | always |
+| Q4 | What **existing safeguards** already apply to this scope? | free-text | The baseline, before the questions are run. | ELI-BASELINE | always |
+| Q5 | What **source documents** do you have? | MCQ multi-select | Procedure-SOP / P&ID or sketch / Prior study / None | ELI-EVIDENCE | always |
+| Q6 | Who is in the **team** (disciplines + facilitator)? | MCQ | Full team (operations, process, facilitator/scribe) , Incomplete (no full team present) | ELI-COMPETENCY | always |
+| Q7 | No full team — structure and mark **"not yet performed"**? | MCQ | Yes (structure only) , No (reconvene) | ELI-COMPETENCY | Q6 == Incomplete |
+| Q8 | Which **risk matrix**? | MCQ | Our matrix (paste) , Default 5×5 process-safety descriptors | ELI-SCORING | always |
+| Q9 | Which **jurisdiction** for the grounding citation? | MCQ | UK , USA , EU , India , None | ELI-JURIS | always |
+| Q9a | *(India only)* Which **state** is the installation in? | MCQ | Tamil Nadu / Karnataka / Maharashtra / Delhi-Central / Gujarat / Other / Unknown — **mandatory state detection**; confirm before citing any statutory filing; "Other"/"Unknown" → literal `[GAP]`, never a national-form fallback | ELI-JURIS | Q9 == India |
+| Q10 | What **output**, audience, distribution? | MCQ+free-text | Worksheet / Full report // audience M (management) or C (consultant) // internal vs circulated externally | ELI-OUTPUT | always |
 
-For a What-If the intake elicits the scope and seeds the question set, recording the team's answers:
-
-1. **The scope** — the named process / operation / procedure under study (free-text; bounded scope, not 'the site').
-2. **The question set** — confirm the systematic 'What if …?' prompts to walk (loss of utility, wrong sequence, wrong material, human error, external event).
-3. **The team** — the multidisciplinary participants and competencies (the assistive evidence). If absent, the skill structures the question set but records the study as **not yet performed**.
-4. **Risk matrix** — the org matrix or the default 5×5 with process-safety descriptors.
-5. **Jurisdiction** — only to cite the grounding standard/duty.
-
-Echo the scope + question set + team back before recording answers. For each question the skill **prompts** the team and **records** their hazard/consequence/safeguard judgement — never inventing a consequence (records `[GAP]`).
-Then: analyse / apply the domain method → validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `knowledge/METHODOLOGY.md`.
+> facts back before any analysis**, and **refuse a vague scope**. Canonical runtime
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -72,6 +75,10 @@ This host has no Code Interpreter, so emit the deliverable as a **structured mar
 
 - Single-threaded by design — no subagents. (Replace with this skill's named
   fan-out jobs if the triage gate warrants them.)
+- **SME review & sign-off** (MANDATORY pre-output gate) — run the specialized SME persona
+  in **[`knowledge/sme-review.md`](knowledge/sme-review.md)** (PHA / What-If facilitator)
+  before presenting ANY output; decision-support only, it precedes and never replaces the
+  human competent-person review.
 
 ## Jurisdiction routing
 

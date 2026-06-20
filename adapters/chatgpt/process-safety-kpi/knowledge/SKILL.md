@@ -91,15 +91,17 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-For process-safety KPIs the intake elicits the events and the denominator:
+### Step 0 — Structured intake (run this first, one question at a time)
 
-1. **The facility & period** — the named facility and the reporting period (specific).
-2. **The PSE events** — the loss-of-containment events with enough fact to apply the Tier-1/Tier-2 threshold test (material, consequence). Counts are structured from facts, never invented.
-3. **Work hours** — the total work-hours denominator for the rate (a missing/zero denominator → the rate is `[GAP]`, the fail-loud discipline; the count is still reported).
-4. **Leading indicators** — Tier-3 (challenges to safety systems) and Tier-4 (operating-discipline) measures to frame.
-5. **Benchmark** — any benchmark to compare against (each figure cited source+year).
+The full typed, branched intake — the `intake-coverage` manifest, the question table
+(single-period vs trend · facility + period · the PSE events for the Tier-1/2 threshold
+test · the **work-hours denominator** · Tier-3/Tier-4 leading indicators · per-indicator
+**thresholds** · benchmark · prior-period data · output), the **rate-`[GAP]` branch**
+(missing/zero hours → fail-loud, count still reported), the trend-line branch, the
+RAG-status branch, the echo-back, and the refuse-on-vague anchors — lives in
+**`references/intake.md`**. A rate is **never** reported without its work-hours
+denominator; an occupational TRIR/LTIFR/DART request routes to `incident-rate-calculator`.
 
-Echo the facility + period + events + hours back before computing. The normalized rate = count × base hours ÷ work hours; a missing denominator is reported as `[GAP]`, never a fabricated rate.
 Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
 
 <!-- hse:block:orchestration:start -->
@@ -134,14 +136,23 @@ this conversation — paste ALL needed context into its prompt. Per-subagent ske
 Gather the outputs, resolve conflicts explicitly (state which source wins), de-duplicate,
 and assemble the deliverable in this skill's output format.
 
-### Step 4 — Critic / QA (MANDATORY — this is regulatory/safety output)
-Spawn ONE Critic: give it the draft + the inputs + the output contract. It finds errors,
-unsupported claims, missed regulatory triggers, lower-order-only controls, and any
-de-identification leak. Fix everything it raises before delivery.
+### Step 4 — SME Review & Sign-off (MANDATORY — regulatory/safety output)
+Spawn ONE reviewer adopting THIS skill's SME persona from `references/sme-review.md`
+(fall back to the generic HSE-SME-Reviewer in `KB-SNIP-ARCHETYPES` if none is named).
+Give it the draft + the inputs + the output contract. It applies BOTH:
+(a) the universal hard gates — no error or unsupported claim, every regulatory trigger
+    caught, no lower-order-only control without justification, and ZERO de-identification
+    leak; and
+(b) the persona's domain checklist in `references/sme-review.md`.
+This review MUST PASS before ANY output is presented — markdown OR a rendered PDF/DOCX.
+Fix everything it raises and re-run until clean. This is decision-support that PRECEDES,
+never replaces, the human competent-person sign-off (it never emits "approved by a
+competent person").
 
-> Single-threaded fallback: if your host has no subagent capability, execute each job
-> sequentially in THIS context — run the de-identification scrub first, keep the scope
-> discipline, and still perform the required Critic/QA pass before delivery.
+> Single-threaded fallback: if your host has no subagent capability, perform the SME
+> Review & Sign-off pass yourself in THIS context — run the de-identification scrub
+> first, keep the scope discipline, apply the persona checklist + universal gates, and
+> pass the review before presenting any output (markdown or rendered).
 <!-- hse:block:orchestration:end -->
 
 ### Subagent roster for THIS skill
@@ -155,6 +166,10 @@ For a non-trivial task the triage gate may fan out to:
   requirements, and the relevant standards, from the scrubbed inputs only.
 - **Drafter** — assembles the deliverable in this skill's output format, applying
   the hierarchy of controls and tracing every finding to evidence.
+- **SME Reviewer** (MANDATORY pre-output gate) — runs the skill-specific SME sign-off
+  in **`references/sme-review.md`** (API RP 754 / CCPS process-safety-metrics SME)
+  before ANY output: every event tiered correctly, the rate denominator fail-loud not
+  fabricated, and leading + lagging indicators both represented.
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.

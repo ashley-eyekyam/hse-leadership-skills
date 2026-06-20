@@ -108,9 +108,13 @@ def test_adapted_skill_roster_and_rows_verbatim(risk_assessment_dir):
 def test_adapted_skill_intake_questions_captured(risk_assessment_dir):
     adapted = build.load_skill(risk_assessment_dir)
     assert adapted.intake_questions, "intake question set not captured"
-    assert "Workflow" in adapted.intake_questions
-    # The §2.7 intake table opens the Workflow.
+    # Sourced from references/intake.md (Phase-9 INTK-01 home), Q-table region only.
+    assert "Structured intake" in adapted.intake_questions
+    # The §2.7 intake table carries the typed Q-rows (Q1 Jurisdiction MCQ).
     assert "Jurisdiction" in adapted.intake_questions
+    # Q-table region ONLY — the prose echo-back / evidence sections are NOT embedded
+    # (they push past the ChatGPT/Copilot char cap; they ship as knowledge/intake.md).
+    assert "Echo-back" not in adapted.intake_questions
 
 
 def test_adapted_skill_intake_for_all_exemplars(exemplar_dirs):

@@ -54,3 +54,13 @@ question, wait, branch, repeat. Same portability discipline as the orchestration
 Intake gathers raw facts → the `deid` block (A5) scrubs them before drafting → the
 orchestration block (A6) fans out on the de-identified, intake-gathered inputs.
 `KB-SNIP-INTAKE` is the **first** thing the Workflow runs, upstream of both.
+
+## Coverage contract (the elicitation taxonomy)
+
+Each skill's intake must COVER a fixed taxonomy of elicitation dimensions, declared in its
+`references/intake.md` `intake-coverage` manifest. Three dimensions are UNIVERSAL — every skill
+covers them: ELI-SCOPE (what is being assessed/produced), ELI-SUBJECT (the named task/site/asset),
+ELI-OUTPUT (the artifact + its reader). Nine are CONDITIONAL (jurisdiction, industry, location,
+exposure, baseline, evidence, obligations, scoring, competency, temporal) — a skill either covers
+each or omits it WITH A STATED REASON. The canonical id list + definitions live in
+`../elicitation-taxonomy.yaml` (the linter resolves every manifest ID against it — rule 11).

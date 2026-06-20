@@ -38,26 +38,30 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — psm-program-manager
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | What's the **task**? | MCQ | Build the 14-element status matrix · Gap assessment (where are our gaps) · Audit-readiness prep · Track a specific element | ELI-SCOPE | always |
+| Q2 | Name the **facility** and **covered process(es)** — is it a **PSM-covered process** (threshold quantity of a highly hazardous chemical)? | MCQ + free-text | Yes (PSM-covered) / No (not a PSM-covered process) / Help-determine — name the facility + process; the specificity anchor; refuse a vague "our plant" | ELI-SUBJECT | always |
+| Q3 | Which **elements** are in scope? | MCQ multi-select | All 14 · Employee participation · PSI · PHA · Operating procedures · Training · Contractors · PSSR · Mechanical integrity · Hot work · MOC · Incident investigation · Emergency planning · Compliance audits · Trade secrets | ELI-OBLIGATIONS | always |
+| Q4 | For each in-scope element, what **evidence exists** (documents, audit findings, dates)? | free-text | status must be evidence-based, not asserted; no evidence → `[GAP]` | ELI-EVIDENCE | always |
+| Q5 | What **cycle dates** drive "overdue" — last compliance audit, last PHA / revalidation? | free-text | PSM triennial audit, 5-yr PHA revalidation → overdue status | ELI-TEMPORAL | always |
+| Q6 | Who **owns** each element? | free-text | the matrix carries owners up front (de-identified to roles) | ELI-COMPETENCY | always |
+| Q7 | What is the **current programme baseline** — which elements already have a documented, maintained system? | free-text | seeds the compliant-vs-gap starting state | ELI-BASELINE | always |
+| Q8 | **Jurisdiction** (statutory hook)? | MCQ | USA (29 CFR 1910.119 statutory) / UK / EU / India / PSM-as-framework | ELI-JURIS | always |
+| Q8a | *(India only)* Which **state** is the facility in (for the Factories-Act statutory hook)? | MCQ + free-text | Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Gujarat · Other · Unknown — confirm the state before citing any state-specific obligation; never silently assume | ELI-JURIS | Q8 == India |
+| Q9 | Which **risk matrix** bands the gap-risk? | MCQ | Our matrix · Default 5×5 | ELI-SCORING | always |
+| Q10 | What **output**, for whom, how widely shared, and which **sector**? | MCQ + free-text | Status matrix · Gap report · Audit-prep pack // M / C // internal vs circulated // sector (chemicals · O&G · refining · other) | ELI-OUTPUT | always |
+| Q11 | Which **sector** frames the covered process? | MCQ | Chemicals · Oil & Gas · Refining · Petrochemicals · Other | ELI-INDUSTRY | always |
 
-For a PSM program the intake elicits the facility and the element scope:
-
-1. **The facility / covered process** — the named site and the process(es) covered by PSM (specific).
-2. **Elements in scope** — confirm which of the 14 elements to assess (or all): employee participation, PSI, PHA, operating procedures, training, contractors, PSSR, mechanical integrity, hot work, MoC, incident investigation, emergency planning, compliance audits, trade secrets.
-3. **Evidence available** — for each element, what evidence exists (documents, audit findings) so status is evidence-based, not asserted.
-4. **Risk matrix** — the org matrix or the default 5×5 for gap-risk banding.
-5. **Jurisdiction** — US (29 CFR 1910.119 statutory hook) or PSM-as-framework elsewhere.
-
-Echo the facility + elements + evidence back before building the matrix. A gap without remediation is HoC-ranked and given an owner + date — never left as a bare 'gap'.
-Then: analyse / apply the domain method → validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `knowledge/METHODOLOGY.md`.
+| Q2 | Name the **facility** and **covered process(es)** — is it a **PSM-covered process** (threshold quantity of a highly hazardous chemical)? | MCQ + free-text | Yes (PSM-covered) / No (not a PSM-covered process) / Help-determine — name the facility + process; the specificity anchor; refuse a vague "our plant" | ELI-SUBJECT | always |
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -65,37 +69,11 @@ Assemble a `report.json` conforming to the shared report-model schema, then run 
 
 ## Subagent roster (preserved as a sequential checklist)
 
-### Subagent roster for THIS skill
-
-<!-- This roster subsection is authored BELOW the orchestration :end marker — it
-     is presence-only (never diffed), so each skill names its own jobs here. -->
-
-For a non-trivial task the triage gate may fan out to:
-
-- **Researcher** — gathers the task/site facts, the resolved jurisdiction's
-  requirements, and the relevant standards, from the scrubbed inputs only.
-- **Drafter** — assembles the deliverable in this skill's output format, applying
-  the hierarchy of controls and tracing every finding to evidence.
-- **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
-  output: specificity, hierarchy of controls, defensibility, de-identification, and
-  citation accuracy.
-
-Simple single-subject tasks run single-threaded — no subagents.
+_Full detail moved to the knowledge upload (see `knowledge/`)._
 
 ## Jurisdiction routing
 
-<!-- The jurisdiction ROWS below live BELOW the :end marker: per-skill, presence-only
-     (rule-2 presence check, never byte-diffed). Author the rows for the jurisdictions
-     this skill serves; rule-9 checks every path/ID resolves against the KB registries. -->
-
-| Jurisdiction | Read |
-|---|---|
-| India | knowledge/in-factories-act.md (+ in-state-forms.md for the user's state) |
-| UK    | knowledge/uk-hswa.md |
-| USA   | knowledge/us-osha.md |
-| EU    | knowledge/eu-osh.md |
-| Unknown | Ask before citing any specific law |
-| Process (any) | knowledge/psm.md (KB-STD-PSM — the 14-element framework) + knowledge/us-osha.md (KB-REG-US-OSHA — the US statutory hook 29 CFR 1910.119) |
+_Full detail moved to the knowledge upload (see `knowledge/`)._
 
 ## Attribution (non-intrusive)
 

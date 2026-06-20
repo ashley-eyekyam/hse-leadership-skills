@@ -92,14 +92,15 @@ Open with a **structured multi-step intake** — MCQ where the answer space is e
 
 **Assistive boundary (D-05a) — state it up front:** this skill structures analysis from the **summaries the user supplies**. It does NOT ingest raw flight data and does NOT invent exceedance counts/values; an absent datum is `[GAP]`, routed to the competent FDM team.
 
-The structured intake captures, one question at a time, the facts the analysis needs:
-
-1. **Named operator/scope (free-text)** — the named operator and the fleet/period the FDM/FOQA programme covers.
-2. **Supplied summaries (free-text)** — the exceedance / event summaries the user already holds (counts, event types, periods). **The skill works ONLY from these — it does not generate exceedance values.**
-3. **Question (MCQ)** — frame findings / identify trends / propose SMS actions / all of these.
-4. **De-identify (auto)** — any crew named in a summary is scrubbed to a role label first.
-
-Echo the **confirmed operator + the supplied summaries** back. Then: frame each finding traced to a supplied summary item; identify trends ONLY across the supplied data; reach systemic SMS findings and HoC-ranked actions with named owners/dates. For any datum the user did NOT supply, record `[GAP]` and route it to the competent FDM team — **never fabricate an exceedance count or value.**
+The full typed/branched intake Q-table — the named operator/fleet, the CAA/SSP jurisdiction
+branch (India → `KB-REG-IN-DGCA`, FAA/EASA → ask-the-reference, never fabricate), the audience,
+the **supplied exceedance summaries** (the skill works ONLY from these — never raw flight data,
+never an invented count/value), the one-off-vs-trend branch (a trend needs ≥2 supplied periods),
+the period, and the SMS-action owner — lives in **`references/intake.md`** (the `intake-coverage`
+manifest + de-id-aware echo-back, role labels only + refuse-on-vague anchors). Crew detail is
+de-identified to role labels FIRST. Run it one question at a time, branch on the answers, and
+**echo the confirmed operator + supplied summaries back (crew detail de-identified) before any
+analysis**. Then: frame each finding traced to a supplied summary item; identify trends ONLY across the supplied data; reach systemic SMS findings and HoC-ranked actions with named owners/dates. For any datum the user did NOT supply, record `[GAP]` and route it to the competent FDM team — **never fabricate an exceedance count or value.**
 
 Then: validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method (the FDM/FOQA-informed analysis frame) is in `references/METHODOLOGY.md`.
 
@@ -135,14 +136,23 @@ this conversation — paste ALL needed context into its prompt. Per-subagent ske
 Gather the outputs, resolve conflicts explicitly (state which source wins), de-duplicate,
 and assemble the deliverable in this skill's output format.
 
-### Step 4 — Critic / QA (MANDATORY — this is regulatory/safety output)
-Spawn ONE Critic: give it the draft + the inputs + the output contract. It finds errors,
-unsupported claims, missed regulatory triggers, lower-order-only controls, and any
-de-identification leak. Fix everything it raises before delivery.
+### Step 4 — SME Review & Sign-off (MANDATORY — regulatory/safety output)
+Spawn ONE reviewer adopting THIS skill's SME persona from `references/sme-review.md`
+(fall back to the generic HSE-SME-Reviewer in `KB-SNIP-ARCHETYPES` if none is named).
+Give it the draft + the inputs + the output contract. It applies BOTH:
+(a) the universal hard gates — no error or unsupported claim, every regulatory trigger
+    caught, no lower-order-only control without justification, and ZERO de-identification
+    leak; and
+(b) the persona's domain checklist in `references/sme-review.md`.
+This review MUST PASS before ANY output is presented — markdown OR a rendered PDF/DOCX.
+Fix everything it raises and re-run until clean. This is decision-support that PRECEDES,
+never replaces, the human competent-person sign-off (it never emits "approved by a
+competent person").
 
-> Single-threaded fallback: if your host has no subagent capability, execute each job
-> sequentially in THIS context — run the de-identification scrub first, keep the scope
-> discipline, and still perform the required Critic/QA pass before delivery.
+> Single-threaded fallback: if your host has no subagent capability, perform the SME
+> Review & Sign-off pass yourself in THIS context — run the de-identification scrub
+> first, keep the scope discipline, apply the persona checklist + universal gates, and
+> pass the review before presenting any output (markdown or rendered).
 <!-- hse:block:orchestration:end -->
 
 ### Subagent roster for THIS skill
@@ -163,7 +173,9 @@ Moderate fan-out (the De-identifier runs FIRST as a sequential dependency):
 - **Critic/QA** (MANDATORY) — the Aviation-SMS persona (`KB-SNIP-ARCHETYPES`): the load-bearing
   assistive check — does this read as structured analysis of user-supplied summaries, NOT autonomous
   analysis of raw flight data? Any invented exceedance count/value is a FLAG; every `[GAP]` is honest.
-  And ZERO crew-identity leak.
+  And ZERO crew-identity leak. Runs the per-skill SME sign-off checklist in
+  `references/sme-review.md` (FDM analyst + line-pilot lenses; decision-support; precedes —
+  never replaces — the human competent-person / FDM-team review).
 
 Simple single-subject tasks run single-threaded — no subagents.
 

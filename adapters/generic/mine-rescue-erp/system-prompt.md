@@ -38,21 +38,28 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — mine-rescue-erp
 
-Open with a **structured multi-step intake** (`KB-SNIP-INTAKE`) — one question at a time, branch, echo the captured facts before drafting.
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | Build a new ERP or review an existing one? | MCQ | a) Draft new / b) Review-gap-check existing | ELI-SCOPE | always |
+| Q2 | Commodity + mine type + workforce? | MCQ | commodity (coal / metal / other) × opencast-UG × workforce band (<100 / 100–500 / 500–2000 / >2000) | ELI-INDUSTRY/ELI-EXPOSURE | always |
+| Q3 | DGMS region / state (India)? | MCQ→confirm | infer-then-confirm the DGMS region and the **state** if the jurisdiction is India | ELI-JURIS/ELI-LOCATION | India |
+| Q4 | Which emergency scenarios? | mcqmulti-select | fire-explosion · inrush-inundation · strata failure · irrespirable-flammable atmosphere · entrapment · mobile-plant event · other (`KB-DATA-MINING-HAZARDS`) | ELI-SUBJECT | always |
+| Q5 | Rescue-team capability? | free-text | "Trained-rescuer count, apparatus type/sets, certification currency — **reject aspirational; realism is the point**" | ELI-COMPETENCY | always |
+| Q6 | Rescue-station + mutual-aid links? | free-text | "Station name + distance/response time; mutual-aid agreements (named, actual)" | ELI-EVIDENCE/ELI-BASELINE | always |
+| Q7 | Mobilisation route + comms + refuge? | free-text | "Actual mobilisation sequence, communication systems, refuge-chamber capacity" | ELI-BASELINE | always |
+| Q8 | Drill cadence + last drill? | MCQ+free-text | statutory cadence (confirm against the duty) — + last-drill date per scenario | ELI-TEMPORAL | always |
+| Q9 | Scenario-ranking scheme? | MCQ | a) Org's existing emergency / risk matrix / b) Default 5×5 (D-02 bands) — confirm | ELI-SCORING | always |
+| Q10 | Output + distribution? | MCQ | a) Full ERP document / b) Gap-check report / c) Drill schedule only | ELI-OUTPUT | always |
 
-1. **Mine** — commodity, opencast/underground, workforce size, and (for India) the DGMS region.
-2. **Emergency scenarios** — MCQ multi-select from `KB-DATA-MINING-HAZARDS` (fire/explosion, inrush/inundation, strata failure, irrespirable atmosphere, entrapment, mobile-plant event).
-3. **Rescue resources** — free-text: the **actual** rescue team / station / mutual-aid links and the mobilisation route. Reject an aspirational placeholder — the realism is the point.
-
-Then: scenario-rank each emergency on the org matrix (`risk_matrix`); build the mobilisation sequence (team → station → mutual-aid → NDMA/DGMS alignment) with credible timing; schedule drills with owner + date (`smart_actions`); cite the Mines Act/DGMS emergency-preparedness duty. Validate against `knowledge/QUALITY_CHECKLIST.md`, then produce the output via the Output format section. The ERP is a draft for a competent person's sign-off.
+facts back before any drafting**; **refuse on a vague subject** — an aspirational
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -74,6 +81,11 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+
+**Step 4 — SME review & sign-off (MANDATORY, before any output):** run the skill-specific
+SME persona sign-off in **`knowledge/sme-review.md`** (the mine-rescue superintendent /
+emergency-preparedness officer — the timing-realism lens) — model QA, decision-support, FLAGs
+non-blocking; a competent person must validate mobilisation realism and sign off.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

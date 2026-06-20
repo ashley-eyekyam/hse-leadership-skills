@@ -38,46 +38,30 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — capa-manager
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q0 | **Source of the finding/cause this CAPA addresses** | MCQ | Audit / Incident / Inspection / Near-miss / Other — *Incident* → offer the INGEST branch (an `incident-investigation` output?); *Audit* → offer the INGEST branch (a `safety-audit` finding set?); all others → the capture path | ELI-SCOPE | always |
+| Q0a | *(if a sibling output exists)* **Supply it to ingest?** — *Yes* runs the **INGEST branch**: lift the finding + cause id(s) + any first CAPA + de-identified facts, skip Q2/Q3 re-elicitation, proceed to confirm + complete; *No* → capture manually | MCQ + free-text | Yes / No | ELI-EVIDENCE | Q0 == Audit / Incident |
+| Q1 | **Jurisdiction** | MCQ | India / UK / USA / EU / Other / Unknown — India → Q1a (state) → the §kb-selection row + the documented corrective-action duty | ELI-JURIS | always |
+| Q1a | *(India only)* **Which state?** | MCQ | Tamil Nadu / Karnataka / Maharashtra / Delhi-Central / Other — resolves `KB-REG-IN-STATEFORMS`; **mandatory state detection** — confirm before citing | ELI-JURIS | Q1 == India |
+| Q2 | **The finding / nonconformity / incident cause** (the anchor) | free-text | "State the exact finding, nonconformity, or incident cause this CAPA addresses, and against which requirement/clause." The **specificity anchor** — refuse to proceed on "general non-compliance" | ELI-BASELINE | Q0a == No (manual capture) |
+| Q2b | **Where / which area the finding applies to** | free-text | "Which specific site/area/asset does this finding apply to? (if not already clear in Q2)" | ELI-LOCATION | Q0a == No and location absent from Q2 |
+| Q3 | **Root cause (if known)** | free-text | "Is the root cause established? If yes, state it (or the ingested cause id RC-n). If no, I'll run a brief 5-Whys to establish one." If absent → step 3 light `rca`; if a cause id is ingested → reuse | ELI-EVIDENCE | always |
+| Q4 | **Proposed actions, if any** | free-text | "Any corrective or preventive actions already proposed? (I'll rank them by the hierarchy of controls and fill the gaps.)" Seeds step 4; flags any PPE/admin-only proposal for higher-order escalation | ELI-OBLIGATIONS | always |
+| Q5 | **Owners** | free-text | "Who owns each action? (named role/person — no 'TBD'.)" → `smart_actions` owner field; refuse anonymous owners | ELI-COMPETENCY | always |
+| Q6 | **Due dates** | free-text | "Target completion date for each action (ISO date — no 'ASAP'.)" → `smart_actions` `due`; validated ISO-8601 | ELI-TEMPORAL | always |
+| Q7 | **Verification / effectiveness-check method** | MCQ + free-text | Re-audit / Re-inspection / Metric-KPI trend / Observation-walkdown / Document-record check / Other (+ free-text) → the `verification.method` (the lifecycle step this skill owns) | ELI-OUTPUT | always |
+| Q8 | **CAPA scope** — single = single-threaded triage; register = fan-out | MCQ | Single action (close-out) / Multi-action register | ELI-SCORING | always |
 
-### Step 0 — Structured intake (run this first, one question at a time)
-
-Run the question set below one question at a time, MCQ where the answer space is
-enumerable and free-text where it is open, branching on the answers (`KB-SNIP-INTAKE`).
-**Never proceed on a vague finding**; record `[GAP]` for missing facts and
-`[ASSUMPTION]` for anything inferred — **never invent a cause or an action**. The intake
-opens with the **source gate (Q0)**; when a sibling `incident-investigation`/`safety-audit`
-output is supplied it runs the **INGEST branch (Q0a)** — lifting the finding + cause
-id(s) + any first CAPA + the de-identified facts instead of re-eliciting them.
-
-| # | Question | Type | Options / branch |
-|---|---|---|---|
-| Q0 | **Source of the finding/cause this CAPA addresses** | MCQ | **Audit · Incident · Inspection · Near-miss · Other** — *Incident* → offer the INGEST branch (an `incident-investigation` output?); *Audit* → offer the INGEST branch (a `safety-audit` finding set?); all others → the capture path. |
-| Q0a | *(if a sibling output exists)* **Supply it to ingest?** | MCQ + free-text/file | **Yes — paste/point to it · No, capture manually.** *Yes* → the **INGEST branch**: lift the finding + cause id(s) + any first CAPA + de-identified facts; skip Q2/Q3 re-elicitation; proceed to confirm + complete. |
-| Q1 | **Jurisdiction** | MCQ | India · UK · USA · EU · Other/Unknown. **India → Q1a (state)** → the §kb-selection row + the documented corrective-action duty. |
-| Q1a | *(India only)* **Which state?** | MCQ | Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Other — resolves `KB-REG-IN-STATEFORMS`; **mandatory state detection** — confirm before citing. |
-| Q2 | **The finding / nonconformity / incident cause** (the anchor) | free-text | "State the exact finding, nonconformity, or incident cause this CAPA addresses, and against which requirement/clause." The **specificity anchor** — refuse to proceed on "general non-compliance" (example: METHODOLOGY.md). |
-| Q3 | **Root cause (if known)** | free-text | "Is the root cause established? If yes, state it (or the ingested cause id RC-n). If no, I'll run a brief 5-Whys to establish one." If absent → step 3 light `rca`; if a cause id is ingested → reuse. |
-| Q4 | **Proposed actions, if any** | free-text | "Any corrective or preventive actions already proposed? (I'll rank them by the hierarchy of controls and fill the gaps.)" Seeds step 4; flags any PPE/admin-only proposal for higher-order escalation. |
-| Q5 | **Owners** | free-text | "Who owns each action? (named role/person — no 'TBD'.)" → `smart_actions` owner field; refuse anonymous owners. |
-| Q6 | **Due dates** | free-text | "Target completion date for each action (ISO date — no 'ASAP'.)" → `smart_actions` `due`; validated ISO-8601. |
-| Q7 | **Verification / effectiveness-check method** | MCQ + free-text | Re-audit · Re-inspection · Metric/KPI trend · Observation/walkdown · Document/record check · Other (+ free-text) → the `verification.method` (the lifecycle step this skill owns). |
-| Q8 | **CAPA scope** | MCQ | Single action (close-out) · Multi-action register (a finding set / audit) — single = single-threaded triage; register = fan-out. |
-
-After the last applicable question the Workflow **echoes a captured-facts summary**
-("Managing CAPA for Audit NC-07 (emergency lighting, Bay 3, Maharashtra) → cause RC-1
-(no PM schedule for life-safety systems); 1 corrective + 1 preventive action, owners
-and dates as given, verification by re-inspection in 30 days — correct?") and proceeds
-only on confirmation. On the **INGEST branch** the echo confirms what was lifted from
-the sibling output before this skill completes/manages it.
+## Refuse-on-vague anchors
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -93,5 +77,17 @@ _Full detail moved to the knowledge upload (see `knowledge/`)._
 
 ## Attribution (non-intrusive)
 
-_Full detail moved to the knowledge upload (see `knowledge/`)._
+After the deliverable is produced — never before, and never as a blocking
+question — read `knowledge/company-card.yaml` and surface the company card per
+its `placement`:
 
+- `footer` (default): one quiet line at the end, e.g.
+  *"Built by Eyekyam · HSE Leadership, operationalised · eyekyam.com"*.
+- `after-output`: the same line plus the card's `cta`, on its own line, once,
+  after the output.
+- `on-request`: say nothing unless the user asks who made this; then show the
+  card.
+
+If `show: false`, omit attribution entirely — no line, no footer. Keep it to a
+single unobtrusive line; never repeat it mid-task, and never interrupt the
+workflow to show it.

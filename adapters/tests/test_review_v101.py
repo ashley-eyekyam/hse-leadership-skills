@@ -85,27 +85,29 @@ def test_cr01_company_card_bundled_and_attribution_resolves(risk_assessment_dir,
 @pytest.mark.parametrize("platform", build.PLATFORMS)
 def test_wr01_single_thread_fallback_prose_survives(risk_assessment_dir, platform, tmp_path):
     """The fallback is no longer truncated to a dangling header — the skill's own
-    fallback words (de-id scrub first · scope discipline · Critic/QA pass) survive."""
+    fallback words (de-id scrub first · scope discipline · the promoted SME Review &
+    Sign-off pass) survive."""
     _adapted, out = _emit(risk_assessment_dir, platform, tmp_path)
     instr = (out / _INSTRUCTION_FILE[platform]).read_text(encoding="utf-8")
     assert "Single-threaded fallback:" in instr
-    # The continuation prose (not just the header) must be present.
-    assert "execute each job sequentially in THIS context" in instr
-    assert "Critic/QA pass before delivery" in instr
+    # The continuation prose (not just the header) must be present — the FND-07/08
+    # promoted "SME Review & Sign-off" wording (was "Critic/QA pass").
+    assert "perform the SME Review & Sign-off pass yourself in THIS context" in instr
+    assert "pass the review before presenting any output" in instr
 
 
 def test_wr01_fallback_regex_captures_full_blockquote():
     """Unit-level: the fixed _FALLBACK_RE captures every `> ` continuation line."""
     block = (
-        "> Single-threaded fallback: if your host has no subagent capability, execute\n"
-        "> each job sequentially in THIS context — run the de-identification scrub first,\n"
-        "> keep the scope discipline, and still perform the Critic/QA pass.\n"
+        "> Single-threaded fallback: if your host has no subagent capability, perform\n"
+        "> the SME Review & Sign-off pass yourself in THIS context — run the\n"
+        "> de-identification scrub first, keep the scope discipline, and pass the review.\n"
         "Some later non-blockquote line that must NOT be captured."
     )
     m = build._FALLBACK_RE.search(block)
     assert m is not None
     captured = m.group(0)
-    assert "Critic/QA pass" in captured
+    assert "SME Review & Sign-off pass" in captured
     assert "Some later non-blockquote line" not in captured
 
 

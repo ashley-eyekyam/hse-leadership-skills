@@ -38,27 +38,29 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — aviation-change-safety-assessment
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | Name the operator/airport/AMO. | free-text | "name *this* org; refused if generic." | ELI-SUBJECT | always |
+| Q2 | What type of change is this? | MCQ | New route/destination, Fleet/aircraft-type change, Equipment/avionics change, Procedure/SOP change, Organisational/personnel change, Infrastructure change, Other | ELI-SUBJECT | always |
+| Q3 | Describe the specific change. | free-text | concrete; "we're changing things" is refused | ELI-SUBJECT | always |
+| Q4 | When does the change take effect, and is it trialled/reversible? | MCQ+free-text | Permanent, Trial/period, Phased, Reversible — plus the effective date | ELI-TEMPORAL | always |
+| Q5 | Which CAA/SSP applies? | MCQ | India/DGCA, FAA, EASA, Other CAA (specify), Unknown | ELI-JURIS | always |
+| Q5a | *(India only)* Which Indian operations / which State Safety Programme layer applies? | free-text | aligns the DGCA State Safety Programme layer (`KB-REG-IN-DGCA`); exact CAR number `[GAP]` to verify | ELI-JURIS | Q5==India |
+| Q6 | What new or changed hazards does this introduce? | free-text | per hazard; **a change with no new hazards is flagged** | ELI-SUBJECT | always |
+| Q7 | Who/what does the change newly expose? | MCQ | Flight crew · Cabin crew · Ground crew · Passengers · Public · Asset · Multiple | ELI-EXPOSURE | per hazard |
+| Q8 | ICAO severity for each new hazard. | MCQ | Negligible · Minor · Major · Hazardous · Catastrophic | ELI-SCORING | per hazard |
+| Q9 | ICAO likelihood for each new hazard. | MCQ | Extremely Improbable · Improbable · Remote · Occasional · Frequent | ELI-SCORING | per hazard |
+| Q10 | Who approves or declines this change? | free-text | the named approval authority + their role | ELI-COMPETENCY | always |
 
-The structured intake captures, one question at a time, the facts the change assessment needs:
-
-1. **Named operator/scope (free-text)** — the named operator/airport/AMO. A generic "an airline" is refused.
-2. **The change (free-text)** — describe the specific change (new route, fleet/equipment, procedure, organisation). Be concrete — a vague "we're changing things" is refused.
-3. **New / changed hazards (free-text)** — the hazards the change introduces or alters. **A change assessed without new hazards is flagged.**
-4. **Severity + likelihood per hazard (MCQ on the ICAO axes)** — severity (Negligible / Minor / Major / Hazardous / Catastrophic) × likelihood (Extremely Improbable / Improbable / Remote / Occasional / Frequent). The model only *chooses*; `risk_matrix.score()` does the rest.
-5. **Approval authority (free-text)** — who approves/declines the change.
-
-Echo the **confirmed operator + the change + its new hazards** back. Then for each new/changed hazard: score it via `risk_matrix.score(severity, likelihood, matrix=AVIATION_5X5)` (`KB-DATA-AVI-RISK-MATRIX`), propose mitigations and HoC-rank them with `controls.rank_controls()` (flagging PPE/admin-only), score the residual rating and report the movement with `risk_matrix.residual_delta()`, and validate every mitigation owner/date with `smart_actions.validate_register()`. Conclude with an **approve / decline decision and a recorded rationale**.
-
-Then: validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method (the MoC assessment + 5×5 wiring) is in `knowledge/METHODOLOGY.md`.
+**refuse on a vague subject** (record `[ASSUMPTION]`/`[GAP]`, never invent). Canonical
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 

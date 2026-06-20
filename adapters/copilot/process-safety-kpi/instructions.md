@@ -38,26 +38,29 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — process-safety-kpi
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | **Single reporting period**, or a **trend across periods**? | MCQ | Single period / Trend (multi-period) | ELI-SCOPE | always |
+| Q2 | Name the **facility** and the **reporting period(s)**. | free-text | specific site + dates — the specificity anchor | ELI-SUBJECT | always |
+| Q3 | List the **PSE events** with enough fact for the **Tier-1/Tier-2 threshold test** (material, quantity, consequence). | free-text | counts from facts, never invented | ELI-SUBJECT | always |
+| Q4 | What is the **total work-hours denominator** for the rate? | free-text | missing/zero → rate `[GAP]` (fail-loud); the count is still reported | ELI-EVIDENCE | always |
+| Q5 | Which **leading indicators** do you track? | MCQ multi-select | Tier-3 (challenges to safety systems: SIS demands, relief activations, excursions) / Tier-4 (operating discipline: procedure compliance, training currency, overdue inspections) / None | ELI-SUBJECT | always |
+| Q6 | What is your **target / threshold per indicator** (red/amber/green)? | free-text | turns a count into a managed KPI | ELI-SCORING | always |
+| Q7 | Any **benchmark** to compare against? | free-text | each figure cited source + year (look up the KB row); never a bare figure | ELI-SCORING | always |
+| Q8 | *(Trend)* Do you have **prior-period counts/rates**? | free-text | required for the trend line | ELI-EVIDENCE | Q1 == Trend (multi-period) |
+| Q9 | What **output**, for whom, how widely shared? | MCQ + free-text | KPI table / Dashboard / Board or exec pack — for M or C — internal vs circulated | ELI-OUTPUT | always |
+| Q10 | Which **sector** frames the facility's PSE profile? | MCQ | Chemicals / Oil & Gas / Refining / Petrochemicals / Other | ELI-INDUSTRY | always |
+| Q11 | Which **framing standard / jurisdiction** for the tier definitions and any duty hook? | MCQ | API RP 754 (voluntary) / UK / USA / EU / None | ELI-JURIS | always |
 
-For process-safety KPIs the intake elicits the events and the denominator:
-
-1. **The facility & period** — the named facility and the reporting period (specific).
-2. **The PSE events** — the loss-of-containment events with enough fact to apply the Tier-1/Tier-2 threshold test (material, consequence). Counts are structured from facts, never invented.
-3. **Work hours** — the total work-hours denominator for the rate (a missing/zero denominator → the rate is `[GAP]`, the fail-loud discipline; the count is still reported).
-4. **Leading indicators** — Tier-3 (challenges to safety systems) and Tier-4 (operating-discipline) measures to frame.
-5. **Benchmark** — any benchmark to compare against (each figure cited source+year).
-
-Echo the facility + period + events + hours back before computing. The normalized rate = count × base hours ÷ work hours; a missing denominator is reported as `[GAP]`, never a fabricated rate.
-Then: analyse / apply the domain method → validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `knowledge/METHODOLOGY.md`.
+## Refuse-on-vague anchors
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -65,22 +68,7 @@ This host has no Code Interpreter, so emit the deliverable as a **structured mar
 
 ## Subagent roster (preserved as a sequential checklist)
 
-### Subagent roster for THIS skill
-
-<!-- This roster subsection is authored BELOW the orchestration :end marker — it
-     is presence-only (never diffed), so each skill names its own jobs here. -->
-
-For a non-trivial task the triage gate may fan out to:
-
-- **Researcher** — gathers the task/site facts, the resolved jurisdiction's
-  requirements, and the relevant standards, from the scrubbed inputs only.
-- **Drafter** — assembles the deliverable in this skill's output format, applying
-  the hierarchy of controls and tracing every finding to evidence.
-- **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
-  output: specificity, hierarchy of controls, defensibility, de-identification, and
-  citation accuracy.
-
-Simple single-subject tasks run single-threaded — no subagents.
+_Full detail moved to the knowledge upload (see `knowledge/`)._
 
 ## Jurisdiction routing
 

@@ -1,10 +1,7 @@
 {
   "code_interpreter": true,
   "conversation_starters": [
-    "Audit",
-    "Incident",
-    "Inspection",
-    "Near-miss"
+    "Yes / No"
   ],
   "description": "Manages the full lifecycle of corrective and preventive actions (CAPA) for an HSE finding, nonconformity, or incident cause — grounded in ISO 45001 clause 10.2. Use this skill whenever a user asks to build, manage, or close out a CAPA, write a corrective action, add a preventive action, track a nonconformity, manage an audit finding, build a CAPA register or action tracker, or turn an incident's root cause into a managed action plan. Takes findings from an audit, incident, inspection, or near-miss (standalone, or ingested from an incident-investigation or safety-audit output), confirms the root cause, derives corrective and preventive actions ranked by the hierarchy of controls (no PPE- or admin-only treatments without justification), assigns named owners and due dates, schedules an effectiveness verification for each, and emits a branded CAPA register. Decision-support only; a competent person must review the output.",
   "instructions_file": "instructions.md",
@@ -21,7 +18,9 @@
     "knowledge/in-factories-act.md",
     "knowledge/in-state-forms.md",
     "knowledge/intake-interview.md",
+    "knowledge/intake.md",
     "knowledge/iso-45001.md",
+    "knowledge/sme-review.md",
     "knowledge/subagent-archetypes.md",
     "knowledge/uk-hswa.md",
     "knowledge/us-osha.md"

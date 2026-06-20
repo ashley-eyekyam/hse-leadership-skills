@@ -38,27 +38,28 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — aviation-spi-spt-framework
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | Design a new SPI/SPT set or review an existing one? | MCQ | Design/a new set, Review/re-baseline an existing set | ELI-SCOPE | always |
+| Q2 | Name the operator/airport/AMO and operation type. | free-text | refused if generic | ELI-SUBJECT | always |
+| Q3 | Which CAA/SSP applies (sets the ALoSP basis)? | MCQ | India/DGCA SSP ALoSP, FAA, EASA, Other CAA (specify), Unknown | ELI-JURIS | always |
+| Q3a | *(India only)* Which Indian operations / which State Safety Programme ALoSP layer applies? | free-text | aligns the DGCA State Safety Programme ALoSP layer (`KB-REG-IN-DGCA`); exact CAR number `[GAP]` to verify | ELI-JURIS | Q3==India |
+| Q4 | Which hazards / safety objectives must the SPIs track? | free-text | each SPI maps to one; pull from `aviation-hazard-register` | ELI-SUBJECT | always |
+| Q5 | For each candidate SPI, leading or lagging? | MCQ | Leading (precursor) · Lagging (outcome) | ELI-SCORING | per SPI |
+| Q6 | What is the measurement period for each SPI? | MCQ | Monthly · Quarterly · Rolling-12-month · Annual · Other | ELI-TEMPORAL | per SPI |
+| Q7 | What baseline/occurrence data exists for trend context? | free-text | feeds `incident_rates`; quote `KB-DATA-TRIR-BENCHMARKS` source+year; absent → `[GAP]` | ELI-BASELINE | always |
+| Q8 | How are alert/target levels derived? | MCQ | HistoricalBaseline/statistical, ALoSP/from the regulator, Benchmark/industry, Mixed | ELI-SCORING | per SPI |
+| Q9 | Who owns each SPI? | free-text | role label; an SPI with no owner is flagged | ELI-COMPETENCY | always |
 
-The structured intake captures, one question at a time, the facts the SPI/SPT framework needs:
-
-1. **Named operator/scope (free-text)** — the named operator/airport/AMO and the operation type. A generic "an airline" is refused.
-2. **Hazards / safety objectives (free-text)** — the hazards and safety objectives the SPIs must track (each SPI must map to one). Pull from `aviation-hazard-register` where it exists.
-3. **Leading vs lagging (MCQ per indicator)** — for each candidate SPI, is it leading (precursor) or lagging (outcome)? A balanced set is preferred.
-4. **Baseline data (free-text)** — any existing rate/occurrence data for trend context (used via `incident_rates`; quote `KB-DATA-TRIR-BENCHMARKS` source+year, never invent a figure).
-5. **Jurisdiction (MCQ)** — India (align to DGCA SSP ALoSP) / FAA / EASA / other / Unknown.
-
-Echo the **confirmed operator + the hazards/objectives** back. Then for each SPI: define it, set an **alert level** and a **target level** (the SPT), map it to its owning hazard/objective, and use `incident_rates` for the trend context. **Every SPI must carry a defined threshold and an owner** — an SPI with no alert/target level or no owning hazard is flagged. Never invent a performance figure; an absent datum is `[GAP]`.
-
-Then: validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method (the SPI/SPT design) is in `knowledge/METHODOLOGY.md`.
+**refuse on a vague subject** (record `[ASSUMPTION]`/`[GAP]`, never invent). Canonical
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 

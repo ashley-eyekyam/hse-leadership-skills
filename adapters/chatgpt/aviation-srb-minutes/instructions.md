@@ -38,27 +38,27 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — aviation-srb-minutes
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | What do you want produced? | MCQ | Minute/a held meeting (I have the inputs), DraftBlank/a blank agenda + empty attendance/decision/action tables to run the meeting, Review/tidy an existing draft | ELI-OUTPUT | always |
+| Q2 | Which body and meeting? | MCQ | Safety Review Board (SRB) · Safety Action Group (SAG) · Other | ELI-SUBJECT | always |
+| Q3 | Name the operator and the meeting date/scope. | free-text | refused if no named operator | ELI-SUBJECT | always |
+| Q4 | Who attended? (will appear as role labels) | free-text | chair typically the Accountable Manager; de-identified to roles | ELI-COMPETENCY | Q1==Minute |
+| Q5 | Which agenda items does this meeting cover? | MCQ multi-select | PriorActions/review of prior actions, SPI/SPT performance, Hazards/new risk decisions, Audit/inspection findings, Change/MoC review, Training & promotion, AOB | ELI-SUBJECT | always |
+| Q6 | For each SPI reviewed: status vs alert/target, trend, breach? | free-text | from `aviation-spi-spt-framework` where it exists | ELI-EVIDENCE | Q5 includes SPI |
+| Q7 | For each hazard item: current 5×5 rating and the decision taken? | free-text | record the decision + rationale + accountable person | ELI-COMPETENCY | Q5 includes Hazards |
+| Q8 | List each action with owner and due date. | free-text | {action, owner, due} | ELI-COMPETENCY | Q1==Minute |
+| Q9 | Any prior-meeting actions to carry forward? | free-text | continuity of the action log | ELI-TEMPORAL | Q5 includes PriorActions |
 
-The structured intake captures, one question at a time, the facts the minutes need:
-
-1. **Named operator + meeting (free-text)** — the named operator and the SRB/SAG meeting date/scope.
-2. **Attendees (free-text → role labels)** — who attended; the chair (typically the Accountable Manager). De-identify any individual per the block above — attendees appear as **role labels** in the minutes.
-3. **SPI/SPT status (free-text)** — each SPI reviewed vs its alert/target level, the trend, the breach status (from `aviation-spi-spt-framework` where it exists).
-4. **Hazard / risk decisions (free-text)** — each hazard item, its current 5×5 rating, and the decision taken.
-5. **Actions (free-text)** — each action with an owner and a due date.
-
-Echo the **confirmed operator + meeting** back. Then assemble the minutes: meeting metadata (attendees as role labels, quorum), the SPI/SPT review, the hazard & risk decisions, the actions ({action, owner, due}), and the **decision log** ({decision, rationale, accountable person}) — every decision MUST carry a rationale and an accountable person. Where the meeting inputs are not yet supplied, render the attendance / decision / action tables with **empty rows** for the meeting to fill. De-identification runs first: no reporter named in a hazard item is identified.
-
-Then: validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method (the minute structure + decision log) is in `knowledge/METHODOLOGY.md`.
+**refuse on a vague subject** (record `[ASSUMPTION]`/`[GAP]`, never invent). Canonical
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -76,7 +76,9 @@ Assemble a `report.json` conforming to the shared report-model schema, then run 
   no reporter in a hazard item is identified), then the minutes + decision log are assembled, then
   the MANDATORY Critic/QA pass runs in this same context — the Aviation-SMS persona
   (`KB-SNIP-ARCHETYPES`) checks every decision has a rationale + an accountable person, every action
-  has an owner + due date, and no individual is named.
+  has an owner + due date, and no individual is named. The Critic/QA pass runs the per-skill SME
+  sign-off checklist in `knowledge/sme-review.md` (decision-support; precedes — never replaces —
+  the human competent-person review).
 
 ## Jurisdiction routing
 

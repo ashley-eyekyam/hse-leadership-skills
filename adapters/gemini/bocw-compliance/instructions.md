@@ -38,27 +38,28 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — bocw-compliance
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | Which **jurisdiction** is the construction site in? *(India-default skill; a non-India jurisdiction is out of scope.)* | MCQ | India, Other / Unknown — India activates the mandatory state gate (Q1a) | ELI-JURIS | always |
+| Q1a | **Which state** is the construction site in? *(BOCW is run by state Welfare Boards — the return/portal is state-specific; infer-from-address allowed, I confirm.)* | MCQ | Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Gujarat · Other (specify) · Unknown | ELI-JURIS | iff Q1 = India — **BLOCKING** |
+| Q2 | Which BOCW obligation(s) do you want checked? | MCQ multi | Establishment registration · Beneficiary registration · 1% cess · Form XXV annual return · Safety-Officer/Committee · Accident notice · Full gap-list | ELI-OBLIGATIONS | always |
+| Q3 | **How many building workers** on site (peak)? *(≥10 triggers establishment registration; the notified threshold triggers a Safety Officer / committee.)* | free-text | peak headcount | ELI-EXPOSURE | always |
+| Q4 | **Total cost of construction** of the project? *(drives the 1% welfare cess.)* | free-text | cost figure | ELI-EXPOSURE | iff Q2 includes cess or full |
+| Q5 | Are workers **direct or through contractors** (contract-labour split)? | MCQ | Mostly direct · Mostly contract labour · Mixed | ELI-EXPOSURE | always |
+| Q6 | Who is the **principal employer / establishment** registering — and is there a separate contractor? | free-text → role | role labels | ELI-COMPETENCY | always |
+| Q7 | **What's already in place** — establishment registered? beneficiaries registered? cess paid? Form XXV filed before? | MCQ multi | Establishment registered · Beneficiaries registered · Cess paid · Form XXV filed · None yet | ELI-BASELINE | always |
+| Q8 | Where are you in the **filing cycle** (Form XXV is due ~15 Feb)? | MCQ | Upcoming · Overdue · Not sure | ELI-TEMPORAL | iff Q2 includes Form XXV or full |
+| Q9 | Nature of the construction work + who the gap-list is for. | free-text | scope + audience | ELI-INDUSTRY / ELI-OUTPUT | always |
 
-**MANDATORY state detection (CT-8) — the state is a BLOCKING gate before any Welfare-Board return/portal is cited:**
-
-1. **State (MANDATORY, ask FIRST)** — MCQ: TN / KA / MH / DL / GJ / Other (specify) / Unknown.
-   - You **may infer** the state from a supplied site address — but **echo it back and confirm** before citing (a wrong state = a wrong Welfare Board return/portal).
-   - If the state is **Unknown or unseeded** → record `[GAP]` for any state-specific value, "verify with the state Welfare Board / a competent person", and **refuse to invent a national form**.
-2. **Establishment profile** — free-text: nature of construction work, worker headcount (drives the Safety-Officer/Committee thresholds and the ≥10-worker registration trigger), and the cost of construction (drives the 1% cess). De-identify per the block above; aggregate small counts.
-3. **Obligation focus** — MCQ: registration / cess / annual-return (Form XXV) / safety-officer-committee / accident-notice / full gap-list.
-
-Echo the **confirmed state + establishment profile + obligation** back. Then read `KB-REG-IN-BOCW` for the duty set and `KB-REG-IN-STATEFORMS` for the Form XXV anchor; produce the compliance verdict / gap-list (each gap with the cited rule, a HoC-ranked corrective control via `controls`, a named owner and a date). Cite the Form XXV annual return as the verified anchor; mark every state-specific value (safety-officer headcount, accident-notice form/timing, cess due date) `[GAP]` where the KB does not supply a verified value. Append the OSH-Code transition note and the `KB-REG-IN-PORTALS` (state Welfare Board) pointer.
-
-Then: validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method is in `knowledge/METHODOLOGY.md`.
+gap-list**; **refuse to proceed on a vague or unconfirmed state** (BOCW is run by state Welfare
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -80,6 +81,10 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+- **SME Review & Sign-off (MANDATORY, before any output)** — run the skill-specific
+  BOCW / construction-labour-welfare persona + checklist in `knowledge/sme-review.md`
+  (right state Welfare Board, right duty-holder, correct cess base). Decision-support
+  only; it precedes — never replaces — the competent-person review.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

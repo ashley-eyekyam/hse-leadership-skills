@@ -38,26 +38,29 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — hazid-facilitator
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | What **installation / project** is this HAZID for, and at what **life-cycle stage**? | MCQ+free-text | Concept / FEED / Detailed-design / Pre-commissioning / Operating-change // name the bounded scope | ELI-SCOPE | always |
+| Q2 | Confirm or trim the **hazard categories** to sweep. | MCQ multi-select | Process , Mechanical , Electrical , External-natural (flood-seismic-wind-lightning) , Environmental (release to land-water-air) , Utilities loss , Neighbouring-installation knock-on , Human factors , Security | ELI-SUBJECT | always |
+| Q3 | Who/what are the **receptors** in range (external & environmental categories)? | free-text | Workers, public, neighbouring sites, watercourses, protected habitat. | ELI-EXPOSURE | Q2 includes Environmental |
+| Q4 | What **site / siting context** do we have? | MCQ multi-select | Plot plan / Siting or QRA study / Met & flood data / Prior HAZID / None yet | ELI-EVIDENCE | always |
+| Q4b | What is the **physical environment / siting** of the installation? | free-text | Greenfield vs congested brownfield, neighbouring installations, terrain, met/flood exposure — the location context HAZID weighs. | ELI-LOCATION | always |
+| Q5 | Who is in the **HAZID team** (disciplines + chair/scribe)? | MCQ | Full multidisciplinary team (process, project/design, operations, environmental, chair-scribe) , Incomplete (no full team present) | ELI-COMPETENCY | always |
+| Q6 | No full team present — structure the register and mark **"not yet performed"**? | MCQ | Yes (structure only) , No (reconvene) | ELI-COMPETENCY | Q5 == Incomplete |
+| Q7 | Which **risk matrix**? | MCQ | Our matrix (paste) , Default 5×5 with process-safety descriptors | ELI-SCORING | always |
+| Q8 | Which **jurisdiction** for the grounding citation? | MCQ | UK , USA , EU , India , None (structured-study discipline only) | ELI-JURIS | always |
+| Q8a | *(India only)* Which **state** is the installation in? | MCQ | Tamil Nadu / Karnataka / Maharashtra / Delhi-Central / Gujarat / Other / Unknown — **mandatory state detection**; confirm before citing any statutory filing; "Other"/"Unknown" → literal `[GAP]`, never a national-form fallback | ELI-JURIS | Q8 == India |
+| Q9 | What **output**, for whom, how widely shared? | MCQ+free-text | Hazard register / Full report // audience M (management) or C (consultant) // internal vs circulated externally | ELI-OUTPUT | always |
 
-For a HAZID the intake refuses a vague scope and elicits the breadth of hazard categories and the team:
-
-1. **The installation / project phase** — the named scope under study (free-text; a HAZID needs a bounded installation/phase).
-2. **Hazard-category breadth** — confirm the categories to sweep: process, mechanical, electrical, **external/natural** (flood, seismic, high wind), **environmental** (release to land/water/air), utilities loss, neighbouring-installation knock-on.
-3. **The team** — the multidisciplinary participants and competencies (the assistive evidence). If absent, the skill structures the register but records the study as **not yet performed**.
-4. **Risk matrix** — the org matrix or the default 5×5 with process-safety consequence descriptors.
-5. **Jurisdiction** — only to cite the grounding standard/duty.
-
-Echo the scope + categories + team back before building the register. For each category the skill **prompts** the team and **records** their hazard/cause/consequence/control judgement — never inventing a hazard (records `[GAP]`).
-Then: analyse / apply the domain method → validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `knowledge/METHODOLOGY.md`.
+## Refuse-on-vague anchors
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -65,22 +68,7 @@ Assemble a `report.json` conforming to the shared report-model schema, then run 
 
 ## Subagent roster (preserved as a sequential checklist)
 
-### Subagent roster for THIS skill
-
-<!-- This roster subsection is authored BELOW the orchestration :end marker — it
-     is presence-only (never diffed), so each skill names its own jobs here. -->
-
-For a non-trivial task the triage gate may fan out to:
-
-- **Researcher** — gathers the task/site facts, the resolved jurisdiction's
-  requirements, and the relevant standards, from the scrubbed inputs only.
-- **Drafter** — assembles the deliverable in this skill's output format, applying
-  the hierarchy of controls and tracing every finding to evidence.
-- **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
-  output: specificity, hierarchy of controls, defensibility, de-identification, and
-  citation accuracy.
-
-Simple single-subject tasks run single-threaded — no subagents.
+_Full detail moved to the knowledge upload (see `knowledge/`)._
 
 ## Jurisdiction routing
 

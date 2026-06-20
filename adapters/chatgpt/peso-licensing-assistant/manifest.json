@@ -1,6 +1,11 @@
 {
   "code_interpreter": true,
-  "conversation_starters": [],
+  "conversation_starters": [
+    "Petroleum Rules 2002",
+    "Explosives Rules 2008",
+    "Gas Cylinder Rules 2016",
+    "SMPV Rules 2016"
+  ],
   "description": "Prepares India PESO petroleum/explosives/pressure-vessel licensing packages and the MSIHC Major Accident Hazard on-site emergency plan: it resolves the installation and licence type to the matched rule, the form, and the authority, legacy-first, with mandatory state detection where the obligation is state-specific and the OSH-Code transition note appended. It never uses a hard-coded national form number — every form is cited from the KB row. Decision-support only; a competent person must review the output.",
   "instructions_file": "instructions.md",
   "knowledge_files": [
@@ -17,7 +22,9 @@
     "knowledge/in-peso.md",
     "knowledge/in-state-forms.md",
     "knowledge/intake-interview.md",
+    "knowledge/intake.md",
     "knowledge/iso-45001.md",
+    "knowledge/sme-review.md",
     "knowledge/subagent-archetypes.md",
     "knowledge/uk-hswa.md",
     "knowledge/us-osha.md"

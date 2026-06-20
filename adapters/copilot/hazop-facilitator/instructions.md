@@ -38,27 +38,32 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — hazop-facilitator
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | Facilitating a **new** HAZOP, **revalidating** an existing one, or **writing up** a completed session? | MCQ | New / Revalidation (cyclical re-study) / Write-up (completed session) | ELI-SCOPE | always |
+| Q2 | Name the **single node / P&ID section** under study. | free-text | One bounded node — **refuse "the plant" / "the whole unit"**; the specificity anchor. | ELI-SUBJECT | always |
+| Q3 | What is the node's **design intent** (normal flow, pressure, temperature, level, composition, phase)? | free-text | Deviations are meaningless without a stated normal intent. | ELI-SUBJECT | always |
+| Q4 | Which **parameters** apply to this node? | MCQ multi-select | Flow / Pressure / Temperature / Level / Composition / Reaction / Phase / Utilities-services / Other (specify) | ELI-SCORING | always |
+| Q5 | Use the **standard guideword set**, or add custom guidewords? | MCQ | Standard (No/More/Less/Reverse/As-well-as/Part-of/Other-than) , Standard-plus-custom | ELI-SUBJECT | always |
+| Q5a | Specify the **custom guidewords**. | free-text | Only when extending the set. | ELI-SUBJECT | Q5 == Standard-plus-custom |
+| Q6 | What **existing safeguards** already protect this node (before we examine deviations)? | free-text | BPCS, alarms, relief, SIS, procedures — the baseline. | ELI-BASELINE | always |
+| Q7 | What **source documents** do you have? | MCQ multi-select | Current P&ID / Line list & stream data / Prior HAZOP-PHA / Cause & Effect & SIS spec / Relief-system basis / None yet | ELI-EVIDENCE | always |
+| Q8 | Who is in the **HAZOP team** right now (disciplines + chair/scribe)? | MCQ | Full multidisciplinary team (process, operations, instrumentation/SIS, mechanical, chair-scribe) , Incomplete (no full team present) | ELI-COMPETENCY | always |
+| Q9 | No full team present — structure the worksheet and mark the study **"not yet performed"**? | MCQ | Yes (structure only) , No (reconvene first) | ELI-COMPETENCY | Q8 == Incomplete |
+| Q10 | Which **risk matrix** ranks consequences? | MCQ | Our matrix (paste) , Default 5×5 with process-safety descriptors (loss-of-containment / escalation) | ELI-SCORING | always |
+| Q11 | Which **jurisdiction / regulatory frame** for the grounding citation? | MCQ | UK , USA (OSHA PSM) , EU , India , None (IEC 61882 only) | ELI-JURIS | always |
+| Q11a | *(India only)* Which **state** is the installation in? | MCQ | Tamil Nadu / Karnataka / Maharashtra / Delhi-Central / Gujarat / Other / Unknown — **mandatory state detection**; confirm before citing any statutory PHA filing; "Other"/"Unknown" → literal `[GAP]`, never a national-form fallback | ELI-JURIS | Q11 == India |
+| Q12 | What **output** do you need, for whom, and how widely shared? | MCQ+free-text | Worksheet only / Full report / Recommendation register // audience M (management) or C (consultant) // internal vs circulated externally | ELI-OUTPUT | always |
 
-For a HAZOP the intake refuses to proceed on "do a HAZOP" — it elicits the specific study scope and the team, one question at a time:
-
-1. **The node** — which named P&ID section / node is under study? (free-text; a HAZOP needs a bounded node, not "the plant").
-2. **The design intent** — the node's normal operating intent (flow/pressure/temperature/level/composition) so deviations are meaningful.
-3. **Parameters & guidewords** — confirm the parameter set (flow, pressure, temperature, level, composition, …) and guidewords (No, More, Less, Reverse, As-well-as, Part-of, Other-than).
-4. **The team** — the multidisciplinary participants and competencies present (the assistive evidence — who performs the engineering judgement). If no team is present, the skill structures the worksheet but records that the study is **not yet performed**.
-5. **Risk matrix** — the org's risk matrix (or the default 5×5 with process-safety consequence descriptors — loss of containment, escalation).
-6. **Jurisdiction** — only to cite the grounding standard/duty (IEC 61882; COMAH/PSM where a regulatory frame applies).
-
-Echo the captured node + intent + team back before building the matrix. For each guideword×parameter cell the skill **prompts** the team for a deviation and **records** their cause/consequence/safeguard judgement — it never fills a cell the team did not address (records `[GAP]`).
-Then: analyse / apply the domain method → validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `knowledge/METHODOLOGY.md`.
+> **echo the captured facts back before any analysis**, and **refuse a vague node**.
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -66,22 +71,7 @@ This host has no Code Interpreter, so emit the deliverable as a **structured mar
 
 ## Subagent roster (preserved as a sequential checklist)
 
-### Subagent roster for THIS skill
-
-<!-- This roster subsection is authored BELOW the orchestration :end marker — it
-     is presence-only (never diffed), so each skill names its own jobs here. -->
-
-For a non-trivial task the triage gate may fan out to:
-
-- **Researcher** — gathers the task/site facts, the resolved jurisdiction's
-  requirements, and the relevant standards, from the scrubbed inputs only.
-- **Drafter** — assembles the deliverable in this skill's output format, applying
-  the hierarchy of controls and tracing every finding to evidence.
-- **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
-  output: specificity, hierarchy of controls, defensibility, de-identification, and
-  citation accuracy.
-
-Simple single-subject tasks run single-threaded — no subagents.
+_Full detail moved to the knowledge upload (see `knowledge/`)._
 
 ## Jurisdiction routing
 
@@ -100,17 +90,5 @@ Simple single-subject tasks run single-threaded — no subagents.
 
 ## Attribution (non-intrusive)
 
-After the deliverable is produced — never before, and never as a blocking
-question — read `knowledge/company-card.yaml` and surface the company card per
-its `placement`:
+_Full detail moved to the knowledge upload (see `knowledge/`)._
 
-- `footer` (default): one quiet line at the end, e.g.
-  *"Built by Eyekyam · HSE Leadership, operationalised · eyekyam.com"*.
-- `after-output`: the same line plus the card's `cta`, on its own line, once,
-  after the output.
-- `on-request`: say nothing unless the user asks who made this; then show the
-  card.
-
-If `show: false`, omit attribution entirely — no line, no footer. Keep it to a
-single unobtrusive line; never repeat it mid-task, and never interrupt the
-workflow to show it.

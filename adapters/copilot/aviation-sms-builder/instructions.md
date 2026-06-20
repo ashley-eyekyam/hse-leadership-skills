@@ -38,27 +38,30 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — aviation-sms-builder
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | What do you want this SMS work to do? | MCQ | Build/a new SMS manual, Review/gap-assess an existing one, Submission/structure an SMS-acceptance pack for the CAA | ELI-SCOPE | always |
+| Q2 | What kind of organisation is the SMS for? | MCQ | Aircraft operator · Airport/aerodrome · Approved Maintenance Org (AMO) · Approved Training Org (ATO) · Other (specify) | ELI-INDUSTRY | always |
+| Q3 | Name the operator/airport/AMO and its operation type. | free-text | "e.g. scheduled passenger / cargo / GA / ground handling — name *this* org; 'an airline' is refused." | ELI-SUBJECT | always |
+| Q4 | Which State Safety Programme / certificating authority applies? | MCQ | India/DGCA SSP, FAA/USA, EASA/EU, Other CAA (specify), Unknown | ELI-JURIS | always |
+| Q4a | *(India only)* Which Indian operations / where is the AOC held, and which State Safety Programme layer applies? | free-text | aligns the DGCA State Safety Programme layer (`KB-REG-IN-DGCA`); the exact CAR number is `[GAP]` to verify, never invented | ELI-JURIS | Q4==India |
+| Q4b | Give the FAA/EASA reference you want the four pillars aligned to. | free-text | (Q4∈{FAA,EASA,Other}) — recorded `[GAP]` if absent; never fabricated | ELI-OBLIGATIONS | Q4∈{FAA,EASA,Other} |
+| Q5 | Who is the Accountable Manager? Who is the Safety Manager? | free-text | role/title only (de-identified to role labels); the two defining Annex 19 appointments | ELI-COMPETENCY | always |
+| Q6 | Is an SMS already accepted by the CAA, and at what implementation phase? | MCQ | Not yet submitted · Submitted, awaiting acceptance · Accepted (Phase 1–4) · Don't know | ELI-EVIDENCE | always |
+| Q7 | What existing inputs can the manual cite? | free-text | existing safety policy, key-personnel appointments, hazard data, SPIs — *their* facts, not invented | ELI-BASELINE | Q1∈{Review,Submission} |
+| Q7r | *(Review)* Share the existing manual and tell me what gap you want assessed. | free-text | the document + the target standard/clause to gap against | ELI-BASELINE | Q1==Review |
+| Q8 | What review/revision cadence should the manual state? | MCQ | Annual · Biennial · On-change-only · Use regulator's default · Defer to `[GAP]` | ELI-TEMPORAL | always |
+| Q9 | Who is the audience and how will it circulate? | MCQ | Internal manual · CAA acceptance submission · Both · Other | ELI-OUTPUT | always |
 
-The structured intake captures, one question at a time, the facts the four-pillar SMS needs before any drafting:
-
-1. **Organisation type (MCQ)** — aircraft operator / airport / approved maintenance organisation (AMO) / approved training organisation (ATO) / other (specify). The SMS scope and the certificating authority follow from this.
-2. **Named scope (free-text)** — the named operator/airport/AMO and the operation type (e.g. scheduled passenger, cargo, GA, ground handling). De-identify any individual per the block above. A generic "an airline" is refused — the manual must name *this* operator's hazards.
-3. **Jurisdiction / State Safety Programme (MCQ)** — India (DGCA SSP) / USA (FAA) / EU (EASA) / other (specify) / Unknown. For India, align to `KB-REG-IN-DGCA` (mark the exact CAR number `[GAP]` to verify). For others, ask the user for the reference — never fabricate a clause.
-4. **Build vs review (MCQ)** — build a new SMS manual / review an existing one / structure an SMS-acceptance submission.
-5. **Existing inputs (free-text)** — any existing safety policy, key-personnel appointments, hazard data, or SPIs the user already has (the manual cites *their* facts, not invented ones).
-
-Echo the **confirmed organisation + scope + jurisdiction** back before drafting. Then walk the four pillars in order (`KB-STD-ICAO-ANNEX19`): Pillar 1 (policy + accountabilities + key personnel + ERP coordination + SMS documentation), Pillar 2 (the hazard-ID process + the 5×5 RCS reference — point to `aviation-hazard-register` for the live register), Pillar 3 (the SPI/SPT framework + management review/SRB — point to `aviation-spi-spt-framework` and `aviation-srb-minutes`), Pillar 4 (training + just culture + confidential reporting — point to `aviation-just-culture-policy` and `aviation-confidential-reporting`). Flag any pillar left incomplete.
-
-Then: validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method (the four-pillar build) is in `knowledge/METHODOLOGY.md`.
+**refuse on a vague subject** (record `[ASSUMPTION]`/`[GAP]`, never invent). Canonical
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 

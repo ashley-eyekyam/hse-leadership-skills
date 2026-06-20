@@ -38,26 +38,26 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — principal-hazard-management-plan
 
-Open with a **structured multi-step intake** (`KB-SNIP-INTAKE`) — one question at a time, branch, echo the captured facts before any structuring.
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | Develop a full PHMP or structure the workshop? | MCQ | a) Full PHMP / b) Structure the multidisciplinary workshop | ELI-SCOPE | always |
+| Q2 | Commodity + mine type? | MCQ | a) Coal — UG / b) Coal — opencast / c) Metalliferous — UG / d) Metalliferous — opencast / e) Other | ELI-INDUSTRY | always (branch driver) |
+| Q3 | Which principal hazard? | MCQ | strata failure / inrush-inundation / fire-explosion / ventilation failure / mobile-plant interaction / fall from height / hazardous energy / respirable dust (`KB-DATA-MINING-HAZARDS`) | ELI-SUBJECT | always |
+| Q4 | Named mine + hazard scenario? | free-text | "Mine, location, and the specific hazard mechanism / scenario" — the refuse-on-vague anchor | ELI-LOCATION/ELI-SUBJECT | always |
+| Q5 | Existing controls + monitoring? | free-text | "Controls already in place + the monitoring activities / data the team holds" | ELI-BASELINE/ELI-EVIDENCE | always |
+| Q6 | Risk-rating scheme + criticality threshold? | MCQ | a) Org's existing matrix / scheme / b) Default 5×5 (D-02 bands) — confirm | ELI-SCORING | always |
+| Q7 | Contributing disciplines / owners (roles)? | free-text | "Geotech / ventilation / mining engineer / mine manager — the workshop participants, as role labels" | ELI-COMPETENCY | always |
+| Q8 | Output + audience? | MCQ | a) PHMP document / b) Workshop record / c) Both | ELI-OUTPUT | always |
 
-1. **Principal hazard** — MCQ from `KB-DATA-MINING-HAZARDS`: strata failure · inrush · fire/explosion · ventilation failure · mobile-plant interaction · fall from height · hazardous energy · respirable dust.
-2. **Mine context** — free-text: the specific mine and the hazard scenario.
-
-Then (PHMP structure):
-- Run the **HIRA structure** for the named hazard; risk-rate on the org matrix (`risk_matrix`).
-- Build the **control suite** hierarchy-ranked (`controls` / `KB-SNIP-HOC`), critical controls flagged; a PPE/admin-only treatment of a principal hazard is flagged, not accepted.
-- **Link the critical controls** to the ICMM CCM (`icmm-critical-control-management` / `KB-STD-ICMM-CCM`) — performance + verification carried over.
-- Define **monitoring** with owner + due date (`smart_actions`).
-
-Where the team has not supplied an engineering value, record `[GAP]` — never fabricate. Validate against `knowledge/QUALITY_CHECKLIST.md`, then produce the PHMP via the Output format section. This is workshop structuring for the team, not an autonomous plan.
+facts back before any structuring**; **refuse on a vague subject** — a PPE/admin-only
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -79,6 +79,12 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+
+**Step 4 — SME review & sign-off (MANDATORY, before any output):** run the skill-specific
+SME persona sign-off in **`knowledge/sme-review.md`** (the principal-hazard / major-hazard
+management specialist, with the assistive autonomy test) — model QA, decision-support, FLAGs
+non-blocking; workshop-structuring only, the mine team owns the engineering judgement and a
+competent person signs off.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

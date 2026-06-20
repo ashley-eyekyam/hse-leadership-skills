@@ -38,28 +38,29 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — india-accident-notice
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q0 | Which **jurisdiction** did the incident occur in? *(India-default skill; a non-India jurisdiction is out of scope.)* | MCQ | India, Other / Unknown — India activates the mandatory state gate (Q1) | ELI-JURIS | always |
+| Q1 | **Which state** did the incident occur in? *(infer-from-address allowed; I confirm before citing the notice form.)* | MCQ | Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Gujarat · Other (specify) · Unknown | ELI-JURIS | iff Q0 = India — **BLOCKING** |
+| Q2 | What **kind of establishment**? | MCQ | Factory, Construction site, Mine, Other (specify) | ELI-INDUSTRY | always |
+| Q2a | Which **DGMS region/zone** is the mine in? *(a mine notice resolves through DGMS, not the state factory dept.)* | free-text / MCQ-if-enumerable | DGMS zone | ELI-JURIS | iff Q2 = mine — **BLOCKING** |
+| Q3 | **Severity / class** of the event (this sets the form and the deadline). | MCQ | Fatal · Serious bodily injury · Dangerous occurrence (no injury) · Reportable disease | ELI-SCORING | always |
+| Q4 | **When did it happen** (date & time)? *(this starts the statutory clock — e.g. the 24-hour notice.)* | free-text (date-time) | exact date-time of the event | ELI-TEMPORAL | always |
+| Q5 | **How many persons** were injured / killed? (counts only — I de-identify identities; I aggregate any cell < 5 in wider distribution.) | free-text | counts by outcome | ELI-EXPOSURE | always |
+| Q6 | **What happened** — incident particulars (I will scrub names, exact location detail, and health detail). | free-text | narrative | ELI-SUBJECT | always |
+| Q7 | Who is the **statutory notifier / signatory** (occupier, factory manager, mine manager/agent)? | free-text → role | role label | ELI-COMPETENCY | always |
+| Q8 | What **records** do you already hold (medical/first-aid record, witness statements, prior register entry)? | MCQ multi | Medical record · Witness statements · Register entry · None yet | ELI-EVIDENCE | always |
+| Q9 | Who is the assembled notice **for**, and how will it circulate? | MCQ | Internal record · Filed with the inspectorate / DGMS · Client/consultant memo | ELI-OUTPUT | always |
 
-**MANDATORY state detection (CT-8) — the state (and, for a mine, the DGMS region) is a BLOCKING gate before any notice form is cited:**
-
-1. **State (MANDATORY, ask FIRST)** — MCQ: TN / KA / MH / DL / GJ / Other (specify) / Unknown.
-   - You **may infer** the state from a supplied site address — but **echo it back and confirm** before citing any notice form (a wrong state = a wrong statutory notice).
-   - If the state is **Unknown or unseeded** → record `[GAP]`, "verify the accident form with a competent person", and **refuse to invent a national form**.
-2. **Establishment type (MANDATORY)** — MCQ: factory / construction / **mine** / other.
-   - For a **mine**, also resolve the **DGMS region/zone** first and cross-reference `KB-REG-IN-MINES-ACT` / `KB-REG-IN-DGMS` (the 24h notice + Form J register; any unverified DGMS form id is `[GAP]`, never invented).
-3. **Incident facts** — free-text: the incident particulars + severity (fatal / serious / dangerous occurrence — drives the form and the deadline). De-identify the injured-party/witness PII per the block above; aggregate small cells (<5).
-
-Echo the **confirmed state + establishment type + incident severity** back. Then read the matched accident-notice row (`KB-REG-IN-STATEFORMS`; for a mine, the DGMS layer), assemble the **filled notification** under its prescribed `form` / `rule` / `due` (e.g. MH Form 24 within 24h + Form 24A; TN Form 18 + Form 26 register; DGMS 24h notice + Form J), and use `smart_actions` to validate that each follow-up notification action carries a named owner + a deadline (the 24h timing is the load-bearing one). Append the OSH-Code transition note (the accident-notice duty is retained), surface the `KB-REG-IN-PORTALS` pointer, and **point the user to `incident-investigation` for the RCA** (this skill does not re-run it). Every unverified field/form is a literal `[GAP]`, never fabricated.
-
-Then: validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method is in `knowledge/METHODOLOGY.md`.
+before any assembly**; **refuse to proceed on a vague or unconfirmed state (and, for a mine, an
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -67,26 +68,22 @@ Assemble a `report.json` conforming to the shared report-model schema, then run 
 
 ## Subagent roster (preserved as a sequential checklist)
 
-### Subagent roster for THIS skill
-
-<!-- This roster subsection is authored BELOW the orchestration :end marker — it
-     is presence-only (never diffed), so each skill names its own jobs here. -->
-
-For a non-trivial task the triage gate may fan out to:
-
-- **Researcher** — gathers the task/site facts, the resolved jurisdiction's
-  requirements, and the relevant standards, from the scrubbed inputs only.
-- **Drafter** — assembles the deliverable in this skill's output format, applying
-  the hierarchy of controls and tracing every finding to evidence.
-- **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
-  output: specificity, hierarchy of controls, defensibility, de-identification, and
-  citation accuracy.
-
-Simple single-subject tasks run single-threaded — no subagents.
+_Full detail moved to the knowledge upload (see `knowledge/`)._
 
 ## Jurisdiction routing
 
-_Full detail moved to the knowledge upload (see `knowledge/`)._
+<!-- The jurisdiction ROWS below live BELOW the :end marker: per-skill, presence-only
+     (rule-2 presence check, never byte-diffed). Author the rows for the jurisdictions
+     this skill serves; rule-9 checks every path/ID resolves against the KB registries. -->
+
+| Jurisdiction | Read |
+|---|---|
+| India (state notice) | knowledge/in-state-forms.md (KB-REG-IN-STATEFORMS — the accident-notice rows; **mandatory state detection**) + in-factories-act.md |
+| India (mine notice) | knowledge/in-mines-act.md (KB-REG-IN-MINES-ACT) + in-dgms.md (KB-REG-IN-DGMS — 24h notice + Form J register; region-resolved) |
+| India (OSH transition) | knowledge/in-osh-code.md (KB-REG-IN-OSH-CODE — accident-notice duty retained; legacy-first note) |
+| India (portal) | knowledge/in-portals.md (KB-REG-IN-PORTALS — state authority / DGMS portal; verify locally) |
+| Any   | knowledge/iso-45001.md + prompt-snippets/hierarchy-of-controls.md (KB-SNIP-HOC) |
+| Unknown | Ask before citing any specific law (confirm the **state** first) |
 
 ## Attribution (non-intrusive)
 

@@ -38,26 +38,29 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — aviation-hazard-register
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | Build a new register or maintain/review an existing one? | MCQ | Build/a new register, Add/hazards to an existing register, Review/re-score an existing register | ELI-SCOPE | always |
+| Q2 | Name the operator/airport/AMO and the operation/area the register covers. | free-text | "name *this* org and area; 'an airline' is refused." | ELI-SUBJECT | always |
+| Q3 | Which certificating authority / SSP applies? | MCQ | India/DGCA, FAA, EASA, Other CAA (specify), Unknown | ELI-JURIS | always |
+| Q3a | *(India only)* Which Indian operations / which State Safety Programme layer applies? | free-text | aligns the DGCA State Safety Programme layer (`KB-REG-IN-DGCA`); exact CAR number `[GAP]` to verify | ELI-JURIS | Q3==India |
+| Q4 | Describe each hazard and its supporting evidence. | free-text | one per hazard; each must trace to an evidence item | ELI-SUBJECT | always |
+| Q5 | For each hazard, how was it surfaced? | MCQ | Reactive (occurrence/report) · Proactive (audit/inspection/survey) · Predictive (FDM/FOQA, trend) | ELI-EVIDENCE | per hazard |
+| Q6 | Who/what is exposed to each hazard's consequence? | MCQ | Flight crew · Cabin crew · Ground/ramp crew · Passengers · Third party/public · Aircraft/asset · Multiple | ELI-EXPOSURE | per hazard |
+| Q7 | What is the credible worst consequence, and what controls already exist? | free-text | per hazard; the existing-control baseline for residual scoring | ELI-SUBJECT | per hazard |
+| Q8 | Choose ICAO severity. | MCQ | Negligible · Minor · Major · Hazardous · Catastrophic | ELI-SCORING | per hazard |
+| Q9 | Choose ICAO likelihood. | MCQ | Extremely Improbable · Improbable · Remote · Occasional · Frequent | ELI-SCORING | per hazard |
+| Q10 | Who will own the mitigating actions? | free-text | role label; validated by `smart_actions` | ELI-COMPETENCY | always |
 
-The structured intake captures, one question at a time, the facts each register entry needs:
-
-1. **Named operator/scope (free-text)** — the named operator/airport/AMO and the operation/area the register covers. A generic "an airline" is refused.
-2. **The hazard(s) (free-text)** — the specific hazard(s) under analysis, with the supporting evidence (occurrence reports, audit findings, FDM/FOQA summaries). Each hazard must trace to evidence.
-3. **Consequence + existing controls (free-text)** — the credible consequence and the controls already in place, per hazard.
-4. **Severity + likelihood (MCQ on the ICAO axes)** — severity (Negligible / Minor / Major / Hazardous / Catastrophic) × likelihood (Extremely Improbable / Improbable / Remote / Occasional / Frequent). The model only *chooses* these; `risk_matrix.score()` does the rest.
-
-Echo the **confirmed operator + hazards** back before scoring. Then for each entry: call `risk_matrix.score(severity, likelihood, matrix=AVIATION_5X5)` (the `KB-DATA-AVI-RISK-MATRIX` config) for the initial rating, propose mitigations and HoC-rank them with `controls.rank_controls()` (flagging PPE/admin-only), score the residual rating and report the movement with `risk_matrix.residual_delta()`, and validate every mitigation owner/date with `smart_actions.validate_register()`.
-
-Then: validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method (the register build + 5×5 wiring) is in `knowledge/METHODOLOGY.md`.
+**refuse on a vague subject** (record `[ASSUMPTION]`/`[GAP]`, never invent). Canonical
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 

@@ -38,25 +38,27 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — icmm-critical-control-management
 
-Open with a **structured multi-step intake** (`KB-SNIP-INTAKE`) — one question at a time, branch, echo the captured facts before any structuring.
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | Set up CCM for one event, or structure a CCM workshop? | MCQ | a) One material unwanted event / b) Full CCM workshop across hazards | ELI-SCOPE | always |
+| Q2 | Commodity class + mine type? | MCQ | a) Coal — UG / b) Coal — opencast / c) Metalliferous — UG / d) Metalliferous — opencast / e) Other | ELI-INDUSTRY | always (branch driver) |
+| Q3 | Which material unwanted event? | MCQ | strata failure / inrush-inundation / fire-explosion / ventilation failure / mobile-plant interaction / fall from height / hazardous energy / respirable-dust OH (`KB-DATA-MINING-HAZARDS`) | ELI-SUBJECT | always |
+| Q4 | Named mine + the specific scenario? | free-text | "Mine, location, and the precise unwanted-event scenario" — the refuse-on-vague anchor | ELI-LOCATION/ELI-SUBJECT | always |
+| Q5 | Which critical controls does the team already nominate? | free-text | "List the controls that, if absent or failed, allow the event" | ELI-BASELINE | always |
+| Q6 | Performance & verification data you hold? | free-text | "Per control: performance requirement, current verification activity + frequency, last-verified evidence" | ELI-EVIDENCE | per nominated control |
+| Q7 | Verification accountability (role)? | free-text | "Who owns each control's verification (role label only)" | ELI-COMPETENCY | per control |
+| Q8 | Criticality rating scheme? | MCQ | a) Org's existing principal-hazard / critical-control scheme / b) ICMM default — confirm | ELI-SCORING | always |
+| Q9 | Output + audience? | MCQ | a) CCM register (workshop record) / b) Board / exec summary / c) Both | ELI-OUTPUT | always |
 
-1. **Material unwanted event** — MCQ from the mining principal-hazard taxonomy (`KB-DATA-MINING-HAZARDS`): strata failure · inrush · fire/explosion · ventilation failure · mobile-plant interaction · fall from height · hazardous energy.
-2. **Mine context + scenario** — free-text: the specific mine and the event scenario.
-
-Then (CCM structure, `KB-STD-ICMM-CCM`):
-- Identify the **critical controls** — those that, if absent/failed, allow the event; hierarchy-rank via `controls` (`KB-SNIP-HOC`), flag the critical ones; a PPE/admin-only 'critical control' for a principal hazard is flagged, not accepted.
-- For each critical control set **performance requirement + verification activity + frequency + accountability** (role label).
-- For the **bowtie diagram**, **reference `bowtie-builder`** by name (do NOT re-author it); adopt its barrier-performance vocabulary, then overlay the mining CCM criticality.
-
-Where the team has not supplied performance evidence, record `[GAP]` — never fabricate an engineering value. Validate against `knowledge/QUALITY_CHECKLIST.md`, then produce the CCM register via the Output format section. This is workshop structuring for the team, not an autonomous result.
+facts back before any structuring**; **refuse on a vague subject** — a nominated
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -78,6 +80,12 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+
+**Step 4 — SME review & sign-off (MANDATORY, before any output):** run the skill-specific
+SME persona sign-off in **`knowledge/sme-review.md`** (the ICMM critical-control-management
+practitioner, with the assistive autonomy test) — model QA, decision-support, FLAGs
+non-blocking; workshop-structuring only, it never replaces the mine team's engineering
+judgement nor the competent-person sign-off.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

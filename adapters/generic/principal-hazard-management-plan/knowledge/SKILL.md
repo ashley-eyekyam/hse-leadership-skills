@@ -82,18 +82,25 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 ## Workflow
 
-Open with a **structured multi-step intake** (`KB-SNIP-INTAKE`) — one question at a time, branch, echo the captured facts before any structuring.
+Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open; one question at a time, branch on the answers, echo the captured facts before any structuring; refuse on a vague subject and never invent (`KB-SNIP-INTAKE`).
 
-1. **Principal hazard** — MCQ from `KB-DATA-MINING-HAZARDS`: strata failure · inrush · fire/explosion · ventilation failure · mobile-plant interaction · fall from height · hazardous energy · respirable dust.
-2. **Mine context** — free-text: the specific mine and the hazard scenario.
+### Step 0 — Structured intake (run this first, one question at a time)
 
-Then (PHMP structure):
-- Run the **HIRA structure** for the named hazard; risk-rate on the org matrix (`risk_matrix`).
-- Build the **control suite** hierarchy-ranked (`controls` / `KB-SNIP-HOC`), critical controls flagged; a PPE/admin-only treatment of a principal hazard is flagged, not accepted.
-- **Link the critical controls** to the ICMM CCM (`icmm-critical-control-management` / `KB-STD-ICMM-CCM`) — performance + verification carried over.
-- Define **monitoring** with owner + due date (`smart_actions`).
-
-Where the team has not supplied an engineering value, record `[GAP]` — never fabricate. Validate against `references/QUALITY_CHECKLIST.md`, then produce the PHMP via the Output format section. This is workshop structuring for the team, not an autonomous plan.
+The full typed, branched Q-table — the commodity × mine-type branch driver, the principal-
+hazard selection, the existing-controls + monitoring baseline, the rating-scheme confirm,
+the contributing-disciplines roles, the echo-back and the refuse-on-vague anchors — lives in
+**`references/intake.md`** (self-contained; it shares ~80% of its surface with
+`icmm-critical-control-management` per D-04 but is kept as a separate file). Must-ask
+dimensions: the **commodity / mine type** (sets the hazard mechanisms + control families),
+the **named principal hazard + mine scenario**, and the **existing controls + monitoring
+data**. Then (PHMP structure): run the **HIRA structure** for the named hazard and risk-rate
+on the org matrix (`risk_matrix`); build the **control suite** hierarchy-ranked (`controls` /
+`KB-SNIP-HOC`) — a PPE/admin-only treatment of a principal hazard is flagged, not accepted;
+**link the critical controls** to the ICMM CCM (`icmm-critical-control-management` /
+`KB-STD-ICMM-CCM`), performance + verification carried over; define **monitoring** with owner
++ due date (`smart_actions`). Where the team has not supplied an engineering value, record
+`[GAP]` — never fabricate. Validate against `references/QUALITY_CHECKLIST.md`, then produce
+the PHMP. This is workshop structuring for the team, not an autonomous plan.
 
 <!-- hse:block:orchestration:start -->
 ## Agentic Execution (Orchestration Block)
@@ -127,14 +134,23 @@ this conversation — paste ALL needed context into its prompt. Per-subagent ske
 Gather the outputs, resolve conflicts explicitly (state which source wins), de-duplicate,
 and assemble the deliverable in this skill's output format.
 
-### Step 4 — Critic / QA (MANDATORY — this is regulatory/safety output)
-Spawn ONE Critic: give it the draft + the inputs + the output contract. It finds errors,
-unsupported claims, missed regulatory triggers, lower-order-only controls, and any
-de-identification leak. Fix everything it raises before delivery.
+### Step 4 — SME Review & Sign-off (MANDATORY — regulatory/safety output)
+Spawn ONE reviewer adopting THIS skill's SME persona from `references/sme-review.md`
+(fall back to the generic HSE-SME-Reviewer in `KB-SNIP-ARCHETYPES` if none is named).
+Give it the draft + the inputs + the output contract. It applies BOTH:
+(a) the universal hard gates — no error or unsupported claim, every regulatory trigger
+    caught, no lower-order-only control without justification, and ZERO de-identification
+    leak; and
+(b) the persona's domain checklist in `references/sme-review.md`.
+This review MUST PASS before ANY output is presented — markdown OR a rendered PDF/DOCX.
+Fix everything it raises and re-run until clean. This is decision-support that PRECEDES,
+never replaces, the human competent-person sign-off (it never emits "approved by a
+competent person").
 
-> Single-threaded fallback: if your host has no subagent capability, execute each job
-> sequentially in THIS context — run the de-identification scrub first, keep the scope
-> discipline, and still perform the required Critic/QA pass before delivery.
+> Single-threaded fallback: if your host has no subagent capability, perform the SME
+> Review & Sign-off pass yourself in THIS context — run the de-identification scrub
+> first, keep the scope discipline, apply the persona checklist + universal gates, and
+> pass the review before presenting any output (markdown or rendered).
 <!-- hse:block:orchestration:end -->
 
 ### Subagent roster for THIS skill
@@ -151,6 +167,12 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+
+**Step 4 — SME review & sign-off (MANDATORY, before any output):** run the skill-specific
+SME persona sign-off in **`references/sme-review.md`** (the principal-hazard / major-hazard
+management specialist, with the assistive autonomy test) — model QA, decision-support, FLAGs
+non-blocking; workshop-structuring only, the mine team owns the engineering judgement and a
+competent person signs off.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

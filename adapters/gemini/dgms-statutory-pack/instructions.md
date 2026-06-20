@@ -38,21 +38,27 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — dgms-statutory-pack
 
-Open with a **structured multi-step intake** (`KB-SNIP-INTAKE`) — one question at a time, branch on the answers, echo the captured facts before any drafting. The obligation is the **runtime gate**: resolve it, then drive to the prescribed form.
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | What do you need to produce? | MCQ | a) 24-hour accident / dangerous-occurrence notice / b) Form J register entry / c) Form B employee register / d) Annual return (~20 Jan) / e) Statutory appointment letter / f) Not sure — resolve my obligation | ELI-SCOPE/ELI-OBLIGATIONS | always (gate) |
+| Q2 | Named mine + commodity? | free-text | "Mine name, owner, commodity (coal / metalliferous / other)" — the specificity anchor | ELI-LOCATION/ELI-SUBJECT | always |
+| Q3 | Surface or underground? | MCQ | a) Opencast / surface / b) Underground / c) Both | ELI-LOCATION | always |
+| Q4 | DGMS region / zone? | MCQ→confirm | infer from the location, then confirm; if unknown offer the DGMS zone list — never silently assume | ELI-JURIS/ELI-LOCATION | always (mandatory gate) |
+| Q5a | Event class + datetime? | MCQ+free-text | a) Fatal / b) Serious bodily injury / c) Dangerous occurrence — + exact date & time of the event | ELI-SUBJECT/ELI-TEMPORAL | Q1=a |
+| Q5b | Personnel counts as at date? | free-text | "Headcount by category (employed / contractor / category of worker) as at the register date" | ELI-EXPOSURE | Q1=b/c |
+| Q5c | Return period + figures source? | free-text | "Reporting year, and where the production / employment / accident figures come from" | ELI-TEMPORAL | Q1=d |
+| Q5d | Appointment role + competent person? | MCQ+free-text | a) Manager / b) other statutory official — + the person as a role label, qualification held | ELI-COMPETENCY | Q1=e |
+| Q6 | Where will this go? | MCQ | a) Internal record / b) DGMS submission / c) Wider circulation | ELI-OUTPUT | always (de-id trigger) |
 
-1. **Mine + region** — the named mine, commodity, opencast/underground, and the **DGMS region/zone** (free-text; **mandatory** — ask, or infer-from-location-then-confirm, never silently assume). Region resolution precedes any form citation (`KB-REG-IN-STATEFORMS`).
-2. **Obligation** — MCQ: 24h accident/dangerous-occurrence notice · Form J register entry · Form B register · annual return (~20 Jan) · statutory appointment letter.
-3. **Facts** — free-text: the de-identified facts the obligation needs (event/role/date for a notice; personnel counts for a register; appointment role for an appointment).
-
-Resolve the obligation → the matched `KB-REG-IN-MINES-ACT` duty row → the **form** from `KB-REG-IN-DGMS`. Cite **only** the five verified anchors (Form J, Form B, 24h notice, annual return ~20 Jan, statutory Manager appointment) as values; for **any other** DGMS form, emit a literal `[GAP]` (e.g. `(DGMS-prescribed — verify per mine) [GAP]`), **never a fabricated number**. Append the OSH-Code transition note (legacy-first). `smart_actions` owner+dates any follow-up. Validate against `knowledge/QUALITY_CHECKLIST.md`, then produce the output via the Output format section.
+facts back before any drafting**; **refuse on a vague subject** — record `[GAP]` (and a
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -74,6 +80,11 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+
+**Step 4 — SME review & sign-off (MANDATORY, before any output):** run the skill-specific
+SME persona sign-off in **`knowledge/sme-review.md`** (the DGMS statutory-compliance
+specialist) — model QA, decision-support, FLAGs non-blocking; it precedes and never
+replaces the human DGMS-qualified competent-person review.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

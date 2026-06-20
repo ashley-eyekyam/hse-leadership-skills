@@ -38,27 +38,31 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — reactive-dust-explosion-assessment
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | What do you need — a DHA, a reactive-chemistry/incompatibility review, an ATEX/DSEAR zoning, or a basis-of-safety statement? | MCQ | DHA / reactivity-review / zoning / basis-of-safety | ELI-SCOPE | always |
+| Q2 | Named process + material(s). | free-text | refuse "some powder" | ELI-SUBJECT | always |
+| Q3 | Hazard scope. | MCQ | reactive chemistry / combustible dust / explosive vapour atmosphere / combination | ELI-SUBJECT | always |
+| Q4 | List the dust-generating / handling steps + equipment. | free-text | milling/conveying/bagging/dust-collector/silo | ELI-LOCATION | if Q3∈{dust,combination} |
+| Q5 | Dust characterisation data held. | MCQ multi-select | Kst / Pmax / MIE / MIT / LOC / particle-size / moisture / none | ELI-EVIDENCE | if Q3∈{dust,combination} |
+| Q6 | Reactive-chemistry data held. | MCQ multi-select | DSC/ARC onset / heat-of-reaction / incompatibility matrix / CHETAH screen / none | ELI-EVIDENCE | if Q3∈{reactive,combination} |
+| Q7 | Lab source + year for each datum held. | free-text | required for citation; missing → `[GAP]` | ELI-EVIDENCE | if any Q5/Q6 datum |
+| Q8 | Existing explosion-protection / safeguards in place. | MCQ multi-select | venting / suppression / isolation / inerting / bonding-earthing / housekeeping / none | ELI-BASELINE | always |
+| Q9 | Area/equipment to classify, and adjacent occupied or connected vessels. | free-text | zoning target + secondary-explosion path | ELI-LOCATION / ELI-EXPOSURE | always |
+| Q10 | Jurisdiction emphasis. | MCQ | DSEAR-ATEX (UK·EU) · NFPA 652·660 (US) · both | ELI-JURIS | always |
+| Q11 | Existing DSEAR risk assessment / explosion-protection document, and its review date? | MCQ + free-text | yes / no + date | ELI-BASELINE / ELI-TEMPORAL | always |
+| Q12 | Industry / sector + the statutory obligation set (DSEAR EPD / ATEX EPL / NFPA programme). | MCQ + free-text | food / pharma / wood / metals / chemicals (+ obligation: DSEAR EPD · ATEX EPL · NFPA) | ELI-INDUSTRY / ELI-OBLIGATIONS | always |
+| Q13 | Org consequence/priority scheme for the basis-of-safety ranking. | MCQ | org scheme / default 5×5 | ELI-SCORING | always |
 
-For a reactive / dust-explosion assessment the intake elicits the material and scope BEFORE any basis of safety:
-
-1. **Process / material** — the named process and material(s) (free-text; specific).
-2. **Hazard scope** — MCQ: reactive chemistry / combustible dust / explosive vapour atmosphere / combination. Branches to DSEAR vs NFPA 652·660 vs ATEX rows.
-3. **Available test data** — MCQ: have Kst/Pmax/MIE/MIT (with lab source) / `[GAP]`. **`[GAP]` → the parameter is not invented; route to testing.**
-4. **Area for zoning** — the area/equipment to classify (free-text).
-5. **Jurisdiction** — DSEAR/ATEX (UK/EU) vs NFPA (US) emphasis.
-
-Echo material + hazard scope + data availability + area back before setting the basis of safety. Dust parameters are resolved with source+year or `[GAP]`; the **reactive/deflagration study is handed to `hazop-facilitator`** (grounded in `KB-STD-IEC-61882`); controls are HoC-ranked — eliminate/substitute and inherently-safer design before engineering, engineering before admin/PPE.
-
-Then: analyse / apply the domain method → validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `knowledge/METHODOLOGY.md`.
+**refuse on a vague subject** (record `[ASSUMPTION]`/`[GAP]`, never invent a dust
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -80,6 +84,11 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+- **SME Review & Sign-off** (MANDATORY, before ANY output) — run the skill-specific
+  persona, domain checklist, and boundary in `knowledge/sme-review.md` (combustible-dust
+  / DSEAR-ATEX & reactive-chemistry lens: basis of safety stated and justified; the zone
+  DERIVED not defaulted; every dust parameter sourced or `[GAP]` — never invented).
+  Decision-support only; precedes — never replaces — the human competent-person review.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

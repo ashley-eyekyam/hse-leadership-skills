@@ -38,32 +38,29 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — safety-audit
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q-Juris | Jurisdiction | MCQ | India / UK / USA / EU / Other / Unknown | ELI-JURIS | always |
+| Q-Juris-a | *(India only)* Which state? | MCQ | Tamil Nadu / Karnataka / Maharashtra / Delhi-Central / Other — **mandatory state detection; confirm before citing a form** | ELI-JURIS | Q-Juris == India |
+| Q-Scope | **The site / system / process audited, and its boundary** | free-text | "Describe the exact subject and its boundary (e.g. 'the permit-to-work system at the Plant 3 maintenance shop — issuance → isolation → sign-off → close-out; excludes hot-work permits')." — **the specificity anchor; refuse a vague answer** | ELI-SCOPE / ELI-SUBJECT | always |
+| Q-Crit | **The standard / criteria to audit against** — **the criteria gate** resolving the clause/checklist set walked finding-by-finding (*A regulatory regime* = OSHA / Factories Act / HSWA leans on the Q-Juris fragment; *A custom checklist* = free-text items, no external clause cited) | MCQ + free-text | ISO 45001 / A regulatory regime / A custom checklist | ELI-OBLIGATIONS | always |
+| Q-Type | **Audit type** | MCQ | Compliance (vs law) / Management-system (vs ISO 45001) / Process (vs an SOP-spec) — tunes the evidence-sufficiency bar + classification lens | ELI-OUTPUT | always |
+| Q-Evid | Evidence available | free-text | "What evidence can you provide or did you gather? (documents/records, observations, interview notes by role, photos, prior audit/CAPA history)." | ELI-EVIDENCE | always |
+| Q-Industry | Industry / sector | MCQ + free-text | Construction / Manufacturing / Oil & Gas / Chemicals / Mining / General-Other | ELI-INDUSTRY | always |
+| Q-NCrate | Org risk-matrix size (rating nonconformities) | MCQ | 3×3 / 4×4 / **5×5 (default)** / Supply our matrix | ELI-SCORING | always |
+| **Q-Team** | **Audit team / lead auditor + CAPA owners** | free-text | "Who is conducting this audit (lead auditor role/competence, ISO 19011)? Who will own corrective actions for nonconformities? (named role — no 'TBD')" | ELI-COMPETENCY | always |
+| **Q-When** | **Audit date + CAPA cycle** | free-text | "Audit date (or window), and the default corrective-action due window for nonconformities (e.g. 30 days for major, 90 for minor)?" | ELI-TEMPORAL | always |
+| Q-Loc | Physical location / environment of the audited subject | free-text | "Which specific site/area/asset/line is in the audit boundary? (the physical setting the walkdown covers)" | ELI-LOCATION | always |
 
-### Intake question set (one at a time; branch; echo back; never proceed on vague)
-
-Ask these in order, ONE at a time, following `KB-SNIP-INTAKE`. **Q-Scope and Q-Crit are load-bearing** — refuse to proceed on a vague scope ("general site audit") or an undeclared criteria set: ask, or record `[GAP]`. An audit with no defined boundary is unauditable; an audit with no criteria set cannot classify a finding.
-
-| # | Question | Type | Options / prompt | Feeds |
-|---|---|---|---|---|
-| Q-Juris | Jurisdiction | MCQ | India · UK · USA · EU · Other/Unknown | India → Q-Juris-a; the kb-selection row |
-| Q-Juris-a | *(India only)* Which state? | MCQ | Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Other | resolves `KB-REG-IN-STATEFORMS`; **mandatory state detection** — confirm before citing a form |
-| **Q-Scope** | **The site / system / process audited, and its boundary** | free-text | "Describe the exact subject and its boundary (e.g. 'the permit-to-work system at the Plant 3 maintenance shop — issuance, isolation, sign-off, close-out; excludes hot-work permits')." | **the specificity anchor — refuse a vague answer** |
-| **Q-Crit** | **The standard / criteria to audit against** | MCQ + free-text | **ISO 45001 (MS standard) · A regulatory regime (OSHA / Factories Act / HSWA) · A custom checklist (paste / describe it)** | **the criteria gate** — resolves the clause/checklist set walked finding-by-finding; *Regulatory* → leans on the Q-Juris fragment; *Custom* → free-text items, no external clause cited |
-| **Q-Type** | **Audit type** | MCQ | Compliance (vs law) · Management-system (vs ISO 45001 / a MS standard) · Process (vs an SOP / process spec) | tunes the evidence-sufficiency bar + classification lens |
-| Q-Evid | Evidence available | free-text | "What evidence can you provide or did you gather? (documents/records, observations, interview notes by role, photos, prior audit/CAPA history)." | step 3 evidence assessment; flags `[GAP]` criteria |
-| Q-Industry | Industry / sector | MCQ + free-text | Construction · Manufacturing · Oil & Gas · Chemicals · Mining · General/Other | tunes criteria emphasis + nonconformity risk descriptors |
-| Q-NCrate | Org risk-matrix size (rating nonconformities) | MCQ | 3×3 · 4×4 · **5×5 (default)** · Supply our matrix | → `MatrixConfig` for `risk_matrix` (step 4) |
-
-After the last applicable question, **echo a captured-facts summary** ("Auditing: the PTW system at the Plant 3 maintenance shop (issuance → isolation → sign-off → close-out, hot-work excluded), against ISO 45001 clause 8.1 operational control + the org's PTW procedure, management-system type, Maharashtra, 5×5 matrix — correct?") and only then proceed.
+**Q-Scope and Q-Crit are load-bearing** — refuse to proceed on a vague scope ("general
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -75,7 +72,22 @@ _Full detail moved to the knowledge upload (see `knowledge/`)._
 
 ## Jurisdiction routing
 
-_Full detail moved to the knowledge upload (see `knowledge/`)._
+<!-- The jurisdiction ROWS below live BELOW the :end marker: per-skill, presence-only
+     (rule-2 presence check, never byte-diffed). Author the rows for the jurisdictions
+     this skill serves; rule-9 checks every path/ID resolves against the KB registries. -->
+
+| Jurisdiction / criteria | Read |
+|---|---|
+| India | knowledge/in-factories-act.md (+ in-state-forms.md for the user's state — **mandatory state detection** before citing any form) |
+| UK    | knowledge/uk-hswa.md |
+| USA   | knowledge/us-osha.md |
+| EU    | knowledge/eu-osh.md |
+| Unknown | Ask before citing any specific law |
+| Audit method (always) | knowledge/iso-45001.md (KB-STD-ISO45001, clause 9.2 — internal audit: the method backbone, scope→criteria→evidence→findings→reporting) |
+| Criteria = ISO 45001 (Q-Crit) | knowledge/iso-45001.md (the audited clauses — e.g. 6.1.2, 7.2, 8.1, 9.1 — become the criteria set the audit walks; distinct from 9.2, the method) |
+| Criteria = custom checklist (Q-Crit) | Use the user-supplied checklist items as the criteria set; cite **no** external clause beyond what the user names (a private checklist has no KB fragment) |
+
+**Method vs criteria (the distinction this skill turns on):** ISO 45001 **9.2** is always the *method* (how the audit is planned and conducted). The *criteria* — what is audited **against** — are chosen at intake (Q-Crit): ISO 45001 itself, a regulatory regime, or a custom checklist. The same 9.2 loop audits a site against any of them.
 
 ## Attribution (non-intrusive)
 

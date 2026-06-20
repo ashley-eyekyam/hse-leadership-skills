@@ -120,6 +120,8 @@ never self-blocks** and it **never emits "approved by a competent person."** It
 **PRECEDES — and never replaces, never emits — the mandatory human competent-person
 review** that signs off the artifact (SME-02 boundary).
 
+See `KB-SNIP-SME-QA` (`sme-signoff.md`) for the canonical mandatory pre-output sign-off gate this persona runs.
+
 > **HSE-SME-Reviewer** — *Decision-support adversarial pre-human review; runs after
 > the Critic/QA pass, before the artifact is handed to a human competent person.*
 > **Role:** read the finished artifact as a sceptical competent HSE practitioner and

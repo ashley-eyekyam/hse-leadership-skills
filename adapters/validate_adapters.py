@@ -276,16 +276,25 @@ def _check_knowledge_resolvable(rep, bundle_dir, platform, skill_dir, instr) -> 
 
 def _check_orchestration_degraded(rep, bundle_dir, platform, instr) -> None:
     """Check 6 — the single-thread fallback + De-identifier-first sequencing + the
-    mandatory Critic/QA instruction present; no dangling 'spawn parallel subagents'
-    without a fallback."""
+    mandatory review instruction present; no dangling 'spawn parallel subagents'
+    without a fallback. The mandatory-review step was promoted from "Critic/QA" to
+    "SME Review & Sign-off" (FND-07/08); accept the promoted SME wording OR the legacy
+    Critic wording (so any not-yet-rebuilt transitional bundle still validates) — the
+    invariant is "the mandatory review instruction is present", now SME-flavored."""
     tag = f"{platform}/{bundle_dir.name}"
     norm = _normalize(instr).lower()
     if "single-thread" not in norm and "single thread" not in norm:
         rep.error(f"{tag}: orchestration single-thread fallback MISSING (check 6)")
     if "de-identifier" not in norm and "de-identif" not in norm:
         rep.error(f"{tag}: De-identifier-first sequencing MISSING from orchestration (check 6)")
-    if "critic" not in norm and "qa pass" not in norm and "critic/qa" not in norm:
-        rep.error(f"{tag}: mandatory Critic/QA instruction MISSING (check 6)")
+    if (
+        "sme review" not in norm
+        and "sign-off" not in norm
+        and "critic" not in norm
+        and "qa pass" not in norm
+        and "critic/qa" not in norm
+    ):
+        rep.error(f"{tag}: mandatory SME Review & Sign-off instruction MISSING (check 6)")
 
 
 def check_no_heavy_assets(bundle_dir: Path, platform: str) -> List[str]:

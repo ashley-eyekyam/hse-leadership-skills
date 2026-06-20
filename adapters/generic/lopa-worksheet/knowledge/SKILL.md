@@ -94,16 +94,20 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-For a LOPA the intake elicits the single scenario and the engineer-supplied values — never fabricating them:
+### Step 0 — Structured intake (run this first, one question at a time)
 
-1. **The scenario** — the single named consequence scenario (free-text; one scenario per worksheet).
-2. **The initiating event** — the cause and its **engineer-supplied** frequency.
-3. **The IPLs** — each candidate independent protection layer, with the **independence test** result (genuinely independent of the initiating event and of other IPLs — not double-counted).
-4. **PFD per IPL** — **engineer-supplied** (records `[GAP]` if not provided; never computed).
-5. **Tolerable target** — the org's tolerable frequency / SIL target (engineer-supplied).
-6. **Risk matrix** — for the residual-gap band.
+The full typed/branched intake — the **new vs review** scope gate, the single **consequence
+scenario** (one per worksheet), the **initiating event** + engineer-supplied frequency, the
+**IPL inventory** with each layer's **independence test**, the **engineer-supplied PFD +
+provenance** per IPL (`[GAP]` if absent — never computed), the tolerable / SIL target, the
+**competent engineer / team** who owns the values, the residual-gap risk matrix, jurisdiction
+(India → mandatory state), and the output/audience gate — lives in
+**[`references/intake.md`](references/intake.md)** (the elicitation-coverage manifest +
+Q-table). Run it one question at a time, branch on the answers, **echo the scenario +
+initiating event + IPL list back before any analysis** (the skill bands only the residual
+*gap* — it never computes a PFD or allocates a SIL), and **refuse a multi-scenario worksheet
+or a "compute the SIL" request**. Any unsupplied PFD / credit / SIL → `[GAP]`, never invent.
 
-Echo the scenario + initiating event + IPL list back before computing the residual **gap** (the only arithmetic the skill does — the gap band, not a PFD). Any unsupplied PFD/credit/SIL → `[GAP]`.
 Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
 
 <!-- hse:block:orchestration:start -->
@@ -138,14 +142,23 @@ this conversation — paste ALL needed context into its prompt. Per-subagent ske
 Gather the outputs, resolve conflicts explicitly (state which source wins), de-duplicate,
 and assemble the deliverable in this skill's output format.
 
-### Step 4 — Critic / QA (MANDATORY — this is regulatory/safety output)
-Spawn ONE Critic: give it the draft + the inputs + the output contract. It finds errors,
-unsupported claims, missed regulatory triggers, lower-order-only controls, and any
-de-identification leak. Fix everything it raises before delivery.
+### Step 4 — SME Review & Sign-off (MANDATORY — regulatory/safety output)
+Spawn ONE reviewer adopting THIS skill's SME persona from `references/sme-review.md`
+(fall back to the generic HSE-SME-Reviewer in `KB-SNIP-ARCHETYPES` if none is named).
+Give it the draft + the inputs + the output contract. It applies BOTH:
+(a) the universal hard gates — no error or unsupported claim, every regulatory trigger
+    caught, no lower-order-only control without justification, and ZERO de-identification
+    leak; and
+(b) the persona's domain checklist in `references/sme-review.md`.
+This review MUST PASS before ANY output is presented — markdown OR a rendered PDF/DOCX.
+Fix everything it raises and re-run until clean. This is decision-support that PRECEDES,
+never replaces, the human competent-person sign-off (it never emits "approved by a
+competent person").
 
-> Single-threaded fallback: if your host has no subagent capability, execute each job
-> sequentially in THIS context — run the de-identification scrub first, keep the scope
-> discipline, and still perform the required Critic/QA pass before delivery.
+> Single-threaded fallback: if your host has no subagent capability, perform the SME
+> Review & Sign-off pass yourself in THIS context — run the de-identification scrub
+> first, keep the scope discipline, apply the persona checklist + universal gates, and
+> pass the review before presenting any output (markdown or rendered).
 <!-- hse:block:orchestration:end -->
 
 ### Subagent roster for THIS skill
@@ -155,6 +168,10 @@ de-identification leak. Fix everything it raises before delivery.
 
 - Single-threaded by design — no subagents. (Replace with this skill's named
   fan-out jobs if the triage gate warrants them.)
+- **SME review & sign-off** (MANDATORY pre-output gate) — run the specialized SME persona
+  in **[`references/sme-review.md`](references/sme-review.md)** (LOPA / SIL functional-safety
+  engineer) before presenting ANY output; decision-support only, it precedes and never
+  replaces the human competent-person review.
 
 <!-- hse:block:report-output:start -->## Output format
 

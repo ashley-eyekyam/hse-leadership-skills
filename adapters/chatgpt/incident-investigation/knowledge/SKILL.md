@@ -125,32 +125,18 @@ Open with a **structured multi-step intake** — MCQ where the answer space is e
 
 ### Step 0 — Structured intake (run this first, one question at a time)
 
-Run the B5 question set below, one question at a time, MCQ where the answer space is
-enumerable and free-text where it is open, branching on the answers (`KB-SNIP-INTAKE`).
-**Never proceed on vague inputs**; record `[GAP]` for missing evidence and
-`[ASSUMPTION]` for anything inferred. **Never invent evidence or causes.** Q5
-("people involved") is **flagged for IMMEDIATE de-identification** — it is scrubbed in
-Workflow step 2 before any analysis, and the intake echoes those facts back as role
-labels.
-
-| # | Question | Type | Options / branch |
-|---|---|---|---|
-| Q1 | **What happened?** (the core narrative — the sequence of events) | free-text | The investigation's seed; the factual account, not conclusions. |
-| Q2 | **When and where?** (date, time, location/asset) | free-text | Flagged for de-id (exact date + precise location are quasi-identifiers). |
-| Q3 | **Incident type / classification** | MCQ | injury · illness · near-miss · property damage · environmental release · dangerous occurrence — branches the reporting logic (step 7) + the rate context (Q10). |
-| Q4 | **Severity / outcome** | MCQ | fatality · lost-time injury · medical-treatment · first-aid · no-injury near-miss · property-only · environmental-only — drives reportability urgency + the RCA-method suggestion. |
-| Q5 | **People involved** | free-text | **Flagged for IMMEDIATE de-identification** — names, roles, witnesses captured here are pseudonymized in step 2 before any analysis; the intake echoes them back as role labels ("Worker A", witness "W-1"). |
-| Q6 | **Immediate / obvious causes** (what visibly went wrong) | free-text | The *starting point* for RCA, never the endpoint — the skill drives past these to systemic factors. |
-| Q7 | **Evidence available** | free-text | statements, photos, logs, readings, maintenance records, procedures → becomes the numbered evidence log; `[GAP]` recorded for anything missing. |
-| Q8 | **RCA method preference** | MCQ | **Five A7-validated options, each with a one-line "when to pick":** **5-Whys** — quick single causal chain; minor events. **ICAM** — systems-based, organisational focus; serious/high-potential events. **SCAT** — Loss-Causation model linking to management-system control failures. **Fishbone (Ishikawa)** — categorise causes across Man/Machine/Method/Material/Measurement/Environment when factors span domains. **Swiss-Cheese (Reason)** — trace failed/absent defence layers to latent organisational influences; barrier/defence-in-depth events. *Branch:* ICAM → prompt for organisational-factor evidence; SCAT → management-system context; Fishbone → evidence across the non-Man branches; Swiss-Cheese → the failed barrier at each layer. |
-| Q9 | **Jurisdiction** | MCQ | India · UK · USA · EU · Other/Unknown. **India → ask the STATE** (mandatory) → triggers `KB-REG-IN-STATEFORMS`; Unknown → the reporting step defers to "ask before citing." |
-| Q10 | *(optional; branch on type=injury/illness)* **Period exposure hours + recordable counts** | free-text | Only if the user wants the contextual rate; otherwise **skipped** — `incident_rates` is omitted rather than fabricating a denominator. |
-
-After the last applicable question (and **after** the step-2 de-id scrub), **echo the
-captured, de-identified facts back** ("Here is what I have: a lost-time injury to
-Worker A on [date], at [location], witnessed by W-1; evidence E-1…E-4; method ICAM;
-jurisdiction India/Maharashtra — confirm before I analyse?") and proceed only on
-confirmation.
+The full typed, branched B5 intake — the `intake-coverage` manifest, the question table
+(narrative · when/where · incident type · severity · **people-involved [IMMEDIATE de-id]** ·
+immediate causes · evidence · permits-in-force · RCA-method preference · jurisdiction →
+**mandatory India→state** · investigation team · optional rate context), the **four
+RCA-method sub-prompt branches**, the **mandatory India→state branch** (Q9 = India → Q9a +
+`KB-REG-IN-STATEFORMS`), the **de-identified echo-back**, and the refuse-on-vague anchors —
+lives in **`references/intake.md`**. Run it one question at a time, branch on the answers,
+and **never proceed on vague inputs** (record `[GAP]` for missing evidence and
+`[ASSUMPTION]` for anything inferred — never invent evidence or causes). **Q5 (people
+involved) and Q2 (when & where) are scrubbed in Workflow step 2 *before* any analysis**, so
+the echo-back in `references/intake.md` shows **role labels only** ("Worker A", witness
+"W-1"), never raw names.
 
 ### The investigation method (de-id-first → evidence → cause → control → report)
 
@@ -261,14 +247,23 @@ this conversation — paste ALL needed context into its prompt. Per-subagent ske
 Gather the outputs, resolve conflicts explicitly (state which source wins), de-duplicate,
 and assemble the deliverable in this skill's output format.
 
-### Step 4 — Critic / QA (MANDATORY — this is regulatory/safety output)
-Spawn ONE Critic: give it the draft + the inputs + the output contract. It finds errors,
-unsupported claims, missed regulatory triggers, lower-order-only controls, and any
-de-identification leak. Fix everything it raises before delivery.
+### Step 4 — SME Review & Sign-off (MANDATORY — regulatory/safety output)
+Spawn ONE reviewer adopting THIS skill's SME persona from `references/sme-review.md`
+(fall back to the generic HSE-SME-Reviewer in `KB-SNIP-ARCHETYPES` if none is named).
+Give it the draft + the inputs + the output contract. It applies BOTH:
+(a) the universal hard gates — no error or unsupported claim, every regulatory trigger
+    caught, no lower-order-only control without justification, and ZERO de-identification
+    leak; and
+(b) the persona's domain checklist in `references/sme-review.md`.
+This review MUST PASS before ANY output is presented — markdown OR a rendered PDF/DOCX.
+Fix everything it raises and re-run until clean. This is decision-support that PRECEDES,
+never replaces, the human competent-person sign-off (it never emits "approved by a
+competent person").
 
-> Single-threaded fallback: if your host has no subagent capability, execute each job
-> sequentially in THIS context — run the de-identification scrub first, keep the scope
-> discipline, and still perform the required Critic/QA pass before delivery.
+> Single-threaded fallback: if your host has no subagent capability, perform the SME
+> Review & Sign-off pass yourself in THIS context — run the de-identification scrub
+> first, keep the scope discipline, apply the persona checklist + universal gates, and
+> pass the review before presenting any output (markdown or rendered).
 <!-- hse:block:orchestration:end -->
 
 ### Subagent roster for THIS skill
@@ -290,6 +285,12 @@ de-identification leak. Fix everything it raises before delivery.
 - **D · Corrective-Action Drafter** — hierarchy-of-controls-tagged CAPAs, each tracing to a
   named cause (RC-n) with a named owner + ISO due date + measure; prefer higher-order controls,
   justify any PPE/admin-only. SCOPE-OUT: does not score causes (B) or check law (C).
+- **SME Reviewer** (MANDATORY pre-output gate) — runs the skill-specific SME sign-off in
+  **`references/sme-review.md`** (ICAM-trained lead investigator + regulatory-reportability
+  specialist) before any output: does the RCA reach a SYSTEMIC/organisational factor (not stop
+  at "worker error"), is every cause traced to a numbered evidence item, and is the
+  reportability verdict correct, conservative, cited to the right rule/form/deadline — and
+  surfaced even when NOT reportable? FLAG-only; does not block on a flag.
 - **Critic/QA** (MANDATORY) — adversarial read-only review: every cause evidence-backed, RCA
   reaches a systemic factor, reportability cited conservatively to the matched KB row, every
   CAPA traces to a cause with owner+date, no PPE/admin-only without justification, and ZERO

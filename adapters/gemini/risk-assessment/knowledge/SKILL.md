@@ -124,42 +124,16 @@ Open with a **structured multi-step intake** — MCQ where the answer space is e
 
 ### Step 0 — Structured intake (run this first, one question at a time)
 
-The intake opens with the **scope gate (Q0)**, then runs the safety questions; the
-**environmental-aspects branch (Q-E1…Q-E5)** is asked *only* when Q0 selects
-*Environmental* or *Both*. Echo the captured facts back for confirmation before any
-analysis. **Refuse to proceed on a vague task** (Q3 is the specificity anchor) — ask
-again, or record `[ASSUMPTION]` / `[GAP]`; never invent.
-
-| # | Question | Type | Options / prompt |
-|---|---|---|---|
-| **Q0** | **Scope of this assessment** | MCQ | **Occupational safety (default) · Environmental aspects · Both** — *Environmental*/*Both* activates the Q-E branch + the `KB-STD-ISO14001` row |
-| Q1 | Jurisdiction | MCQ | India · UK · USA · EU · Other/Unknown (India → Q1a) |
-| Q1a | *(India only)* Which state? | MCQ | Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Other — **mandatory state detection; confirm before citing any form** |
-| Q2 | Industry / sector | MCQ + free-text | Construction · Manufacturing · Oil & Gas · Chemicals · Mining · General/Other (+ detail) |
-| Q3 | **The task/activity being assessed, broken into steps** | **free-text** | "Describe the exact task and its steps (e.g. 'confined-space entry to clean tank T-402: isolate → purge → gas-test → enter → clean → exit')." — **the specificity anchor; refuse a vague answer** |
-| Q4 | Location / site | free-text | "Which specific site/area/asset?" |
-| Q5 | Who is exposed? | MCQ multi-select | Own workers · Contractors · Public/visitors · Nearby community |
-| Q6 | Existing controls already in place | free-text | "What controls already exist for this task?" (seeds the initial-vs-residual baseline) |
-| Q7 | Likelihood band (org scale) | MCQ | 1 Rare · 2 Unlikely · 3 Possible · 4 Likely · 5 Almost certain |
-| Q8 | Severity band (org scale) | MCQ | 1 Negligible · 2 Minor · 3 Moderate · 4 Major · 5 Catastrophic |
-| Q9 | Org risk-matrix size | MCQ | 3×3 · 4×4 · **5×5 (default)** · Supply our matrix |
-| Q10 | Assessment type | MCQ | Baseline (whole task) · Issue-based (a change/hazard) · Continuous (review of an existing RA) |
-
-**Environmental-aspects branch (asked only when Q0 = Environmental/Both; ISO 14001 6.1.2):**
-
-| # | Question | Type | Options / prompt |
-|---|---|---|---|
-| Q-E1 | The activity / product / service under environmental review | free-text | "Describe the exact activity (e.g. 'solvent degreasing line at Plant 3: load → spray → drain → dry')." — the environmental specificity anchor; refuse a vague answer |
-| Q-E2 | Environmental aspects | MCQ multi-select + free-text | Emissions to air · Releases to water · Waste generation · Land contamination · Resource use · Energy use · Noise/odour/other |
-| Q-E3 | Associated environmental impacts | free-text | "For each aspect, what is the resulting impact? (e.g. solvent vapour → air quality/VOC; spent solvent → water contamination)." |
-| Q-E4 | Operating condition | MCQ multi-select | Normal · Abnormal (start-up/shutdown/maintenance) · Emergency (spill/fire/upset) |
-| Q-E5 | Compliance obligations | free-text | "Any environmental permits, consent limits, or obligations (discharge consents, emission limits, waste licences)?" |
-
-After the last applicable question (Q10, and Q-E5 if the branch ran), **echo a
-captured-facts summary** ("Assessing: confined-space entry to tank T-402, Plant 3,
-Maharashtra, own workers + contractors, 5×5 matrix, baseline — correct?") and only
-then proceed. Q7/Q8 establish the org scale; each hazard **and each environmental
-aspect** is scored individually at step 3.
+The full typed, branched intake — the `intake-coverage` manifest, the question table
+(scope gate Q0 · jurisdiction · task-steps anchor Q3 · location · exposure · existing
+controls · evidence held · task-level obligations · likelihood/severity/matrix ·
+assessment type · assessor + owners · review cycle), the **scope-env branch** (Q0 =
+Environmental aspects / Both → Q-E1…Q-E5 + the `KB-STD-ISO14001` row + the env-aspects
+register), the **mandatory India→state branch** (Q1 = India → Q1a), the echo-back, and
+the refuse-on-vague anchors — lives in **`references/intake.md`**. Run it one question at
+a time, branch on the answers, **echo the captured facts back before any analysis**, and
+**refuse to proceed on a vague task** (Q3 is the specificity anchor — record
+`[ASSUMPTION]` / `[GAP]`, never invent).
 
 ### The HIRA method (ISO 45001 6.1.2 loop + the optional ISO 14001 6.1.2 environmental loop)
 
@@ -249,14 +223,23 @@ this conversation — paste ALL needed context into its prompt. Per-subagent ske
 Gather the outputs, resolve conflicts explicitly (state which source wins), de-duplicate,
 and assemble the deliverable in this skill's output format.
 
-### Step 4 — Critic / QA (MANDATORY — this is regulatory/safety output)
-Spawn ONE Critic: give it the draft + the inputs + the output contract. It finds errors,
-unsupported claims, missed regulatory triggers, lower-order-only controls, and any
-de-identification leak. Fix everything it raises before delivery.
+### Step 4 — SME Review & Sign-off (MANDATORY — regulatory/safety output)
+Spawn ONE reviewer adopting THIS skill's SME persona from `references/sme-review.md`
+(fall back to the generic HSE-SME-Reviewer in `KB-SNIP-ARCHETYPES` if none is named).
+Give it the draft + the inputs + the output contract. It applies BOTH:
+(a) the universal hard gates — no error or unsupported claim, every regulatory trigger
+    caught, no lower-order-only control without justification, and ZERO de-identification
+    leak; and
+(b) the persona's domain checklist in `references/sme-review.md`.
+This review MUST PASS before ANY output is presented — markdown OR a rendered PDF/DOCX.
+Fix everything it raises and re-run until clean. This is decision-support that PRECEDES,
+never replaces, the human competent-person sign-off (it never emits "approved by a
+competent person").
 
-> Single-threaded fallback: if your host has no subagent capability, execute each job
-> sequentially in THIS context — run the de-identification scrub first, keep the scope
-> discipline, and still perform the required Critic/QA pass before delivery.
+> Single-threaded fallback: if your host has no subagent capability, perform the SME
+> Review & Sign-off pass yourself in THIS context — run the de-identification scrub
+> first, keep the scope discipline, apply the persona checklist + universal gates, and
+> pass the review before presenting any output (markdown or rendered).
 <!-- hse:block:orchestration:end -->
 
 ### Subagent roster for THIS skill
@@ -286,6 +269,10 @@ never LLM fan-out work. Archetypes: `KB-SNIP-ARCHETYPES`.
   tier (consumes the De-identifier's scrubbed text + the A7 `risk_matrix`/`controls`
   scores + the Regulatory-Checker's verdict). SCOPE-OUT: gathering evidence
   (Researcher), checking law (Regulatory-Checker).
+- **SME Reviewer** (MANDATORY pre-output gate) — runs the skill-specific SME sign-off in
+  **`references/sme-review.md`** (chartered safety & health practitioner / HIRA SME)
+  before any output: task/site specificity real, every hazard scored + residual-rescored,
+  every control driven up the hierarchy (never a PPE-only treatment dressed as adequate).
 - **Critic/QA** (MANDATORY) — every hazard scored (via the A7 engine), every control
   HoC-ranked, no PPE/admin-only treatment without justification, every action owned +
   dated + hazard-linked, every citation traces to the KB, zero PII leaked. PASS/FAIL.

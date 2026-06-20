@@ -38,26 +38,32 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — permit-to-work
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | Which **permit type**? | MCQ multi-select | Hot work / Confined-space entry / Line breaking or breaking containment / Excavation or ground disturbance / Working at height / Electrical or HV / General | ELI-SCOPE | always |
+| Q2 | Name the **task** and its **exact location**. | free-text | specific equipment/area, not "the plant" — the specificity anchor | ELI-SUBJECT | always |
+| Q3 | What **energy sources to isolate (LOTO)** and the **atmosphere/gas-test** requirement? | free-text | per task; confined-space / hot work → gas test | ELI-BASELINE | always |
+| Q4 | **Type-specific gate:** confirm the mandatory controls. | MCQ multi-select | (CS) gas test + attendant + rescue plan / (Hot work) fire watch + combustibles removed + extinguisher / (Excavation) buried-services scan + shoring or benching / (Line break) drain or flush or depressurise + double-isolation / (Height) fall arrest or edge protection | ELI-BASELINE | branch on Q1 |
+| Q5 | **SIMOPS detection:** are other operations running simultaneously in the same area? | MCQ | No / Yes | ELI-SCOPE | always |
+| Q6 | *(SIMOPS)* The **conflicting activities**, **coordination controls**, and the **authorising authority**. | free-text | sequencing, exclusion zones, single point of coordination, cross-permit refs — the SIMOPS coordination section | ELI-OBLIGATIONS | Q5 == Yes |
+| Q7 | Who are the **permit issuer**, **performing authority**, **gas-tester**, and (CS) **rescue team**? | free-text | competency / authority (de-identified to roles) | ELI-COMPETENCY | always |
+| Q8 | What **permit conditions** must hold, and the **validity period / shift-handover** rule? | free-text | conditions + validity: single shift / 24h / task-duration | ELI-TEMPORAL | always |
+| Q9 | **Jurisdiction** (statutory hook)? | MCQ | UK / USA (PSM hot-work (k)) / EU / India / None | ELI-JURIS | always |
+| Q9a | *(India only)* Which **state** is the site in? | MCQ + free-text | Tamil Nadu / Karnataka / Maharashtra / Delhi/Central / Gujarat / Other / Unknown — confirm the state before citing any state-specific obligation; never silently assume | ELI-JURIS | Q9 == India |
+| Q10 | What **output**, for whom, and which **sector**, **physical environment**? | MCQ + free-text | Permit form / Permit + SIMOPS plan — for M or C — sector + setting (plant / construction / confined space / height) | ELI-OUTPUT | always |
+| Q11 | Which **sector** and **physical environment** frame the task? | MCQ | Process plant / Construction / Oil & Gas / Utilities / Other | ELI-INDUSTRY | always |
+| Q12 | Confirm the **physical work environment** for the named permit. | free-text | confined space, height, ATEX/zoned area, excavation, live plant | ELI-LOCATION | always |
+| Q13 | What **source documents** support the isolations and SIMOPS coordination? | MCQ multi-select | Isolation/LOTO register / P&ID for line-break isolation points / Buried-services drawings / Concurrent-permit register / Rescue plan / None yet | ELI-EVIDENCE | always |
 
-For a permit-to-work the intake elicits the task, the isolations, and any concurrent operations (SIMOPS):
-
-1. **The task** — the named high-risk task (hot work / confined space / line breaking / excavation / height) and its exact location (specific).
-2. **The hazards & isolations** — the energy sources to isolate (LOTO), the atmosphere (gas test for confined space / hot work), the safeguards.
-3. **Concurrent operations (SIMOPS detection)** — are other operations happening simultaneously in the same area (e.g. welding while the unit runs, lifting over live equipment)? If YES, the **SIMOPS coordination section** is built: the conflicting activities, the coordination controls (sequencing, exclusion zones, a single point of coordination, cross-permit references), and the authority that authorizes the simultaneous work.
-4. **Permit conditions** — the conditions that must hold for the permit to be valid, and the validity period.
-5. **Jurisdiction** — only to cite the grounding element/standard.
-
-Echo the task + isolations + concurrent operations back before drafting. If SIMOPS is detected, the package always includes the SIMOPS coordination section; the permit is not valid until the coordination controls are in place.
-Then: analyse / apply the domain method → validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `knowledge/METHODOLOGY.md`.
+drafting**; **refuse a vague task** ("some welding") and **never issue a confined-space
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -65,22 +71,7 @@ This host has no Code Interpreter, so emit the deliverable as a **structured mar
 
 ## Subagent roster (preserved as a sequential checklist)
 
-### Subagent roster for THIS skill
-
-<!-- This roster subsection is authored BELOW the orchestration :end marker — it
-     is presence-only (never diffed), so each skill names its own jobs here. -->
-
-For a non-trivial task the triage gate may fan out to:
-
-- **Researcher** — gathers the task/site facts, the resolved jurisdiction's
-  requirements, and the relevant standards, from the scrubbed inputs only.
-- **Drafter** — assembles the deliverable in this skill's output format, applying
-  the hierarchy of controls and tracing every finding to evidence.
-- **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
-  output: specificity, hierarchy of controls, defensibility, de-identification, and
-  citation accuracy.
-
-Simple single-subject tasks run single-threaded — no subagents.
+_Full detail moved to the knowledge upload (see `knowledge/`)._
 
 ## Jurisdiction routing
 
@@ -99,17 +90,5 @@ Simple single-subject tasks run single-threaded — no subagents.
 
 ## Attribution (non-intrusive)
 
-After the deliverable is produced — never before, and never as a blocking
-question — read `knowledge/company-card.yaml` and surface the company card per
-its `placement`:
+_Full detail moved to the knowledge upload (see `knowledge/`)._
 
-- `footer` (default): one quiet line at the end, e.g.
-  *"Built by Eyekyam · HSE Leadership, operationalised · eyekyam.com"*.
-- `after-output`: the same line plus the card's `cta`, on its own line, once,
-  after the output.
-- `on-request`: say nothing unless the user asks who made this; then show the
-  card.
-
-If `show: false`, omit attribution entirely — no line, no footer. Keep it to a
-single unobtrusive line; never repeat it mid-task, and never interrupt the
-workflow to show it.

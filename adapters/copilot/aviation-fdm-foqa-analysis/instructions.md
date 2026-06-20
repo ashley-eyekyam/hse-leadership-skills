@@ -38,28 +38,27 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — aviation-fdm-foqa-analysis
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | What do you want produced from the FDM/FOQA data? | MCQ | Structure a period's exceedance summary · Trend a metric across periods · Summarise for an SRB/SPI pack | ELI-SCOPE | always |
+| Q2 | Name the operator/fleet and the operation the data covers. | free-text | "name *this* operator/fleet; 'an airline' is refused." | ELI-SUBJECT | always |
+| Q3 | Which certificating authority / SSP applies? | MCQ | India/DGCA, FAA, EASA, Other CAA (specify), Unknown | ELI-JURIS | always |
+| Q3a | *(India only)* Which Indian operations / which State Safety Programme layer applies? | free-text | aligns the DGCA State Safety Programme layer (`KB-REG-IN-DGCA`); exact CAR number `[GAP]` to verify | ELI-JURIS | Q3==India |
+| Q4 | What is the audience and how will it circulate? | MCQ | Internal FDM team · SRB/safety pack · SPI baseline input · Other | ELI-OUTPUT | always |
+| Q5 | Paste the FDM/FOQA exceedance summary(ies) to structure. | free-text | **de-identify crew detail (name, route/base/flight, exact dates) FIRST**; the skill structures *supplied* summaries, never raw flight data | ELI-EVIDENCE | always |
+| Q6 | Is each finding a one-off or a trend? | MCQ | OneOff/a single event, Trend/across ≥2 periods of supplied data | ELI-EVIDENCE | per finding |
+| Q7 | What period(s) does the data cover? | MCQ+free-text | Single month · Quarter · Rolling-12 · Other — plus the dates | ELI-TEMPORAL | always |
+| Q8 | Who owns the resulting SMS actions? | free-text | role label; validated by `smart_actions`; never a crew-blame owner | ELI-COMPETENCY | always |
 
-**Assistive boundary (D-05a) — state it up front:** this skill structures analysis from the **summaries the user supplies**. It does NOT ingest raw flight data and does NOT invent exceedance counts/values; an absent datum is `[GAP]`, routed to the competent FDM team.
-
-The structured intake captures, one question at a time, the facts the analysis needs:
-
-1. **Named operator/scope (free-text)** — the named operator and the fleet/period the FDM/FOQA programme covers.
-2. **Supplied summaries (free-text)** — the exceedance / event summaries the user already holds (counts, event types, periods). **The skill works ONLY from these — it does not generate exceedance values.**
-3. **Question (MCQ)** — frame findings / identify trends / propose SMS actions / all of these.
-4. **De-identify (auto)** — any crew named in a summary is scrubbed to a role label first.
-
-Echo the **confirmed operator + the supplied summaries** back. Then: frame each finding traced to a supplied summary item; identify trends ONLY across the supplied data; reach systemic SMS findings and HoC-ranked actions with named owners/dates. For any datum the user did NOT supply, record `[GAP]` and route it to the competent FDM team — **never fabricate an exceedance count or value.**
-
-Then: validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method (the FDM/FOQA-informed analysis frame) is in `knowledge/METHODOLOGY.md`.
+**refuse on a vague subject** (record `[ASSUMPTION]`/`[GAP]`, never invent). Canonical
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 

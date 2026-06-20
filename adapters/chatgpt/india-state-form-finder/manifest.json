@@ -1,6 +1,11 @@
 {
   "code_interpreter": true,
-  "conversation_starters": [],
+  "conversation_starters": [
+    "Identify the form",
+    "Assemble a Factories return",
+    "Assemble an accident notice",
+    "Understand the OSH-Code change"
+  ],
   "description": "Resolve an India statutory obligation (law, state, obligation) to the prescribed LEGACY state form + citing rule + due date + filing portal, with MANDATORY state detection and the appended OSH-Code transition note. Use it to find which Factories-Act / BOCW return or register a named establishment files in its state, when, and where. State detection is mandatory (ask or infer-from-address then confirm); the form resolves from the KB state-form engine row — never a hard-coded national form; an unseeded state yields [GAP] + a refusal to invent a national form; the OSH-Code transition is noted (legacy-first). Decision-support only; a competent person must review the output.",
   "instructions_file": "instructions.md",
   "knowledge_files": [
@@ -17,7 +22,9 @@
     "knowledge/in-portals.md",
     "knowledge/in-state-forms.md",
     "knowledge/intake-interview.md",
+    "knowledge/intake.md",
     "knowledge/iso-45001.md",
+    "knowledge/sme-review.md",
     "knowledge/subagent-archetypes.md"
   ],
   "name": "india-state-form-finder"

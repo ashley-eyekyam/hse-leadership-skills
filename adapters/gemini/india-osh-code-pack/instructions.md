@@ -38,27 +38,26 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — india-osh-code-pack
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | Which **jurisdiction** is the establishment in? *(India-default skill; a non-India jurisdiction is out of scope.)* | MCQ | India, Other / Unknown — India activates the mandatory state gate (Q1b) | ELI-JURIS | always |
+| Q1b | **Which state** is the establishment in? *(commencement status is state-specific; infer-from-address allowed, I confirm before any mapping.)* | MCQ | Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Gujarat · Other (specify) · Unknown | ELI-JURIS | iff Q1 = India — **BLOCKING** |
+| Q2 | What **kind of establishment** is it? *(each legacy regime maps differently under the Code.)* | MCQ | Factory · Construction (BOCW) · Mine · Other (specify) | ELI-INDUSTRY | always |
+| Q3 | Which **legacy obligation** do you want mapped? | MCQ | Registration · Annual return · Safety-Officer threshold · Full regime | ELI-SUBJECT | always |
+| Q4 | Roughly **how many workers**, and do you **use power**? *(the Code raises the factory threshold 10/20 → 20/40 and shifts the Safety-Officer trigger 1000 → 500/250 — this decides if you move in or out of scope.)* | free-text | headcount + power Y/N | ELI-EXPOSURE | always (esp. Factory) |
+| Q5 | What do you **file today** under the legacy regime (which returns / registrations)? | free-text | current filings | ELI-BASELINE | always |
+| Q6 | Do you want just the **legacy-first answer**, or also the **legacy → OSH-Code mapping** (with the live-or-not caveat)? | MCQ | Legacy answer only · + transition mapping | ELI-SCOPE | always |
+| Q7 | Who is this **briefing for**? | MCQ | Internal / leadership · Client · Board | ELI-OUTPUT | always |
 
-**MANDATORY state detection (CT-8) — the legacy state form is always the primary answer; the OSH-Code mapping is opt-in:**
-
-1. **State (MANDATORY, ask FIRST)** — MCQ: TN / KA / MH / DL / GJ / Other (specify) / Unknown.
-   - You **may infer** the state from a supplied site address — but **echo it back and confirm** before any mapping (the commencement status is state-specific).
-   - If the state is **Unknown or unseeded** → record `[GAP]`, give the general direction of travel only, and refuse to assert a state-specific consolidated form.
-2. **Legacy obligation** — MCQ: registration / annual-return / safety-officer-threshold / full-regime.
-3. **Transition mode (opt-in)** — confirm the user wants the legacy→consolidated mapping (not just the legacy answer).
-
-Echo the **confirmed state + legacy obligation** back. Then: give the **legacy-first** answer (the legacy form from `KB-REG-IN-STATEFORMS`); then, in transition mode, read `KB-REG-IN-OSH-CODE` and map the legacy obligation → its consolidated OSH-Code equivalent (single registration; single consolidated annual return; raised factory threshold 10/20→20/40; shifted Safety-Officer trigger 1000→500/250), **flagging what changes**. **Warn that the consolidated form/portal may not be live** in the user's state — read the per-state notification status from `KB-REG-IN-OSH-CODE` (the volatile fact lives only in the KB, never hard-coded here); for any state whose OSH Rules are not notified, render the consolidated form `[GAP]`, never invented. **Never instruct the user to file an OSH form their state has not notified.**
-
-Then: validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method is in `knowledge/METHODOLOGY.md`.
+captured facts back before any mapping**; **refuse to proceed on a vague or unconfirmed state**
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -80,6 +79,10 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+- **SME Review & Sign-off (MANDATORY, before any output)** — run the skill-specific
+  OSH-Code transition persona + checklist in `knowledge/sme-review.md` (legacy stays
+  primary; never instruct filing an unnotified form). Decision-support only; it precedes
+  — never replaces — the competent-person review.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

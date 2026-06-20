@@ -90,14 +90,15 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
 
-The structured intake captures, one question at a time, the facts the policy needs:
-
-1. **Named operator/scope (free-text)** — the named operator/airport/AMO and the workforce the policy covers. De-identify any individual per the block above.
-2. **Existing reporting culture (MCQ)** — do you have a confidential reporting system already? / is this a first policy? / are you revising an existing one? (branches the decision-tree detail).
-3. **Decision-tree basis (MCQ)** — substitution test / culpability ladder (honest error → at-risk → reckless → negligent) / both. The policy must carry an explicit line, not a slogan.
-4. **Worked example (free-text, optional)** — a representative (de-identified) scenario to test the decision tree against — no individual is named.
-
-Echo the **confirmed operator + the decision-tree basis** back. Then author (a) the just-culture policy statement, and (b) the **decision tree** with the explicit acceptable/unacceptable line (substitution test + the culpability ladder). De-identification runs first: any example uses role labels only.
+The full typed/branched intake Q-table — the first-policy/revise scope, the named operator +
+workforce, the **legal protection-basis** jurisdiction branch (India → `KB-REG-IN-DGCA`,
+EU Reg 376/2014, FAA ASAP, Annex 19 Appendix 3 principles only, or Unknown → `[GAP]` + legal-
+review flag, **never assert a protection the law doesn't grant**), the existing-reporting-system
+status, the decision-tree basis (substitution test / culpability ladder / both), who applies +
+signs it, the in-scope behaviours, and an optional de-identified scenario — lives in
+**`references/intake.md`** (the `intake-coverage` manifest + echo-back + refuse-on-vague
+anchors). Run it one question at a time, branch on the answers, and **echo the confirmed
+operator + the decision-tree basis back before any drafting**. Then author (a) the just-culture policy statement, and (b) the **decision tree** with the explicit acceptable/unacceptable line (substitution test + the culpability ladder). De-identification runs first: any example uses role labels only.
 
 Then: validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. The domain method (the just-culture policy + decision tree) is in `references/METHODOLOGY.md`.
 
@@ -133,14 +134,23 @@ this conversation — paste ALL needed context into its prompt. Per-subagent ske
 Gather the outputs, resolve conflicts explicitly (state which source wins), de-duplicate,
 and assemble the deliverable in this skill's output format.
 
-### Step 4 — Critic / QA (MANDATORY — this is regulatory/safety output)
-Spawn ONE Critic: give it the draft + the inputs + the output contract. It finds errors,
-unsupported claims, missed regulatory triggers, lower-order-only controls, and any
-de-identification leak. Fix everything it raises before delivery.
+### Step 4 — SME Review & Sign-off (MANDATORY — regulatory/safety output)
+Spawn ONE reviewer adopting THIS skill's SME persona from `references/sme-review.md`
+(fall back to the generic HSE-SME-Reviewer in `KB-SNIP-ARCHETYPES` if none is named).
+Give it the draft + the inputs + the output contract. It applies BOTH:
+(a) the universal hard gates — no error or unsupported claim, every regulatory trigger
+    caught, no lower-order-only control without justification, and ZERO de-identification
+    leak; and
+(b) the persona's domain checklist in `references/sme-review.md`.
+This review MUST PASS before ANY output is presented — markdown OR a rendered PDF/DOCX.
+Fix everything it raises and re-run until clean. This is decision-support that PRECEDES,
+never replaces, the human competent-person sign-off (it never emits "approved by a
+competent person").
 
-> Single-threaded fallback: if your host has no subagent capability, execute each job
-> sequentially in THIS context — run the de-identification scrub first, keep the scope
-> discipline, and still perform the required Critic/QA pass before delivery.
+> Single-threaded fallback: if your host has no subagent capability, perform the SME
+> Review & Sign-off pass yourself in THIS context — run the de-identification scrub
+> first, keep the scope discipline, apply the persona checklist + universal gates, and
+> pass the review before presenting any output (markdown or rendered).
 <!-- hse:block:orchestration:end -->
 
 ### Subagent roster for THIS skill
@@ -153,7 +163,9 @@ de-identification leak. Fix everything it raises before delivery.
   worked example uses role labels only), then the policy + decision tree are drafted, then the
   MANDATORY Critic/QA pass runs in this same context — the Aviation-SMS persona
   (`KB-SNIP-ARCHETYPES`) checks the policy carries an explicit acceptable/unacceptable line (not
-  a slogan) and that no individual is named.
+  a slogan) and that no individual is named. The Critic/QA pass runs the per-skill SME sign-off
+  checklist in `references/sme-review.md` (the human-factors + employment-law lenses;
+  decision-support; precedes — never replaces — the human competent-person review).
 
 <!-- hse:block:report-output:start -->## Output format
 

@@ -1,6 +1,8 @@
 {
   "code_interpreter": true,
-  "conversation_starters": [],
+  "conversation_starters": [
+    "India/DGCA, FAA, EASA, Other CAA , Unknown"
+  ],
   "description": "Conduct an aviation SMS change-management safety assessment (ICAO Annex 19 management of change): describe the change, identify new and changed hazards, assess risk on the ICAO 5x5 Risk Classification Scheme (the shared A7 risk_matrix engine), mitigate through the hierarchy of controls, and approve or decline with a recorded rationale. Use this skill to assess the safety of a change for a named operator, airport, or AMO. Grounds in KB-STD-ICAO-ANNEX19 + KB-DATA-AVI-RISK-MATRIX, scores risk reproducibly via risk_matrix.score(), HoC-ranks mitigations (flagging PPE/admin-only), and validates owners/dates with smart_actions. Decision-support only; a competent person must review the output.",
   "instructions_file": "instructions.md",
   "knowledge_files": [
@@ -15,6 +17,8 @@
     "knowledge/hierarchy-of-controls.md",
     "knowledge/icao-annex19.md",
     "knowledge/intake-interview.md",
+    "knowledge/intake.md",
+    "knowledge/sme-review.md",
     "knowledge/subagent-archetypes.md"
   ],
   "name": "aviation-change-safety-assessment"

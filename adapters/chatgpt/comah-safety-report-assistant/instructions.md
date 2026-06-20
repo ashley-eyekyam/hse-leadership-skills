@@ -38,27 +38,32 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — comah-safety-report-assistant
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | What do you need? | MCQ | Full Safety Report structure · MAPP only (lower-tier) · A single element/section · Review/revision of an existing report | ELI-SCOPE | always |
+| Q2 | Name the **establishment**. | free-text | the specific named site (not "our sites") — the specificity anchor; refuse a vague answer | ELI-SUBJECT | always |
+| Q3 | Which **regime**? | MCQ | UK COMAH 2015 / EU Seveso III | ELI-JURIS | always |
+| Q3a | *(EU Seveso III only)* Which **member state** transposes it? | free-text | the member-state transposition the report must satisfy | ELI-JURIS | Q3 == EU Seveso III |
+| Q4 | What **dangerous substances** are present and in what **quantities** (tier determination)? | free-text | named substances + quantities drive lower-tier vs upper-tier | ELI-OBLIGATIONS | always |
+| Q5 | Confirm the **tier**. | MCQ | Lower-tier (MAPP only) / Upper-tier (full Safety Report) / Help determine from Q4 | ELI-SCOPE | always |
+| Q6 | Which **Safety-Report elements** to assemble? | MCQ multi-select | MAPP · SMS · Establishment & environs description · Major-accident-scenario identification · ALARP demonstration · Internal emergency plan | ELI-OBLIGATIONS | Q5 == Upper-tier (full Safety Report) |
+| Q7 | What **receptors** are in the environs (population, environment, neighbouring establishments)? | free-text | for the establishment & environs description | ELI-EXPOSURE | Q5 == Upper-tier (full Safety Report) |
+| Q8 | Where do the **QRA / consequence-modelling / ALARP numbers** come from? | free-text | external; the skill records, never computes; unsupplied → `[GAP]` | ELI-EVIDENCE | always |
+| Q9 | Who is the **duty-holder / competent author / QRA provider**? | free-text | the assistive-evidence anchor (de-identified to roles) | ELI-COMPETENCY | always |
+| Q10 | Is there a **submission deadline or review/revision trigger** (5-yearly, material change)? | free-text | the temporal obligation | ELI-TEMPORAL | always |
+| Q11 | What **output**, for whom (regulator submission vs internal draft), and what **sector** frames it? | MCQ + free-text | Full report · Element · MAPP // regulator vs internal // M / C // sector (chemicals · O&G · storage · other) | ELI-OUTPUT | always |
+| Q12 | Which **sector / installation type** frames the establishment? | MCQ | Chemicals · Oil & Gas · Bulk storage · Explosives · Other | ELI-INDUSTRY | always |
+| Q13 | Confirm the **establishment's physical setting / surroundings** for the environs description. | free-text | site boundary, neighbouring land use, watercourses, populated areas | ELI-LOCATION | always |
 
-For a COMAH Safety Report the intake elicits the establishment and walks the report elements:
-
-1. **The establishment** — the named upper-tier site (specific; not 'our sites').
-2. **Tier** — confirm lower-tier (MAPP only) vs upper-tier (full Safety Report).
-3. **Substances & thresholds** — the named dangerous substances and the tier determination.
-4. **Elements to assemble** — MAPP, SMS, establishment & environs description, major-accident scenario identification, ALARP demonstration, internal emergency plan.
-5. **Evidence sources** — where the QRA / consequence modelling / ALARP numbers come from (external; the skill records, does not compute).
-6. **Jurisdiction** — UK COMAH 2015 vs EU member-state Seveso III transposition.
-
-Echo the establishment + tier + elements back before assembling. For each element the skill **prompts** the duty-holder for content and **records** it — recording `[GAP]` for any element not supplied (e.g. missing ALARP demonstration), never inventing it.
-Then: analyse / apply the domain method → validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `knowledge/METHODOLOGY.md`.
+**refuse on a vague establishment** and record `[GAP]` for any unsupplied element, never
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -66,22 +71,7 @@ Assemble a `report.json` conforming to the shared report-model schema, then run 
 
 ## Subagent roster (preserved as a sequential checklist)
 
-### Subagent roster for THIS skill
-
-<!-- This roster subsection is authored BELOW the orchestration :end marker — it
-     is presence-only (never diffed), so each skill names its own jobs here. -->
-
-For a non-trivial task the triage gate may fan out to:
-
-- **Researcher** — gathers the task/site facts, the resolved jurisdiction's
-  requirements, and the relevant standards, from the scrubbed inputs only.
-- **Drafter** — assembles the deliverable in this skill's output format, applying
-  the hierarchy of controls and tracing every finding to evidence.
-- **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
-  output: specificity, hierarchy of controls, defensibility, de-identification, and
-  citation accuracy.
-
-Simple single-subject tasks run single-threaded — no subagents.
+_Full detail moved to the knowledge upload (see `knowledge/`)._
 
 ## Jurisdiction routing
 

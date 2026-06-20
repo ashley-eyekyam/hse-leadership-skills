@@ -1,6 +1,11 @@
 {
   "code_interpreter": true,
-  "conversation_starters": [],
+  "conversation_starters": [
+    "Build the 14-element status matrix",
+    "Gap assessment",
+    "Audit-readiness prep",
+    "Track a specific element"
+  ],
   "description": "Structures and tracks an OSHA PSM 14-element process-safety program (29 CFR 1910.119): per-element status (compliant / gap / overdue), evidence, gap-risk band, and owners — the program backbone. Produces a 14-element status matrix with a hierarchy-of-controls remediation plan and SMART actions tracked to closure. Decision-support only; a competent person must review the output.",
   "instructions_file": "instructions.md",
   "knowledge_files": [
@@ -15,8 +20,10 @@
     "knowledge/hierarchy-of-controls.md",
     "knowledge/in-factories-act.md",
     "knowledge/intake-interview.md",
+    "knowledge/intake.md",
     "knowledge/iso-45001.md",
     "knowledge/psm.md",
+    "knowledge/sme-review.md",
     "knowledge/subagent-archetypes.md",
     "knowledge/uk-hswa.md",
     "knowledge/us-osha.md"

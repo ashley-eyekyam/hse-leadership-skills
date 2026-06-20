@@ -38,25 +38,31 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — india-msihc-mah-pack
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | What do you need — MAH-status verdict, on-site emergency-plan outline, safety-report outline, or the full MSIHC pack? | MCQ | MAH-verdict / on-site-plan / safety-report / full-pack | ELI-SCOPE | always |
+| Q2 | Name the site and list each stored/handled hazardous chemical + max quantity on site. | free-text | per-chemical max inventory; refuse "various chemicals" | ELI-SUBJECT | always |
+| Q3 | Is each quantity isolated storage or in-process, and are there multiple storage points? | MCQ + free-text | isolated / in-process / both — drives MSIHC aggregation | ELI-SUBJECT | always |
+| Q4 | Jurisdiction — this pack is the Indian MSIHC/MAH regime (always India; the next question resolves the state). | MCQ | India | ELI-JURIS | always |
+| Q5 | **Which Indian state is the site in?** (MANDATORY — the spine; resolved via `KB-REG-IN-STATEFORMS`, confirm before citing any form) | MCQ | Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Gujarat · Other · Unknown — mandatory state detection; "Other"/"Unknown" → literal `[GAP]`, never a national-form fallback | ELI-JURIS | always — mandatory |
+| Q6 | Which storage/handling licences are held? | MCQ multi-select | PESO / SMPV / gas-cylinder / state Factories registration / consent-to-operate (PCB) / none | ELI-OBLIGATIONS | always |
+| Q7 | Is the site already a registered/notified MAH? Any MSIHC notifications already filed? | MCQ | yes / no / partial | ELI-BASELINE | always |
+| Q8 | Population/receptors within the credible off-site impact zone? | MCQ + free-text | residential / public / none / unknown | ELI-EXPOSURE | always |
+| Q9 | Existing on-site emergency plan? | MCQ | yes / no / partial | ELI-BASELINE | always |
+| Q10 | Site plot plan / population map — held, and the site location for off-site framing? | free-text | plot plan + receptor proximity | ELI-LOCATION | always |
+| Q11 | Who is the occupier / factory manager named for statutory duties? | free-text | role-label owner | ELI-COMPETENCY | always |
+| Q12 | Any upcoming statutory deadlines — safety-report due, mock-drill, licence renewal? | free-text | dates | ELI-TEMPORAL | always |
+| Q13 | Org rating/priority scheme for the MAH-tier verdict and `[GAP]` escalation. | MCQ | org scheme / default — flag every unresolved threshold/form | ELI-SCORING | always |
 
-For an MSIHC / MAH pack the intake elicits the inventory and the STATE BEFORE any verdict:
-
-1. **Site + stored/handled hazardous chemicals + quantities** — the inventory against the MSIHC Schedule thresholds (free-text; specific). Drives MAH yes/no.
-2. **State (MANDATORY)** — MCQ TN / KA / MH / DL / Other → resolve via `KB-REG-IN-STATEFORMS`; **confirm the state before citing any form**. Never assume a national form.
-3. **Existing emergency plan** — MCQ: yes / no / partial.
-
-Echo the inventory + the **confirmed state** + existing-plan status back before the MAH verdict. The MAH status follows the Schedule thresholds (`KB-REG-IN-MSIHC`); the state form resolves from `KB-REG-IN-STATEFORMS`; an unresolved threshold/form is `[GAP]`-flagged; the OSH-Code transition is noted; PESO licensing pointers reference `KB-REG-IN-PESO`.
-
-Then: analyse / apply the domain method → validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `knowledge/METHODOLOGY.md`.
+**refuse on a vague subject** (record `[ASSUMPTION]`/`[GAP]`, never invent a threshold or
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -78,6 +84,12 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+- **SME Review & Sign-off** (MANDATORY, before ANY output) — run the skill-specific
+  persona, domain checklist, and boundary in `knowledge/sme-review.md` (Indian MAH /
+  MSIHC regulatory lens: MAH status derived from the Schedule thresholds; the state
+  resolved BEFORE any form is cited; the cited form the legacy STATE form — never a
+  hard-coded/fabricated national form). Decision-support only; precedes — never
+  replaces — the human competent-person review.
 
 Simple single-subject tasks run single-threaded — no subagents.
 

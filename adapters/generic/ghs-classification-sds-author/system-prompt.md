@@ -38,27 +38,30 @@ Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
 to every control recommendation. For any benchmark/figure, look up the ID in the relevant
 `_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
 
-## Workflow
+# Structured intake — ghs-classification-sds-author
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | What do you need — classify only, author a full 16-section SDS, produce a CLP label, or review/revise an existing SDS? | MCQ | classify-only / full SDS / label / review existing | ELI-SCOPE | always |
+| Q2 | Substance or mixture? Name + CAS/EC. | MCQ + free-text | substance / mixture | ELI-SUBJECT | always |
+| Q3 | Full composition: each hazardous component + concentration (and its own classification if known). | free-text | refuse "proprietary blend" without component data | ELI-SUBJECT | if Q2==mixture |
+| Q4 | Intended use. | MCQ | manufacture / formulation / industrial / professional / consumer | ELI-INDUSTRY | always |
+| Q5 | Which hazard data do you hold? (tick each available endpoint) | MCQ multi-select | physico-chem (flashpoint/oxidising/reactive) / acute tox / skin-eye / sensitisation / CMR / STOT / aspiration / aquatic-env | ELI-EVIDENCE | always |
+| Q6 | For each ticked endpoint — study, read-across, or QSAR? | MCQ per endpoint | study / read-across / QSAR / none | ELI-EVIDENCE | per Q5 tick |
+| Q7 | Jurisdiction / regime. | MCQ | EU (CLP+REACH) / UK (GB-CLP + UK-REACH) / US (OSHA HazCom) / India / other | ELI-JURIS | always |
+| Q8 | Which Indian state? | MCQ | Tamil Nadu · Karnataka · Maharashtra · Delhi/Central · Gujarat · Other · Unknown — mandatory state detection; confirm before citing any form; "Other"/"Unknown" → literal `[GAP]`, never a national-form fallback | ELI-JURIS | if Q7==India |
+| Q9 | REACH registration tonnage band (EU/UK). | MCQ | <1t / 1–10t / 10–100t / 100–1000t / >1000t / N/A | ELI-OBLIGATIONS | if Q7∈{EU,UK} |
+| Q10 | Output scope. | MCQ | full 16-section SDS / classification-only / label | ELI-OUTPUT | always |
+| Q11 | Author/owner and SDS review/revision date. | free-text | role-label + date | ELI-COMPETENCY / ELI-TEMPORAL | if Q1≠classify-only |
+| Q12 | Org rating/priority scheme for residual data-gaps (drives `[GAP]` escalation order). | MCQ | org scheme / default — flag every untested endpoint | ELI-SCORING | always |
 
-For a GHS classification / SDS the intake elicits the substance and its data BEFORE any class is assigned:
-
-1. **Substance or mixture identity** — name + CAS (free-text); for a mixture, the hazardous components + concentrations (specific).
-2. **Intended use** — manufacture / formulation / industrial use / consumer (drives REACH exposure scenario + SDS framing).
-3. **Available hazard data** — MCQ: full study data / read-across / `[GAP]` (no data). **If `[GAP]`, the skill refuses to assign a class and routes to a competent person / further testing — it never invents a GHS class.**
-4. **Jurisdiction** — MCQ EU (CLP+REACH) / UK (COSHH) / US (HazCom) / India. **India → resolve the state** via `KB-REG-IN-STATEFORMS` and confirm before citing.
-5. **Output scope** — full 16-section SDS / classification-only / label.
-
-Echo the substance identity + composition + data availability + jurisdiction back before classifying. Every hazard class cites the data it rests on; an absent datum is `[GAP]`-flagged, never invented. SDS §8 handling controls are HoC-ranked (`controls`), never PPE-first.
-
-Then: analyse / apply the domain method → validate the draft against `knowledge/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `knowledge/METHODOLOGY.md`.
+**refuse on a vague subject** (record `[ASSUMPTION]`/`[GAP]`, never invent a hazard
 
 ## Agentic Execution (single-thread on this host)
 
 Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
 
-Single-threaded fallback: if your host has no subagent capability, execute each job sequentially in THIS context — run the de-identification scrub first, keep the scope discipline, and still perform the required Critic/QA pass before delivery.
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
 
 ## Output format
 
@@ -80,6 +83,12 @@ For a non-trivial task the triage gate may fan out to:
 - **Critic/QA** (MANDATORY) — adversarial final pass for this regulatory/safety
   output: specificity, hierarchy of controls, defensibility, de-identification, and
   citation accuracy.
+- **SME Review & Sign-off** (MANDATORY, before ANY output) — run the two-lens persona
+  set, domain checklist, and boundary in `knowledge/sme-review.md` (industrial
+  toxicologist / GHS-CLP classification lens + regulatory-affairs / SDS-format lens:
+  every class forced by stated data — every absent datum honestly `[GAP]`; the SDS
+  section set matches the resolved jurisdiction). Decision-support only; precedes —
+  never replaces — the human competent-person review.
 
 Simple single-subject tasks run single-threaded — no subagents.
 
