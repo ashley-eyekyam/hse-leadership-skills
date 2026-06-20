@@ -227,6 +227,88 @@ def test_boundary_phrase_triggers_warn(tmp_path):
     ), report.warnings
 
 
+# --- WR-02: negation-aware boundary scan ---------------------------------------
+#
+# The canonical boundary phrasing (knowledge-base/prompt-snippets/sme-signoff.md +
+# skills/hse-skill-forge/templates/sme-review.md) states the prohibition AS A
+# NEGATION. A naive whole-body substring scan false-WARNs on it. WR-02 makes the
+# scan negation-aware: a line containing a negator token (never/not/precedes/
+# replaces/without) OR a quoted occurrence of the phrase is a documented boundary,
+# not an affirmative claim, and must NOT WARN. Only an affirmative emission WARNs.
+
+# The exact canonical negation phrasing every authored sme-review.md mirrors
+# (sme-signoff.md lines 31-32): both a "never replaces" negation AND a quoted,
+# never-outputs occurrence of the forbidden phrase. Neither may WARN.
+CANONICAL_NEGATION_SIGNOFF = (
+    "## Sign-off note\n"
+    "Decision-support only. This review PRECEDES — and never replaces, never emits — the\n"
+    "human competent-person sign-off. It never outputs \"approved by a competent person\".\n"
+)
+
+
+def test_canonical_negation_phrasing_does_not_warn(tmp_path):
+    # Replace the clean sign-off note with the canonical negation phrasing — which
+    # CONTAINS the forbidden substrings 'approved by a competent person' and
+    # 'competent person sign-off' but only as negations/quotes. NO boundary WARN.
+    text = CLEAN_SME.replace(
+        "## Sign-off note\n"
+        "SME review ran (persona: Competent HSE practitioner); this is decision-support;\n"
+        "a FLAG it raises is recorded, never merge-blocking — it precedes and never\n"
+        "replaces the human competent-person review.\n",
+        CANONICAL_NEGATION_SIGNOFF,
+    )
+    # Guard: the replace actually landed and the forbidden phrase IS present in body.
+    assert CANONICAL_NEGATION_SIGNOFF in text
+    assert "approved by a competent person" in text
+    skill = make_skill(tmp_path, sme_text=text)
+    findings = rule12(skill)
+    assert not any("sign-off boundary phrase" in f for f in findings), (
+        "canonical negation/quoted boundary phrasing must NOT trip the boundary WARN: "
+        f"{findings}"
+    )
+    # No OTHER rule-12 finding either (the rest of CLEAN_SME is born-conformant).
+    assert findings == [], findings
+
+
+def test_affirmative_signoff_claim_warns(tmp_path):
+    # An affirmative emission of the forbidden phrase WITH NO negator on the line
+    # MUST still WARN (the boundary guard must not over-suppress).
+    boundary = "approved by a competent person"
+    text = CLEAN_SME.replace(
+        "## Sign-off note\n"
+        "SME review ran (persona: Competent HSE practitioner); this is decision-support;\n"
+        "a FLAG it raises is recorded, never merge-blocking — it precedes and never\n"
+        "replaces the human competent-person review.\n",
+        "## Sign-off note\nThis artifact is " + boundary + " and ready to issue.\n",
+    )
+    skill = make_skill(tmp_path, sme_text=text)
+    findings = rule12(skill)
+    assert any(
+        "sign-off boundary phrase" in f and boundary in f for f in findings
+    ), findings
+
+
+def test_forge_template_signoff_does_not_warn(tmp_path):
+    # The born-conformant forge sme-review.md template states the boundary as a
+    # negation ("it precedes and never replaces the human competent-person review").
+    # Running the rule against that exact sign-off note must produce NO boundary WARN.
+    template = (
+        REPO / "skills" / "hse-skill-forge" / "templates" / "sme-review.md"
+    ).read_text(encoding="utf-8")
+    # Lift the template's sign-off note (negation phrasing) into the clean baseline.
+    note = template.split("## Sign-off note", 1)[1]
+    text = CLEAN_SME.replace(
+        "## Sign-off note\n"
+        "SME review ran (persona: Competent HSE practitioner); this is decision-support;\n"
+        "a FLAG it raises is recorded, never merge-blocking — it precedes and never\n"
+        "replaces the human competent-person review.\n",
+        "## Sign-off note" + note,
+    )
+    skill = make_skill(tmp_path, sme_text=text)
+    findings = rule12(skill)
+    assert not any("sign-off boundary phrase" in f for f in findings), findings
+
+
 # --- the clean-persona block (single source for the replace-based mutations) ---
 
 def _clean_personas_block():

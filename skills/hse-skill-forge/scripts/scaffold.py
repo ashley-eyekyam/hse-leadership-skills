@@ -173,18 +173,15 @@ def _inner_block(block: str) -> str:
 def _wrap_block(block: str) -> str:
     """A block's full marked region as it appears in a SKILL.md.
 
-    report-output's canonical form (per template/SKILL.md + the frozen example) puts
-    the start marker on the SAME line as `## Output format`; reproduce that exactly so
-    the byte-match holds. The block source ships bare (no markers) for report-output, so
-    `_inner_block` returns the whole body including the leading `## Output format`."""
+    Every block source ships bare (no markers) and `_inner_block` returns the whole
+    body, so the marked region is simply `start + inner + end` for all blocks —
+    including report-output, whose body already begins with its `## Output format`
+    heading and carries its own trailing newline (the start marker is glued to the
+    first content line and the end marker follows with no extra newline inserted, so
+    the byte-match against template/SKILL.md + the frozen example holds)."""
     inner = _inner_block(block)
     start = f"<!-- hse:block:{block}:start -->"
     end = f"<!-- hse:block:{block}:end -->"
-    if block == "report-output":
-        # start marker glued to the first content line; the body already begins
-        # "## Output…" and ends with its own trailing newline, so the end marker sits
-        # on the next line with NO extra newline inserted (matches the frozen example).
-        return f"{start}{inner}{end}"
     return f"{start}{inner}{end}"
 
 

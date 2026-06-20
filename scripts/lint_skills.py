@@ -193,6 +193,12 @@ def _inner_region(text: str, block: str) -> Optional[str]:
 
 def _split_frontmatter(text: str) -> tuple:
     """Return (frontmatter_dict, body_text). Empty dict if no/invalid frontmatter."""
+    # WR-03: normalize CRLF before the LF-only frontmatter regex. _read() returns
+    # raw UTF-8, so a CRLF-authored reference file (e.g. references/intake.md /
+    # sme-review.md written on Windows) would otherwise fail the `^---\n...\n---\n`
+    # match and yield fm={} — a false "manifest absent/unparseable". Both Rules 11
+    # and 12 reach manifests through this function, so this single fix covers both.
+    text = text.replace("\r\n", "\n")
     m = re.match(r"^---\n(.*?)\n---\n(.*)$", text, re.S)
     if not m:
         return {}, text
@@ -567,6 +573,17 @@ def _rule11_intake_coverage(report: Report, body: str, skill_dir: Path, repo: Pa
 
     all_ids = _taxonomy_ids(repo)
     universals = _taxonomy_universals(repo)
+    # WR-01: when the elicitation taxonomy could not load (file missing or empty),
+    # _taxonomy_ids returns an empty set and EVERY downstream dimension check would
+    # silently no-op: the universal floor (step 3) iterates an empty `universals`,
+    # ID-resolution (step 4) is guarded by `if all_ids and ...`, and conditional
+    # completeness (step 5) iterates `all_ids - universals` (empty). That silently
+    # disables the specificity gate. Emit a finding and early-return BEFORE the
+    # dependent steps no-op. The spec frames this HARD for HARD-flip safety; it
+    # routes through _emit so it lands level-correct (WARN this phase) but MUST fire.
+    if not all_ids:
+        _emit(report, "rule 11: elicitation taxonomy missing or empty — cannot resolve dimensions")
+        return
     conditionals = all_ids - universals
 
     # 3. Universal floor.
@@ -723,13 +740,34 @@ def _rule12_sme_review(report: Report, body: str, skill_dir: Path) -> None:
     if "references/sme-review.md" not in _below_end(body, "orchestration"):
         _emit(report, "rule 12: orchestration roster does not reference references/sme-review.md")
     # Optional boundary WARN — ALWAYS report.warn (SME-02), regardless of level.
-    low = sme_body.lower()
-    for phrase in SIGN_OFF_FORBIDDEN:
-        if phrase in low:
-            report.warn(
-                f"rule 12: sme-review.md contains sign-off boundary phrase '{phrase}'"
-            )
+    # WR-02: negation-aware, per-line scan. The canonical boundary phrasing states
+    # the prohibition AS A NEGATION (e.g. sme-signoff.md: 'never replaces … never
+    # outputs "approved by a competent person"'), which a naive whole-body substring
+    # scan false-WARNs on. Only WARN on an AFFIRMATIVE emission of a forbidden
+    # phrase: skip any line that reads as a negation/quoted prohibition. A negator
+    # token anywhere on the line, or the phrase occurring inside quotes, marks the
+    # line as a documented boundary, not a claim.
+    _NEGATORS = ("never", "not", "does not", "doesn't", "precedes", "replaces", "without")
+    _found = None
+    for raw_line in sme_body.split("\n"):
+        line = raw_line.lower()
+        for phrase in SIGN_OFF_FORBIDDEN:
+            if phrase not in line:
+                continue
+            if any(neg in line for neg in _NEGATORS):
+                continue  # negation phrasing — a documented boundary, not a claim
+            # quoted occurrence (e.g. never outputs "approved by …") — a prohibition.
+            quoted = any(f'{q}{phrase}{q}' in line for q in ('"', "'", "`"))
+            if quoted:
+                continue
+            _found = phrase
             break
+        if _found:
+            break
+    if _found:
+        report.warn(
+            f"rule 12: sme-review.md contains sign-off boundary phrase '{_found}'"
+        )
 
 
 # --- public API ----------------------------------------------------------------

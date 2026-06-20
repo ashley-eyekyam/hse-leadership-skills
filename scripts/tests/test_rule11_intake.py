@@ -328,3 +328,50 @@ def test_missing_intake_file_fires(tmp_path):
     (dst / "references" / "intake.md").unlink(missing_ok=True)
     findings = rule11(dst)
     assert any("missing references/intake.md" in f for f in findings), findings
+
+
+# --- WR-01: missing/empty elicitation taxonomy must fire, not silently no-op ----
+#
+# When knowledge-base/elicitation-taxonomy.yaml is missing OR empty, _taxonomy_ids
+# returns an empty set and every downstream dimension check (universal floor,
+# ID-resolution, conditional completeness) would silently no-op — disabling the
+# specificity gate. WR-01 emits a finding and early-returns BEFORE the dependent
+# steps. We point the rule at a tmp `repo` whose taxonomy is missing/empty (rather
+# than the real REPO, which ships a populated taxonomy).
+
+def _rule11_against_repo(skill_dir, repo):
+    """Run _rule11_intake_coverage directly with an explicit `repo` arg and return
+    the rule-11 findings (WARN this phase)."""
+    report = lint_skills.Report(skill="fixture-skill")
+    body = (skill_dir / "SKILL.md").read_text(encoding="utf-8")
+    lint_skills._rule11_intake_coverage(report, body, skill_dir, repo)
+    return [w for w in report.warnings if w.startswith("rule 11")]
+
+
+def test_missing_taxonomy_fires(tmp_path):
+    # A tmp repo with NO knowledge-base/elicitation-taxonomy.yaml at all.
+    repo = tmp_path / "repo"
+    (repo / "knowledge-base").mkdir(parents=True)
+    assert not (repo / "knowledge-base" / "elicitation-taxonomy.yaml").exists()
+    skill = make_skill(tmp_path)
+    findings = _rule11_against_repo(skill, repo)
+    assert any("elicitation taxonomy missing or empty" in f for f in findings), findings
+    # And the dependent steps must NOT have produced their own findings (early-return):
+    # with the taxonomy absent there is exactly one rule-11 finding, not the cascade.
+    assert findings == [
+        "rule 11: elicitation taxonomy missing or empty — cannot resolve dimensions"
+    ], findings
+
+
+def test_empty_taxonomy_fires(tmp_path):
+    # A tmp repo whose elicitation-taxonomy.yaml is present but EMPTY (`[]`).
+    repo = tmp_path / "repo"
+    (repo / "knowledge-base").mkdir(parents=True)
+    (repo / "knowledge-base" / "elicitation-taxonomy.yaml").write_text("[]\n", encoding="utf-8")
+    assert lint_skills._taxonomy_ids(repo) == set()
+    skill = make_skill(tmp_path)
+    findings = _rule11_against_repo(skill, repo)
+    assert any("elicitation taxonomy missing or empty" in f for f in findings), findings
+    assert findings == [
+        "rule 11: elicitation taxonomy missing or empty — cannot resolve dimensions"
+    ], findings
