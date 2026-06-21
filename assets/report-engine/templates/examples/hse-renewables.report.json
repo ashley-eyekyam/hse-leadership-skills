@@ -1,0 +1,50 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "HSE Renewables — Weather-Threshold Working Limits",
+    "subtitle": "Wind Farm WF-7, turbine-access weather limits",
+    "author": "HSE Renewables",
+    "date": "2026-06-21",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "This review defines the weather-threshold working limits for turbine access and blade work at wind farm WF-7. Two activities lacked a documented wind-speed stop limit, now corrected." },
+    { "type": "metrics", "metrics": [
+        { "label": "Activities limited", "value": "5" },
+        { "label": "Missing stop limits", "value": "2", "caption": "now defined" } ] },
+    { "type": "heading", "level": 1, "text": "Weather-threshold limits" },
+    { "type": "table",
+      "headers": ["Activity", "Parameter", "Stop threshold", "Owner"],
+      "rows": [
+        ["Nacelle external work", "Wind speed", "≥ 18 m/s", "Site Lead"],
+        ["Blade rope access", "Wind speed", "≥ 12 m/s", "Rope-Access Supervisor"],
+        ["Crane lift", "Wind speed", "≥ 9 m/s (per lift plan)", "Lift Supervisor"],
+        ["Tower climb", "Lightning risk", "Any local strike < 10 km", "Site Lead"],
+        ["Offshore transfer", "Significant wave height", "≥ 1.5 m", "Marine Coordinator"]
+      ],
+      "caption": "Weather-threshold working limits — activity / parameter / stop threshold / owner" },
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "Blade rope access lacked a wind stop limit", "risk_level": "High",
+          "description": "Rope-access blade work had no documented wind-speed stop threshold before this review.", "evidence": "Method statement RA-blade rev. 1" },
+        { "title": "No lightning hold criterion for tower climbs", "risk_level": "Medium",
+          "description": "Tower-climb activities had no defined lightning stand-down distance.", "evidence": "Climb permit review" } ] },
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Schedule weather-sensitive work to forecast low-wind windows", "tier": "Substitution", "owner": "Site Lead" },
+        { "control": "Real-time anemometer with automated stop alert at the threshold", "tier": "Engineering", "owner": "SCADA Lead" },
+        { "control": "Lightning-detection stand-down procedure", "tier": "Administrative", "owner": "Site Lead" } ] },
+    { "type": "heading", "level": 1, "text": "Recommendations" },
+    { "type": "recommendations", "rows": [
+        { "action": "Publish the weather-threshold matrix in every relevant permit", "priority": "P1", "owner": "Site Lead", "due": "2026-07-05" },
+        { "action": "Integrate the anemometer stop alert with the permit system", "priority": "P2", "owner": "SCADA Lead", "due": "2026-08-31" } ] },
+    { "type": "callout", "text": "Work must stop and personnel descend whenever a defined weather-stop threshold is reached or forecast within the work window.", "box_type": "warning" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": ["Wind-industry safe-working / GWO standards", "Work-at-height and lifting-operations regs", "ISO 45001 §8.1.2"] }
+  ]
+}

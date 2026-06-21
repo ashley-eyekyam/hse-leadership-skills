@@ -1,0 +1,49 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "HSE Operations — Legal Compliance Register Review",
+    "subtitle": "Site operations compliance baseline, Plant 2",
+    "author": "HSE Operations",
+    "date": "2026-06-21",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "This operations compliance review baselines the site's legal and other-requirements register (ISO 45001 §6.1.3) and tracks each obligation to a named owner and review date. Two obligations are overdue for re-verification." },
+    { "type": "metrics", "metrics": [
+        { "label": "Tracked obligations", "value": "18" },
+        { "label": "Overdue for review", "value": "2", "caption": "action raised" } ] },
+    { "type": "heading", "level": 1, "text": "Legal & other-requirements register" },
+    { "type": "table",
+      "headers": ["Obligation", "Source instrument", "Owner", "Status", "Next review"],
+      "rows": [
+        ["Workplace exposure limits — solvents", "COSHH-equivalent regs", "Process Lead", "Compliant", "2026-09-01"],
+        ["Statutory examination — lifting equipment", "LOLER-equivalent regs", "Maintenance Lead", "Overdue", "2026-05-01"],
+        ["Emergency lighting test", "Building fire regs", "Facilities Lead", "Compliant", "2026-08-15"],
+        ["Pressure-system written scheme", "PSSR-equivalent regs", "Engineering Lead", "Overdue", "2026-04-20"]
+      ],
+      "caption": "Legal compliance register — obligation to owner to review date" },
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "Lifting-equipment examination lapsed", "risk_level": "High",
+          "description": "Thorough examination for two cranes is past its statutory interval.", "evidence": "Examination log, line 14" },
+        { "title": "Pressure-system scheme of examination out of date", "risk_level": "Medium",
+          "description": "Written scheme last revalidated 14 months ago against a 12-month cycle.", "evidence": "PSSR file rev. 3" } ] },
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Quarantine the two cranes until re-examined", "tier": "Elimination", "owner": "Maintenance Lead" },
+        { "control": "Automated register reminder 30 days before lapse", "tier": "Engineering", "owner": "HSE Operations" },
+        { "control": "Monthly compliance-register stand-up", "tier": "Administrative", "owner": "Site Manager" } ] },
+    { "type": "heading", "level": 1, "text": "Recommendations" },
+    { "type": "recommendations", "rows": [
+        { "action": "Re-examine and recertify the two cranes", "priority": "P1", "owner": "Maintenance Lead", "due": "2026-07-05" },
+        { "action": "Revalidate the pressure-system written scheme", "priority": "P2", "owner": "Engineering Lead", "due": "2026-07-20" } ] },
+    { "type": "callout", "text": "Do not return the quarantined cranes to service until a competent person has signed the thorough examination.", "box_type": "warning" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": ["ISO 45001 §6.1.3 — compliance obligations", "Local lifting, pressure-system and fire statutory regimes"] }
+  ]
+}

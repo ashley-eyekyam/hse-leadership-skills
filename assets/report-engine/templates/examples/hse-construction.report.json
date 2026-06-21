@@ -1,0 +1,50 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "HSE Construction — CDM Health & Safety File",
+    "subtitle": "Project handover register, Tower B fit-out",
+    "author": "Principal Designer",
+    "date": "2026-06-21",
+    "classification": "Project — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "This Health & Safety File records residual hazards handed to the building's future maintenance and refurbishment duty-holders (CDM Regulation 12). Each entry names the element, its location, the residual hazard, and the responsible owner." },
+    { "type": "metrics", "metrics": [
+        { "label": "Register entries", "value": "5" },
+        { "label": "High residual hazards", "value": "1", "caption": "fall-from-height" } ] },
+    { "type": "heading", "level": 1, "text": "H&S File register" },
+    { "type": "table",
+      "headers": ["Element", "Location", "Residual hazard", "Owner"],
+      "rows": [
+        ["Atrium roof glazing", "Level 9 atrium", "Fragile-roof fall risk during cleaning", "Facilities Lead"],
+        ["High-level plant access", "Roof plant deck", "Work at height — no permanent edge protection", "Facilities Lead"],
+        ["Asbestos-presumed duct lagging", "Risers 3 and 5", "Fibre release if disturbed", "Asbestos Duty-Holder"],
+        ["Confined plant room", "Basement B2", "Restricted egress / atmosphere", "Maintenance Lead"],
+        ["Buried services", "External courtyard", "Strike risk during excavation", "Facilities Lead"]
+      ],
+      "caption": "CDM H&S File — element / location / residual hazard / owner" },
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "Fragile atrium roof", "risk_level": "High",
+          "description": "Glazing is non-load-bearing; cleaning access needs a documented safe system of work.", "evidence": "Glazing spec sheet GS-09" },
+        { "title": "Presumed asbestos in risers", "risk_level": "High",
+          "description": "Duct lagging in risers 3 and 5 is presumed to contain asbestos pending survey.", "evidence": "Refurbishment survey gap log" } ] },
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Specify a permanent edge-protection and anchor system at next refurbishment", "tier": "Engineering", "owner": "Principal Designer" },
+        { "control": "Asbestos management plan + survey before any riser disturbance", "tier": "Administrative", "owner": "Asbestos Duty-Holder" },
+        { "control": "Permit-to-work for all roof and confined-plant access", "tier": "Administrative", "owner": "Facilities Lead" } ] },
+    { "type": "heading", "level": 1, "text": "Recommendations" },
+    { "type": "recommendations", "rows": [
+        { "action": "Commission a refurbishment-and-demolition asbestos survey of risers 3 and 5", "priority": "P1", "owner": "Asbestos Duty-Holder", "due": "2026-07-15" },
+        { "action": "Design permanent fall protection for the atrium-roof cleaning route", "priority": "P2", "owner": "Principal Designer", "due": "2026-09-01" } ] },
+    { "type": "callout", "text": "No work on riser lagging may proceed until the asbestos survey is complete and the management plan is in force.", "box_type": "critical" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": ["CDM 2015 Regulation 12 — Health & Safety File", "ISO 45001 §8.1.2 — hierarchy of controls", "Control of Asbestos Regulations"] }
+  ]
+}

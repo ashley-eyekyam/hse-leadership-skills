@@ -1,0 +1,51 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "HSE Rail — Safety Management System Review",
+    "subtitle": "Depot D-2, SMS element assurance",
+    "author": "HSE Rail",
+    "date": "2026-06-21",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "This review assesses the rail safety management system (SMS) at depot D-2 element by element. The track-worker safe-system-of-work element carries an open high-risk gap on lookout-operated working." },
+    { "type": "metrics", "metrics": [
+        { "label": "SMS elements", "value": "6" },
+        { "label": "Open gaps", "value": "2", "caption": "1 high" } ] },
+    { "type": "heading", "level": 1, "text": "SMS element assurance" },
+    { "type": "table",
+      "headers": ["SMS element", "Assurance source", "Status", "Owner"],
+      "rows": [
+        ["Track-worker safe system of work", "Site inspection", "Gap — lookout reliance", "Safety Lead"],
+        ["Competence management", "Records audit", "Compliant", "Competence Manager"],
+        ["Incident reporting & learning", "CIRAS / near-miss log", "Compliant", "SMS Manager"],
+        ["Fatigue & rostering", "Roster review", "Gap — turnaround margins", "Roster Manager"],
+        ["Asset & infrastructure condition", "Maintenance records", "Compliant", "Engineering Lead"],
+        ["Emergency preparedness", "Exercise records", "Compliant", "Emergency Coordinator"]
+      ],
+      "caption": "SMS element assurance — element / source / status / owner" },
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "Reliance on lookout-operated working", "risk_level": "High",
+          "description": "Some possessions still rely on lookout working where a safer separated-from-traffic method is feasible.", "evidence": "Possession plan review" },
+        { "title": "Tight roster turnaround margins", "risk_level": "Medium",
+          "description": "Several rosters leave minimal recovery time between late and early turns.", "evidence": "Roster fatigue check" } ] },
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Plan possessions to separate workers from running lines", "tier": "Elimination", "owner": "Possession Planner" },
+        { "control": "Train-warning / TCOD systems where separation is impractical", "tier": "Engineering", "owner": "Engineering Lead" },
+        { "control": "Fatigue-aware rostering rules", "tier": "Administrative", "owner": "Roster Manager" } ] },
+    { "type": "heading", "level": 1, "text": "Recommendations" },
+    { "type": "recommendations", "rows": [
+        { "action": "Eliminate lookout-only working on the two affected possessions", "priority": "P1", "owner": "Possession Planner", "due": "2026-07-25" },
+        { "action": "Rebuild rosters to restore recovery margins", "priority": "P2", "owner": "Roster Manager", "due": "2026-08-20" } ] },
+    { "type": "callout", "text": "No possession may proceed on lookout-only working where a safer separated method is reasonably practicable.", "box_type": "warning" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": ["Railway safety management system requirements", "Safe-system-of-work / track-safety standards", "ISO 45001 §8.1.2"] }
+  ]
+}

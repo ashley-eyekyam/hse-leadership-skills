@@ -1,0 +1,54 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "HSE Utilities & Power — Arc-Flash Assessment",
+    "subtitle": "Main switchboard MSB-1, arc-flash boundary study",
+    "author": "HSE Utilities & Power",
+    "date": "2026-06-21",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "This study computes the incident energy and arc-flash boundary at main switchboard MSB-1 using the IEEE 1584-2018 method (the SUB-02 engine). The worked example below is the AF-1 calibration case. Coefficients are PROVISIONAL pending verification against a licensed IEEE 1584-2018 copy." },
+    { "type": "heading", "level": 1, "text": "Arc-flash boundary" },
+    { "type": "metrics", "metrics": [
+        { "label": "Incident energy", "value": 0.85, "unit": "cal/cm²" },
+        { "label": "Arc-flash boundary", "value": 490.0, "unit": "mm" },
+        { "label": "NFPA 70E PPE category", "value": "0" } ] },
+    { "type": "table",
+      "headers": ["Parameter", "Value"],
+      "rows": [
+        ["Open-circuit voltage (V)", 400],
+        ["Bolted fault current (kA)", 7.56],
+        ["Conductor gap (mm)", 32],
+        ["Electrode configuration", "VCB"],
+        ["Working distance (mm)", 304.8],
+        ["Arc duration (s)", 0.11],
+        ["Arcing current (kA)", 5.07]
+      ],
+      "caption": "IEEE 1584-2018 arc-flash inputs and computed arcing current" },
+    { "type": "callout", "text": "Incident energy below 1.2 cal/cm² maps to NFPA 70E PPE category 0; coefficients are provisional pending licensed-copy verification.", "box_type": "info" },
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "Boundary intrudes on adjacent walkway", "risk_level": "Medium",
+          "description": "The 490 mm arc-flash boundary extends into the maintenance walkway at MSB-1.", "evidence": "IEEE 1584-2018 computation; AF-1 case" },
+        { "title": "Labelling out of date", "risk_level": "Low",
+          "description": "The arc-flash warning label predates this study.", "evidence": "Panel label photo" } ] },
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Reduce clearing time via maintenance-mode trip setting", "tier": "Engineering", "owner": "Electrical Engineer" },
+        { "control": "Re-mark the arc-flash boundary on the floor and panel label", "tier": "Administrative", "owner": "HSE Utilities & Power" },
+        { "control": "Energised-work permit for any live activity within the boundary", "tier": "Administrative", "owner": "Authorised Person" } ] },
+    { "type": "heading", "level": 1, "text": "Recommendations" },
+    { "type": "recommendations", "rows": [
+        { "action": "Update arc-flash labels with the computed boundary and category", "priority": "P1", "owner": "Electrical Engineer", "due": "2026-07-10" },
+        { "action": "Verify the IEEE 1584-2018 coefficients against a licensed copy", "priority": "P1", "owner": "Electrical Engineer", "due": "2026-07-31" } ] },
+    { "type": "callout", "text": "No live work inside the 490 mm boundary without an energised-work permit and verified arc-rated PPE.", "box_type": "warning" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": ["IEEE 1584-2018 — arc-flash incident energy", "NFPA 70E — electrical safety in the workplace", "ISO 45001 §8.1.2"] }
+  ]
+}

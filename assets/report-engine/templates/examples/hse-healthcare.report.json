@@ -1,0 +1,50 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "HSE Healthcare — Infection Prevention & Control Plan",
+    "subtitle": "Ward 4B, IPC programme review",
+    "author": "HSE Healthcare",
+    "date": "2026-06-21",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel and patients are referred to by role label. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "This review baselines the Ward 4B infection prevention and control (IPC) plan, mapping each transmission route to its control and assurance owner. Hand-hygiene audit compliance is below target." },
+    { "type": "metrics", "metrics": [
+        { "label": "IPC controls tracked", "value": "5" },
+        { "label": "Hand-hygiene compliance", "value": "82", "unit": "%", "caption": "vs 95% target", "color": "#C77700" } ] },
+    { "type": "heading", "level": 1, "text": "IPC control plan" },
+    { "type": "table",
+      "headers": ["Transmission route", "Control", "Assurance", "Owner"],
+      "rows": [
+        ["Contact", "Hand hygiene + glove discipline", "Monthly audit", "Ward Manager"],
+        ["Droplet", "Surgical mask in patient zone", "Spot check", "IPC Lead"],
+        ["Airborne", "Negative-pressure isolation room", "Pressure log", "Estates Lead"],
+        ["Environmental", "Terminal cleaning protocol", "ATP swab", "Domestic Lead"],
+        ["Sharps", "Sharps-bin placement + safe devices", "Incident review", "IPC Lead"]
+      ],
+      "caption": "IPC plan — transmission route to control to owner" },
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "Hand-hygiene compliance below target", "risk_level": "High",
+          "description": "Audited compliance of 82% is below the 95% target on the night shift.", "evidence": "Hand-hygiene audit, May" },
+        { "title": "Isolation-room pressure not logged daily", "risk_level": "Medium",
+          "description": "Negative-pressure verification log has gaps on weekends.", "evidence": "Pressure log review" } ] },
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Point-of-care alcohol-gel dispensers at every bay", "tier": "Engineering", "owner": "Estates Lead" },
+        { "control": "Automated isolation-room pressure alarm + log", "tier": "Engineering", "owner": "Estates Lead" },
+        { "control": "Night-shift hand-hygiene champion role", "tier": "Administrative", "owner": "Ward Manager" } ] },
+    { "type": "heading", "level": 1, "text": "Recommendations" },
+    { "type": "recommendations", "rows": [
+        { "action": "Reinstate night-shift hand-hygiene audits and feedback", "priority": "P1", "owner": "Ward Manager", "due": "2026-07-05" },
+        { "action": "Fit a pressure alarm and automated log to the isolation room", "priority": "P2", "owner": "Estates Lead", "due": "2026-08-15" } ] },
+    { "type": "callout", "text": "Do not use the isolation room for an airborne case until daily negative-pressure verification is reliably logged.", "box_type": "warning" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": ["IPC code of practice (health and social care)", "ISO 45001 §8.1.2 — hierarchy of controls"] }
+  ]
+}

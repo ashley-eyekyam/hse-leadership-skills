@@ -1,0 +1,50 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "HSE Manufacturing — Machine-Guarding Assessment",
+    "subtitle": "Press line PL-3, machine-guarding survey",
+    "author": "HSE Manufacturing",
+    "date": "2026-06-21",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "This survey of press line PL-3 records machine-guarding findings against PUWER-equivalent requirements. One interlock defeat and one missing fixed guard are open high-risk findings." },
+    { "type": "metrics", "metrics": [
+        { "label": "Machines surveyed", "value": "6" },
+        { "label": "Open guarding findings", "value": "3", "caption": "1 high" } ] },
+    { "type": "heading", "level": 1, "text": "Machine-guarding findings" },
+    { "type": "findings", "rows": [
+        { "title": "Interlock defeated on PL-3 power press", "risk_level": "High",
+          "description": "The light-curtain interlock is bridged, allowing the platen to cycle with the guard open.", "evidence": "Photo MG-03; control panel inspection" },
+        { "title": "Fixed guard missing on shaft drive", "risk_level": "Medium",
+          "description": "Rotating-shaft fixed guard removed for maintenance and not refitted.", "evidence": "Maintenance work order WO-228" },
+        { "title": "Emergency-stop reach exceeds standard", "risk_level": "Medium",
+          "description": "Operator e-stop is beyond the recommended reach envelope at the infeed station.", "evidence": "Ergonomic reach check" } ] },
+    { "type": "heading", "level": 1, "text": "Guarding control summary" },
+    { "type": "table",
+      "headers": ["Machine", "Guard type", "Status", "Owner"],
+      "rows": [
+        ["PL-3 power press", "Light-curtain interlock", "Defeated — quarantined", "Maintenance Lead"],
+        ["Shaft drive unit", "Fixed guard", "Missing", "Maintenance Lead"],
+        ["Infeed conveyor", "E-stop pull-cord", "Functional", "Production Lead"]
+      ],
+      "caption": "Machine-guarding control status" },
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Restore and tamper-seal the light-curtain interlock", "tier": "Engineering", "owner": "Maintenance Lead" },
+        { "control": "Refit the fixed shaft guard before restart", "tier": "Engineering", "owner": "Maintenance Lead" },
+        { "control": "Guard-integrity check added to the start-of-shift checklist", "tier": "Administrative", "owner": "Production Lead" } ] },
+    { "type": "heading", "level": 1, "text": "Recommendations" },
+    { "type": "recommendations", "rows": [
+        { "action": "Restore the PL-3 interlock and verify by competent person", "priority": "P1", "owner": "Maintenance Lead", "due": "2026-06-28" },
+        { "action": "Audit interlock integrity across all presses", "priority": "P2", "owner": "HSE Manufacturing", "due": "2026-07-20" } ] },
+    { "type": "callout", "text": "PL-3 must remain quarantined and locked out until the interlock is restored and proven.", "box_type": "critical" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": ["PUWER-equivalent machine-guarding regs", "ISO 12100 — machinery risk reduction", "ISO 45001 §8.1.2"] }
+  ]
+}

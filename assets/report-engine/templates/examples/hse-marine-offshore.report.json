@@ -1,0 +1,55 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "HSE Marine & Offshore — Safety Case Argument Map",
+    "subtitle": "Platform Alpha, safety-case demonstration extract",
+    "author": "HSE Marine & Offshore",
+    "date": "2026-06-21",
+    "classification": "Confidential — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "This extract presents the safety-case argument for Platform Alpha as a goal-structured claim → argument → evidence map. The top claim is that major-accident hazards are controlled to ALARP. The argument is laid out as a hierarchical table plus the supporting evidence list." },
+    { "type": "callout", "text": "Top claim: Major-accident hazards on Platform Alpha are controlled so that risks to personnel are reduced to As Low As Reasonably Practicable (ALARP).", "box_type": "success" },
+    { "type": "heading", "level": 1, "text": "Safety-case argument map" },
+    { "type": "table",
+      "headers": ["Claim", "Sub-claim", "Argument strategy", "Evidence reference", "Status"],
+      "rows": [
+        ["Risks are ALARP", "Hydrocarbon release controlled", "Demonstrate prevention + detection + mitigation barriers", "Bowtie BT-01; HAZOP node 4", "Supported"],
+        ["Risks are ALARP", "Fire & explosion controlled", "Show passive + active fire protection adequacy", "Fire & explosion analysis FEA-03", "Supported"],
+        ["Risks are ALARP", "Evacuation, escape & rescue adequate", "Demonstrate TR endurance and EER provision", "EER assessment; TR survivability", "Open action"],
+        ["Risks are ALARP", "Structural integrity assured", "Show fatigue + inspection regime adequacy", "SIM plan; last inspection report", "Supported"]
+      ],
+      "caption": "Goal-structured safety-case argument — claim / sub-claim / strategy / evidence / status" },
+    { "type": "heading", "level": 2, "text": "Supporting evidence" },
+    { "type": "bullets", "items": [
+        "Bowtie analyses for all major-accident hazards (BT-01 to BT-06)",
+        "HAZOP and HAZID study reports with closed actions",
+        "Fire & explosion analysis FEA-03 with detector and deluge mapping",
+        "Temporary refuge endurance and escape-route survivability assessment",
+        "Structural integrity management plan and latest inspection report"
+      ] },
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "EER sub-claim not fully supported", "risk_level": "High",
+          "description": "Evacuation, escape and rescue endurance carries an open action pending the updated EER assessment.", "evidence": "Argument map, EER row" },
+        { "title": "Bowtie barriers verified", "risk_level": "Low",
+          "description": "Hydrocarbon-release prevention and mitigation barriers are evidenced and current.", "evidence": "Bowtie BT-01 verification" } ] },
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Inherently safer process inventory minimisation", "tier": "Elimination", "owner": "Process Authority" },
+        { "control": "Fire & gas detection with automatic deluge", "tier": "Engineering", "owner": "Technical Authority" },
+        { "control": "Permit-to-work and safe-isolation regime", "tier": "Administrative", "owner": "OIM" } ] },
+    { "type": "heading", "level": 1, "text": "Recommendations" },
+    { "type": "recommendations", "rows": [
+        { "action": "Close the EER endurance open action with the updated assessment", "priority": "P1", "owner": "Technical Authority", "due": "2026-07-31" },
+        { "action": "Re-verify all bowtie barrier owners before the next safety-case revision", "priority": "P2", "owner": "Process Authority", "due": "2026-09-30" } ] },
+    { "type": "callout", "text": "The ALARP demonstration is not complete until the EER sub-claim open action is closed.", "box_type": "critical" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": ["Offshore safety-case regulations", "ALARP demonstration principles", "ISO 45001 §8.1.2 — hierarchy of controls"] }
+  ]
+}

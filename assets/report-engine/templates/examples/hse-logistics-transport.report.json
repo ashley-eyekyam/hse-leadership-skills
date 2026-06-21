@@ -1,0 +1,49 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "HSE Logistics & Transport — Driver Hours & Fatigue Review",
+    "subtitle": "Regional fleet, hours-of-service compliance",
+    "author": "HSE Logistics & Transport",
+    "date": "2026-06-21",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All drivers are referred to by role label. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "This review checks the regional fleet against driver hours-of-service and fatigue-management rules. Two route patterns breach the daily driving limit and require rescheduling." },
+    { "type": "metrics", "metrics": [
+        { "label": "Routes reviewed", "value": "12" },
+        { "label": "Hours breaches", "value": "2", "caption": "daily-limit" } ] },
+    { "type": "heading", "level": 1, "text": "Hours-of-service compliance" },
+    { "type": "table",
+      "headers": ["Route", "Daily driving (h)", "Limit (h)", "Rest taken", "Status"],
+      "rows": [
+        ["R-101 depot loop", "8.5", "9.0", "Compliant", "Compliant"],
+        ["R-204 long-haul", "10.2", "9.0", "Short break", "Breach"],
+        ["R-305 night run", "9.8", "9.0", "Compliant", "Breach"],
+        ["R-118 urban shuttle", "7.0", "9.0", "Compliant", "Compliant"]
+      ],
+      "caption": "Hours-of-service compliance — driving time vs limit by route" },
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "Long-haul route exceeds daily driving limit", "risk_level": "High",
+          "description": "R-204 averages 10.2 h driving against a 9 h limit, raising fatigue risk.", "evidence": "Tachograph download, week 23" },
+        { "title": "Night run near continuous-driving ceiling", "risk_level": "Medium",
+          "description": "R-305 night run runs close to the limit during the circadian low.", "evidence": "Telematics fatigue flag" } ] },
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Split R-204 into a two-driver relay", "tier": "Substitution", "owner": "Fleet Planner" },
+        { "control": "In-cab fatigue-detection alerting", "tier": "Engineering", "owner": "Fleet Engineer" },
+        { "control": "Fatigue-risk rostering rules in the scheduling system", "tier": "Administrative", "owner": "Transport Manager" } ] },
+    { "type": "heading", "level": 1, "text": "Recommendations" },
+    { "type": "recommendations", "rows": [
+        { "action": "Reschedule R-204 to remove the daily-limit breach", "priority": "P1", "owner": "Fleet Planner", "due": "2026-07-01" },
+        { "action": "Pilot in-cab fatigue detection on night routes", "priority": "P2", "owner": "Fleet Engineer", "due": "2026-08-30" } ] },
+    { "type": "callout", "text": "No driver may be rostered on R-204 at the current duration until the relay split is in place.", "box_type": "warning" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": ["Driver hours / hours-of-service rules", "Fatigue-risk management principles", "ISO 45001 §8.1.2"] }
+  ]
+}

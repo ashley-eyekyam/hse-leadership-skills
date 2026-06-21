@@ -54,6 +54,30 @@ from .risk_matrix import (
     residual_delta,
     score,
 )
+# ergonomics
+from .ergonomics import (
+    ErgonomicsInputError,
+    niosh_rwl,
+    rula_score,
+    reba_score,
+    to_report_blocks as ergo_blocks,
+)
+# arcflash
+from .arcflash import (
+    ArcFlashInputError,
+    incident_energy,
+    arc_flash_boundary,
+    ppe_category,
+    to_report_blocks as arcflash_blocks,
+)
+# fatigue
+from .fatigue import (
+    FatigueInputError,
+    fmcsa_compliance,
+    eu561_compliance,
+    fatigue_index,
+    to_report_blocks as fatigue_blocks,
+)
 
 __all__ = [
     # risk_matrix
@@ -88,4 +112,22 @@ __all__ = [
     "METHODS",
     "scaffold",
     "validate",
+    # ergonomics
+    "ErgonomicsInputError",
+    "niosh_rwl",
+    "rula_score",
+    "reba_score",
+    "ergo_blocks",
+    # arcflash
+    "ArcFlashInputError",
+    "incident_energy",
+    "arc_flash_boundary",
+    "ppe_category",
+    "arcflash_blocks",
+    # fatigue
+    "FatigueInputError",
+    "fmcsa_compliance",
+    "eu561_compliance",
+    "fatigue_index",
+    "fatigue_blocks",
 ]

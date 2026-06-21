@@ -1,0 +1,61 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "HSE Leadership — Board Safety KPI Dashboard",
+    "subtitle": "Quarterly leadership review, Q2 2026",
+    "author": "HSE Leadership",
+    "date": "2026-06-21",
+    "classification": "Board — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "This leadership review presents the safety KPI dashboard and the ESG disclosure index for the quarter. Leading indicators improved; the lagging TRIR sits marginally above target and carries a P1 action." },
+    { "type": "heading", "level": 1, "text": "Safety KPI dashboard" },
+    { "type": "metrics", "metrics": [
+        { "label": "TRIR", "value": "2.07", "unit": "per 200k hrs", "caption": "above 1.80 target", "color": "#C77700" },
+        { "label": "LTIFR", "value": "6.00", "unit": "per 1M hrs", "caption": "on target", "color": "#2E7D32" },
+        { "label": "Near-miss reports", "value": "142", "caption": "+18% QoQ", "color": "#2E7D32" },
+        { "label": "Critical-control verifications", "value": "98", "unit": "%", "caption": "vs 95% target", "color": "#2E7D32" } ] },
+    { "type": "table",
+      "headers": ["KPI", "Q1", "Q2", "Target", "Trend"],
+      "rows": [
+        ["TRIR", "2.31", "2.07", "1.80", "Improving"],
+        ["LTIFR", "6.40", "6.00", "6.00", "On target"],
+        ["Near-miss reports", "120", "142", "120", "Improving"],
+        ["Open corrective actions >30d", "11", "6", "0", "Improving"]
+      ],
+      "caption": "KPI trend — quarter over quarter" },
+    { "type": "heading", "level": 1, "text": "ESG disclosure index" },
+    { "type": "table",
+      "headers": ["Framework code", "Disclosure", "Location"],
+      "rows": [
+        ["GRI 403-9", "Work-related injuries", "Dashboard, p.1"],
+        ["SASB EM-MM-320a.1", "TRIR / fatality rate", "KPI table, p.2"],
+        ["ESRS S1-14", "Health and safety metrics", "ESG appendix"],
+        ["GRI 403-1", "OH&S management system", "ISO 45001 cert."]
+      ],
+      "caption": "ESG disclosure index — framework code to disclosure to report location" },
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "TRIR above board target", "risk_level": "Medium",
+          "description": "Recordable rate is improving but remains above the 1.80 board target.", "evidence": "KPI dashboard Q2" },
+        { "title": "Aging open corrective actions cleared", "risk_level": "Low",
+          "description": "Overdue actions cut from 11 to 6 after the action-ageing initiative.", "evidence": "CAPA tracker" } ] },
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Design out the top-3 recordable-injury task families", "tier": "Elimination", "owner": "Engineering Director" },
+        { "control": "Critical-control verification programme", "tier": "Engineering", "owner": "HSE Director" },
+        { "control": "Leadership safety-walk cadence", "tier": "Administrative", "owner": "COO" } ] },
+    { "type": "heading", "level": 1, "text": "Recommendations" },
+    { "type": "recommendations", "rows": [
+        { "action": "Charter a TRIR-reduction programme for the top-3 task families", "priority": "P1", "owner": "Engineering Director", "due": "2026-08-01" },
+        { "action": "Lock the ESG disclosure index into the annual report cycle", "priority": "P2", "owner": "HSE Director", "due": "2026-07-31" } ] },
+    { "type": "callout", "text": "The board target is a leading commitment: the TRIR-reduction programme must report progress at every board meeting until target is met.", "box_type": "info" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": ["ISO 45001 §9.1 — monitoring, measurement and evaluation", "GRI 403 / SASB / ESRS S1 disclosure frameworks"] }
+  ]
+}
