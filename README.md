@@ -47,7 +47,7 @@ Every skill is one portable `SKILL.md`, rendered into each host's format by the 
 /plugin install hse-all@hse-leadership-skills
 ```
 
-That single line installs all 48 consultant skills. (The `hse-skill-forge` authoring skill lives in the separate `hse-systems` bundle — install it with `/plugin install hse-systems@hse-leadership-skills`.)
+Those two lines install all 48 consultant skills. (The `hse-skill-forge` authoring skill lives in the separate `hse-systems` bundle — install it with `/plugin install hse-systems@hse-leadership-skills`.)
 
 ### Or install just what you need
 
