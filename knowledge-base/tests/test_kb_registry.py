@@ -52,6 +52,7 @@ FOLDER_ID_PREFIX = {
     "prompt-snippets": "SNIP",
     "data-points": "DATA",
     "research": "RES",
+    "hazard-library": "HAZ",
 }
 
 

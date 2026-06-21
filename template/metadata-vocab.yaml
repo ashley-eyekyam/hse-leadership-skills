@@ -60,3 +60,17 @@ plugin:
   # is NEVER hand-listed (single source of truth, WR-05). No skill declares
   # metadata.plugin: hse-all, so no per-skill frontmatter change is needed.
   - hse-all
+  # v1.2 catalog-completion bundles (SUB-05, Phase-11 11-06). Registered here
+  # ADDITIVELY as the single source of truth so every Ph12–16 skill's
+  # metadata.plugin resolves under lint rule 6; membership of hse-all auto-derives
+  # in gen_marketplace.build_manifest (these are NEVER hand-listed into hse-all).
+  - hse-operations
+  - hse-leadership
+  - hse-construction
+  - hse-manufacturing
+  - hse-utilities-power
+  - hse-healthcare
+  - hse-logistics-transport
+  - hse-marine-offshore
+  - hse-rail
+  - hse-renewables

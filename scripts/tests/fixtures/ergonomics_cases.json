@@ -1,0 +1,127 @@
+{
+  "schema": "hse-ergonomics-cases/v1",
+  "notes": [
+    "SUB-01 golden anchors for the ergonomics engine (NIOSH revised 1991 lifting equation + RULA McAtamney & Corlett 1993 + REBA Hignett & McAtamney 2000).",
+    "Tolerances: NIOSH RWL +/-0.05 kg; NIOSH LI +/-0.01; RULA grand_score and REBA final_score are integers -> EXACT equality (no float tolerance).",
+    "NIOSH multipliers are computed and rounded to 2dp per the published worksheet convention, then multiplied (matches the cross-confirmed worked chain 23 x 0.83 x 0.78 x 0.85 x 1.00 x 1.00 x 0.90 = 11.39).",
+    "Invalid / must-raise cases (negative weight, out-of-NIOSH-domain H/V/A, out-of-range joint scores) are NOT in this fixture; they live in test_ergonomics.py and assert ErgonomicsInputError (D-03 fail-loud)."
+  ],
+  "cases": [
+    {
+      "engine": "niosh",
+      "inputs": {
+        "weight": 13.0,
+        "h": 30,
+        "v": 2,
+        "d": 150,
+        "a": 0,
+        "frequency": 0.2,
+        "duration": 1,
+        "coupling": "fair"
+      },
+      "expected_rwl": 11.39,
+      "expected_li": 1.14,
+      "expected_multipliers": { "hm": 0.83, "vm": 0.78, "dm": 0.85, "am": 1.0, "fm": 1.0, "cm": 0.9 },
+      "why": "Cross-confirmed NIOSH worked example: 23 x 0.83 x 0.78 x 0.85 x 1.00 x 1.00 x 0.90 = 11.39 kg (tumeke.io / ergo-plus NIOSH worksheet). HM=25/30=0.83, VM=1-0.003|2-75|=0.78, DM=0.82+4.5/150=0.85, AM=1-0.0032*0=1.00, FM(low-freq,<=1h)=1.00, CM(fair,V<75)=0.90. LI=13.0/11.39=1.14 -> elevated."
+    },
+    {
+      "engine": "niosh",
+      "inputs": {
+        "weight": 5.0,
+        "h": 25,
+        "v": 75,
+        "d": 20,
+        "a": 0,
+        "frequency": 0.2,
+        "duration": 1,
+        "coupling": "good"
+      },
+      "expected_rwl": 23.0,
+      "expected_li": 0.22,
+      "expected_multipliers": { "hm": 1.0, "vm": 1.0, "dm": 1.0, "am": 1.0, "fm": 1.0, "cm": 1.0 },
+      "why": "All-multipliers-1 ideal lift (H<=25 -> HM=1, V=75 -> VM=1, D<25 -> DM=1, A=0 -> AM=1, low freq -> FM=1, good coupling -> CM=1): RWL = LC = 23 kg, the NIOSH ceiling. LI=5/23=0.22 -> nominal risk. Boundary anchor (ergo-plus / CCOHS)."
+    },
+    {
+      "engine": "rula",
+      "inputs": {
+        "upper_arm": 3,
+        "lower_arm": 2,
+        "wrist": 2,
+        "wrist_twist": 1,
+        "neck": 3,
+        "trunk": 3,
+        "legs": 1,
+        "muscle_use_a": 0,
+        "force_a": 1,
+        "muscle_use_b": 0,
+        "force_b": 1
+      },
+      "expected_score_a": 5,
+      "expected_score_b": 5,
+      "expected_grand_score": 6,
+      "expected_action_level": 3,
+      "why": "RULA worked posture (ergo-plus RULA worksheet structure): Table A posture(ua3,la2,wr2,wt1)=4 + muscle0 + force1 -> Score A=5; Table B posture(neck3,trunk3,legs1)=4 + muscle0 + force1 -> Score B=5; Table C(5,5)=6 -> grand 6 -> action level 3 (investigate and change soon)."
+    },
+    {
+      "engine": "rula",
+      "inputs": {
+        "upper_arm": 1,
+        "lower_arm": 1,
+        "wrist": 1,
+        "wrist_twist": 1,
+        "neck": 1,
+        "trunk": 1,
+        "legs": 1,
+        "muscle_use_a": 0,
+        "force_a": 0,
+        "muscle_use_b": 0,
+        "force_b": 0
+      },
+      "expected_score_a": 1,
+      "expected_score_b": 1,
+      "expected_grand_score": 1,
+      "expected_action_level": 1,
+      "why": "RULA neutral-posture floor: Table A(1,1,1,1)=1, Table B(1,1,1)=1, Table C(1,1)=1 -> grand 1 -> action level 1 (acceptable). Lower-bound anchor."
+    },
+    {
+      "engine": "reba",
+      "inputs": {
+        "trunk": 3,
+        "neck": 2,
+        "legs": 2,
+        "load_force": 1,
+        "upper_arm": 4,
+        "lower_arm": 1,
+        "wrist": 2,
+        "coupling": 1,
+        "activity": 1
+      },
+      "expected_score_a": 6,
+      "expected_score_b": 6,
+      "expected_score_c": 8,
+      "expected_final_score": 9,
+      "expected_action_level": 4,
+      "why": "REBA worked posture (ergo-plus REBA guide structure): Table A(neck2,trunk3,legs2)=5 + load1 -> Score A=6; Table B(upper4,lower1,wrist2)=5 + coupling1 -> Score B=6; Table C(6,6)=8 + activity1 -> final 9 -> action level 4 (high risk, necessary soon)."
+    },
+    {
+      "engine": "reba",
+      "inputs": {
+        "trunk": 1,
+        "neck": 1,
+        "legs": 1,
+        "load_force": 0,
+        "upper_arm": 1,
+        "lower_arm": 1,
+        "wrist": 1,
+        "coupling": 0,
+        "activity": 0
+      },
+      "expected_score_a": 1,
+      "expected_score_b": 1,
+      "expected_score_c": 1,
+      "expected_final_score": 1,
+      "expected_action_level": 1,
+      "why": "REBA neutral-posture floor: Table A(1,1,1)=1, Table B(1,1,1)=1, Table C(1,1)=1, activity0 -> final 1 -> action level 1 (negligible risk). Lower-bound anchor."
+    }
+  ]
+}

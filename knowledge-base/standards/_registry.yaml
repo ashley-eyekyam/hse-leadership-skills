@@ -244,3 +244,79 @@
   last_reviewed: 2026-05-15
   volatile: false
   supersedes: null
+
+# --- Phase 11 SUB-04 substrate (plan 11-05): named management-standard maps + ergonomics-method + ESG cross-list ---
+- id: KB-STD-NFPA70E
+  file: nfpa-70e.md
+  title: "NFPA 70E / IEEE 1584 — arc-flash boundary & PPE category (clause→artifact map)"
+  facets:
+    jurisdiction: [All]
+    industry: [utilities, renewables, Mfg]
+    topics: [arc-flash, incident-energy, ppe-category, electrical-safety, ieee-1584, boundary]
+    audience: [M, C]
+  summary: "Arc-flash study structure: IEEE 1584-2018 incident-energy method → boundary + NFPA 70E PPE-category bands (1.2/4/8/25/40 cal/cm² breakpoints, structure only). Pairs with the SUB-02 arcflash engine. Structural reference, not the standard tables."
+  source: "NFPA 70E + IEEE 1584-2018 (clause/table structure; user holds the licensed standards)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
+
+- id: KB-STD-ISO22301
+  file: iso-22301.md
+  title: "ISO 22301:2019 — Business Continuity Management (clause→artifact map)"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [bcms, business-impact-analysis, rto, rpo, continuity-plan, emergency-response]
+    audience: [M, C]
+  summary: "BCMS clause map: BIA → RTO/RPO → continuity strategy → BCP → exercise. Annex-SL-aligned; pairs with KB-STD-ISO45001 + the ERP skills. Structural reference, not the standard text."
+  source: "ISO 22301:2019 (clause structure; user holds the licensed standard)"
+  year: 2019
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
+
+- id: KB-STD-GHS-ERGO
+  file: ghs-ergo.md
+  title: "Ergonomics methods — NIOSH / RULA / REBA (method→artifact map)"
+  facets:
+    jurisdiction: [All]
+    industry: [All, Mfg]
+    topics: [ergonomics, niosh-lifting-equation, rula, reba, manual-handling, posture]
+    audience: [M, C]
+  summary: "NIOSH RWL/LI + RULA (1–7) + REBA (1–15) method structure → action levels → control selection (work-design-first). Pairs with the SUB-01 ergonomics engine. Method structure only; copyrighted score tables embedded in the engine under citation."
+  source: "NIOSH 94-110 (public-domain) + RULA (1993) + REBA (2000) — method structure"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
+
+- id: KB-STD-ESG-GRI403
+  file: esg-gri-403.md
+  title: "GRI 403 / SASB / ESRS S1 — OH&S disclosure index (disclosure→artifact map)"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [esg, gri-403, sasb, esrs-s1, disclosure-index, injury-rates, sustainability-reporting]
+    audience: [M, C]
+  summary: "OH&S disclosure-code map across GRI 403 / SASB / ESRS S1 → the disclosure-index artifact; injury-rate figures from incident_rates, never invented. Disclosure-code structure only, not the framework text."
+  source: "GRI 403:2018 + SASB + ESRS S1 (disclosure-code structure; user holds the framework documents)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: true
+  supersedes: null
+
+- id: KB-STD-HEALTHCARE-PSYCHOSOCIAL
+  file: healthcare-psychosocial.md
+  title: "Healthcare psychosocial risk — cross-list into ISO 45003 (topic→artifact map)"
+  facets:
+    jurisdiction: [All]
+    industry: [healthcare]
+    topics: [psychosocial, workplace-violence, emotional-labour, shift-fatigue, moral-distress, work-design-controls]
+    audience: [M, C]
+  summary: "Healthcare psychosocial hazards (WPV, emotional labour, shift fatigue, moral distress) cross-listed onto the existing KB-STD-ISO45003 work-design-control structure — references it, does not duplicate it. Wiring deferred to Ph17."
+  source: "ISO 45003:2021 (referenced via KB-STD-ISO45003) + healthcare psychosocial-hazard context"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null

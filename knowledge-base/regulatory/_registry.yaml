@@ -275,3 +275,204 @@
   last_reviewed: 2026-05-15
   volatile: true
   supersedes: null
+
+# === Phase 11 SUB-04 (plan 11-04): named statutory + per-facet cross-list maps ===
+# India-BOCW cross-list reuses the existing KB-REG-IN-BOCW (legacy-first pointer; no new entry).
+# D-09: content + registration now; bundled_in seam wiring deferred to Ph17 (SEAM-01).
+
+# --- Named statutory fragments (6) ---
+- id: KB-REG-CDM2015
+  file: cdm-2015.md
+  title: "United Kingdom — CDM 2015 (Construction Design & Management duty map)"
+  facets:
+    jurisdiction: [UK]
+    industry: [Con]
+    topics: [cdm, principal-designer, principal-contractor, construction-phase-plan, health-safety-file, f10]
+    audience: [M, C]
+  summary: "CDM 2015 dutyholder→artifact map: Client/PD/Designer/PC/Contractor duties, PCI / Construction Phase Plan / Health & Safety File, F10 notification trigger → grounds UK construction permit/plan + risk-assessment skills. Citation map, not the regulation/ACOP text."
+  source: "Construction (Design and Management) Regulations 2015 (SI 2015/51) + HSE L153 ACOP (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-21
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-OSHA1926
+  file: osha-1926.md
+  title: "United States — OSHA 29 CFR 1926 (construction standards / Focus Four map)"
+  facets:
+    jurisdiction: [US]
+    industry: [Con]
+    topics: [osha-1926, focus-four, falls, struck-by, caught-in, electrocution, construction]
+    audience: [M, C]
+  summary: "OSHA 29 CFR 1926 hazard→standard→control map anchored on the construction Focus Four (falls/struck-by/caught-in/electrocution) + scaffolds/cranes/HazCom/recordkeeping → grounds US construction permit/JSA + risk-assessment skills. Citation map, not the regulation text."
+  source: "OSHA 29 CFR 1926 (construction) + OSHA construction Focus Four framing (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-21
+  volatile: false
+  supersedes: null
+
+- id: KB-REG-ROGS
+  file: uk-rogs.md
+  title: "United Kingdom — ROGS 2006 (rail/guided-transport SMS + authorisation map)"
+  facets:
+    jurisdiction: [UK]
+    industry: [Rail]
+    topics: [rogs, safety-management-system, safety-authorisation, safety-certificate, safety-critical-work, sfairp]
+    audience: [M, C]
+  summary: "ROGS 2006 duty→artifact map: SMS duties, safety-authorisation/safety-certificate framework, risk co-operation, safety-critical competence/fitness, safety verification → grounds GB rail SMS/safety-case skills. Citation map, not the regulation/ORR-guidance text."
+  source: "Railways and Other Guided Transport Systems (Safety) Regulations 2006 (SI 2006/599, as amended) + ORR guidance (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-21
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-OFFSHORE-SCR
+  file: offshore-scr.md
+  title: "United Kingdom — Offshore Installations (Safety Case) Regs 2015 + SEMS map"
+  facets:
+    jurisdiction: [UK]
+    industry: ["O&G", Marine]
+    topics: [safety-case, offshore-safety-directive, major-accident-hazard, sece, verification, alarp, sems]
+    audience: [M, C]
+  summary: "SCR 2015 duty→safety-case-element map: safety-case acceptance regime, MAH identification, ALARP demonstration, SECE register + performance standards, independent verification, emergency response, SEMS → grounds offshore safety-case/SIMOPS skills. Citation map, not the regulation/OSD text."
+  source: "Offshore Installations (Offshore Safety Directive) (Safety Case etc.) Regulations 2015 (SI 2015/398) + Offshore Safety Directive 2013/30/EU (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-21
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-FMCSA-HOS
+  file: fmcsa-hos.md
+  title: "United States / European Union — FMCSA Hours-of-Service + EU drivers' hours map"
+  facets:
+    jurisdiction: [US, EU]
+    industry: [Transport]
+    topics: [fmcsa-hos, eu-561, drivers-hours, driving-window, break, rest, eld, tachograph, fatigue]
+    audience: [M, C]
+  summary: "FMCSA HOS (49 CFR 395) + EU Reg 561/2006 duty→limit-category→artifact map naming the driving/duty/break/rest categories + ELD/tachograph records; numeric limits live in the fatigue engine (LOCKED constants), not this fragment → grounds logistics/transport skills. Citation map, not the regulation text."
+  source: "FMCSA Hours-of-Service 49 CFR Part 395 + Regulation (EC) No 561/2006 (EU drivers' hours) (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-21
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-WPV-OSHA3148
+  file: wpv-osha-3148.md
+  title: "United States — OSHA 3148 workplace-violence prevention program map (healthcare)"
+  facets:
+    jurisdiction: [US]
+    industry: [Healthcare]
+    topics: [workplace-violence, osha-3148, general-duty-clause, hazard-assessment, prevention-controls, training, recordkeeping]
+    audience: [M, C]
+  summary: "OSHA 3148 five-element WPV-program map (management commitment + worker participation / worksite analysis / hazard prevention + control / training / recordkeeping + evaluation), enforced via OSH Act §5(a)(1) General Duty Clause → grounds healthcare WPV-program skill. Citation map, not the guideline text."
+  source: "OSHA Publication 3148 (Workplace Violence Prevention for Healthcare & Social Service) + OSH Act §5(a)(1) (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-21
+  volatile: true
+  supersedes: null
+
+# --- Per-facet cross-list fragments (7); D-09 content now, bundled_in wiring → Ph17 ---
+- id: KB-REG-CONSTRUCTION-PERMIT
+  file: construction-permit.md
+  title: "Cross-list — Construction high-risk-activity permit-to-work map"
+  facets:
+    jurisdiction: [UK, US, All]
+    industry: [Con]
+    topics: [permit-to-work, excavation, working-at-height, hot-work, confined-space, lifting, electrical-permit]
+    audience: [M, C]
+  summary: "Construction PTW activity→permit→control map (excavation/WAH/hot-work/confined-space/lifting/electrical) cross-walking KB-REG-CDM2015 (UK) / KB-REG-OSHA1926 (US); per-facet cross-list content for the construction pack. Practice map, not statute text. Seam wiring deferred to Ph17 (SEAM-01)."
+  source: "Construction permit-to-work practice (cross-walks KB-REG-CDM2015 / KB-REG-OSHA1926) (practice map)"
+  year: 2026
+  last_reviewed: 2026-06-21
+  volatile: false
+  supersedes: null
+
+- id: KB-REG-LOTO
+  file: loto.md
+  title: "Cross-list — Lockout/Tagout (control of hazardous energy) map"
+  facets:
+    jurisdiction: [US, UK, All]
+    industry: [All]
+    topics: [lockout-tagout, hazardous-energy, isolation, verify-zero-energy, electrical, mechanical, hydraulic, pneumatic]
+    audience: [M, C]
+  summary: "Control-of-hazardous-energy energy-source→isolation-step→artifact map (electrical/mechanical/hydraulic/pneumatic/thermal/gravity/process) + the verify-zero-energy gate; cross-walks OSHA 29 CFR 1910.147/1926.417 + UK EAWR safe-isolation. Practice map, not standard text. Seam wiring deferred to Ph17 (SEAM-01)."
+  source: "Control-of-hazardous-energy practice (cross-walks OSHA 29 CFR 1910.147 / 1926.417 + UK EAWR 1989) (practice map)"
+  year: 2026
+  last_reviewed: 2026-06-21
+  volatile: false
+  supersedes: null
+
+- id: KB-REG-MFG-HAZCOM
+  file: manufacturing-hazcom.md
+  title: "Cross-list — Manufacturing hazard-communication (HazCom / GHS) map"
+  facets:
+    jurisdiction: [US, EU, All]
+    industry: [Mfg]
+    topics: [hazcom, ghs, sds, labelling, chemical-inventory, exposure-control, training]
+    audience: [M, C]
+  summary: "Manufacturing HazCom duty→artifact map (inventory / SDS access / GHS labelling / written program / training / task-exposure controls) cross-walking OSHA HCS 1910.1200 + EU CLP + KB-STD-GHS; per-facet cross-list content for the manufacturing pack. Practice map, not standard text. Seam wiring deferred to Ph17 (SEAM-01)."
+  source: "Hazard-communication practice (cross-walks OSHA HCS 29 CFR 1910.1200 + EU CLP (EC) 1272/2008 + GHS) (practice map)"
+  year: 2026
+  last_reviewed: 2026-06-21
+  volatile: false
+  supersedes: null
+
+- id: KB-REG-UTILITIES-ERP
+  file: utilities-erp.md
+  title: "Cross-list — Utilities / power emergency-response-plan (ERP) map"
+  facets:
+    jurisdiction: [All]
+    industry: [Utilities]
+    topics: [emergency-response, arc-flash, restoration, downed-conductor, storm-response, confined-space-rescue]
+    audience: [M, C]
+  summary: "Utilities/power ERP scenario→response-element→artifact map (arc-flash incident / loss-of-supply / substation fire / downed conductor / vault rescue / storm) cross-walking KB-STD-NFPA70E arc-flash boundaries; per-facet cross-list content for the utilities pack. Practice map, not standard text. Seam wiring deferred to Ph17 (SEAM-01)."
+  source: "Utilities emergency-response practice (cross-walks KB-STD-NFPA70E + sector ERP practice) (practice map)"
+  year: 2026
+  last_reviewed: 2026-06-21
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-OFFSHORE-SIMOPS
+  file: offshore-simops.md
+  title: "Cross-list — Offshore simultaneous-operations (SIMOPS) map"
+  facets:
+    jurisdiction: [UK, All]
+    industry: ["O&G", Marine]
+    topics: [simops, simultaneous-operations, interaction-hazard, simops-matrix, bridging-document, exclusion-zone]
+    audience: [M, C]
+  summary: "Offshore SIMOPS concurrent-activity→interaction-hazard→control map (drilling+production / lifting+transfer / diving+DP / hot-work+hydrocarbon / heli+crane / bridging) cross-walking KB-REG-OFFSHORE-SCR; per-facet cross-list content for the marine/offshore pack. Practice map, not standard text. Seam wiring deferred to Ph17 (SEAM-01)."
+  source: "Offshore SIMOPS practice (cross-walks KB-REG-OFFSHORE-SCR + sector SIMOPS-matrix practice) (practice map)"
+  year: 2026
+  last_reviewed: 2026-06-21
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-RAIL-SIGNALLING
+  file: rail-signalling.md
+  title: "Cross-list — Rail signalling / track-safety (possession & protection) map"
+  facets:
+    jurisdiction: [UK, All]
+    industry: [Rail]
+    topics: [track-safety, possession, safe-system-of-work, lookout, electrical-isolation, signalling-commissioning, adjacent-line-open]
+    audience: [M, C]
+  summary: "Rail on-track task→protection-arrangement→artifact map (possession / lookout SSOW / OLE-3rd-rail isolation / signalling commissioning / level-crossing / adjacent-line-open) cross-walking KB-REG-ROGS; per-facet cross-list content for the rail pack. Practice map, not rule-book text. Seam wiring deferred to Ph17 (SEAM-01)."
+  source: "Rail track-safety / possessions practice (cross-walks KB-REG-ROGS + safe-system-of-work practice) (practice map)"
+  year: 2026
+  last_reviewed: 2026-06-21
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-RENEWABLES-ELECTRICAL
+  file: renewables-electrical.md
+  title: "Cross-list — Renewables electrical-safety (wind / solar / BESS) map"
+  facets:
+    jurisdiction: [All]
+    industry: [Renewables]
+    topics: [renewables, wind-turbine, solar-pv, bess, arc-flash, dc-isolation, working-at-height, thermal-runaway]
+    audience: [M, C]
+  summary: "Renewables asset→electrical-hazard→control map (wind nacelle HV / solar PV always-live DC / BESS thermal-runaway / inverter arc-flash / grid switching / cable strike) cross-walking KB-STD-NFPA70E + KB-REG-LOTO; per-facet cross-list content for the renewables pack. Practice map, not standard text. Seam wiring deferred to Ph17 (SEAM-01)."
+  source: "Renewables electrical-safety practice (cross-walks KB-STD-NFPA70E + KB-REG-LOTO + sector WAH/electrical practice) (practice map)"
+  year: 2026
+  last_reviewed: 2026-06-21
+  volatile: true
+  supersedes: null

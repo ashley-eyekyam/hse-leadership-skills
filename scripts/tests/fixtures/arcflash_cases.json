@@ -1,0 +1,42 @@
+{
+  "schema": "hse-arcflash-cases/v1",
+  "notes": [
+    "IEEE 1584-2018 incident-energy model -> NFPA 70E PPE category. Inputs: v_oc (V), i_bf_kA (kA), gap_mm (mm), electrode config, enclosure_mm (HxWxD mm), working_distance_mm (mm), arc_time_s (s).",
+    "Tolerances: incident energy +/-0.05 cal/cm2; arc-flash boundary +/-10 mm; PPE category EXACT (no tolerance).",
+    "Reference time = 0.2 s; bare-skin boundary energy Eb = 1.2 cal/cm2 (5.0 J/cm2).",
+    "NFPA 70E PPE thresholds: <1.2 -> 0, 1.2-<4 -> 1, 4-<8 -> 2, 8-<25 -> 3, 25-<=40 -> 4, >40 -> extreme flag.",
+    "Worked-example sources cited per case in the 'why' field. The k1..k13 / x IEEE 1584-2018 coefficient block is PROVISIONAL (VCB anchored to AF-1/AF-2; other configs unverified) pending owner verification against the licensed standard (Plan 11-02 Task 2 checkpoint resolved 'provisional + caveat + todo').",
+    "PPE category note: both AF-1 (0.85 cal/cm2) and AF-2 (0.62 cal/cm2) fall BELOW the 1.2 cal/cm2 NFPA 70E PPE floor, so the strict incident-energy method maps both to category 0 (no arc-rated PPE listed). The elek.com source labels these 'Cat 1'; that looser label conflicts with the strict NFPA 70E 1.2-threshold method this engine implements (research PPE table: <1.2 -> no AF PPE). expected_ppe_category is therefore 0 (defensible threshold mapping wins over the source's label).",
+    "Range-invalid / must-raise cases (AF-3: v_oc 50 V below 208 floor, v_oc 20 kV above 15 kV ceiling, negative gap) live in test_arcflash.py per D-03 (raise ArcFlashInputError, never clamp), not in this fixture."
+  ],
+  "cases": [
+    {
+      "id": "AF-1",
+      "v_oc": 400,
+      "i_bf_kA": 7.56,
+      "gap_mm": 32,
+      "electrode": "VCB",
+      "enclosure_mm": [508, 508, 508],
+      "working_distance_mm": 304.8,
+      "arc_time_s": 0.11,
+      "expected_incident_energy_cal_cm2": 0.85,
+      "expected_boundary_mm": 490,
+      "expected_ppe_category": 0,
+      "why": "elek.com IEEE 1584-2018 worked example -- main switchboard (Iarc ~5.07 kA). 0.85 cal/cm2 < 1.2 floor -> NFPA 70E category 0 (source labels 'Cat 1'; strict threshold method governs)."
+    },
+    {
+      "id": "AF-2",
+      "v_oc": 400,
+      "i_bf_kA": 5.70,
+      "gap_mm": 25,
+      "electrode": "VCB",
+      "enclosure_mm": [355.6, 304.8, 203.5],
+      "working_distance_mm": 304.8,
+      "arc_time_s": 0.11,
+      "expected_incident_energy_cal_cm2": 0.62,
+      "expected_boundary_mm": 302,
+      "expected_ppe_category": 0,
+      "why": "elek.com IEEE 1584-2018 worked example -- distribution switchboard (Iarc ~3.885 kA). 0.62 cal/cm2 < 1.2 floor -> NFPA 70E category 0 (source labels 'Cat 1'; strict threshold method governs)."
+    }
+  ]
+}

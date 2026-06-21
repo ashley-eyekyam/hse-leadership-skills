@@ -1,0 +1,119 @@
+{
+  "schema": "hse-fatigue-cases/v1",
+  "notes": [
+    "SUB-03 fatigue engine golden cases: FMCSA Hours-of-Service (property-carrying CMV, 49 CFR 395.3) + EU Regulation (EC) 561/2006 window-math compliance flags, plus the advisory fatigue index.",
+    "Compliance flags are EXACT booleans derived from the regulations (authoritative output). A True flag = compliant with that rule; False = breach.",
+    "FMCSA limits (LOCKED): 11 h driving / 14 h on-duty window / 30-min break after 8 cumulative driving h / 60-h-in-7-days or 70-h-in-8-days cycle / 34 h restart. Source: fmcsa.dot.gov Summary of HOS Regulations.",
+    "EU 561/2006 limits (LOCKED): 9 h daily driving (10 h twice/week) / 45-min break after 4.5 h driving / 11 h daily rest (9 h up to 3x) / 56 h weekly / 90 h fortnightly. Source: transport.ec.europa.eu, eur-lex.europa.eu.",
+    "The fatigue_index is ADVISORY / derived (weighted-stressor metric, owner-confirmed), NOT a regulatory threshold. Determinism tolerance: same input -> byte-identical output, scores equal within +/-0.001.",
+    "Duty log input shape: a list of duty-status segments, each {status, hours}, where status is one of driving | on_duty | off_duty | sleeper. Hours are floats. extensions_used (EU) = number of 10 h daily-driving extensions already used this week.",
+    "FAT-5 (invalid: negative hours / >24 h in a day -> FatigueInputError) is asserted in the test, NOT encoded as a fixture case (D-03)."
+  ],
+  "cases": [
+    {
+      "id": "FAT-1",
+      "standard": "FMCSA",
+      "duty_log": [
+        { "status": "driving", "hours": 6.0 },
+        { "status": "on_duty", "hours": 0.5 },
+        { "status": "driving", "hours": 6.0 }
+      ],
+      "extensions_used": 0,
+      "expected_fmcsa": {
+        "driving_11h": false,
+        "within_14h_window": true,
+        "break_30min_after_8h": true,
+        "cycle_60_70h": true,
+        "restart_34h": true
+      },
+      "why": "12 h total driving in one shift exceeds the FMCSA 11 h driving limit -> driving_11h FAIL; the 12.5 h on-duty span is still within the 14 h window and a >=30-min break fell before 8 cumulative driving h."
+    },
+    {
+      "id": "FAT-2",
+      "standard": "EU561",
+      "duty_log": [
+        { "status": "driving", "hours": 5.0 }
+      ],
+      "extensions_used": 0,
+      "expected_eu561": {
+        "daily_driving": true,
+        "break_45min_after_4.5h": false,
+        "daily_rest_11h": true,
+        "weekly_driving_56h": true,
+        "fortnight_driving_90h": true
+      },
+      "why": "5 h continuous driving with no break breaches EU 561's mandatory 45-min break after 4.5 h continuous driving -> break_45min_after_4.5h FAIL; 5 h total is still within the 9 h daily-driving limit."
+    },
+    {
+      "id": "FAT-3",
+      "standard": "EU561",
+      "duty_log": [
+        { "status": "driving", "hours": 4.5 },
+        { "status": "off_duty", "hours": 0.75 },
+        { "status": "driving", "hours": 4.0 },
+        { "status": "off_duty", "hours": 0.75 },
+        { "status": "driving", "hours": 1.0 }
+      ],
+      "extensions_used": 1,
+      "expected_eu561": {
+        "daily_driving": true,
+        "break_45min_after_4.5h": true,
+        "daily_rest_11h": true,
+        "weekly_driving_56h": true,
+        "fortnight_driving_90h": true
+      },
+      "why": "9.5 h total driving exceeds the 9 h base daily limit but is within the 10 h twice-weekly extension; extensions_used=1 means a 2nd extension is still available -> daily_driving PASS. Each continuous driving stretch (4.5/4.0/1.0 h) stays <= the 4.5 h Art. 7 ceiling with a 45-min break between -> break_45min PASS. NOTE (Rule-1 deviation): the original fixture used a single 5.0 h post-break driving block, which regulatory-correctly BREACHES Art. 7 (a fresh 4.5 h limit applies after each break); the log was split so FAT-3 isolates the extension-aware daily_driving test as intended."
+    },
+    {
+      "id": "FAT-3b",
+      "standard": "EU561",
+      "duty_log": [
+        { "status": "driving", "hours": 4.5 },
+        { "status": "off_duty", "hours": 0.75 },
+        { "status": "driving", "hours": 4.0 },
+        { "status": "off_duty", "hours": 0.75 },
+        { "status": "driving", "hours": 1.0 }
+      ],
+      "extensions_used": 2,
+      "expected_eu561": {
+        "daily_driving": false,
+        "break_45min_after_4.5h": true,
+        "daily_rest_11h": true,
+        "weekly_driving_56h": true,
+        "fortnight_driving_90h": true
+      },
+      "why": "Same 9.5 h driving but extensions_used=2 means both twice-weekly 10 h extensions are already spent -> the 9 h base limit binds -> daily_driving FAIL. Proves the engine is extension-aware. Break rule still PASS (each continuous stretch <= 4.5 h)."
+    },
+    {
+      "id": "FAT-4",
+      "standard": "BOTH",
+      "duty_log": [
+        { "status": "driving", "hours": 4.0 },
+        { "status": "off_duty", "hours": 0.75 },
+        { "status": "driving", "hours": 4.0 },
+        { "status": "off_duty", "hours": 11.0 }
+      ],
+      "extensions_used": 0,
+      "time_of_day": 10.0,
+      "expected_fmcsa": {
+        "driving_11h": true,
+        "within_14h_window": true,
+        "break_30min_after_8h": true,
+        "cycle_60_70h": true,
+        "restart_34h": true
+      },
+      "expected_eu561": {
+        "daily_driving": true,
+        "break_45min_after_4.5h": true,
+        "daily_rest_11h": true,
+        "weekly_driving_56h": true,
+        "fortnight_driving_90h": true
+      },
+      "expected_fatigue_index": {
+        "in_range": true,
+        "advisory": true
+      },
+      "why": "A clean compliant shift: 8 h total driving (<=11 FMCSA, <=9 EU), a 45-min break after 4 h, 11 h daily rest, daytime (10:00, outside WOCL) -> all flags PASS and fatigue_index lands a deterministic value in [0,1] with a Low/Moderate band."
+    }
+  ]
+}

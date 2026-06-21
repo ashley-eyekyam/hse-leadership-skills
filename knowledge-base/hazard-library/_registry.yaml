@@ -1,0 +1,33 @@
+# knowledge-base/hazard-library/_registry.yaml
+# Sector hazard libraries — seeding menus for HIRA/JSA/permit intake (KB-HAZ- prefix).
+# Copyright-safe hazard->control->artifact maps; never licensed guideline text.
+# The `bundled_in` seam wiring is deferred to Phase 17 (SEAM-01).
+- id: KB-HAZ-HEALTHCARE
+  file: healthcare.md
+  title: "Healthcare hazard library — sharps/IPC/WPV/biosafety (hazard→artifact map)"
+  facets:
+    jurisdiction: [All]
+    industry: [healthcare]
+    topics: [sharps, infection-prevention, workplace-violence, biosafety, hazardous-drugs, manual-handling]
+    audience: [M, C]
+  summary: "Healthcare hazard menu (sharps/IPC/WPV/biosafety/hazardous-drugs) → hierarchy-of-controls artifacts; physical/biological hazards (psychosocial route to KB-STD-HEALTHCARE-PSYCHOSOCIAL). Seeding list, not the site assessment."
+  source: "Healthcare-sector hazard taxonomy (category structure; user confirms against site/task)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
+
+- id: KB-HAZ-RENEWABLES
+  file: renewables.md
+  title: "Renewables hazard library — turbine WAH/rescue/weather (hazard→artifact map)"
+  facets:
+    jurisdiction: [All]
+    industry: [renewables]
+    topics: [work-at-height, confined-space-rescue, weather-thresholds, electrical, loto, lifting, lone-working]
+    audience: [M, C]
+  summary: "Wind/solar hazard menu (WAH, tower rescue, weather-threshold stop conditions, electrical/arc-flash, LOTO, lifting) → hierarchy-of-controls artifacts. Seeding list, not the site assessment."
+  source: "Renewable-energy-sector hazard taxonomy (category structure; user confirms against site/task)"
+  year: 2026
+  last_reviewed: 2026-05-15
+  volatile: false
+  supersedes: null
