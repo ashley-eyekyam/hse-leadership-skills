@@ -17,7 +17,7 @@
 [![Platforms](https://img.shields.io/badge/runs_on-Claude_·_ChatGPT_·_Gemini_·_Copilot-0aa.svg)](#install-in-30-seconds)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 
-[Get started](#install-in-30-seconds) · [View skills](#whats-in-the-box-the-catalog) · [See it work](#a-60-second-try-it) · [Trust & safety](#trust--safety) · [Read the disclaimer](./DISCLAIMER.md)
+[Get started](#install-in-30-seconds) · [View skills](#whats-in-the-box-the-catalog) · [See it work](#a-60-second-try-it) · [Trust & safety](#trust--safety) · [Read the disclaimer](./DISCLAIMER.md) · [📖 Full skill manual](../../wiki)
 
 </div>
 
@@ -118,7 +118,9 @@ For local testing and the full setup walkthrough, see [`docs/USER_MANUAL.md`](do
 
 ## What's in the box (the catalog)
 
-Forty-eight consultant skills across **ten universal core skills** and **five sector packs** (presented as equal peers — India is one of five), plus the `hse-skill-forge` contribution on-ramp. Every fact below is drawn from each skill's own `metadata`/`description` — nothing here is hand-classified.
+📖 **Every one of the 48 skills is documented individually in the [Wiki manual](../../wiki).** The tables below are the summary; the Wiki is the full per-skill reference.
+
+Forty-eight consultant skills across **ten universal core skills** and **five sector packs** (presented as equal peers — India is one of five), plus the `hse-skill-forge` contribution on-ramp. Every fact below is drawn from each skill's own `metadata`/`description` — nothing here is hand-classified. Looking for one skill in depth? Open the [full manual](../../wiki) for a per-skill card — what it produces, when to use it, what to have ready.
 
 **Audience legend:** **M** = manager · **E** = executive · **F** = frontline · **C** = consultant. **Tier 1** = stable core.
 
@@ -271,6 +273,7 @@ For questions, custom skills, or training, contact [ashley@eyekyam.com](mailto:a
 
 **v1.0** is the toolbox — the 48 consultant skills, the five sector packs, and the cross-platform adapters shipped here. **v2.0 ("HSE GStack")**, a process-driven workflow plugin, is explicitly deferred and out of scope for this milestone.
 
+- 📖 **[Full skill manual (Wiki)](../../wiki)** — every skill, by pack, with when-to-use and what-you-get.
 - **Contribute in 5 minutes** with [`hse-skill-forge`](skills/hse-skill-forge/) — it scaffolds a born-conformant skill (intake, de-id, hierarchy-of-controls, and SME sign-off discipline included) so you can focus on the HSE content.
 - **Propose a skill** via the [new-skill-proposal issue template](.github/ISSUE_TEMPLATE/new_skill.md).
 - **Good first issues** — start with the [`good first issue`](https://github.com/ashley-eyekyam/hse-leadership-skills/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) label.

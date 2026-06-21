@@ -42,6 +42,10 @@ authoring. This file does not duplicate those rules.
   Q&A, one question at a time, echoing facts back before analysis. This is a Workflow
   convention, not a seventh block. The evals **reward elicited specificity** and penalize
   unstated assumptions, so do not skip intake.
+- When you add or materially change a skill, **update its card** in `docs/wiki/<Pack>.md`
+  and re-publish the Wiki (`scripts/publish_wiki.py`). The Wiki manual mirrors each skill's
+  `description`/`metadata`; a new or changed skill without a matching card is a
+  documentation gap.
 
 ## Review path
 
