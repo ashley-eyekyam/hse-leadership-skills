@@ -211,18 +211,22 @@ def render_seed_card(rec: Dict[str, Any]) -> str:
     lines: List[str] = []
     lines.append(f"### {rec['folder']}")
     lines.append("")
-    lines.append(f"**For:** {_fmt_list(rec['audience'])}")
-    lines.append(f"**Packs:** {_fmt_list(rec['packs'])}")
-    lines.append(f"**Version:** {rec['version'] or '—'}")
-    lines.append(f"**Jurisdiction:** {_fmt_list(rec['jurisdiction'])}")
+    # Each labelled field is its own markdown list item so it renders on its own
+    # line — a bare `**Label:**` line per field collapses into one run-on
+    # paragraph on GitHub (soft line breaks become spaces). Bullets match the
+    # published pack-page cards and Home's "how to read a card" legend.
+    lines.append(f"- **For:** {_fmt_list(rec['audience'])}")
+    lines.append(f"- **Packs:** {_fmt_list(rec['packs'])}")
+    lines.append(f"- **Version:** {rec['version'] or '—'}")
+    lines.append(f"- **Jurisdiction:** {_fmt_list(rec['jurisdiction'])}")
     triggers = rec["triggers"]
     lines.append(
-        "**Trigger:** "
+        "- **Trigger:** "
         + ("; ".join(triggers) if triggers else "TODO")
     )
     lines.append("")
     for field in PROSE_FIELDS:
-        lines.append(f"**{field}:** TODO")
+        lines.append(f"- **{field}:** TODO")
     lines.append("")
     return "\n".join(lines)
 
