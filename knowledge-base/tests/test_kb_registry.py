@@ -93,16 +93,6 @@ def test_entry_schema_and_files_exist(reg: Path):
         assert target.is_file(), f"{e['id']} file '{e['file']}' not found in {folder.name}/"
 
 
-# Documented cross-prefix exceptions (Phase 14-01): a fragment whose id is anchored on a
-# named *Regulation* but whose content+facets place it in the standards/ folder. The id is
-# the durable handle cited by downstream skills (CON-04); the folder reflects that it is a
-# LOLER-Regulation + BS 7121-standard lift-planning map. The id stays globally unique and
-# is still a valid KB-<TOKEN>-… scheme id — only the folder/prefix coupling is waived here.
-SCHEME_FOLDER_EXCEPTIONS = {
-    "KB-REG-LOLER-BS7121": "standards",
-}
-
-
 def test_ids_unique_and_scheme_conformant():
     seen = {}
     for reg in _registries():
@@ -114,13 +104,6 @@ def test_ids_unique_and_scheme_conformant():
             kid = e["id"]
             assert kid not in seen, f"duplicate id {kid} in {folder} and {seen.get(kid)}"
             seen[kid] = folder
-            if SCHEME_FOLDER_EXCEPTIONS.get(kid) == folder:
-                # Documented exception: still a valid KB-<TOKEN>-… id, just not the
-                # default folder/prefix pairing.
-                assert kid.startswith("KB-") and kid.count("-") >= 2, (
-                    f"{kid} is not a valid KB-<TOKEN>-… id"
-                )
-                continue
             assert kid.startswith(f"KB-{prefix}-"), (
                 f"{kid} in {folder}/ does not match scheme KB-{prefix}-…"
             )
@@ -192,15 +175,15 @@ def test_leadership_esg_disclosures_not_minted():
 # Named (not just folder-scanned) assertions so a future drop of any of the 18 Phase-14
 # fragment registry entries fails loudly. Each is registered in its folder, file-on-disk,
 # and carries a NON-EMPTY source + year (the refuse-on-vague gate depends on real
-# citations). KB-REG-LOLER-BS7121 is filed in standards/ (cross-prefix exception above).
+# citations). KB-REG-LOLER-BS7121 is filed in regulatory/ (KB-REG- prefix → regulatory/).
 PHASE14_REGISTRY = {
     "standards": [
-        "KB-REG-LOLER-BS7121",
         "KB-STD-ISO12100-14120",
         "KB-STD-ISO11228",
         "KB-STD-ISO1999-9612",
     ],
     "regulatory": [
+        "KB-REG-LOLER-BS7121",
         "KB-REG-OSHA1910-O",
         "KB-REG-OSHA1910-95",
         "KB-REG-OSHA1910-I",

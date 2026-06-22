@@ -257,11 +257,10 @@ def test_road_safety_indicators_cite_iso39001_single_home():
 # via its kb-selection; this asserts each resolves in its folder's _registry.yaml AND its
 # .md file exists on disk (opening with its own ID marker), so no downstream skill hits a
 # rule-9 dead-ref / vacuous kb-selection. The id→folder mapping reuses PREFIX_FOLDER
-# (REG→regulatory, STD→standards, DATA→data-points, SNIP→prompt-snippets). Note the two
-# Con standards/regulatory ids land in their PREFIX folder, not by jurisdiction.
+# (REG→regulatory, STD→standards, DATA→data-points, SNIP→prompt-snippets). Each id lands
+# in its PREFIX folder (KB-REG-LOLER-BS7121 → regulatory/, like every other KB-REG- id).
 CONSTRUCTION_NEW_IDS = [
-    # standards/ (KB-REG-* by prefix → regulatory? no — see folder map below)
-    "KB-REG-LOLER-BS7121",  # lives in standards/ (KB-REG- prefix, Con); asserted explicitly below
+    "KB-REG-LOLER-BS7121",  # lives in regulatory/ (KB-REG- prefix → regulatory/, resolves via Rule-9)
     "KB-SNIP-CPP-STRUCTURE",
     "KB-SNIP-PCI-CHECKLIST",
     "KB-SNIP-HS-FILE-CONTENT",
@@ -283,10 +282,10 @@ MANUFACTURING_NEW_IDS = [
     "KB-SNIP-MANUFACTURING-CLAUSE-MAP",
 ]
 
-# The folder each new id actually resides in (KB-REG-LOLER-BS7121 is a standards-folder
-# entry despite its KB-REG- prefix — it is a lifting-standard map, not a jurisdiction reg).
+# The folder each new id actually resides in (every id sits in its PREFIX folder; the
+# KB-REG-LOLER-BS7121 lifting-regulation map resolves cleanly via regulatory/ like all KB-REG-).
 PHASE14_ID_FOLDER = {
-    "KB-REG-LOLER-BS7121": "standards",
+    "KB-REG-LOLER-BS7121": "regulatory",
     "KB-SNIP-CPP-STRUCTURE": "prompt-snippets",
     "KB-SNIP-PCI-CHECKLIST": "prompt-snippets",
     "KB-SNIP-HS-FILE-CONTENT": "prompt-snippets",

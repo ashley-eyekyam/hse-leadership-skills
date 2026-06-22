@@ -321,22 +321,6 @@
   volatile: false
   supersedes: null
 
-# --- Phase 14 hse-construction bundle (1 standards fragment) ------------------
-- id: KB-REG-LOLER-BS7121
-  file: loler-bs7121.md
-  title: "Lifting operations — LOLER 1998 + BS 7121 (lift-planning / appointed-person / SWL map)"
-  facets:
-    jurisdiction: [All]
-    industry: [Con]
-    topics: [loler, bs7121, lifting-operations, appointed-person, swl, thorough-examination, exclusion-zone]
-    audience: [M, C]
-  summary: "LOLER 1998 Reg 8 (plan/organise/supervise) + Reg 9 (thorough examination) + BS 7121 lift categorisation (basic/standard/complex), appointed-person role, SWL-at-radius/utilisation method (transcribed from the rated-capacity chart, never computed), exclusion-zone method → grounds lifting-plan (CON-04). Citation map, not the regulation/standard text; carries no rated-capacity tables."
-  source: "Lifting Operations and Lifting Equipment Regulations 1998 (SI 1998/2307) + HSE L113 ACOP + BS 7121 Safe Use of Cranes (citation map)"
-  year: 2026
-  last_reviewed: 2026-06-22
-  volatile: false
-  supersedes: null
-
 # --- Phase 14 hse-manufacturing bundle (3 standards fragments) ----------------
 - id: KB-STD-ISO12100-14120
   file: iso12100-14120.md
