@@ -1,0 +1,69 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Leading & Lagging KPI Framework — {organisation / function / site}",
+    "subtitle": "Balanced HSE performance indicators · ISO 45001:2018 clause 9.1 · each indicator defined · anti-gaming safeguards",
+    "author": "{performance / assurance owner role}",
+    "date": "{ISO date}",
+    "classification": "Decision-support — competent-person review required",
+    "house_template": "house-standard",
+    "deid_notice": "This KPI framework reports AGGREGATE performance indicators only — never an individual's safety record. No metric is attributed to a nameable person; any per-person or per-team breakdown of fewer than 5 is suppressed (secondary suppression applied) so it cannot be back-calculated; indicator owners are role labels and no re-identification key appears. Lagging rates are computed to standard definitions, never invented. Decision-support; a competent person must review this framework before adoption."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Framework overview" },
+    { "type": "paragraph", "text": "A balanced leading/lagging HSE KPI framework for the {organisation / function / site}, designed against ISO 45001:2018 clause 9.1 (monitoring, measurement, analysis & performance evaluation). The set pairs reactive/outcome (lagging) indicators with active/predictive (leading) indicators — a lagging-only scorecard is rejected as a reactive-only picture. Every indicator is fully defined and every countable target carries an anti-gaming safeguard." },
+    { "type": "callout", "box_type": "info", "text": "This framework DESIGNS / normalises the indicator set. It does not compute a given injury rate (see incident-rate-calculator) or own the API RP 754 process-safety tiers (process-safety-kpi) — those are referenced as domain exemplars. Lagging rates are computed by the incident_rates engine to standard definitions (anchors TRIR 2.07 / LTIFR 6.00), never invented." },
+
+    { "type": "heading", "level": 1, "text": "Leading indicators (active / predictive)" },
+    { "type": "table",
+      "headers": ["Indicator", "Tag", "Formula", "Source", "Frequency", "Owner", "Target"],
+      "rows": [
+        ["{leading indicator — e.g. % planned inspections completed}", "leading", "{(completed ÷ planned) × 100}", "{HSG65 / KB-DATA-LEADING-INDICATORS}", "{monthly / quarterly}", "{role-label owner}", "{risk-matched stretch target}"]
+      ],
+      "caption": "Each leading indicator carries formula · source · frequency · owner · target — a bare indicator with no definition fails specificity (resolved from KB-DATA-LEADING-INDICATORS)." },
+
+    { "type": "heading", "level": 1, "text": "Lagging indicators (reactive / outcome)" },
+    { "type": "table",
+      "headers": ["Indicator", "Tag", "Definition source", "Frequency", "Owner", "Target"],
+      "rows": [
+        ["{lagging indicator — e.g. TRIR / LTIFR / DART}", "lagging", "incident_rates standard definition (TRIR anchor 2.07 / LTIFR anchor 6.00)", "{quarterly}", "{role-label owner}", "{reduction target}"]
+      ],
+      "caption": "Lagging RATES are computed by incident_rates, never invented; a missing work-hours denominator is [GAP]. A lagging-only set fails the balance gate — it is paired with the leading indicators above." },
+
+    { "type": "heading", "level": 1, "text": "Balance & maturity (ISO 45001 clause 9.1)" },
+    { "type": "metrics", "metrics": [
+        { "label": "Leading indicators", "value": "{count}", "caption": "active / predictive half of the balance" },
+        { "label": "Lagging indicators", "value": "{count}", "caption": "reactive / outcome half" },
+        { "label": "Culture maturity", "value": "{reactive / developing / mature}", "caption": "mature shifts the mix toward leading" } ] },
+    { "type": "paragraph", "text": "The leading/lagging mix is matched to culture maturity per KB-SNIP-KPI-DESIGN: reactive → developing → mature shifts the balance toward leading. A set with no leading half is flagged as a clause-9.1 imbalance and rebalanced before adoption." },
+
+    { "type": "heading", "level": 1, "text": "Anti-gaming safeguards" },
+    { "type": "findings", "rows": [
+        { "title": "{countable target at risk of gaming — e.g. raw incident count}", "risk_level": "{gaming risk}", "description": "incentivises under-reporting — paired with a quality/assurance safeguard ({audited reporting-quality / near-miss reporting-rate cross-check})", "evidence": "KB-SNIP-KPI-DESIGN anti-gaming guardrail" } ] },
+    { "type": "paragraph", "text": "Any countable target is stress-tested for a perverse incentive and paired with a quality/assurance safeguard. A gameable metric with no safeguard fails the defensibility gate and is not presented." },
+
+    { "type": "heading", "level": 1, "text": "Road-safety indicators (ISO 39001:2012) — road / transport / fleet scope only" },
+    { "type": "table",
+      "headers": ["Indicator", "Tag", "Formula", "Source", "Target"],
+      "rows": [
+        ["Speeding (speed-compliance)", "leading", "(journeys within limit ÷ total) × 100; or over-speed events ÷ distance", "ISO 39001:2012 + telematics", "improve stretch-but-credible"],
+        ["Harsh-braking / harsh events", "leading", "(harsh braking + accel + cornering) ÷ distance", "telematics intermediate behaviour", "reduce period-over-period"],
+        ["Journey management", "leading", "(% journeys risk-assessed / planned) × 100", "ISO 39001:2012 exposure control", "toward 100% high-risk journeys"],
+        ["Vehicle-defect rate", "leading", "(pre-use checks with a defect ÷ checks done) × 100", "ISO 39001:2012 vehicle-condition", "trend down; defects owned/dated"],
+        ["Driver-hours compliance", "lagging", "(% within HOS / drivers'-hours window) × 100", "ISO 39001:2012 fatigue factor (computation cross-refs SUB-03 / LOG-01, not here)", "100% compliance"]
+      ],
+      "caption": "The LEAD-06 road-safety EXTEND branch (D-01) — the single home of road-safety KPIs (one skill). Built from KB-DATA-ROAD-SAFETY-INDICATORS only when the scope is road / transport / fleet; + seatbelt / helmet use where occupants / two-wheelers are in scope. LEAD-06 owns the indicator; the engine owns the computation." },
+
+    { "type": "heading", "level": 1, "text": "Implied control actions (hierarchy of controls)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "{control implied by a leading indicator — e.g. engineering fix for a recurring defect trend}", "tier": "{Elimination / Substitution / Engineering / Administrative}", "owner": "{role-label owner}" } ] },
+    { "type": "paragraph", "text": "Where a leading indicator implies a control action, KB-SNIP-HOC is applied — a measure ranks above admin/PPE; a PPE-only treatment is never the sole response." },
+
+    { "type": "heading", "level": 1, "text": "Implementation plan (owned + dated)" },
+    { "type": "recommendations", "rows": [
+        { "action": "{stand up / rebalance / define the indicator}", "priority": "{High / Medium}", "owner": "{role-label owner}", "due": "{ISO due date}" } ] },
+
+    { "type": "heading", "level": 1, "text": "Review cycle & clause-9.1 fidelity" },
+    { "type": "paragraph", "text": "define every indicator (formula·source·frequency·owner·target) → compute lagging rates via incident_rates → review the balance and the targets against maturity {cadence} → analyse performance per ISO 45001:2018 clause 9.1 → feed evaluated performance into management review. The framework maps to clause 9.1 via KB-SNIP-LEADERSHIP-CLAUSE-MAP (this skill is the primary owner). Decision-support; a competent person must review before adoption." }
+  ]
+}

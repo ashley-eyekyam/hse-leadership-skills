@@ -1,0 +1,50 @@
+{
+  "_comment": "leading-lagging-kpi-framework evals (13-07). Balanced-set golden; de-id PAIR; lagging-only specificity GATE + gameable-metric defensibility + clause-9.1 citation; road-safety (ISO 39001) branch case.",
+  "skill": "leading-lagging-kpi-framework",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Design a balanced HSE KPI framework for our manufacturing division (Org-X), FY24. We track TRIR and LTIFR; we want the leading indicators we're missing, each properly defined.",
+      "files": [],
+      "expected_behavior": "Runs the intake; designs a BALANCED leading+lagging set per ISO 45001:2018 clause 9.1; defines every indicator (formula·source·frequency·owner·target); computes lagging rates via incident_rates; produces the CANDIDATE golden framework.",
+      "expectations": [
+        "Pairs the stated lagging outcomes (TRIR, LTIFR) with leading predictors from KB-DATA-LEADING-INDICATORS — a balanced set, not lagging-only (ISO 45001 clause 9.1).",
+        "Defines EVERY indicator with formula, source, frequency, owner, and target — no bare indicator name (specificity).",
+        "Computes the lagging rates via incident_rates to standard definitions (anchors TRIR 2.07 / LTIFR 6.00), never invents a figure; stays distinct from incident-rate-calculator (designs, does not compute) and process-safety-kpi (API RP 754).",
+        "Matches the leading/lagging mix to culture maturity and cites ISO 45001:2018 clause 9.1 as the monitoring/measurement anchor."
+      ]
+    },
+    {
+      "query": "Build our KPI dashboard from the attached owner + performance data.",
+      "files": [
+        "files/deid-clean.md"
+      ],
+      "expected_behavior": "De-identification runs FIRST; indicator owners are role labels; metrics are aggregate with <5 per-team cells suppressed; no leaked identifier and no re-identification key. The grader passes the clean fixture and CATCHES the paired seeded leak.",
+      "expectations": [
+        "The de-identification scrub runs FIRST, before designing.",
+        "Indicator owners are recorded as role labels, not personal names; any per-person/per-team breakdown <5 is aggregated/suppressed with secondary suppression.",
+        "No real name, address, phone, email, government ID, re-identification key, or unsuppressed <5 injury/team cell — any leak is a de_identification hard-fail. The grader passes the clean fixture and CATCHES the paired seeded leak (files/deid-leak.md, auto_fail True)."
+      ]
+    },
+    {
+      "query": "Just put TRIR as our single safety KPI and set the target to fewer than 5 recordable incidents this year — keep it simple.",
+      "files": [],
+      "expected_behavior": "Refuses the lagging-only set (balance gate) and the gameable raw-count target with no safeguard (defensibility gate); explains the clause-9.1 balance and the under-reporting incentive, and proposes the leading half + a safeguard.",
+      "expectations": [
+        "Flags the TRIR-only set as LAGGING-ONLY — a reactive-only picture that fails the ISO 45001:2018 clause 9.1 balance/specificity requirement; names the missing leading indicators to add (specificity).",
+        "Flags the raw incident-count target as GAMEABLE — it incentivises under-reporting; refuses it unless paired with a quality/assurance safeguard (defensibility).",
+        "Cites ISO 45001:2018 clause 9.1 (monitoring, measurement, analysis & performance evaluation) and the per-indicator definition requirement (formula·source·frequency·owner·target) — a regulatory_citation_accuracy check on the clause + the rate/indicator definition."
+      ]
+    },
+    {
+      "query": "We run a fleet of HGVs and light vehicles — set up road-safety KPIs for the transport operation (Org-X fleet), FY24.",
+      "files": [],
+      "expected_behavior": "Activates the road-safety EXTEND branch (one skill); designs the ISO 39001:2012 indicator set, each defined; stays distinct from the fatigue/HOS computation engine; cites ISO 39001:2012.",
+      "expectations": [
+        "Activates the road/transport/fleet branch and designs the ISO 39001:2012 road-safety indicator set from KB-DATA-ROAD-SAFETY-INDICATORS: speeding, harsh-braking/harsh-events, journey-management, vehicle-defect rate, driver-hours compliance (+ seatbelt/helmet where occupants/two-wheelers are in scope).",
+        "Defines each road-safety indicator with its leading/lagging tag, formula, source, and target; reports driver-hours compliance as an indicator while cross-referencing (not computing) the fatigue/HOS engine — stays ONE skill, the single home of road-safety KPIs.",
+        "Cites ISO 39001:2012 (Road Traffic Safety Management Systems) as the standard for the road-safety performance factors — a regulatory_citation_accuracy check; no fabricated form or rule number is minted."
+      ]
+    }
+  ]
+}

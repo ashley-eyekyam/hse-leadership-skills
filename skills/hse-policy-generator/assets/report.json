@@ -1,0 +1,55 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "OH&S Policy — {organisation}",
+    "subtitle": "ISO 45001:2018 clause 5.2 · top-management-signed · context-fit to {organisation}'s significant risks",
+    "author": "{top-management signatory role/title}",
+    "date": "{ISO date}",
+    "classification": "Decision-support — competent-person review required",
+    "house_template": "house-standard",
+    "deid_notice": "This policy names the organisation and the top-management signatory by role/title only — no individual's personal or health data appears. Any identifier in the supplied context was scrubbed to a role/title label before drafting; no re-identification key appears. Decision-support; a competent person must review this policy before it is adopted."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "OH&S policy statement" },
+    { "type": "paragraph", "text": "The top-management-signed Occupational Health & Safety policy for {organisation} ({scale — headcount, sites}), issued under ISO 45001:2018 clause 5.2. It is appropriate to the organisation's purpose, size and context and the specific nature of its significant OH&S risks ({named risks}), and is documented, communicated within the organisation, and available to interested parties." },
+    { "type": "callout", "box_type": "info", "text": "This policy is appropriate to {organisation}'s purpose, size and context. Each commitment below is tied to the organisation's actual significant risks — it is not a generic template." },
+
+    { "type": "heading", "level": 1, "text": "The five mandatory commitments (ISO 45001 clause 5.2)" },
+    { "type": "table",
+      "headers": ["Clause-5.2 commitment", "Context-fit to {organisation}'s risk"],
+      "rows": [
+        ["1 — Framework for setting OH&S objectives", "{how objectives are derived for the named risks}"],
+        ["2 — Fulfil legal and other requirements", "{the org's applicable legal duties + other requirements}"],
+        ["3 — Eliminate hazards and reduce OH&S risks (hierarchy of controls)", "{higher-order controls for the named risks — never PPE-only}"],
+        ["4 — Continual improvement of the OH&S management system", "{how the MS is improved}"],
+        ["5 — Consultation and participation of workers", "{how workers and their representatives are consulted}"]
+      ],
+      "caption": "All five mandatory clause-5.2 commitments — each context-fit to {organisation}'s actual risks. A missing commitment is a citation-accuracy hard-fail." },
+
+    { "type": "heading", "level": 1, "text": "Hazard elimination & risk reduction (hierarchy of controls)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "{eliminate/design-out the named significant risk}", "tier": "Elimination", "owner": "{named role/title}" },
+        { "control": "{engineering control for a named risk}", "tier": "Engineering", "owner": "{named role/title}" },
+        { "control": "{administrative control}", "tier": "Administrative", "owner": "{named role/title}" } ] },
+    { "type": "paragraph", "text": "Commitment 3 is expressed up the full hierarchy of controls (KB-SNIP-HOC) — eliminate to substitute to engineer to administrate to PPE. The policy never commits the organisation to a PPE-only or administrative-only treatment of a significant risk." },
+
+    { "type": "heading", "level": 1, "text": "Top-management commitment & sign-off" },
+    { "type": "paragraph", "text": "Top management demonstrates leadership and commitment to this policy. Signed by {top-management signatory role/title} on behalf of {organisation}. The policy is reviewed {review cadence} and on significant change." },
+    { "type": "bullets", "items": [
+        "Documented information, available and maintained.",
+        "Communicated within the organisation ({communication route}).",
+        "Available to relevant interested parties.",
+        "Signed by top management ({signatory role/title})." ] },
+
+    { "type": "heading", "level": 1, "text": "Statutory written-policy duty (jurisdiction)" },
+    { "type": "paragraph", "text": "Where the law compels a written health-and-safety policy, that duty is noted here as a branch beside this policy. For India, the statutory written-policy position defers to hse-india (state detection first) — no national form number is minted; an unverified position is flagged [GAP]." },
+    { "type": "callout", "box_type": "warning", "text": "Decision-support only. This policy is a draft for {organisation}'s own competent person to review before adoption; it is not a final legal document. India statutory duty: defer to hse-india (state first); no national-form number minted." },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": [
+        "ISO 45001:2018 clause 5.2 — OH&S policy (the five mandatory commitments + the appropriate-to-context characteristics).",
+        "Variants: ISO 14001:2015 clause 5.2 (environmental) · ISO 45003:2021 (psychosocial).",
+        "Statutory written-policy duty by jurisdiction (e.g. UK HSWA 1974 s.2(3) at 5+ employees); India defers to hse-india." ] }
+  ]
+}
