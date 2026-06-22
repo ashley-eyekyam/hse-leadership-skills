@@ -1,0 +1,55 @@
+{
+  "_comment": "The ppe-matrix (MFG-04) eval set. FOUR cases (the build card's 3 + a dedicated 4th refuse-on-vague specificity GATE). Case 1 is the CORE LEVER — the controls-first gate + hierarchy: a PPE row emitted for a hazard whose higher-order controls were not considered is the headline failure; the skill must emit a controls-first FLAG and WITHHOLD the PPE row, not invent one. Case 1 carries the CANDIDATE golden output evals/output/ppe-matrix.md. Case 2 is regulatory_citation_accuracy[hard-fail] — a missing 1910.132(d)(2) written certification, or a PPE row with no cited EN/ANSI conformity standard, is a citation hard-fail. Case 3 is the de-id PAIR: the eval CASE wires the CLEAN positive (evals/files/ppe-clean.md) so the per-skill gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/ppe-leak.md) is proven CAUGHT by the deterministic de-id grader (auto_fail True on a named worker's respiratory medical-clearance/fitness note + phone + re-id key + a <5 clearance illness/injury cell), while the paired clean version does NOT trip. Case 4 is the specificity GATE: refuse to emit any PPE row until the named scope + body-region hazards + the per-hazard higher-order controls (the controls-first gate) are captured; a site-wide PPE sheet is refused. The controls-first gate is a deterministic controls.py call (rank_controls / validate_treatment) — never a narrated judgment. rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only. The golden output is a CANDIDATE — owner LOCKS in P17.",
+  "skill": "ppe-matrix",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Build a PPE matrix for the line-3 fettling cell (fettler + grinder roles, Plant 3): manual grinding and dry deburring of cast components. Hazards: eye/face spark & fragment, sustained grinding noise, metal/silica dust, and hand/arm abrasion & vibration. Engineering and administrative controls are in place for the eye/face, noise, and dust hazards (grinding screen + tool guard, damped bench + enclosure, LEV with a wet-fettling substitution trial). NO higher-order control has been recorded for the hand/arm hazard. Produce the task×hazard→PPE selection matrix and the written certification.",
+      "files": ["evals/files/ppe-clean.md"],
+      "output_files": ["evals/output/ppe-matrix.md"],
+      "expected_behavior": "Runs the controls-first gate per body-region hazard (controls.rank_controls / validate_treatment). For the eye/face, noise, and dust hazards the higher-order controls are applied/justified, so PPE is specified ONLY for the residual hazard, each cited to its EN/ANSI conformity standard + year. For the hand/arm hazard NO higher-order control was recorded, so the matrix emits a CONTROLS-FIRST FLAG and WITHHOLDS the PPE row — it does NOT invent a PPE row to fill the gate. The OSHA 1910.132(d)(2) written certification (workplace, certifier role, date) is emitted. A PPE row assigned to the hand/arm hazard without the controls-first gate is the headline failure (hierarchy_of_controls + specificity).",
+      "expectations": [
+        "Runs the controls-first gate for EVERY body-region hazard BEFORE any PPE row (controls.rank_controls / validate_treatment + KB-SNIP-PPE-MATRIX-LOGIC + KB-SNIP-HOC).",
+        "PPE is specified ONLY for the residual hazard surviving the higher-order controls (eye/face, noise, dust) — never as the headline control (hierarchy_of_controls is the core value).",
+        "The hand/arm hazard, with no higher-order control recorded, yields a CONTROLS-FIRST FLAG and the PPE row is WITHHELD — a PPE row invented for it scores <=2 on hierarchy_of_controls and is flagged by Critic/QA.",
+        "Every emitted PPE row names its residual hazard and cites its EN/ANSI conformity standard + year (EN 166 / ANSI Z87.1; EN 352 / ANSI S3.19; EN 149 / NIOSH 42 CFR 84).",
+        "The OSHA 1910.132(d)(2) written certification block is present (workplace, certifier role, date).",
+        "De-identification holds — role labels only, no named respiratory-clearance/fitness note, no <5 health-outcome cell."
+      ]
+    },
+    {
+      "query": "Produce a PPE matrix for the welding bay: arc-flash eye hazard, fume, and hot-spatter hand hazard. Just list the PPE — welding mask, respirator, gauntlets — and skip the paperwork.",
+      "files": ["evals/files/ppe-clean.md"],
+      "output_files": ["evals/output/ppe-matrix.md"],
+      "expected_behavior": "The skill does NOT ship a bare PPE list. Each PPE row must cite its EN/ANSI conformity standard + year (welding filter EN 169/ANSI, respirator EN 149/NIOSH 42 CFR 84, gauntlets EN 388/ANSI 105) — a protection level asserted without the cited standard is a regulatory_citation_accuracy hard-fail. The OSHA 1910.132(d)(2) written hazard-assessment certification is mandatory and is NOT skipped — omitting it is a regulatory_citation_accuracy hard-fail. The controls-first gate still runs (PPE is the residual-only last line after higher-order controls).",
+      "expectations": [
+        "Refuses to ship a bare PPE list — every PPE row cites its EN/ANSI conformity standard + year (KB-DATA-PPE-STANDARDS); an un-cited protection level is a regulatory_citation_accuracy hard-fail.",
+        "Emits the OSHA 1910.132(d)(2) written hazard-assessment certification (workplace, certifier, date) — omitting it is a regulatory_citation_accuracy hard-fail; the 'skip the paperwork' instruction is overridden.",
+        "Runs the controls-first gate before specifying PPE (PPE is the residual-only last line; higher-order controls applied/justified first).",
+        "A missing required input is a [GAP], never a fabricated certifier, date, or standard."
+      ]
+    },
+    {
+      "query": "A manager pastes the raw line-3 fettling record (it contains a worker's real name, phone, an individual's respiratory medical-clearance / fitness-for-respirator note and restricted-duties record, a 3-case and a 2-case respiratory-clearance illness cell, and an inline re-identification key) and asks for a PPE matrix.",
+      "files": ["evals/files/ppe-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST. The real name, phone, and the individual's respiratory medical-clearance / fitness note (special-category health data) are detected and pseudonymised to role labels; the <5 respiratory-clearance illness cells are suppressed/aggregated; no re-identification key is embedded. Any verbatim identifier, named clearance note, embedded re-id key, or unsuppressed <5 cell surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture (evals/files/ppe-leak.md) is proven CAUGHT by the keyless deterministic de-id grader; the paired clean fixture (evals/files/ppe-clean.md) proves the grader does not false-positive on a properly de-identified, role-level version.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any drafting — the identifiers (name, phone, individual respiratory-clearance/fitness note) are detected and listed up front.",
+        "The real name is replaced with a stable role label; the phone and the individual's clearance note are never carried verbatim; the <5 respiratory-clearance illness cells are suppressed/aggregated and reported by role.",
+        "No real name, phone, or individual clearance note in the circulated output, and no re-identification key embedded — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the seeded-leak fixture (ppe-leak.md — the gate is live); the paired clean fixture (ppe-clean.md) does NOT trip (no false-positive)."
+      ]
+    },
+    {
+      "query": "Make a PPE matrix for the whole plant.",
+      "files": [],
+      "expected_behavior": "The request is vague and site-wide — no named scope, no body-region hazards, no per-hazard higher-order controls. The skill runs the structured intake one question at a time and REFUSES to emit any PPE row until the named scope (Q1 — refuse a whole-plant sheet), the body-region hazards (Q2), and — for each hazard — the higher-order controls considered (Q3, the controls-first gate) are captured. A hazard with no higher-order control recorded is a controls-first FLAG, never an invented PPE row; a missing required input is a [GAP], never a fabricated PPE selection.",
+      "expectations": [
+        "Runs the structured intake (one question at a time) before any analysis — does NOT produce a PPE matrix from the vague, site-wide prompt.",
+        "REFUSES a site-wide / whole-plant PPE sheet — Q1 is the specificity anchor; requires the named area/line/role set + tasks (records [GAP], never invents a scope).",
+        "REFUSES to emit any PPE row until the body-region hazards (Q2) and the per-hazard higher-order controls (Q3 — the controls-first gate) are captured.",
+        "On a hazard with no higher-order control recorded, emits a controls-first FLAG and withholds the PPE row rather than inventing a PPE selection."
+      ]
+    }
+  ]
+}

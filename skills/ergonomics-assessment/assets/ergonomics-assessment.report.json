@@ -1,0 +1,73 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Ergonomics Assessment — Despatch-Bay Carton Lift",
+    "subtitle": "NIOSH lifting-equation assessment, line-2 packer SEG",
+    "author": "HSE Manufacturing — Ergonomics",
+    "date": "2026-06-22",
+    "classification": "Internal — special-category MSD/fitness data — competent-person (ergonomist / OH professional) review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All workers are referred to by role / similar-exposure-group (SEG) label. Reported MSD symptoms are reported by SEG with <5 small-cell suppression; identifiers were pseudonymised before drafting and the re-identification key is held separately, not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Task / workstation description" },
+    { "type": "paragraph", "text": "This ergonomics assessment scores the named despatch-bay carton lift performed by the line-2 packer SEG at Plant 3: cartons are lifted from a floor-level pallet to the conveyor infeed. Each scored task names the task/role and the workstation; reported MSD symptoms are de-identified to SEG and reported with <5 small-cell suppression." },
+    { "type": "heading", "level": 1, "text": "Method & inputs (the scored parameters)" },
+    { "type": "table",
+      "headers": ["Parameter", "Captured value", "Source"],
+      "rows": [
+        ["Method", "NIOSH revised lifting equation (1991)", "Q1 assessment type"],
+        ["Load weight", "16 kg", "Q3a — measured"],
+        ["Horizontal location H", "30 cm", "Q3a — measured"],
+        ["Vertical origin V", "40 cm", "Q3a — measured"],
+        ["Vertical travel D", "110 cm", "Q3a — measured"],
+        ["Asymmetry angle A", "30 deg", "Q3a — measured"],
+        ["Frequency", "4 lifts/min", "Q3a — measured"],
+        ["Duration", "2 h", "Q3a / Q4 exposure pattern"],
+        ["Coupling", "fair", "Q3a — observed"]
+      ],
+      "caption": "Every score traces to its input parameters; a missing required parameter is a [GAP], never an invented value." },
+    { "type": "heading", "level": 1, "text": "Computed score & action band (deterministic engine — ergonomics.to_report_blocks)" },
+    { "type": "metrics", "metrics": [
+        { "label": "Recommended Weight Limit", "value": "[engine: ergonomics.niosh_rwl(...).rwl]", "unit": "kg" },
+        { "label": "Lifting Index", "value": "[engine: ergonomics.niosh_rwl(...).li]", "caption": "LI > 1.0 exceeds the recommended limit" } ] },
+    { "type": "table",
+      "headers": ["Step", "Value"],
+      "rows": [
+        ["HM", "[engine multiplier]"],
+        ["VM", "[engine multiplier]"],
+        ["DM", "[engine multiplier]"],
+        ["AM", "[engine multiplier]"],
+        ["FM", "[engine multiplier]"],
+        ["CM", "[engine multiplier]"]
+      ],
+      "caption": "The NIOSH multiplier working — the engine's [metrics, table] pair from to_report_blocks(result); RULA/REBA emit their grand/final score + action level instead. The placeholders are filled by the deterministic ergonomics.py call at run time, never narrated." },
+    { "type": "heading", "level": 1, "text": "Risk interpretation" },
+    { "type": "paragraph", "text": "The Lifting Index is interpreted against the NIOSH action band: LI <= 1.0 is within the recommended limit; LI > 1.0 indicates lifting demand exceeds the recommended limit and elevated MSD risk, rising sharply above LI 3.0. The interpretation is cited to the NIOSH equation, never asserted. RULA / REBA results are interpreted against their published action levels (RULA 1-4 / REBA negligible-to-very-high)." },
+    { "type": "heading", "level": 1, "text": "Hierarchy-ranked controls" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Raise the pallet on a scissor-lift / spring pallet positioner so the lift origin is at knuckle height (eliminates the floor-level reach)", "tier": "Engineering", "owner": "Production Engineering Lead" },
+        { "control": "Provide a vacuum lift-assist for the heavier cartons (mechanical aid)", "tier": "Engineering", "owner": "Production Engineering Lead" },
+        { "control": "Rotate packers off the despatch lift on a defined cycle to limit cumulative exposure", "tier": "Administrative", "owner": "Despatch Supervisor" },
+        { "control": "Manual-handling technique refresher (supports, does NOT replace, the redesign — training is not a control for a biomechanical overload)", "tier": "Training", "owner": "HSE Manufacturing" } ] },
+    { "type": "callout", "text": "A high Lifting Index whose ONLY control is manual-handling training is training-led and inadequate: the task/workstation must be redesigned (positioner / lift-assist) first, or a documented 'higher-order controls not reasonably practicable because…' justification recorded.", "box_type": "warning" },
+    { "type": "heading", "level": 1, "text": "Surveillance / symptom linkage" },
+    { "type": "bullets", "items": [
+        "Re-score the task after the pallet positioner / lift-assist is installed (target LI <= 1.0).",
+        "Symptom-triggered review: any reported lower-back or shoulder symptom in the packer SEG triggers a re-assessment (reported by SEG, <5 cells suppressed).",
+        "Routine re-assessment on task change or annually, whichever is sooner." ] },
+    { "type": "heading", "level": 1, "text": "Owned / dated actions" },
+    { "type": "recommendations", "rows": [
+        { "action": "Install the spring pallet positioner at the despatch lift origin", "priority": "P1", "owner": "Production Engineering Lead", "due": "2026-07-20" },
+        { "action": "Trial a vacuum lift-assist for cartons over 15 kg", "priority": "P2", "owner": "Production Engineering Lead", "due": "2026-08-15" },
+        { "action": "Re-score the lift with the engine after the positioner is installed", "priority": "P2", "owner": "HSE Manufacturing", "due": "2026-08-30" } ] },
+    { "type": "heading", "level": 1, "text": "Assumptions / [GAP]" },
+    { "type": "bullets", "items": [
+        "[GAP] — any required NIOSH parameter not captured at intake is recorded here and the score is withheld until it is measured; no parameter is invented.",
+        "India site: the Factories Act health-provision return is resolved via hse-india with mandatory state detection; a state return owed is recorded as a [GAP], never a national form number." ] },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off" },
+    { "type": "paragraph", "text": "Decision-support only. The SME review (Chartered Ergonomist (CIEHF) / Occupational-Health Professional) precedes — and never replaces — the human competent-person sign-off. Regulatory basis: ISO 45001 §6.1.2 / §8.1.2 (KB-SNIP-MANUFACTURING-CLAUSE-MAP); NIOSH lifting equation / RULA / REBA / ISO 11228-1/-2/-3 method." }
+  ]
+}

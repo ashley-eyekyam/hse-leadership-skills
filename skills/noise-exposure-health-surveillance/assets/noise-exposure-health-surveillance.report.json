@@ -1,0 +1,67 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Noise Exposure Assessment & Hearing-Conservation Plan",
+    "subtitle": "Exposure-zone map, action-level comparison & audiometric-surveillance schedule",
+    "author": "HSE Manufacturing — Occupational Health",
+    "date": "2026-06-22",
+    "classification": "Internal — special-category audiometric health data — competent-person (occupational hygienist / OH physician) review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All workers are referred to by similar-exposure-group (SEG) or role label. Audiometric / standard-threshold-shift results are reported by SEG with <5 small-cell suppression; identifiers were pseudonymised before drafting and the re-identification key is held separately, not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Area / SEG & exposure-zone map" },
+    { "type": "paragraph", "text": "This assessment covers the named area and similar-exposure groups (SEGs) below, mapped into noise-exposure zones against the cited action and limit values. Exposure values are transcribed measured/estimated 8-hr TWA L_EX,8h dB(A); no dosimetry is computed by this skill. Audiometric data is reported by SEG, never by individual." },
+    { "type": "table",
+      "headers": ["Exposure zone", "SEG / area", "TWA dB(A)", "Threshold crossed", "Obligation"],
+      "rows": [
+        ["≥ 90 dBA", "Press-shop operator SEG (line 2)", "92 (measured)", "OSHA PEL 90 dBA", "Mandatory-HPD zone + hearing-conservation enrolment"],
+        ["85–90 dBA", "Maintenance SEG (press setters)", "87 (estimated)", "OSHA action level 85 dBA", "Hearing-conservation enrolment + signage"],
+        ["< 85 dBA", "QA / inspection SEG", "78 (measured)", "below action level", "Monitor / re-assess on change"]
+      ],
+      "caption": "Exposure-zone map — transcribed values vs cited thresholds" },
+    { "type": "heading", "level": 1, "text": "Exposure-vs-action/limit comparison" },
+    { "type": "table",
+      "headers": ["SEG / area", "Exposure", "Action level / limit", "Authority + year", "Status"],
+      "rows": [
+        ["Press-shop operator SEG / noise", "92 dB(A) L_EX,8h (measured)", "85 dBA action / 90 dBA PEL", "US OSHA 29 CFR 1910.95 (2008)", "Above the PEL"],
+        ["Maintenance SEG / noise", "87 dB(A) L_EX,8h (estimated)", "85 dBA action level", "US OSHA 29 CFR 1910.95 (2008)", "Above the action level"]
+      ],
+      "caption": "Each exposure compared to a cited threshold (authority+year); transcribed, not computed" },
+    { "type": "heading", "level": 1, "text": "Noise-reduction plan (hierarchy-ranked)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Substitute / retrofit a quieter die-cushion and damp the press frame (source/engineering)", "tier": "Engineering", "owner": "Maintenance Lead" },
+        { "control": "Acoustic enclosure / barrier around the line-2 press (engineering)", "tier": "Engineering", "owner": "Engineering Manager" },
+        { "control": "Job rotation + time-limited exposure for the operator SEG (administrative)", "tier": "Administrative", "owner": "Production Lead" },
+        { "control": "Issue and fit-test hearing protection (HPD) — LAST resort, not the sole control", "tier": "PPE", "owner": "HSE Lead" } ] },
+    { "type": "callout", "text": "Hearing protection is the LAST resort: for the ≥ 85 dBA SEGs the source/engineering controls above must be assessed first — HPD alone does not satisfy the hierarchy.", "box_type": "warning" },
+    { "type": "heading", "level": 1, "text": "Hearing-conservation-program elements" },
+    { "type": "bullets", "items": [
+        "SEGs ≥ 85 dBA enrolled in the hearing-conservation program",
+        "Mandatory hearing-protection zones signed for ≥ 90 dBA areas",
+        "Annual noise-awareness training + HPD fit-testing",
+        "Re-survey on any process / equipment change" ] },
+    { "type": "heading", "level": 1, "text": "Audiometry surveillance schedule" },
+    { "type": "table",
+      "headers": ["SEG", "Trigger", "Baseline", "Periodic", "STS follow-up"],
+      "rows": [
+        ["Press-shop operator SEG", "≥ 90 dBA (above PEL)", "On enrolment", "Annual audiogram", "Retest within 30 days; if STS confirmed → review controls + refer"],
+        ["Maintenance SEG", "≥ 85 dBA (action level)", "On enrolment", "Annual audiogram", "Retest + STS review on confirmation"]
+      ],
+      "caption": "Action-level-linked audiometry — reported by SEG, <5 cells suppressed" },
+    { "type": "heading", "level": 1, "text": "Owned & dated actions" },
+    { "type": "recommendations", "rows": [
+        { "action": "Commission acoustic enclosure on the line-2 press", "priority": "P1", "owner": "Engineering Manager", "due": "2026-08-15" },
+        { "action": "Enrol the ≥ 85 dBA SEGs and run baseline audiometry", "priority": "P1", "owner": "OH Lead", "due": "2026-07-10" },
+        { "action": "Re-survey noise after the enclosure is installed", "priority": "P2", "owner": "HSE Lead", "due": "2026-09-01" } ] },
+    { "type": "heading", "level": 1, "text": "Assumptions & gaps" },
+    { "type": "bullets", "items": [
+        "[GAP] Maintenance-SEG exposure is estimated from equipment data — confirm by ISO 9612 measurement.",
+        "[ASSUMPTION] 8-hr TWA basis; confirm impulsive/peak (dB C) for the press if applicable." ] },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off" },
+    { "type": "paragraph", "text": "Decision-support only. A competent person (occupational hygienist / audiometric technician / OH physician) must review and sign off this assessment. Review cadence: annual or on any exposure change / confirmed STS." },
+    { "type": "bullets", "items": ["ISO 45001 §6.1.2 / §8.1.2 (KB-SNIP-MANUFACTURING-CLAUSE-MAP)", "US OSHA 29 CFR 1910.95 — occupational noise exposure", "ISO 9612:2009 measurement / ISO 1999:2013 NIHL estimation (KB-STD-ISO1999-9612)"] }
+  ]
+}

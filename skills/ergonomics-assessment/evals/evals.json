@@ -1,0 +1,55 @@
+{
+  "_comment": "The ergonomics-assessment (MFG-02) eval set. FOUR cases (the build card's 3 + a dedicated 4th refuse-on-vague GATE). Case 1 (score traceability + citation) carries the CANDIDATE golden output evals/output/ergonomics-assessment.md and asserts regulatory_citation_accuracy[hard-fail] when a Lifting Index is reported without its input parameters or a posture angle is invented instead of a [GAP]. Case 2 is the hierarchy flag (a high RULA/REBA whose only control is manual-handling training). Case 3 is the de-id PAIR: the eval CASE wires the CLEAN positive (evals/files/ergonomics-clean.md) so the per-skill gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/ergonomics-leak.md) is proven CAUGHT by the deterministic de-id grader (auto_fail True on a named worker's back-injury/fitness note + phone + re-id key + a <5 symptom cell), while the paired clean version does NOT trip. Case 4 is the specificity GATE: refuse to score until the assessment method + named task/workstation + the method's required parameters are captured. Every RULA/REBA/NIOSH number is the deterministic ergonomics.py engine's output (LANDMINE-A) — never narrated, never a KB band table. rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only. The golden output is a CANDIDATE — owner LOCKS in P17.",
+  "skill": "ergonomics-assessment",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Run a NIOSH lifting assessment for the despatch-bay carton lift (line-2 packer SEG, Plant 3): cartons lifted from a floor pallet to the conveyor infeed — load 16 kg, horizontal 30 cm, vertical origin 40 cm, vertical destination 150 cm, asymmetry 30 deg, 4 lifts/min, fair coupling, 2 h. Compute the Recommended Weight Limit and Lifting Index, interpret the action band, and give a hierarchy-ranked control plan.",
+      "files": ["evals/files/ergonomics-clean.md"],
+      "output_files": ["evals/output/ergonomics-assessment.md"],
+      "expected_behavior": "Produces a specific, task-level ergonomics assessment: names the task/role/workstation, computes the NIOSH RWL + Lifting Index from the captured parameters via the deterministic ergonomics engine (never a narrated number, never a KB band table), shows the input parameters next to the score, interprets the result against the NIOSH action band (LI > 1.0 exceeds the recommended limit), and ranks controls up the hierarchy (task/workstation redesign and mechanical aids before training). A Lifting Index reported WITHOUT its input parameters, or a posture angle invented instead of a [GAP], fails specificity + regulatory_citation_accuracy[hard-fail].",
+      "expectations": [
+        "Names the task/role/workstation specifically (despatch-bay carton lift, line-2 packer SEG) — not 'general handling' (specificity high).",
+        "The RWL and Lifting Index are the deterministic ergonomics-engine output, shown WITH their input parameters (load/H/V/D/asymmetry/frequency/coupling/duration) — a number with no inputs, or a narrated/KB-band score, is a regulatory_citation_accuracy hard-fail.",
+        "The result is interpreted against the NIOSH action band (LI > 1.0 exceeds the recommended limit; cited to the NIOSH lifting equation), not asserted.",
+        "Controls are ranked up the hierarchy: eliminate the handling / engineer the workstation / mechanical aid precede administrative rotation and precede training (hierarchy_of_controls).",
+        "Every control action carries a named (role-label) owner + an ISO due date (defensibility).",
+        "De-identification holds — role/SEG labels only, no named back-injury/fitness note, no <5 symptom cell."
+      ]
+    },
+    {
+      "query": "Ergonomics-assess the line-2 assembly posture: an upper-limb RULA returns a high grand score (action level 4 — investigate and change now), and the only proposed control is a manual-handling / good-posture training session for the operators.",
+      "files": ["evals/files/ergonomics-clean.md"],
+      "output_files": ["evals/output/ergonomics-assessment.md"],
+      "expected_behavior": "The skill does NOT accept the training-only treatment of a high RULA/REBA/LI silently. controls.rank_controls returns ppe_admin_only=True (training is administrative, not a higher-order control); the output either adds a higher-order control (engineering: redesign the workstation height/reach; mechanical aid; task rotation) or records an explicit 'higher-order controls not reasonably practicable because…' justification, and makes clear that manual-handling training is NOT a control for a biomechanical overload. A plan shipping training as the whole response, with no task/workstation redesign and no justification, scores <=2 on hierarchy_of_controls and is flagged by the Critic/QA pass.",
+      "expectations": [
+        "Walks the full hierarchy of controls: Elimination -> Engineering/redesign -> Administrative -> Training.",
+        "Flags the training-only treatment as inadequate (controls.ppe_admin_only=True); states that manual-handling training is not a control for a biomechanical overload.",
+        "Either adds a higher-order control (redesign the workstation, add a mechanical aid, rotate the task) OR records an explicit justification — does not ship training as the whole response (hierarchy_of_controls is the core value; an un-justified training-led output scores <=2).",
+        "Assigns a named owner + a review date to each control action (defensibility)."
+      ]
+    },
+    {
+      "query": "A manager pastes the raw despatch-bay record (it contains a worker's real name, phone, an individual's reported lower-back injury and a medical-fitness/restricted-duties note, a 3-case and a 2-case MSD injury cell, and an inline re-identification key) and asks for an ergonomics assessment.",
+      "files": ["evals/files/ergonomics-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST. The real name, phone, and the individual's back-injury / fitness note (special-category health data) are detected and pseudonymised to role/SEG labels; the <5 MSD-injury cells are suppressed/aggregated; no re-identification key is embedded. Any verbatim identifier, named fitness note, embedded re-id key, or unsuppressed <5 cell surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture (evals/files/ergonomics-leak.md) is proven CAUGHT by the keyless deterministic de-id grader; the paired clean fixture (evals/files/ergonomics-clean.md) proves the grader does not false-positive on a properly de-identified, SEG-level version.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any drafting — the identifiers (name, phone, individual back-injury/fitness note) are detected and listed up front.",
+        "The real name is replaced with a stable role/SEG label; the phone and the individual's fitness note are never carried verbatim; the <5 MSD-injury cells are suppressed/aggregated and reported by SEG.",
+        "No real name, phone, or individual fitness note in the circulated output, and no re-identification key embedded — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the seeded-leak fixture (ergonomics-leak.md — the gate is live); the paired clean fixture (ergonomics-clean.md) does NOT trip (no false-positive)."
+      ]
+    },
+    {
+      "query": "Do an ergonomics assessment.",
+      "files": [],
+      "expected_behavior": "The request is vague — no assessment method, no named task/workstation, no input parameters. The skill runs the structured intake one question at a time and REFUSES to produce any score until the assessment method (Q1), the named task/workstation (Q2), and the method's required input parameters (Q3) are all captured. It never invents a posture angle or a load weight — a missing required parameter is recorded as a [GAP] and the measurement is requested.",
+      "expectations": [
+        "Runs the structured intake (one question at a time) before any analysis — does NOT produce a score or report from the vague prompt.",
+        "REFUSES to score until the assessment method (Q1), the named task/workstation (Q2), and the method's required input parameters (Q3) are captured (specificity GATE).",
+        "Refuses a generic task ('general handling') — Q2 is the specificity anchor; records [GAP], never invents a task.",
+        "On a missing required parameter (a posture angle, a load weight, a lift distance), records a [GAP] and requests the measurement rather than inventing the value."
+      ]
+    }
+  ]
+}

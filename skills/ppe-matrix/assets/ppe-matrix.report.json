@@ -1,0 +1,93 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "PPE Matrix — Line-3 Fettling Cell",
+    "subtitle": "Task×hazard→PPE selection (controls-first gate), fettler + grinder roles",
+    "author": "HSE Manufacturing — PPE Program",
+    "date": "2026-06-22",
+    "classification": "Internal — special-category respiratory-clearance data — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All workers are referred to by role label. Respiratory medical-clearance / fitness-for-respirator data is reported at role level with <5 small-cell suppression; identifiers were pseudonymised before drafting and the re-identification key is held separately, not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Scope & tasks" },
+    { "type": "paragraph", "text": "This PPE matrix covers the named line-3 fettling cell (fettler and grinder roles) at Plant 3: manual grinding and deburring of cast components. The matrix is task-specific — not a site-wide PPE sheet. Each PPE row is specified ONLY for the residual hazard that survives the higher-order controls; a hazard with no higher-order control considered is recorded as a controls-first flag, not a PPE row." },
+    { "type": "metrics", "metrics": [
+        { "label": "Tasks in scope", "value": "2" },
+        { "label": "Body-region hazards assessed", "value": "4" },
+        { "label": "Controls-first flags", "value": "1", "caption": "PPE withheld pending higher-order controls" } ] },
+
+    { "type": "heading", "level": 1, "text": "Hazard assessment by body region" },
+    { "type": "findings", "rows": [
+        { "title": "Eye/face — grinding-spark & fragment ejection", "risk_level": "High",
+          "description": "Manual grinding ejects sparks and abrasive fragments toward the operator's face.", "evidence": "Task observation; OSHA 1910.133" },
+        { "title": "Hearing — sustained grinding noise", "risk_level": "Medium",
+          "description": "Continuous grinding produces sustained noise across the shift in the cell.", "evidence": "Area noise survey (see noise-exposure assessment)" },
+        { "title": "Hand/arm — abrasion & vibration", "risk_level": "Medium",
+          "description": "Hand-held grinder contact and workpiece edges present abrasion and hand-arm vibration.", "evidence": "Task observation; OSHA 1910.138" },
+        { "title": "Respiratory — metal/silica dust", "risk_level": "High",
+          "description": "Dry fettling of cast components generates airborne metal and silica dust.", "evidence": "Task observation; dust monitoring [GAP — sample pending]" } ] },
+
+    { "type": "heading", "level": 1, "text": "Higher-order controls considered (the controls-first gate)" },
+    { "type": "paragraph", "text": "For each body-region hazard, the higher-order controls (eliminate / substitute / engineer / administrative) are confirmed applied or justified BEFORE any PPE is specified. PPE is the residual-only last line. A hazard with no higher-order control recorded is a controls-first FLAG — the PPE cell is withheld, not invented." },
+    { "type": "table",
+      "headers": ["Body-region hazard", "Higher-order controls applied / justified", "Gate outcome"],
+      "rows": [
+        ["Eye/face — sparks/fragments", "Fixed grinding screen + tool-mounted guard (engineering); job rotation limits exposure (administrative)", "Residual hazard remains → PPE specified"],
+        ["Hearing — grinding noise", "Damped grinding bench + enclosure panels (engineering); rotation (administrative)", "Residual hazard remains → PPE specified"],
+        ["Respiratory — metal/silica dust", "Local exhaust ventilation (LEV) at the grinding bench (engineering); wet-fettling substitution under trial (substitution)", "Residual hazard remains → PPE specified"],
+        ["Hand/arm — abrasion/vibration", "No engineering or administrative control recorded for this hazard", "CONTROLS-FIRST FLAG — higher-order controls not considered; assess and apply (anti-vibration mounts, low-vibration tools, exposure limits) before specifying PPE. PPE row WITHHELD."]
+      ],
+      "caption": "Controls-first gate per body-region hazard — PPE follows only the residual hazard" },
+    { "type": "callout", "text": "Hand/arm hazard is a controls-first flag: no higher-order control was recorded. No PPE row is issued for it until the higher-order controls are assessed and applied or justified — PPE-first is not permitted.", "box_type": "warning" },
+
+    { "type": "heading", "level": 1, "text": "PPE selection matrix (residual hazard → PPE type + cited standard)" },
+    { "type": "table",
+      "headers": ["Task / role", "Residual hazard", "PPE type", "Conformity standard (cite + year)"],
+      "rows": [
+        ["Fettling/grinding — grinder role", "Eye/face spark & fragment (residual after screen/guard)", "Safety glasses + face shield over", "EN 166 / ANSI Z87.1, [year]"],
+        ["Fettling/grinding — grinder role", "Noise (residual after damping/enclosure)", "Ear defenders (selected to residual exposure)", "EN 352 / ANSI S3.19, [year]"],
+        ["Dry fettling — fettler role", "Metal/silica dust (residual after LEV)", "FFP3 / N95-class respirator (fit-test + clearance required, role level)", "EN 149 / NIOSH 42 CFR 84, [year]"],
+        ["Hand/arm — both roles", "[controls-first flag — PPE withheld]", "— not specified until higher-order controls applied —", "— (gate not passed)"]
+      ],
+      "caption": "PPE specified only for the residual hazard surviving the higher-order controls; each protection level cited to its conformity standard" },
+
+    { "type": "heading", "level": 1, "text": "Fit, compatibility & training notes" },
+    { "type": "bullets", "items": [
+        "Respiratory PPE (FFP3/N95) requires fit-testing and medical clearance — recorded at ROLE level only; no named worker's clearance result is carried into this document (<5 cells suppressed).",
+        "Face shield + safety glasses + ear defenders + respirator are checked for mutual compatibility (no seal break on the respirator from eyewear arms).",
+        "Training on correct donning/doffing, inspection, and replacement frequency is administrative support to PPE — NOT a substitute for the higher-order controls." ] },
+
+    { "type": "heading", "level": 1, "text": "Written hazard-assessment certification (OSHA 1910.132(d)(2))" },
+    { "type": "table",
+      "headers": ["Certification field", "Value"],
+      "rows": [
+        ["Workplace assessed", "Plant 3 — line-3 fettling cell (fettler + grinder roles)"],
+        ["Hazards assessed", "Eye/face, hearing, respiratory, hand/arm (per OSHA 1910 Subpart I)"],
+        ["Certifying competent person (role)", "Site HSE Manager (named role; no individual identifier)"],
+        ["Certification date", "2026-06-22"]
+      ],
+      "caption": "OSHA 29 CFR 1910.132(d)(2) written certification that the PPE hazard assessment was performed — mandatory, never omitted" },
+
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls (PPE as residual-only last line)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Trial wet-fettling to substitute the dry dust-generating process", "tier": "Substitution", "owner": "Process Engineer" },
+        { "control": "Maintain LEV capture + grinding screens; assess anti-vibration controls for the hand/arm hazard", "tier": "Engineering", "owner": "Maintenance Lead" },
+        { "control": "Job rotation to limit grinding-noise and vibration exposure", "tier": "Administrative", "owner": "Production Lead" },
+        { "control": "Residual-only PPE per the matrix, against the cited conformity standard", "tier": "PPE", "owner": "Site HSE Manager" } ] },
+
+    { "type": "heading", "level": 1, "text": "Owned & dated actions" },
+    { "type": "recommendations", "rows": [
+        { "action": "Assess and apply higher-order controls for the hand/arm hazard (anti-vibration mounts, low-vibration tools, exposure limits) before specifying PPE — clears the controls-first flag", "priority": "P1", "owner": "Process Engineer", "due": "2026-07-06" },
+        { "action": "Complete respirator fit-testing + medical clearance for the fettler role (recorded at role level)", "priority": "P1", "owner": "Occupational Health", "due": "2026-07-13" },
+        { "action": "Collect the pending dust sample to confirm the respiratory residual ([GAP] closed)", "priority": "P2", "owner": "HSE Manufacturing", "due": "2026-07-20" } ] },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off" },
+    { "type": "bullets", "items": [
+        "Review trigger: on task change / on PPE change / annual — whichever is first.",
+        "This PPE matrix is decision-support; a competent person must review it before use.",
+        "Regulatory basis: OSHA 29 CFR 1910 Subpart I (1910.132 + .133/.135/.136/.138); ISO 45001 §6.1.2 / §8.1.2; PPE conformity standards (EN / ANSI) cited per row." ] }
+  ]
+}

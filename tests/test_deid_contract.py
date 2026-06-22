@@ -160,3 +160,152 @@ def test_archetype_runs_first_and_returns_key_separately():
     assert "Runs FIRST" in a or "runs first" in a.lower()
     assert "SEPARATE" in a.upper() or "separate" in a
     assert "tools" in a.lower() and "none" in a.lower(), "archetype must declare no tools"
+
+
+# =============================================================================
+# Phase-14 / MFG-02 ergonomics-assessment de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 14-02 (do not reorder/remove the canonical
+# contract assertions above, nor any other skill's appended section). It registers
+# the ergonomics-assessment de-identification PAIR against the SAME deterministic
+# de-id grader the whole pack's non-waivable privacy gate keys off, mirroring the
+# scripts/tests/test_b*_deid_pair.py precedent:
+#   - the seeded-leak negative (evals/files/ergonomics-leak.md) — a named worker +
+#     a reported back-injury / medical-fitness note + a phone + an embedded re-id key
+#     + a <5 MSD-injury cell — MUST auto_fail (the gate is live), and
+#   - the paired clean positive (evals/files/ergonomics-clean.md), wired into the
+#     skill's eval CASE, MUST NOT false-positive (the per-skill gate is not spuriously
+#     hard-failed).
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _ergo_sys  # noqa: E402
+
+_ERGO_SCRIPTS = REPO / "scripts"
+if str(_ERGO_SCRIPTS) not in _ergo_sys.path:
+    _ergo_sys.path.insert(0, str(_ERGO_SCRIPTS))
+
+from graders import grade_deid as _ergo_grade_deid  # noqa: E402
+
+_ERGO_FILES = REPO / "skills" / "ergonomics-assessment" / "evals" / "files"
+_ERGO_LEAK = _ERGO_FILES / "ergonomics-leak.md"
+_ERGO_CLEAN = _ERGO_FILES / "ergonomics-clean.md"
+
+
+def test_ergonomics_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _ergo_grade_deid(_ERGO_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "ergonomics-assessment seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_ergonomics_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail)."""
+    verdict = _ergo_grade_deid(_ERGO_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"ergonomics-assessment clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# =============================================================================
+# Phase-14 / MFG-03 noise-exposure-health-surveillance de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 14-03 (do not reorder/remove the canonical
+# contract assertions above, nor the MFG-02 ergonomics section, nor any other skill's
+# appended section). This is the STRICTEST de-id tier in the phase: audiometric /
+# standard-threshold-shift (STS) results are special-category health data. It registers
+# the noise-exposure-health-surveillance de-identification PAIR against the SAME
+# deterministic de-id grader the whole pack's non-waivable privacy gate keys off:
+#   - the seeded-leak negative (evals/files/noise-leak.md) — a named worker + a reported
+#     audiometric STS / NIHL result + a phone + an embedded re-id key + a <5 audiometric
+#     cell — MUST auto_fail (the gate is live), and the small-cell <5 suppression catch
+#     is asserted EXPLICITLY (T-14-03-SC2 — the strictest-tier requirement), and
+#   - the paired clean positive (evals/files/noise-clean.md), wired into the skill's eval
+#     CASE, MUST NOT false-positive (the per-skill gate is not spuriously hard-failed).
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _noise_sys  # noqa: E402
+
+_NOISE_SCRIPTS = REPO / "scripts"
+if str(_NOISE_SCRIPTS) not in _noise_sys.path:
+    _noise_sys.path.insert(0, str(_NOISE_SCRIPTS))
+
+from graders import grade_deid as _noise_grade_deid  # noqa: E402
+
+_NOISE_FILES = REPO / "skills" / "noise-exposure-health-surveillance" / "evals" / "files"
+_NOISE_LEAK = _NOISE_FILES / "noise-leak.md"
+_NOISE_CLEAN = _NOISE_FILES / "noise-clean.md"
+
+
+def test_noise_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _noise_grade_deid(_NOISE_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "noise seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_noise_seeded_leak_small_cell_suppression_caught():
+    """STRICTEST TIER (T-14-03-SC2): the sub-5 audiometric breakdown MUST be caught as a
+    small-cell leak — the <5 STS suppression rule is the noise skill's defining de-id gate."""
+    verdict = _noise_grade_deid(_NOISE_LEAK.read_text(encoding="utf-8"))
+    assert verdict["conditions"]["no_small_cell"] is False, (
+        "noise seeded-leak <5 audiometric cell was NOT caught — small-cell suppression gate is dead"
+    )
+    assert any("small-cell" in r for r in verdict["reasons"]), (
+        "the <5 small-cell leak is not among the auto_fail reasons"
+    )
+
+
+def test_noise_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail)."""
+    verdict = _noise_grade_deid(_NOISE_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"noise clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# =============================================================================
+# Phase-14 / MFG-04 ppe-matrix de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 14-04 (do not reorder/remove the canonical
+# contract assertions above, nor the MFG-02 ergonomics section, nor the MFG-03 noise
+# section, nor any other skill's appended section). ppe-matrix handles respiratory
+# medical-clearance / fitness-for-respirator notes — GDPR Art. 9 / India DPDP
+# special-category health data. It registers the ppe-matrix de-identification PAIR
+# against the SAME deterministic de-id grader the whole pack's non-waivable privacy
+# gate keys off:
+#   - the seeded-leak negative (evals/files/ppe-leak.md) — a named worker + a reported
+#     respiratory medical-clearance / fitness note + a phone + an embedded re-id key +
+#     a <5 respiratory-clearance illness/injury cell — MUST auto_fail (the gate is live), and
+#   - the paired clean positive (evals/files/ppe-clean.md), wired into the skill's eval
+#     CASE, MUST NOT false-positive (the per-skill gate is not spuriously hard-failed).
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _ppe_sys  # noqa: E402
+
+_PPE_SCRIPTS = REPO / "scripts"
+if str(_PPE_SCRIPTS) not in _ppe_sys.path:
+    _ppe_sys.path.insert(0, str(_PPE_SCRIPTS))
+
+from graders import grade_deid as _ppe_grade_deid  # noqa: E402
+
+_PPE_FILES = REPO / "skills" / "ppe-matrix" / "evals" / "files"
+_PPE_LEAK = _PPE_FILES / "ppe-leak.md"
+_PPE_CLEAN = _PPE_FILES / "ppe-clean.md"
+
+
+def test_ppe_matrix_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _ppe_grade_deid(_PPE_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "ppe-matrix seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_ppe_matrix_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail)."""
+    verdict = _ppe_grade_deid(_PPE_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"ppe-matrix clean fixture false-positived: {verdict['reasons']}"
+    )
