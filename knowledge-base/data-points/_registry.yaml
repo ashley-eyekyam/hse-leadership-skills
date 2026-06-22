@@ -93,3 +93,124 @@
   last_reviewed: 2026-05-15
   volatile: false
   supersedes: null
+
+# --- hse-operations bundle (12-01): shared data-point substrate for the 10 OPS skills ---
+- id: KB-DATA-COMPETENCE-LEVELS
+  file: competence-levels.md
+  title: "Competence levels — 4-level scale (aware/trained/competent/expert) + evidence tests"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [competence, training-needs-analysis, induction, evidence-test, single-point-of-failure]
+    audience: [M, C, F]
+  summary: "Shared 4-level competence scale (aware/trained/competent/expert) with the evidence test per level; required level set by task risk not the person. Consumed by #13 training-needs-analysis AND #14 induction-pack. Statutory competence requirements resolved from the regulatory fragment, never downgraded to pass."
+  source: "ISO 45001:2018 cl. 7.2 (competence) + UK HSE HSG65 competence framework"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-DATA-ISO45001-MATURITY
+  file: iso45001-maturity.md
+  title: "ISO 45001 conformance/maturity — 5-level scale per clause + evidence tests"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [iso45001, maturity, conformance, gap-analysis, certification-blocker, evidence-test]
+    audience: [M, C]
+  summary: "5-level conformance/maturity scale (absent→ad-hoc→documented→implemented→measured) scored per ISO 45001 clause with evidence tests; a mandatory clause at level ≤2 is a certification-blocker. Consumed by #19 iso45001-gap-analysis AND reused by #13. Scoring convention over KB-STD-ISO45001, not the standard text."
+  source: "ISO 45001:2018 (clause 4-10) + ISO/IEC 17021-1 (certification-audit principles)"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-DATA-DRILL-FREQ
+  file: drill-freq.md
+  title: "Emergency-drill frequencies by scenario/site-class (source+year per row)"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [emergency-response, drill-frequency, evacuation, mah, scenario-keyed]
+    audience: [M, C]
+  summary: "Drill-frequency reference by scenario/site-class, each cadence carrying authority+year; binding obligation resolved at use time, [GAP] where a jurisdiction sets none. India drill obligations route to hse-india. Consumed by #15 emergency-response-plan."
+  source: "UK RRFSO 2005 art.15 / US OSHA 29 CFR 1910.38 / ISO 45001 8.2 / sector good-practice (per-row authority+year)"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: true
+  supersedes: null
+
+- id: KB-DATA-CONTRACTOR-TIERS
+  file: contractor-tiers.md
+  title: "Contractor risk tiers — tier → PQQ-depth → pass-threshold map"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [contractor, prequalification, risk-tier, pqq, pass-threshold, procurement]
+    audience: [M, C]
+  summary: "Risk-tier map (T1 low / T2 medium / T3 high-hazard) → PQQ depth → minimum evidence → pass threshold; tier set by the highest-risk activity. T3 cannot pass on PPE/competence claims alone; unverified claim → [GAP]/conditional. Consumed by #16 contractor-prequalification."
+  source: "ISO 45001:2018 cl. 8.1.4 + UK CDM 2015 reg.8 + UK SSIP + US OSHA multi-employer policy CPL 02-00-124"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-DATA-PSYCHOSOCIAL-INDICATORS
+  file: psychosocial-indicators.md
+  title: "Psychosocial indicator-tool benchmark bands (source+year, special-category)"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [psychosocial, hse-management-standards, indicator-tool, benchmark, special-category, small-cell-suppression]
+    audience: [M, C]
+  summary: "Where-to-resolve the HSE Management Standards Indicator Tool benchmark bands across the six domains, each band cited; survey data is special-category (mandatory <5 suppression, no individual attribution). Consumed by #18 psychosocial-risk-assessment."
+  source: "UK HSE Management Standards Indicator Tool + analysis benchmarks; ISO 45003:2021"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: true
+  supersedes: null
+
+- id: KB-DATA-OBLIGATION-FAMILIES
+  file: obligation-families.md
+  title: "Obligation families — activity → obligation-family lookup per jurisdiction"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [legal-register, applicability, obligation-family, multi-jurisdiction, india-deferral]
+    audience: [M, C]
+  summary: "Activity/hazard-profile → obligation-family applicability lookup (UK/US/EU rows + India→hse-india pointer); every row an applicability prompt confirmed at use time. India rows route to hse-india after state detection; NO national form number minted ([GAP] until resolved). Consumed by #20 legal-compliance-register."
+  source: "ISO 45001:2018 cl. 6.1.3/9.1.2; UK HSWA 1974/MHSWR 1999; US OSH Act/29 CFR 1910/1926; EU Dir. 89/391; India→hse-india"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: true
+  supersedes: null
+
+- id: KB-DATA-RTO-RPO-GUIDANCE
+  file: rto-rpo-guidance.md
+  title: "Recovery-objective banding — RTO/RPO under MTPD (ISO 22301)"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [business-continuity, bia, rto, rpo, mtpd, recovery-objective]
+    audience: [M, C]
+  summary: "Recovery-objective method bands + the RTO<MTPD margin discipline derived from the BIA; RTO asserted with no MTPD basis (or RTO≥MTPD) is invalid; strategies must cover stated dependencies. Method convention over KB-STD-ISO22301, not asserted values. Consumed by #26 business-continuity-plan."
+  source: "ISO 22301:2019 cl. 8.2.2/8.2.3/8.3 + ISO 22313:2020 (guidance)"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-DATA-RECORDABILITY-TESTS
+  file: recordability-tests.md
+  title: "Recordability & reportability tests — OSHA 1904 / RIDDOR 2013 (source+year)"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [regulatory-returns, recordability, reportability, osha-1904, riddor, deadline, india-deferral]
+    audience: [M, C]
+  summary: "OSHA 29 CFR 1904 recordability + RIDDOR 2013 reportability decision logic, forms and deadlines, each cited; binding rule resolved at use time. India row POINTS into hse-india after state detection — NO national form number minted ([GAP] until resolved). Consumed by #27 regulatory-returns."
+  source: "US OSHA 29 CFR 1904 (300/300A/301; 1904.41) + UK RIDDOR 2013 (reg.4/7/8/9, Sch.1/2) + EU transposition + India→hse-india"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: true
+  supersedes: null

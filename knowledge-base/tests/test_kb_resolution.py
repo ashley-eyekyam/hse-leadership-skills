@@ -18,6 +18,7 @@ Plain pytest, sandbox-offline. Paths resolve from the repo root.
 import re
 from pathlib import Path
 
+import pytest
 import yaml
 
 REPO = Path(__file__).resolve().parents[2]
@@ -97,3 +98,74 @@ def test_iso45001_resolves_via_standards_registry():
     """AC10 — a sample skill resolves KB-STD-ISO45001 via standards/_registry.yaml."""
     assert "KB-STD-ISO45001" in _registry_ids("standards")
     assert (KB / "standards" / "iso-45001.md").is_file()
+
+
+# --- Phase 12-01: the 19 NEW hse-operations KB fragments resolve (rule-9 root) ----
+#
+# Every Wave-2/3 OPS skill plan depends_on 12-01 and references these IDs by name; this
+# asserts each resolves in its folder's _registry.yaml AND its .md file exists on disk,
+# so no downstream skill hits a rule-9 dead-ref / vacuous kb-selection. The id→folder
+# mapping reuses the PREFIX_FOLDER convention (DATA→data-points, SNIP→prompt-snippets).
+OPS_NEW_IDS = [
+    # 8 data-points (KB-DATA-*)
+    "KB-DATA-COMPETENCE-LEVELS",
+    "KB-DATA-ISO45001-MATURITY",
+    "KB-DATA-DRILL-FREQ",
+    "KB-DATA-CONTRACTOR-TIERS",
+    "KB-DATA-PSYCHOSOCIAL-INDICATORS",
+    "KB-DATA-OBLIGATION-FAMILIES",
+    "KB-DATA-RTO-RPO-GUIDANCE",
+    "KB-DATA-RECORDABILITY-TESTS",
+    # 10 method snippets + the bundle clause-map (KB-SNIP-*)
+    "KB-SNIP-TNA-METHOD",
+    "KB-SNIP-INDUCTION-BASELINE",
+    "KB-SNIP-ERP-SCENARIOS",
+    "KB-SNIP-PQQ-BANK",
+    "KB-SNIP-HSE-MGMT-STANDARDS",
+    "KB-SNIP-GAP-PRIORITISATION",
+    "KB-SNIP-LEGAL-REGISTER-METHOD",
+    "KB-SNIP-SURVEILLANCE-TRIGGERS",
+    "KB-SNIP-BIA-METHOD",
+    "KB-SNIP-RETURNS-METHOD",
+    "KB-SNIP-OPS-CLAUSE-MAP",
+]
+
+
+def test_ops_new_ids_count():
+    """Exactly 19 NEW OPS fragments (8 data-points + 11 prompt-snippets)."""
+    assert len(OPS_NEW_IDS) == 19
+    assert len(set(OPS_NEW_IDS)) == 19  # no dupes
+
+
+@pytest.mark.parametrize("kid", OPS_NEW_IDS)
+def test_ops_new_id_resolves_in_registry_and_on_disk(kid):
+    """Each NEW OPS id resolves in its folder registry AND its .md file exists."""
+    prefix = kid.split("-")[1]
+    folder = PREFIX_FOLDER.get(prefix)
+    assert folder, f"id {kid} has unknown folder prefix {prefix}"
+    # resolves in the named folder's _registry.yaml
+    assert kid in _registry_ids(folder), f"{kid} not in {folder}/_registry.yaml"
+    # the .md file the registry row points at exists on disk in that folder
+    reg = yaml.safe_load((KB / folder / "_registry.yaml").read_text(encoding="utf-8"))
+    entry = next(e for e in reg if e["id"] == kid)
+    target = KB / folder / entry["file"]
+    assert target.is_file(), f"{kid} file '{entry['file']}' missing in {folder}/"
+    # the .md opens with its own ID marker comment (anti-mismatch)
+    assert target.read_text(encoding="utf-8").lstrip().startswith(
+        f"<!-- {kid} -->"
+    ), f"{target.name} does not open with <!-- {kid} -->"
+
+
+def test_ops_clause_map_carries_the_seven_clause_crosswalk():
+    """KB-SNIP-OPS-CLAUSE-MAP (D-10) carries the 7-clause operations cross-walk."""
+    text = (KB / "prompt-snippets" / "ops-clause-map.md").read_text(encoding="utf-8")
+    for clause in ("6.1.3", "7.2", "7.3", "8.1.4", "8.2", "9.1", "9.1.2"):
+        assert clause in text, f"clause {clause} missing from ops-clause-map.md"
+
+
+def test_ops_india_rows_point_into_hse_india_no_minted_form():
+    """India obligation/recordability rows route to hse-india; no national form minted."""
+    for fname in ("data-points/obligation-families.md", "data-points/recordability-tests.md"):
+        text = (KB / fname).read_text(encoding="utf-8")
+        assert "hse-india" in text, f"{fname} must point into hse-india"
+        assert "[GAP]" in text, f"{fname} must leave unverified India ids as [GAP]"

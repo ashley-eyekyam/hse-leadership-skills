@@ -104,3 +104,169 @@
   last_reviewed: 2026-06-20
   volatile: false
   supersedes: null
+
+# --- hse-operations bundle (12-01): method snippets + the bundle clause cross-walk (D-10) ---
+- id: KB-SNIP-TNA-METHOD
+  file: tna-method.md
+  title: "Training Needs Analysis — gap-scoring + prioritisation method"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [training-needs-analysis, competence, gap-scoring, prioritisation, single-point-of-failure]
+    audience: [M, C, F]
+  summary: "The #13 TNA method: profile roles → required competencies (+ legal) → band current level on KB-DATA-COMPETENCE-LEVELS → gap = required−current → SPoF flags → prioritise by gap×risk×legal-mandate → SMART plan. Training is admin-control, never the sole treatment."
+  source: "ISO 45001:2018 cl. 7.2 (competence) + systematic TNA practice"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-INDUCTION-BASELINE
+  file: induction-baseline.md
+  title: "Induction baseline — mandatory induction-topic set"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [induction, awareness, emergency, welfare, site-rules, verification-record]
+    audience: [M, C, F]
+  summary: "The #14 mandatory induction baseline (emergency · welfare · rules · site-specific hazards · reporting) layered onto the named site; generic induction refused; every induction produces a competence-verification record. Verification level uses KB-DATA-COMPETENCE-LEVELS."
+  source: "ISO 45001:2018 cl. 7.2/7.3 + UK MHSWR 1999 reg.10/13 + US OSHA orientation duties"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-ERP-SCENARIOS
+  file: erp-scenarios.md
+  title: "Emergency-response scenarios — credible-scenario catalogue + procedure skeletons"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [emergency-response, scenario-keyed, call-out-tree, muster, prevention-first, drill]
+    audience: [M, C]
+  summary: "The #15 credible-scenario menu + per-scenario procedure skeleton (prevention-first via KB-SNIP-HOC, detection/alarm, immediate actions, roles+deputies, muster, responder interface, recovery+BCP link); capability proven before reliance; drill cadence from KB-DATA-DRILL-FREQ."
+  source: "ISO 45001:2018 cl. 8.2 + US OSHA 29 CFR 1910.38 + UK RRFSO 2005 art.15"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-PQQ-BANK
+  file: pqq-bank.md
+  title: "Contractor PQQ bank — evidence-anchored questions by risk tier"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [contractor, prequalification, pqq, evidence, risk-tier, scoring]
+    audience: [M, C]
+  summary: "The #16 evidence-anchored PQQ bank by risk tier (core / task-specific / high-hazard module), each question tied to required evidence; never score a self-asserted claim, high-hazard work cannot pass on PPE/competence claims alone, missing evidence → [GAP]. Tier from KB-DATA-CONTRACTOR-TIERS."
+  source: "ISO 45001:2018 cl. 8.1.4 + UK CDM 2015 reg.8 + UK SSIP + US OSHA multi-employer policy"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-HSE-MGMT-STANDARDS
+  file: hse-mgmt-standards.md
+  title: "HSE Management Standards — six domains + work-design controls"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [psychosocial, hse-management-standards, work-design-controls, confidentiality, special-category]
+    audience: [M, C]
+  summary: "The #18 six-domain framework (demands/control/support/relationships/role/change) with indicative work-design controls ranked above individual resilience; <5 small-cell suppression on special-category data; triangulate ≥2 sources, never a single anecdote. Benchmark bands from KB-DATA-PSYCHOSOCIAL-INDICATORS."
+  source: "UK HSE Management Standards + ISO 45003:2021"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-GAP-PRIORITISATION
+  file: gap-prioritisation.md
+  title: "Gap prioritisation — severity × certification-blocking"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [iso45001, gap-analysis, prioritisation, certification-blocker, remediation-roadmap]
+    audience: [M, C]
+  summary: "The #19 method: score every clause on KB-DATA-ISO45001-MATURITY (no silent omission), classify each gap by severity × certification-blocking (mandatory clause at level ≤2 = blocker, not minor), prioritise blockers first, cost+date as SMART actions traced to clause+owner."
+  source: "ISO 45001:2018 (clause 4-10) + ISO/IEC 17021-1"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-LEGAL-REGISTER-METHOD
+  file: legal-register-method.md
+  title: "Legal-register method — applicability → evidence → review cadence"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [legal-register, applicability, evidence-mapping, review-cadence, india-deferral]
+    audience: [M, C]
+  summary: "The #20 method: determine applicability per named activity (confirm, not just list — inapplicable reg flagged), map obligation→evidence→gap→owner→review-date, evaluate compliance (9.1.2). India defers to hse-india after state detection; NO national form number minted ([GAP] until resolved)."
+  source: "ISO 45001:2018 cl. 6.1.3 / 9.1.2"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-SURVEILLANCE-TRIGGERS
+  file: surveillance-triggers.md
+  title: "Health-surveillance triggers — OEL-linked cadence"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [health-surveillance, oel, seg, exposure, special-category, surveillance-cadence]
+    audience: [M, C]
+  summary: "The #25 method: define SEGs → compare exposure to a cited OEL (KB-DATA-OEL-LIMITS/EXPOSURE-LIMITS, no parallel table) → set surveillance cadence from the action-level trigger → rank controls above PPE and above surveillance → <5 suppression on health-outcome breakdowns. Ergonomics via the engine + KB-STD-GHS-ERGO."
+  source: "UK COSHH 2002 / Noise 2005 / Vibration 2005 + US OSHA 29 CFR 1910.95/1910.1200"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-BIA-METHOD
+  file: bia-method.md
+  title: "BIA method — BIA → MTPD → RTO/RPO derivation"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [business-continuity, bia, mtpd, rto, rpo, dependencies, exercise]
+    audience: [M, C]
+  summary: "The #26 method: identify critical activities+outputs → impact-over-time → MTPD → capture dependencies → derive RTO<MTPD (margin) + RPO (KB-DATA-RTO-RPO-GUIDANCE) → strategies covering every dependency → plan with deputies + exercise schedule + ERP cross-ref. RTO with no MTPD basis invalid."
+  source: "ISO 22301:2019 cl. 8.2.2/8.2.3/8.3/8.4/8.5 + ISO 22313:2020"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-RETURNS-METHOD
+  file: returns-method.md
+  title: "Regulatory-returns method — determine → form → deadline → prepare"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [regulatory-returns, recordability, reportability, form-selection, deadline, india-deferral]
+    audience: [M, C]
+  summary: "The #27 method: capture facts the test needs → apply the cited recordability/reportability test (KB-DATA-RECORDABILITY-TESTS) → identify form+deadline → prepare a de-identified working return (+<5 suppression, no re-id key) + evidence trail. India defers to hse-india after state detection; NO national form number minted ([GAP])."
+  source: "US OSHA 29 CFR 1904 + UK RIDDOR 2013 + EU transposition + India→hse-india"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-OPS-CLAUSE-MAP
+  file: ops-clause-map.md
+  title: "hse-operations clause cross-walk — ISO 45001 operations clause → owning skill (D-10)"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [iso45001, clause-cross-walk, hse-operations, bundle-shared, routing]
+    audience: [M, C]
+  summary: "Bundle-shared ISO 45001 operations clause cross-walk (6.1.3→#20, 7.2→#13, 7.3→#14, 8.1.4→#16, 8.2→#15, 9.1→#19, 9.1.2→#20; 6.1.2 cross-cut→#25/#18) + adjacent ISO 22301 (#26) / ISO 45003 (#18) pointers. Referenced by EVERY OPS skill's kb-selection; single source, never duplicated into a skill body."
+  source: "ISO 45001:2018 (6.1.3/7.2/7.3/8.1.4/8.2/9.1/9.1.2) + ISO 22301:2019 + ISO 45003:2021"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
