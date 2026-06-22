@@ -214,3 +214,65 @@
   last_reviewed: 2026-06-22
   volatile: true
   supersedes: null
+
+# --- Phase 13 hse-leadership bundle (4 data-points) ---------------------------
+
+- id: KB-DATA-CULTURE-MATURITY
+  file: culture-maturity.md
+  title: "Safety-culture maturity bands + Schein espoused-vs-enacted gap rubric (source+year, D-05)"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [safety-culture, maturity-bands, bradley-curve, hudson-ladder, schein-gap, small-cell-suppression]
+    audience: [M, C]
+  summary: "Maturity bands for the Bradley + Hudson ladders PLUS a Schein espoused-vs-enacted GAP rubric (NOT maturity bands, D-05) — standalone Schein output is a three-levels diagnosis, not a rating. Descriptors/probes in KB-SNIP-CULTURE-MODELS; <5 small-cell suppression, no individual attribution. Consumed by safety-culture-assessment. Volatile."
+  source: "DuPont Bradley Curve; Hudson/Parker Hearts & Minds ladder; Schein, Organizational Culture and Leadership (three-levels gap)"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: true
+  supersedes: null
+
+- id: KB-DATA-BBS-METRICS
+  file: bbs-metrics.md
+  title: "BBS metrics — percent-safe / participation / trend, defined + <5 guardrail (source+year)"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [behaviour-based-safety, percent-safe, participation-rate, trend, small-cell-suppression, non-punitive]
+    audience: [M, C]
+  summary: "Defined BBS metrics: percent-safe = (safe÷total)×100; participation = (active÷trained pool)×100; trend by behaviour category (never by person). Non-punitive, role-labelled/anonymous; mandatory <5 small-cell suppression on any team breakdown (a 4-person crew percent-safe is suppressed). Consumed by bbs-program-designer."
+  source: "Applied behaviour analysis / behaviour-based safety method"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-DATA-LEADING-INDICATORS
+  file: leading-indicators.md
+  title: "Leading/lagging HSE indicator catalogue — single-source, each cited (source+year, D-03)"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [leading-indicator, lagging-indicator, hsg65, oecd-ccps, trir, ltifr, monitoring]
+    audience: [M, C]
+  summary: "Single-source curated leading/lagging indicator catalogue (D-03), each tagged leading|lagging + formula + cited source: % planned inspections, near-miss rate, training completion, action close-out, BBS percent-safe, gemba-commitment closure, PTW compliance + lagging TRIR/LTIFR/DART (computed by incident_rates, anchors TRIR 2.07/LTIFR 6.00). Consumed by kpi + gemba + culture; never duplicated per-skill. Volatile."
+  source: "HSE HSG65 active/reactive monitoring; OECD/CCPS leading-indicator guidance; lagging definitions per incident_rates"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: true
+  supersedes: null
+
+- id: KB-DATA-ROAD-SAFETY-INDICATORS
+  file: road-safety-indicators.md
+  title: "Road-safety leading/lagging indicators — ISO 39001:2012 RTS factors (source+year, D-01)"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [road-safety, iso39001, rts-factors, speeding, telematics, journey-management, driver-hours]
+    audience: [M, C]
+  summary: "The single home of road-safety KPIs (D-01): 5 indicators mapped to ISO 39001:2012 RTS factors — speeding, harsh-events, journey management, vehicle-defect rate, driver-hours compliance — each leading|lagging tag · formula · source · target; + seatbelt/helmet RTS factors. Cross-refs SUB-03 fatigue-index + FMCSA HOS/EU drivers' hours but does NOT compute them; LEAD-06 owns the indicator, LOG-01 owns the engine. Consumed by leading-lagging-kpi-framework. Volatile."
+  source: "ISO 39001:2012 (Road Traffic Safety Management Systems) RTS performance factors; telematics practice"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: true
+  supersedes: null

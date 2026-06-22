@@ -270,3 +270,110 @@
   last_reviewed: 2026-06-22
   volatile: false
   supersedes: null
+
+# --- Phase 13 hse-leadership bundle (7 prompt-snippets) -----------------------
+
+- id: KB-SNIP-LEADERSHIP-CLAUSE-MAP
+  file: leadership-clause-map.md
+  title: "hse-leadership clause cross-walk — ISO 45001 leadership clause → owning skill (CONV-10)"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [iso45001, clause-cross-walk, hse-leadership, bundle-shared, routing, leadership]
+    audience: [M, C]
+  summary: "Bundle-shared ISO 45001 leadership clause cross-walk (5.1→safety-walk-gemba/safety-culture-assessment, 5.2→hse-policy-generator, 5.4→bbs-program-designer/safety-walk-gemba/safety-culture-assessment, 9.1→leading-lagging-kpi-framework/hse-annual-esg-report). Referenced by EVERY leadership skill's kb-selection; single source, never duplicated into a skill body."
+  source: "ISO 45001:2018 (clauses 5.1/5.2/5.4/9.1)"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-CULTURE-MODELS
+  file: culture-models.md
+  title: "Safety-culture models — Bradley/Hudson/Westrum ladders + Schein three-levels lens (D-05)"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [safety-culture, maturity-model, bradley-curve, hudson-ladder, westrum, schein, diagnostic-lens]
+    audience: [M, C]
+  summary: "Four selectable+combinable culture lenses: Bradley/Hudson/Westrum maturity ladders + Schein three-levels diagnostic lens (NOT a 4th ladder, D-05), each with descriptors+probes. Bands resolve from KB-DATA-CULTURE-MATURITY. Consumed by safety-culture-assessment; never rate on a single survey (model+population+≥2 sources)."
+  source: "DuPont Bradley Curve; Hudson/Parker Hearts & Minds (Leiden/Shell); Westrum (BMJ Qual Saf 2004); Schein, Organizational Culture and Leadership"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-BBS-METHOD
+  file: bbs-method.md
+  title: "Behaviour-based safety method — ABC analysis + non-punitive observation card"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [behaviour-based-safety, abc-analysis, observation-card, non-punitive, observer-feedback, reaches-systemic]
+    audience: [M, C]
+  summary: "ABC (antecedent-behaviour-consequence) + non-punitive observation-card design + observer-feedback loop; at-risk behaviours route to hierarchy-ranked system fixes (controls), never retrain-the-worker/discipline; observable site-specific items only. Metrics+<5 guardrail in KB-DATA-BBS-METRICS. Consumed by bbs-program-designer."
+  source: "Applied behaviour analysis / behaviour-based safety method; DuPont STOP, Krause/BST peer-observation exemplars"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-ESG-ASSURANCE
+  file: esg-assurance.md
+  title: "ESG assurance method — boundary/data-quality/materiality/strictest de-id (reuse GRI403, D-02)"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [esg, assurance, isae-3000, aa1000as, reporting-boundary, double-materiality, secondary-suppression]
+    audience: [M, C]
+  summary: "Assurance method only (D-02): limited vs reasonable assurance, reporting boundary (operational/financial/equity + own-workforce/non-employee), data-quality (definition+denominator+source+period+completeness), double materiality, strictest-tier de-id (<5 + secondary suppression). Disclosure crosswalk REUSES KB-STD-ESG-GRI403; KB-DP-ESG-DISCLOSURES NOT minted. Consumed by hse-annual-esg-report."
+  source: "ISAE 3000 (Revised); AA1000AS v3; ESRS double materiality; GRI/GHG-Protocol boundary concepts"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: true
+  supersedes: null
+
+- id: KB-SNIP-POLICY-COMMITMENTS
+  file: policy-commitments.md
+  title: "OH&S policy commitments — ISO 45001 clause 5.2 mandatory set + context-fit"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [iso45001, policy, clause-5-2, top-management, anti-boilerplate, india-deferral]
+    audience: [M, C]
+  summary: "ISO 45001:2018 clause 5.2 five mandatory commitments (objectives framework, legal/other, eliminate hazards via KB-SNIP-HOC, continual improvement, consultation) + appropriate-to-purpose/size/context + documented/communicated/top-management-signed + anti-boilerplate context-fit + ISO 14001/45003 variants. India statutory duty defers to hse-india (CONV-8, no national-form mint). Consumed by hse-policy-generator."
+  source: "ISO 45001:2018 clause 5.2; ISO 14001:2015 5.2; ISO 45003:2021; UK HSWA 1974 s.2(3)"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-GEMBA-PROMPTS
+  file: gemba-prompts.md
+  title: "Gemba / leadership-walk prompt bank — open conversation, commitment-as-leading-indicator"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [gemba, leadership-walk, felt-leadership, open-questions, commitment-tracking, leading-indicator]
+    audience: [M, C, F]
+  summary: "Open-question conversation-prompt bank by purpose/area (felt-leadership, hazard-spotting, control-verification, post-incident) — engagement not a tick-box; concerns role-labelled. Every walk commitment → owned/dated smart_actions; commitment closure-rate is a leading indicator (consumes KB-DATA-LEADING-INDICATORS). Consumed by safety-walk-gemba."
+  source: "Gemba/genchi-genbutsu (Toyota/lean); HSE HSG65 felt leadership; ISO 45001:2018 clauses 5.1 & 5.4"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-KPI-DESIGN
+  file: kpi-design.md
+  title: "Leading/lagging KPI design — balanced architecture + anti-gaming (ISO 45001 9.1)"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [kpi, leading-indicator, lagging-indicator, iso45001-9-1, anti-gaming, performance-evaluation]
+    audience: [M, C]
+  summary: "Balanced leading/lagging architecture against ISO 45001 9.1: per-indicator definition (formula·source·frequency·owner·target), anti-gaming guardrails, target-setting by maturity. Catalogue single-sourced in KB-DATA-LEADING-INDICATORS; road-safety branch via KB-DATA-ROAD-SAFETY-INDICATORS. Distinct from incident-rate-calculator (computes) and process-safety-kpi (API RP 754). Consumed by leading-lagging-kpi-framework."
+  source: "ISO 45001:2018 clause 9.1; HSE HSG65 active/reactive monitoring; OECD/CCPS leading-indicator guidance"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null

@@ -169,3 +169,83 @@ def test_ops_india_rows_point_into_hse_india_no_minted_form():
         text = (KB / fname).read_text(encoding="utf-8")
         assert "hse-india" in text, f"{fname} must point into hse-india"
         assert "[GAP]" in text, f"{fname} must leave unverified India ids as [GAP]"
+
+
+# --- Phase 13-01: the 11 NEW hse-leadership KB fragments resolve (rule-9 root) -----
+#
+# Every Wave-2/3 leadership skill plan depends_on 13-01 and references these IDs by name
+# via its kb-selection; this asserts each resolves in its folder's _registry.yaml AND its
+# .md file exists on disk, so no downstream skill hits a rule-9 dead-ref / vacuous
+# kb-selection. The id→folder mapping reuses PREFIX_FOLDER (DATA→data-points,
+# SNIP→prompt-snippets).
+LEADERSHIP_NEW_IDS = [
+    # 4 data-points (KB-DATA-*)
+    "KB-DATA-CULTURE-MATURITY",
+    "KB-DATA-BBS-METRICS",
+    "KB-DATA-LEADING-INDICATORS",
+    "KB-DATA-ROAD-SAFETY-INDICATORS",
+    # 7 prompt-snippets (KB-SNIP-*) incl. the bundle clause-map
+    "KB-SNIP-LEADERSHIP-CLAUSE-MAP",
+    "KB-SNIP-CULTURE-MODELS",
+    "KB-SNIP-BBS-METHOD",
+    "KB-SNIP-ESG-ASSURANCE",
+    "KB-SNIP-POLICY-COMMITMENTS",
+    "KB-SNIP-GEMBA-PROMPTS",
+    "KB-SNIP-KPI-DESIGN",
+]
+
+
+def test_leadership_new_ids_count():
+    """Exactly 11 NEW leadership fragments (4 data-points + 7 prompt-snippets)."""
+    assert len(LEADERSHIP_NEW_IDS) == 11
+    assert len(set(LEADERSHIP_NEW_IDS)) == 11  # no dupes
+
+
+@pytest.mark.parametrize("kid", LEADERSHIP_NEW_IDS)
+def test_leadership_new_id_resolves_in_registry_and_on_disk(kid):
+    """Each NEW leadership id resolves in its folder registry AND its .md file exists,
+    opening with its own ID marker comment (anti-mismatch)."""
+    prefix = kid.split("-")[1]
+    folder = PREFIX_FOLDER.get(prefix)
+    assert folder, f"id {kid} has unknown folder prefix {prefix}"
+    assert kid in _registry_ids(folder), f"{kid} not in {folder}/_registry.yaml"
+    reg = yaml.safe_load((KB / folder / "_registry.yaml").read_text(encoding="utf-8"))
+    entry = next(e for e in reg if e["id"] == kid)
+    target = KB / folder / entry["file"]
+    assert target.is_file(), f"{kid} file '{entry['file']}' missing in {folder}/"
+    assert target.read_text(encoding="utf-8").lstrip().startswith(
+        f"<!-- {kid} -->"
+    ), f"{target.name} does not open with <!-- {kid} -->"
+
+
+def test_leadership_clause_map_crosswalks_iso45001_5x_9x():
+    """KB-SNIP-LEADERSHIP-CLAUSE-MAP (CONV-10) cross-walks ISO 45001 5.1/5.2/5.4/9.1."""
+    text = (KB / "prompt-snippets" / "leadership-clause-map.md").read_text(encoding="utf-8")
+    for clause in ("5.1", "5.2", "5.4", "9.1"):
+        assert clause in text, f"clause {clause} missing from leadership-clause-map.md"
+
+
+def test_esg_reuses_gri403_no_disclosures_minted():
+    """D-02: ESG reuses the shipped KB-STD-ESG-GRI403 (referenced, not duplicated); the
+    KB-DP-ESG-DISCLOSURES id is never minted as a fragment or registry entry."""
+    assert "KB-STD-ESG-GRI403" in _registry_ids("standards")
+    assert not (KB / "data-points" / "esg-disclosures.md").is_file()
+    for folder in ("data-points", "prompt-snippets", "standards"):
+        assert "KB-DP-ESG-DISCLOSURES" not in _registry_ids(folder), (
+            f"KB-DP-ESG-DISCLOSURES must NOT be minted (found in {folder}/)"
+        )
+
+
+def test_culture_maturity_schein_is_gap_rubric_not_bands():
+    """D-05: KB-DATA-CULTURE-MATURITY carries a Schein espoused-vs-enacted GAP rubric,
+    NOT Schein maturity bands; the literal phrase 'Schein Level 4' never appears."""
+    text = (KB / "data-points" / "culture-maturity.md").read_text(encoding="utf-8")
+    assert "espoused" in text.lower(), "Schein gap rubric must speak of espoused-vs-enacted"
+    assert "Schein Level 4" not in text, "Schein must not be forced into a maturity band"
+
+
+def test_road_safety_indicators_cite_iso39001_single_home():
+    """D-01: KB-DATA-ROAD-SAFETY-INDICATORS is the single home of road-safety KPIs,
+    cited to ISO 39001:2012, and cross-references (not computes) fatigue/HOS."""
+    text = (KB / "data-points" / "road-safety-indicators.md").read_text(encoding="utf-8")
+    assert "39001" in text, "road-safety indicators must cite ISO 39001"
