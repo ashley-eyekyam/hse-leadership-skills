@@ -1,0 +1,55 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Behaviour-Based Safety Program Design — {site / crew / operation}",
+    "subtitle": "Non-punitive BBS program · ABC analysis · observable behaviours · ISO 45001 clause 5.4 worker participation",
+    "author": "{program owner role}",
+    "date": "{ISO date}",
+    "classification": "Decision-support — competent-person review required",
+    "house_template": "house-standard",
+    "deid_notice": "This BBS program is non-punitive by design: all observation data is role-labelled or anonymous and used for trending and learning, never individual discipline. No card records a nameable individual; no team breakdown of fewer than 5 is published (secondary suppression applied); metrics are trended by behaviour category, never by person, and no re-identification key appears. Decision-support; a competent person must review this program before roll-out."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Program overview" },
+    { "type": "paragraph", "text": "A non-punitive behaviour-based-safety observation program for the {site / crew / operation}, designed around observable, site-specific behaviours and ABC analysis. At-risk behaviours are trended to systemic causes and routed to hierarchy-ranked system fixes — never to 'retrain the worker' or discipline. Grounded in ISO 45001 clause 5.4 (worker participation)." },
+    { "type": "callout", "box_type": "info", "text": "Cards are role-labelled or anonymous, voluntary, and used for trending and learning — never individual sanction. Participation is voluntary; the program observes the work and the behaviour, not the worker." },
+
+    { "type": "heading", "level": 1, "text": "ABC analysis (antecedent · behaviour · consequence)" },
+    { "type": "paragraph", "text": "For each target behaviour the antecedent (the real trigger), the observable behaviour, and the consequence are mapped; the system is designed so the SAFE behaviour carries the soon / certain / positive consequence." },
+    { "type": "table",
+      "headers": ["Antecedent (trigger)", "Observable behaviour (safe)", "Consequence to design", "Target task/area"],
+      "rows": [
+        ["{cue / condition}", "{observable safe behaviour — never 'work safely'}", "{soon/certain/positive reinforcement}", "{named task/area}"]
+      ],
+      "caption": "Each behaviour is observable and site-specific; a non-observable slogan is refused, not listed." },
+
+    { "type": "heading", "level": 1, "text": "Observation card (non-punitive, observable)" },
+    { "type": "bullets", "items": [
+        "Each item is observable and site-specific, tied to a named task/area (never 'work safely' / 'be careful').",
+        "Role-labelled or anonymous by default — no nameable individual is recorded.",
+        "Voluntary participation; two-way, immediate observer feedback (positive AND at-risk discussed on the spot).",
+        "Data is used for trending and learning, never individual discipline." ] },
+
+    { "type": "heading", "level": 1, "text": "Defined metrics" },
+    { "type": "metrics", "metrics": [
+        { "label": "Percent-safe", "value": "{(safe ÷ total) × 100}", "unit": "%", "caption": "trended by behaviour category, never by person" },
+        { "label": "Participation", "value": "{(active ÷ trained pool) × 100}", "unit": "%" } ] },
+    { "type": "paragraph", "text": "Metrics are defined per KB-DATA-BBS-METRICS and trended by behaviour category, never by person. The <5 small-cell suppression applies to any team breakdown — a percent-safe for a 4-person crew is suppressed, with secondary suppression so it cannot be back-calculated." },
+
+    { "type": "heading", "level": 1, "text": "At-risk behaviours trended to systemic causes" },
+    { "type": "findings", "rows": [
+        { "title": "{at-risk behaviour category}", "risk_level": "{trend / frequency}", "description": "{the recurring systemic driver this category points to}", "evidence": "{aggregated card trend — category-level, no individual named}" } ] },
+
+    { "type": "heading", "level": 1, "text": "System fixes (hierarchy of controls — never retrain-the-worker)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "{eliminate / substitute / engineer / administrate fix for the at-risk category}", "tier": "{Elimination / Substitution / Engineering / Administrative}", "owner": "{named role-label}" } ] },
+    { "type": "paragraph", "text": "Each trended at-risk category is routed through the controls engine to a hierarchy-ranked system fix. 'Retrain the worker', 'be more careful', or discipline as the sole response is rejected as a hierarchy-of-controls defect." },
+
+    { "type": "heading", "level": 1, "text": "Action plan (owned + dated)" },
+    { "type": "recommendations", "rows": [
+        { "action": "{system-fix action for a trended at-risk category}", "priority": "{High / Medium}", "owner": "{named role-label}", "due": "{ISO due date}" } ] },
+
+    { "type": "heading", "level": 1, "text": "Observer-feedback loop & review cycle" },
+    { "type": "paragraph", "text": "observe → discuss (two-way, positive + at-risk) → record card (de-identified) → aggregate / trend by behaviour category → feed systemic fixes via controls + owned/dated actions → close the loop back to observers and the workforce. Metrics reviewed {cadence}; cards reviewed {cadence}." }
+  ]
+}

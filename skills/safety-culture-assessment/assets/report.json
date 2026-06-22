@@ -1,0 +1,52 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Safety Culture Assessment — {Organisation / Site / Unit}",
+    "subtitle": "Maturity model + Schein lens, with advancement roadmap",
+    "author": "HSE Leadership",
+    "date": "2026-06-22",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All respondents are referred to by role/group/cohort label only. No cohort breakdown of fewer than 5 respondents is published; secondary suppression is applied; no verbatim quote identifies a speaker. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "This assessment diagnoses the safety culture of the named unit against a recognised maturity model (and/or the Schein three-levels lens), triangulated across at least two data sources. It is a culture DIAGNOSIS — not a rating from a single survey — and drives a systemic advancement roadmap. Decision-support only; a competent person must review it before use." },
+    { "type": "heading", "level": 1, "text": "Scope, model & data sources" },
+    { "type": "bullets", "items": ["Named population: {organisation / site / unit}", "Model / lens: {Bradley | Hudson | Westrum | Schein three-levels | combined} — cited as method, not law (source + year quoted)", "Data sources (>=2, triangulated): {validated culture survey} + {leadership-walk / observation data} + {records}", "Confidentiality threshold: cohort cells <5 suppressed (secondary suppression); paraphrase-only quotes"] },
+    { "type": "heading", "level": 1, "text": "Maturity position (model bands)" },
+    { "type": "table",
+      "headers": ["Dimension", "Evidence (>=2 sources)", "Band", "Source + year"],
+      "rows": [
+        ["Ownership of safety", "{survey + observation}", "{model band}", "{model, year}"],
+        ["Information flow (Westrum)", "{reporting records + survey}", "{model band}", "{model, year}"],
+        ["Leadership commitment (ISO 45001 5.1)", "{walk data + survey}", "{model band}", "{model, year}"]
+      ],
+      "caption": "Maturity banding — each dimension triangulated across >=2 sources; no single-survey rating; no <5 cohort cell published" },
+    { "type": "heading", "level": 1, "text": "Schein espoused-vs-enacted gap (diagnosis)" },
+    { "type": "table",
+      "headers": ["Espoused value (level 2)", "Enacted assumption (levels 1 & 3)", "Gap", "Evidence"],
+      "rows": [
+        ["{stated value / slogan / policy}", "{what actually wins when schedule vs safety collide}", "{wide | moderate | aligned}", "{artifact / behaviour observed}"]
+      ],
+      "caption": "Schein three-levels diagnosis — named espoused-vs-enacted gaps, NOT a maturity band; standalone Schein is a diagnosis, not a rating" },
+    { "type": "heading", "level": 1, "text": "Systemic drivers (key findings)" },
+    { "type": "findings", "rows": [
+        { "title": "{systemic driver}", "risk_level": "Medium",
+          "description": "What in the leadership system / work design holds the culture where it is — attributed to a role/group/system, never an individual.", "evidence": "{triangulated source}" } ] },
+    { "type": "heading", "level": 1, "text": "Advancement controls (hierarchy of controls)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Close the named espoused-vs-enacted gap: fix the consequence system so the safe choice is the easy choice", "tier": "Elimination", "owner": "{role-label owner}" },
+        { "control": "Genuine worker consultation & participation (ISO 45001 5.4)", "tier": "Engineering", "owner": "{role-label owner}" },
+        { "control": "Visible felt-leadership safety-walk cadence", "tier": "Administrative", "owner": "{role-label owner}" } ] },
+    { "type": "heading", "level": 1, "text": "Advancement roadmap (SMART, tracked to leading indicators)" },
+    { "type": "recommendations", "rows": [
+        { "action": "{advancement move tied to a leading indicator from KB-DATA-LEADING-INDICATORS}", "priority": "P1", "owner": "{role-label owner}", "due": "2026-09-01" },
+        { "action": "{advancement move — measured by consultation cadence / walk-commitment closure-rate}", "priority": "P2", "owner": "{role-label owner}", "due": "2026-10-01" } ] },
+    { "type": "callout", "text": "This is a culture diagnosis. Operationalise it with the sibling skills: bbs-program-designer (observation programme), safety-walk-gemba (leadership walks), and leading-lagging-kpi-framework (the balanced KPI set that tracks advancement).", "box_type": "info" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Confidentiality statement & method basis" },
+    { "type": "bullets", "items": ["Role/group/cohort labels only; no <5 cohort cell; no identifying verbatim quote; no individual named as the culture problem", "Culture models cited as method, not law (Bradley / Hudson / Westrum / Schein)", "ISO 45001 5.1 (leadership & commitment) and 5.4 (consultation & participation of workers) — the duties this assessment evidences", "Decision-support only; a competent person must review this output"] }
+  ]
+}

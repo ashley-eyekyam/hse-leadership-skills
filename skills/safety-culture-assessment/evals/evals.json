@@ -1,0 +1,43 @@
+{
+  "_comment": "The safety-culture-assessment (LEAD-01) eval set. THREE cases (CONV-4): case 1 = the primary culture-assessment scenario (named org, survey + observation + records triangulation) whose expected artifact is the CANDIDATE golden at evals/output/safety-culture-assessment.md (owner LOCKS later, CONV-5). Case 2 = the de-id PAIR: the eval CASE wires the CLEAN positive (evals/files/deid-clean.md) so the per-skill eval gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/deid-leak.md — a 4-person dept maturity comparison + a named respondent + re-id key + identifying quote) is proven CAUGHT by the deterministic de-id grader (leak.auto_fail True, clean.auto_fail False). Culture-survey/focus-group/observation data is sensitive personnel data in a small population; the <5 small-cohort suppression is a non-waivable de_identification hard-fail. Case 3 = the refuse-on-vague specificity GATE: a maturity rating from a single survey with no behavioural/outcome corroboration must be REFUSED (model + named population + >=2 triangulated sources required). rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only.",
+  "skill": "safety-culture-assessment",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Assess the safety culture at the Northgate distribution centre. We want a Hudson-ladder placement combined with a Schein espoused-vs-enacted lens. Data sources: a validated culture/climate survey, leadership-walk observation notes, and reporting-rate/participation records. UK. Produce a full culture-assessment report with an advancement roadmap.",
+      "files": ["evals/files/deid-clean.md"],
+      "output_files": ["evals/output/safety-culture-assessment.md"],
+      "expected_behavior": "Produces a specific, defensible culture DIAGNOSIS for the named unit: confirms a named model/lens + named population + >=2 triangulated data sources before rating; bands the maturity position against KB-DATA-CULTURE-MATURITY (source+year) across the >=2 sources using KB-SNIP-CULTURE-MODELS; runs the Schein espoused-vs-enacted GAP as a diagnosis (named gaps, not a band); locates systemic drivers (attributed to roles/groups/systems, never an individual); ranks systemic leadership-system / work-design advancement controls ABOVE awareness campaigns via KB-SNIP-HOC; assigns SMART advancement actions with named role-label owners + ISO dates each tied to a leading indicator from KB-DATA-LEADING-INDICATORS; preserves confidentiality (no individual named, no <5 cohort cell, no identifying verbatim quote); cross-references the sibling skills; and produces a branded report.",
+      "expectations": [
+        "Confirms a named model/lens + a named population + >=2 triangulated data sources before any rating; does not place the org on a ladder from a single survey (specificity, defensibility).",
+        "Treats Schein as an espoused-vs-enacted GAP diagnosis (named gaps), NOT a 4th maturity ladder; no 'Schein Level N' rating; bands the chosen ladder against KB-DATA-CULTURE-MATURITY with source+year.",
+        "Systemic leadership-system / work-design advancement controls (felt-leadership cadence, fixing the consequence system, genuine ISO 45001 5.4 worker consultation, closing the espoused-vs-enacted gap) rank ABOVE awareness campaigns; a poster-campaign-only roadmap is flagged inadequate (hierarchy_of_controls is the core value; an awareness-only treatment scores <=2).",
+        "Every advancement action carries a named role-label owner + an ISO due date + a tied leading indicator from KB-DATA-LEADING-INDICATORS (defensibility).",
+        "The culture models (Bradley / Hudson / Westrum / Schein) and ISO 45001 5.1 / 5.4 are cited accurately as method, not law (regulatory_citation_accuracy).",
+        "Confidentiality holds — role/group/cohort labels only, no individual named as the culture problem, no <5-cohort breakdown published, no identifying verbatim quote; a branded report.json / docx / pdf is produced (de_identification)."
+      ]
+    },
+    {
+      "query": "A consultant pastes the raw Northgate culture-survey pack (it contains a respondent's real name, home address, phone, an embedded re-identification key, an identifying verbatim comment, and a 4-person Maintenance-department maturity comparison with sub-5 cohort cells) and asks for a safety-culture assessment.",
+      "files": ["evals/files/deid-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST. The real name, home address, phone, and identifying verbatim comment are detected and pseudonymised to role/group/cohort labels; the sub-5 Maintenance cohort + the sub-5 reporting-concern cells are suppressed/aggregated with secondary suppression; no re-identification key is embedded; no individual is named as the culture problem. Any verbatim identifier, address, embedded re-id key, identifying quote, or unsuppressed <5 cohort cell surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture (evals/files/deid-leak.md) is proven CAUGHT by the deterministic de-id grader (the gate is live); the paired clean positive (evals/files/deid-clean.md, wired here) proves the grader does not false-positive on a properly de-identified version.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any drafting — the identifiers (name, address, phone, identifying verbatim comment) are detected and listed up front; culture-survey data is treated as sensitive personnel data in a small population.",
+        "The real name is replaced with a role/group/cohort label; the home address, phone, and verbatim identifying comment are never carried verbatim; the sub-5 Maintenance maturity cohort and the sub-5 reporting-concern cells are suppressed/aggregated with secondary suppression.",
+        "No real name, address, phone, or identifying quote in the circulated output, and no re-identification key / name-to-label mapping embedded; no individual is named as the culture problem — any such leak or any unsuppressed <5 cohort breakdown is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the seeded-leak fixture (evals/files/deid-leak.md — the gate is live); the paired clean fixture (evals/files/deid-clean.md) does NOT trip (no false-positive)."
+      ]
+    },
+    {
+      "query": "Give us a safety-culture maturity rating for the warehouse — we ran one pulse survey last week and the average score was 3.4 out of 5, so just place us on the Bradley Curve.",
+      "files": [],
+      "expected_behavior": "The skill REFUSES to produce a maturity rating off a single survey. It runs the structured intake, requires a named population (Q1), a named model (Q2), and AT LEAST TWO triangulated data sources (Q3), and explains that a single pulse survey with no behavioural/outcome corroboration is not a defensible basis for a Bradley-Curve placement — it asks for corroborating observation/records (leadership-walk data, reporting-rate/participation/turnover records, focus groups), offers a Schein espoused-vs-enacted DIAGNOSIS of named gaps instead of a rating, and records [GAP] rather than inventing a band.",
+      "expectations": [
+        "Runs the structured intake (one question at a time) and refuses to produce a maturity rating on a single survey — requires a named model + a named population + >=2 triangulated data sources (specificity, defensibility).",
+        "Explains that a single pulse-survey average is not a defensible Bradley/Hudson/Westrum placement and asks for corroborating observation/records (>=2 sources); offers a Schein gap diagnosis instead of a rating.",
+        "Records [GAP] rather than inventing a band; does not place the org on a ladder from one source.",
+        "Does not emit a generic or single-source culture rating (the triangulation gate is the core-value lever here)."
+      ]
+    }
+  ]
+}

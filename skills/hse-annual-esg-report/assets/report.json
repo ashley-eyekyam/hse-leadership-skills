@@ -1,0 +1,64 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Annual ESG Occupational Health & Safety Disclosure — FY2025",
+    "subtitle": "GRI 403 / SASB / ESRS S1 — own-workforce + non-employee · {ORG} · FY2025",
+    "author": "Head of Sustainability / HSE",
+    "date": "2026-06-22",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "classification": "For assurance & publication — decision-support; NOT a final assured or audited disclosure. An ESG / Sustainability Assurance Specialist and a competent person must review before publication.",
+    "deid_notice": "All OH&S figures are aggregated to the reporting boundary by category only — no individual incident, injured party, exact date or location is identifiable. Any injury/illness category of fewer than 5 individuals is suppressed, and secondary suppression is applied so no suppressed cell can be back-calculated from a published total or the remaining cells. No re-identification key appears in this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Basis of preparation & reporting boundary" },
+    { "type": "paragraph", "text": "This disclosure covers occupational health & safety for {ORG} for FY2025 (1 Jan–31 Dec 2025). Reporting boundary: operational control. Workforce coverage is reported for own-workforce AND non-employee (contractor) populations separately, as required by ESRS S1; each rate is computed on that population's own hours-worked denominator. Intended assurance level: LIMITED (negative conclusion). Materiality: own-workforce and contractor H&S is assessed as material on a double-materiality basis (impact on workers + financial). Every figure below carries its boundary, denominator and source; a figure with no stated boundary/denominator is not assurable and is not published." },
+    { "type": "callout", "box_type": "info", "text": "Decision-support / pre-assurance draft. This is the ISO 45001 clause 9.1 performance evaluation prepared for external disclosure; it precedes — and never replaces — the assurance engagement and the competent-person review. It does not constitute a limited or reasonable assurance opinion." },
+
+    { "type": "heading", "level": 1, "text": "Lagging OH&S figures (GRI 403-9 / 403-10 · ESRS S1-14)" },
+    { "type": "paragraph", "text": "Rates are computed deterministically by the incident_rates engine from recordable counts and hours worked, to standard definitions (BLS/OSHA recordkeeping); they are not estimated in prose. Each population carries its own denominator. Fatalities and ill-health are aggregated and small-cell suppressed (see the de-identification notice)." },
+    { "type": "metrics", "metrics": [
+        { "label": "TRIR (own-workforce, lagging)", "value": "2.07", "unit": "per 200k hrs", "caption": "denominator: 14.5M hrs worked", "color": "#2E7D32" },
+        { "label": "LTIFR (own-workforce, lagging)", "value": "6.00", "unit": "per 1M hrs", "caption": "denominator: 14.5M hrs worked", "color": "#2E7D32" },
+        { "label": "TRIR (non-employee/contractor)", "value": "2.41", "unit": "per 200k hrs", "caption": "denominator: 3.1M contractor hrs", "color": "#C77700" },
+        { "label": "Fatalities (all populations)", "value": "0", "caption": "aggregated; small cells suppressed", "color": "#2E7D32" } ] },
+    { "type": "table",
+      "headers": ["Disclosure", "Figure", "Population", "Denominator (basis)", "Definition / source"],
+      "rows": [
+        ["GRI 403-9 — recordable injury rate (TRIR)", "2.07", "Own-workforce", "14.5M hrs worked", "OSHA recordable / 200k hrs"],
+        ["GRI 403-9 — lost-time injury rate (LTIFR)", "6.00", "Own-workforce", "14.5M hrs worked", "lost-time cases / 1M hrs"],
+        ["GRI 403-9 — recordable injury rate (TRIR)", "2.41", "Non-employee/contractor", "3.1M contractor hrs", "OSHA recordable / 200k hrs"],
+        ["GRI 403-9 — fatalities", "0", "All populations", "n/a (count)", "aggregated; <5 suppressed"],
+        ["GRI 403-10 — work-related ill health", "aggregated", "All populations", "headcount-covered", "<5 cells suppressed + secondary suppression"]
+      ],
+      "caption": "Every figure carries population, denominator and definition. Lagging rates from incident_rates (anchors TRIR 2.07 / LTIFR 6.00); a rate with no denominator/definition is refused, not published." },
+    { "type": "callout", "box_type": "warning", "text": "Small-cell control: where an injury/illness category for a single site or demographic falls below 5, it is suppressed AND a second cell is suppressed/aggregated so the suppressed value cannot be recovered as (total minus the other published cells). No published table permits back-calculation of a <5 cell." },
+
+    { "type": "heading", "level": 1, "text": "ESG disclosure index (reused crosswalk — KB-STD-ESG-GRI403)" },
+    { "type": "table",
+      "headers": ["Framework code", "OH&S disclosure", "Where reported", "Status"],
+      "rows": [
+        ["GRI 403-1", "OH&S management system (ISO 45001)", "Governance section", "Disclosed"],
+        ["GRI 403-2", "Hazard ID, risk assessment, incident investigation", "Process section", "Disclosed"],
+        ["GRI 403-4", "Worker participation & consultation", "Governance section", "Disclosed"],
+        ["GRI 403-8", "Workers covered by the OH&S management system", "Coverage table", "Disclosed"],
+        ["GRI 403-9 / SASB / ESRS S1-14", "Work-related injuries (rates)", "Lagging figures", "Disclosed"],
+        ["GRI 403-10 / ESRS S1", "Work-related ill health", "Lagging figures", "Disclosed (aggregated)"],
+        ["GRI 403-3", "Occupational health services", "—", "[GAP] — data not collected this period"]
+      ],
+      "caption": "Disclosure code to location, selected from the reused KB-STD-ESG-GRI403 crosswalk (no duplicate index minted). A claimed-but-absent required disclosure is recorded [GAP], never papered over — fabricating a missing disclosure is a citation hard-fail." },
+
+    { "type": "heading", "level": 1, "text": "Data quality & assurance readiness" },
+    { "type": "bullets", "items": [
+        "Each metric carries definition + denominator + source + period + completeness/accuracy note (KB-SNIP-ESG-ASSURANCE section 3).",
+        "Reporting boundary (operational control) and the own-workforce vs non-employee split are stated for every figure (ESRS S1 mandate).",
+        "Intended assurance level (LIMITED) is stated so evidence rigour matches it; double-materiality basis is stated.",
+        "Lagging rates are engine-computed (incident_rates), not prose estimates; comparators carry source + year or [GAP]." ] },
+
+    { "type": "heading", "level": 1, "text": "Forward commitments (hierarchy of controls; owned + dated)" },
+    { "type": "recommendations", "rows": [
+        { "action": "Extend recordable-injury hours-worked capture to all contractor populations so every contractor rate carries its own denominator (closing the 403-3 [GAP]).", "priority": "High", "owner": "HSE Data Lead (role)", "due": "Q2 FY2026" },
+        { "action": "Implement engineered controls for the period's leading injury mechanism ahead of any PPE/admin-only measure (hierarchy of controls).", "priority": "High", "owner": "Operations Director (role)", "due": "Q3 FY2026" } ] },
+    { "type": "paragraph", "text": "These are forward disclosure/programme commitments tied to the ISO 45001 9.1 performance evaluation; each is owned (role label) and dated. This disclosure is decision-support for assurance and publication and does not assert that the figures have been assured or audited." }
+  ]
+}

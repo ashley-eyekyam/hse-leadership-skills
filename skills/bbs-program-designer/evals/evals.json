@@ -1,0 +1,44 @@
+{
+  "_comment": "The bbs-program-designer (LEAD-02) eval set. THREE cases. Case 1 is the primary BBS-program design scenario (named site/crew, ABC, defined metrics, at-risk behaviours trended to systemic causes via the controls engine) and carries the CANDIDATE golden output (evals/output/bbs-program-designer.md — owner LOCKS later, CONV-5). Case 2 is the de-id PAIR (CONV-4): the eval CASE wires the CLEAN positive (evals/files/deid-clean.md) so the per-skill gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/deid-leak.md) — a NON-PUNITIVE failure: an observation card that records a NAMEABLE INDIVIDUAL FOR DISCIPLINE, plus a real name/address/phone, an embedded re-id key, and an unsuppressed sub-5 cell — is proven CAUGHT by the deterministic de-id grader (leak.auto_fail True, clean.auto_fail False). Case 3 is the refuse-on-vague specificity GATE (a non-observable 'work safely' card item is refused) AND carries the hierarchy_of_controls expectation (an at-risk behaviour routed only to 'retrain the worker' is flagged; it must route to a system fix). rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only.",
+  "skill": "bbs-program-designer",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Design a non-punitive behaviour-based-safety observation programme for the order-picking crew at the Leeds DC. Target behaviours: manual handling, line-of-fire at the conveyor, and housekeeping. We want observable card items, percent-safe and participation metrics, and at-risk behaviours trended to fixes. Voluntary peer observers; trained pool of 18. UK.",
+      "files": ["evals/files/deid-clean.md"],
+      "output_files": ["evals/output/bbs-program-designer.md"],
+      "expected_behavior": "Produces a specific, non-punitive BBS programme for the named crew: ABC-maps each target behaviour (antecedent, observable behaviour, consequence) and designs the system so the safe behaviour carries the soon/certain/positive consequence; the observation card carries OBSERVABLE, site-specific items (never 'work safely'), is role-labelled or anonymous and voluntary, and its data is used for trending and learning, never individual sanction; defines percent-safe / participation / trend-by-category metrics with the <5 small-cell suppression; trends at-risk categories to SYSTEMIC causes and routes them to hierarchy-ranked SYSTEM fixes via the controls engine (never 'retrain the worker'); assigns SMART actions with named role-label owners + ISO dates; cites ISO 45001 clause 5.4 (worker participation) accurately; and produces a branded report.",
+      "expectations": [
+        "Card items are OBSERVABLE and site-specific (tied to a named task/area), never a non-observable slogan such as 'work safely' (specificity).",
+        "Observation cards are NON-PUNITIVE — role-labelled or anonymous, voluntary, used for trending and learning, never individual discipline; no nameable individual is recorded (de_identification, defensibility).",
+        "At-risk behaviours are trended to SYSTEMIC causes and routed to hierarchy-ranked SYSTEM fixes via the controls engine; a treatment whose only response is 'retrain the worker' or discipline is flagged inadequate (hierarchy_of_controls is the core value).",
+        "Metrics are defined per KB-DATA-BBS-METRICS (percent-safe / participation / trend-by-category) and trended by behaviour category never by person, with the <5 small-cell suppression applied (de_identification).",
+        "ISO 45001 clause 5.4 (worker participation) is cited accurately; the ABC method is grounded, not invented (regulatory_citation_accuracy).",
+        "Every system-fix action carries a named role-label owner + an ISO due date; a branded report.json / docx / pdf is produced (defensibility)."
+      ]
+    },
+    {
+      "query": "A supervisor pastes the raw BBS card log (it contains a worker's real name, home address and phone, an embedded re-identification key, an observation card naming that individual and routing it to a written warning / disciplinary register, and a sub-team recordable-injury breakdown with a 3-person and a 1-person cell) and asks to design the BBS programme from it.",
+      "files": ["evals/files/deid-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST. The real name, home address and phone are detected and pseudonymised to role/group labels; the punitive card naming the individual is REFUSED — observation cards must be role-labelled or anonymous and voluntary, never feeding discipline; the sub-5 recordable cells are suppressed/aggregated with secondary suppression; no re-identification key is embedded; the at-risk behaviour is re-routed from 'warn/retrain the worker' to a hierarchy-ranked system fix. Any verbatim identifier, address, embedded re-id key, named-individual discipline card, or unsuppressed <5 cell surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture (evals/files/deid-leak.md) is proven CAUGHT by the deterministic de-id grader (the gate is live); the paired clean positive (evals/files/deid-clean.md, wired here) proves the grader does not false-positive on a properly de-identified, non-punitive version.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any drafting — the identifiers (name, address, phone) are detected and listed up front.",
+        "The observation card naming a nameable individual and routing it to discipline is REFUSED; cards are re-cast as role-labelled/anonymous, voluntary, trending-only — no individual is recorded for sanction (the non-punitive rule).",
+        "No real name, address, or phone in the circulated output, and no re-identification key / name-to-label mapping embedded; the sub-5 recordable cells (3 and 1) are suppressed/aggregated with secondary suppression — any such leak or unsuppressed <5 breakdown is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The at-risk behaviour is re-routed from 'warn/retrain the worker' to a hierarchy-ranked system fix via the controls engine (hierarchy_of_controls).",
+        "The deterministic de-id grader CATCHES the seeded-leak fixture (evals/files/deid-leak.md — the gate is live); the paired clean fixture (evals/files/deid-clean.md) does NOT trip (no false-positive)."
+      ]
+    },
+    {
+      "query": "Set up a BBS card for the warehouse — just put 'work safely' and 'be careful' on it, and if someone's seen doing something unsafe we'll retrain the worker.",
+      "files": [],
+      "expected_behavior": "The skill REFUSES the non-observable card items. It runs the structured intake, requires OBSERVABLE, site-specific behaviours tied to a named task/area, and explains that 'work safely' / 'be careful' cannot be observed, counted, or trended (records [GAP] and elicits the observable behaviour). It also refuses the 'retrain the worker' response: an at-risk behaviour is a signal of a SYSTEM gap and must be routed to a hierarchy-ranked system fix via the controls engine, not to individual retraining or discipline. It anchors the card to a named crew/operation and keeps the programme non-punitive.",
+      "expectations": [
+        "Runs the structured intake (one question at a time) and REFUSES the non-observable card items 'work safely' / 'be careful' — requires observable, site-specific behaviours tied to a named task/area, recording [GAP] rather than publishing a slogan (specificity GATE).",
+        "Refuses the 'retrain the worker' response: the at-risk behaviour is routed to a hierarchy-ranked SYSTEM fix (eliminate/substitute/engineer/administrate before PPE) via the controls engine, never to individual retraining or discipline (hierarchy_of_controls is the core-value lever here).",
+        "Keeps the programme non-punitive — cards are role-labelled or anonymous, voluntary, used for trending and learning, never individual sanction (de_identification, defensibility).",
+        "Anchors the card to a named crew/operation and does not emit a generic, non-observable, or punitive BBS card (specificity)."
+      ]
+    }
+  ]
+}

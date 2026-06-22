@@ -1,0 +1,51 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Leadership Safety Walk / Gemba — Walk Record & Tracked Commitments",
+    "subtitle": "Night-shift warehouse pick-face",
+    "author": "HSE Leadership",
+    "date": "2026-06-22",
+    "classification": "Internal — worker concerns role-labelled — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "Worker concerns are recorded against role/group labels only (psychological safety). No concern is attributed to a nameable individual; identifiers were scrubbed before drafting and any re-identification key is held separately and is not part of this document. This is an engagement walk record, not an inspection checklist."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Walk scope & purpose" },
+    { "type": "paragraph", "text": "This is the record of a leadership safety walk (felt leadership / genchi-genbutsu — 'go and see') on the night-shift warehouse pick-face. It is an engagement walk built on OPEN conversation prompts — not a tick-box inspection. Purpose: felt-leadership engagement and hazard-spotting. Framed against ISO 45001:2018 clauses 5.1 (leadership and commitment) and 5.4 (consultation and participation of workers)." },
+
+    { "type": "heading", "level": 1, "text": "Open prompts used (engagement, not a checklist)" },
+    { "type": "bullets", "items": [
+        "Felt-leadership / engagement: \"What's the one thing that makes your job harder or riskier than it needs to be?\"",
+        "Felt-leadership / engagement: \"What safety improvement would you make if it were your call?\"",
+        "Hazard-spotting: \"Walk me through what could go wrong in this task.\"",
+        "Control-verification: \"What controls do you rely on here, and have any ever failed you?\"",
+        "Prompts are open, area-specific, non-interrogative — they invite the worker's own account; a closed yes/no checklist is not used." ] },
+
+    { "type": "heading", "level": 1, "text": "Worker concerns raised (role-labelled)" },
+    { "type": "findings", "rows": [
+        { "title": "Pick-face lighting drops at the far aisle", "risk_level": "Medium",
+          "description": "Night-shift pick crew (role-group) report the far-aisle lighting is dim during the second half of the shift, making label scanning slower and riskier.", "evidence": "Walk conversation — night-shift pick crew (role-labelled, no individual named)" },
+        { "title": "Reach-truck pedestrian crossing feels unsafe at shift change", "risk_level": "High",
+          "description": "Crew raise that the pedestrian crossing by the dispatch door is congested at shift change when reach-trucks and foot traffic overlap.", "evidence": "Walk conversation — night-shift pick crew + reach-truck operators (role-labelled)" } ] },
+
+    { "type": "heading", "level": 1, "text": "Commitments made on the walk (owned, dated, tracked)" },
+    { "type": "recommendations", "rows": [
+        { "action": "Survey and restore far-aisle lighting levels to standard on the night-shift pick-face", "priority": "P2", "owner": "Site Facilities Lead", "due": "2026-07-15" },
+        { "action": "Re-time reach-truck movements away from the shift-change pedestrian window and re-mark the crossing", "priority": "P1", "owner": "Shift Manager", "due": "2026-07-08" },
+        { "action": "Feed both concerns into the next pick-face risk assessment review", "priority": "P3", "owner": "HSE Advisor", "due": "2026-07-31" } ] },
+    { "type": "callout", "text": "Every commitment above is an owned, dated action tracked to closure — a walk is not a conversation that evaporates. Any control a commitment implies is ranked by the hierarchy of controls (higher-order first); the crossing re-timing is an engineering/administrative control, not a PPE-only fix.", "box_type": "info" },
+
+    { "type": "heading", "level": 1, "text": "Leading indicator — walk-commitment closure" },
+    { "type": "metrics", "metrics": [
+        { "label": "Commitments made this walk", "value": "3" },
+        { "label": "Closed on time (prior cycle)", "value": "86%" },
+        { "label": "Open / overdue", "value": "1" } ] },
+    { "type": "paragraph", "text": "The count and closure-rate of walk commitments is a leading indicator (KB-DATA-LEADING-INDICATORS — quote source + year). A rising commitment-closure rate is forward evidence of visible leadership and worker engagement; a walk that produces no tracked commitment is recorded as a gap, not signed off as complete." },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off" },
+    { "type": "paragraph", "text": "This is decision-support only and must be reviewed and signed off by a competent person. Worker concerns are role-labelled (psychological safety); no individual is named. Basis: ISO 45001:2018 clauses 5.1 (leadership and commitment) and 5.4 (consultation and participation of workers); HSE HSG65 felt leadership; gemba / genchi-genbutsu method. Next walk cycle and commitment close-out review per the agreed cadence." },
+    { "type": "bullets", "items": ["ISO 45001:2018 §5.1 — leadership and commitment", "ISO 45001:2018 §5.4 — consultation and participation of workers", "HSE HSG65 — felt leadership / visible safety leadership"] }
+  ]
+}

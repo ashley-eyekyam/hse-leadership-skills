@@ -1,0 +1,43 @@
+{
+  "_comment": "The safety-walk-gemba (LEAD-05) eval set. THREE cases (CONV-4): case 1 = the primary engagement gemba-walk scenario (named area, open prompts, commitments -> owned/dated smart_actions, closure-rate as a leading indicator) and carries the CANDIDATE golden output (evals/output/safety-walk-gemba.md, owner LOCKS later — CONV-5); case 2 = the de-id auto-fail PAIR — the CLEAN positive (evals/files/deid-clean.md, worker concerns role-labelled) is wired into the case so the per-skill eval gate passes without a spurious hard-fail, and the SEEDED-LEAK negative (evals/files/deid-leak.md, a worker concern attributed to a NAMED individual) is proven CAUGHT by the deterministic de-id grader (leak.auto_fail True, clean.auto_fail False); case 3 = the refuse-on-vague specificity GATE (a closed yes/no tick-box checklist is flagged — a gemba walk is open prompts, not a tick-box) AND a defensibility expectation (worker concerns / commitments with no owner-and-closure tracking are flagged). rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03, Phase 17); CI runs the deterministic graders only.",
+  "skill": "safety-walk-gemba",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Design and record a felt-leadership safety walk (gemba walk) for the night-shift warehouse pick-face. Purpose: engagement plus hazard-spotting. Give me open conversation prompts, capture what the crew raise, and turn the commitments I make into tracked actions. The Shift Manager owns commitments; we run a weekly close-out review. UK.",
+      "files": ["evals/files/deid-clean.md"],
+      "output_files": ["evals/output/safety-walk-gemba.md"],
+      "expected_behavior": "Produces an engagement gemba-walk plan + record for the named area (night-shift warehouse pick-face): selects OPEN, area-specific conversation prompts from KB-SNIP-GEMBA-PROMPTS by purpose (felt-leadership + hazard-spotting) — never a closed tick-box checklist; captures worker concerns ROLE-LABELLED (no individual named, psychological safety); converts EVERY commitment into an owned, dated SMART action (named role-label owner + ISO due date) via smart_actions; reports the count and closure-rate of walk commitments as a LEADING INDICATOR (KB-DATA-LEADING-INDICATORS, source+year); frames the walk against ISO 45001:2018 5.1/5.4 (KB-SNIP-LEADERSHIP-CLAUSE-MAP); and produces a branded report. A walk that produces no tracked commitment is recorded as a [GAP], not signed off.",
+      "expectations": [
+        "Builds the walk from OPEN, area-specific, non-interrogative prompts (engagement), NOT a closed yes/no tick-box checklist (specificity, defensibility).",
+        "Captures worker concerns ROLE-LABELLED — no concern attributed to a nameable individual; the De-identifier runs first (de_identification, psychological safety).",
+        "Converts EVERY commitment made on the walk into an owned, dated SMART action (named role-label owner + ISO due date) via smart_actions; no anonymous commitment and no 'ASAP' (defensibility).",
+        "Reports the count and closure-rate of walk commitments as a LEADING INDICATOR, banded against KB-DATA-LEADING-INDICATORS with source+year; a walk with no tracked commitment is a [GAP], not complete.",
+        "Any control a commitment implies is ranked through the hierarchy of controls (KB-SNIP-HOC), higher-order first — no PPE-only / 'retrain the worker' default (hierarchy_of_controls).",
+        "ISO 45001:2018 clauses 5.1 (leadership and commitment) and 5.4 (consultation and participation of workers) are cited accurately (regulatory_citation_accuracy); a branded report.json / docx / pdf is produced."
+      ]
+    },
+    {
+      "query": "A supervisor pastes their raw walk notes (they name two workers, attribute the lighting concern to a named individual, include a phone number, and embed a re-identification key) and asks for a tidy gemba walk record.",
+      "files": ["evals/files/deid-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST. The named workers are pseudonymised to role/group labels; NO worker concern is attributed to a nameable individual; the phone number is removed; no re-identification key is embedded. Any worker concern attributed to a named individual, any residual identifier (name, phone), or an embedded re-id key surviving into the circulated walk record is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture (evals/files/deid-leak.md) is proven CAUGHT by the deterministic de-id grader (the gate is live); the paired clean positive (evals/files/deid-clean.md, wired here) proves the grader does not false-positive on a properly role-labelled version.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any drafting — the named individuals and the phone number are detected and listed up front; the walk record is treated as worker-attributable voice.",
+        "Each named worker is replaced with a role/group label; NO worker concern is attributed to a nameable individual; the phone number is never carried verbatim.",
+        "No real name, phone, or address in the circulated walk record, and no re-identification key / name-to-label mapping embedded — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the seeded-leak fixture (evals/files/deid-leak.md — the gate is live); the paired clean fixture (evals/files/deid-clean.md) does NOT trip (no false-positive)."
+      ]
+    },
+    {
+      "query": "Give me a yes/no safety-walk checklist I can tick off as I walk the floor — and just jot down anything the workers mention, no need to track it.",
+      "files": [],
+      "expected_behavior": "The skill REFUSES to produce a closed yes/no tick-box checklist — a gemba walk is built on OPEN conversation prompts (engagement), not a tick-box audit; a closed checklist is flagged (specificity, defensibility) and the user is steered to the open prompt bank (or to safety-audit if they genuinely want an inspection). It also refuses to leave worker concerns and commitments untracked: every commitment must be an owned, dated action tracked to closure (a walk that produces no tracked commitment fails the defensibility gate), and worker concerns are captured role-labelled. It runs the structured intake (Q1 disambiguation, Q2 named area) rather than emitting a generic checklist.",
+      "expectations": [
+        "Refuses the closed yes/no tick-box checklist — explains a gemba walk uses OPEN, area-specific prompts (engagement), and a closed checklist is an inspection/audit, not a gemba walk (specificity, defensibility GATE).",
+        "Runs the structured intake (one question at a time): disambiguates from siblings (safety-audit / bbs-program-designer / safety-culture-assessment / leading-lagging-kpi-framework) and requires a NAMED area/task/shift before selecting prompts (specificity).",
+        "Refuses to leave concerns/commitments untracked — every commitment becomes an owned, dated action tracked to closure; worker concerns with no owner/closure tracking are flagged (defensibility); concerns captured role-labelled.",
+        "Does not emit a closed tick-box checklist or an untracked free-text walk — steers to the open prompt bank and the commitment-to-action tracking (the core-value lever here)."
+      ]
+    }
+  ]
+}
