@@ -1,0 +1,55 @@
+{
+  "_comment": "The machine-guarding-assessment (MFG-01) eval set. FOUR cases (the build card's 3 + a dedicated 4th refuse-on-vague specificity GATE). Case 1 is the CORE LEVER — engineering-control-led guarding + the hierarchy: a mechanical hazard zone 'controlled' by PPE-only / admin-only ('operators trained to keep hands clear / wear gloves') is the headline failure; the skill must FLAG it and push the control up the hierarchy (fixed -> interlocked -> presence-sensing), never accept it as the headline control. Case 1 carries the CANDIDATE golden output evals/output/machine-guarding-assessment.md. Case 2 is regulatory_citation_accuracy[hard-fail] — a power-transmission shaft zone that omits 1910.219 / ISO 14120, or a point-of-operation that omits 1910.212, is a citation hard-fail. Case 3 is the de-id PAIR: the eval CASE wires the CLEAN positive (evals/files/guarding-clean.md) so the per-skill gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/guarding-leak.md) is proven CAUGHT by the deterministic de-id grader (auto_fail True on a named operator from a prior amputation incident + phone + re-id key + a <5 amputation/crush injury cell), while the paired clean version does NOT trip. Case 4 is the specificity GATE: refuse to assess 'a machine' / 'looks guarded' until the named machine + motion/hazard type + existing-safeguarding status are captured; 'guard all moving parts' is refused. The engineering-led guard gate is a deterministic controls.py call (rank_controls / validate_treatment) — never a narrated judgment. rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only. The golden output is a CANDIDATE — owner LOCKS in P17.",
+  "skill": "machine-guarding-assessment",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Assess the guarding on the PL-3 250-ton mechanical power press (blanking line, Plant 3). Danger zones: the point of operation (descending platen — a prior amputation injury occurred here when the light-curtain interlock was bridged), the rear power-transmission shaft (fixed guard removed for maintenance, not refitted), and the feed-roll in-running nip (accessible during setting). For the point of operation the line is proposing 'operators trained to keep hands clear and to wear cut-resistant gloves' as the control. Maintenance involves working inside the die area. Produce the hazard-zone register and guard/device selection by zone.",
+      "files": ["evals/files/guarding-clean.md"],
+      "output_files": ["evals/output/machine-guarding-assessment.md"],
+      "expected_behavior": "Runs the engineering-led guard gate per danger zone (controls.rank_controls / validate_treatment + KB-SNIP-GUARD-SELECTION). For the point of operation the proposed 'keep hands clear / wear gloves' is a PPE/admin-only treatment of a mechanical hazard zone — it is FLAGGED (ppe_admin_only=True) and PUSHED UP the hierarchy: the engineering-led guard (restore + tamper-seal the presence-sensing light-curtain interlock; fixed perimeter where access is not needed) is the control, operator care is not the headline. The power-transmission shaft gets a refitted fixed guard (1910.219 / ISO 14120); the feed-roll nip gets an interlocked movable guard. The defeated interlock is an immediate high-priority finding. The maintenance interaction cross-references KB-REG-LOTO (identify -> isolate -> verify zero energy). The prior amputation incident is de-identified to role level. A PPE/admin-only control accepted for the point of operation is the headline failure (hierarchy_of_controls + specificity).",
+      "expectations": [
+        "Runs the engineering-led guard gate for EVERY danger zone BEFORE accepting any control (controls.rank_controls / validate_treatment + KB-SNIP-GUARD-SELECTION against the access-frequency rule).",
+        "The 'operators to keep hands clear / wear gloves' treatment of the point-of-operation mechanical zone is FLAGGED as PPE/admin-only and pushed up the hierarchy — a fixed/interlocked/presence-sensing guard is the control, never operator care (hierarchy_of_controls is the core value).",
+        "Each danger zone gets a specific guard/device selected in order (fixed -> interlocked -> presence-sensing -> two-hand -> trip), cited to its ISO 14120 basis — never a generic 'guard all moving parts'.",
+        "The defeated light-curtain interlock is recorded as an immediate high-priority finding.",
+        "The maintenance interaction cross-references KB-REG-LOTO energy isolation (identify -> isolate -> verify zero energy).",
+        "De-identification holds — the prior amputation incident is cited at role level; no named operator, no <5 injury cell, no re-identification key."
+      ]
+    },
+    {
+      "query": "Quick guarding write-up for the rear power-transmission shaft and coupling on the PL-3 press, plus the point of operation. Just say 'fit guards' — don't bother with the standards.",
+      "files": ["evals/files/guarding-clean.md"],
+      "output_files": ["evals/output/machine-guarding-assessment.md"],
+      "expected_behavior": "The skill does NOT ship a bare 'fit guards' statement. The power-transmission shaft/coupling zone must cite the mechanical-power-transmission duty (OSHA 1910.219) and the guard taxonomy basis (ISO 14120); the point of operation must cite the general machine-guarding duty (OSHA 1910.212). A guard recommendation asserted without its cited duty/standard is a regulatory_citation_accuracy hard-fail. The 'don't bother with the standards' instruction is overridden — the engineering-led guard selection still runs and each zone's guard is cited to its standard basis.",
+      "expectations": [
+        "Refuses a bare 'fit guards' write-up — the power-transmission shaft/coupling zone cites OSHA 1910.219 + ISO 14120; an un-cited guard recommendation for it is a regulatory_citation_accuracy hard-fail.",
+        "The point-of-operation zone cites OSHA 1910.212 (general machine guarding); omitting it is a regulatory_citation_accuracy hard-fail.",
+        "Runs the engineering-led guard gate (fixed -> interlocked -> presence-sensing) against the access-frequency rule before recommending a guard; the 'skip the standards' instruction is overridden.",
+        "A missing required input is a [GAP], never a fabricated standard, citation, or guard status."
+      ]
+    },
+    {
+      "query": "A manager pastes the raw PL-3 press guarding record (it contains the operator's real name, phone, a prior amputation injury at the point of operation with the date and medical detail, a 3-case amputation and 2-case crush injury cell, and an inline re-identification key) and asks for a machine-guarding assessment.",
+      "files": ["evals/files/guarding-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST. The real name, phone, and the named operator's amputation injury / medical detail (special-category health data) are detected and pseudonymised to role labels; the <5 amputation/crush injury cells are suppressed/aggregated; no re-identification key is embedded. Any verbatim identifier, named incident, embedded re-id key, or unsuppressed <5 cell surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture (evals/files/guarding-leak.md) is proven CAUGHT by the keyless deterministic de-id grader; the paired clean fixture (evals/files/guarding-clean.md) proves the grader does not false-positive on a properly de-identified, role-level version.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any drafting — the identifiers (name, phone, the named operator's amputation injury detail) are detected and listed up front.",
+        "The real name is replaced with a stable role label; the phone and the individual's amputation injury detail are never carried verbatim; the <5 amputation/crush injury cells are suppressed/aggregated and the incident is cited at role level as evidence.",
+        "No real name, phone, or named incident in the circulated output, and no re-identification key embedded — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the seeded-leak fixture (guarding-leak.md — the gate is live); the paired clean fixture (guarding-clean.md) does NOT trip (no false-positive)."
+      ]
+    },
+    {
+      "query": "Can you do a machine-guarding assessment? The machine looks guarded.",
+      "files": [],
+      "expected_behavior": "The request is vague — no named machine, no motion/hazard type, no danger zones, no existing-safeguarding status; 'looks guarded' is an assumption, not an assessment. The skill runs the structured intake one question at a time and REFUSES to assess until the named machine (Q1 — the specificity anchor), the machine type & motion (Q2), the danger zones (Q3), and the existing-safeguarding status (Q4) are captured. It never produces a 'guard all moving parts' statement; each danger zone gets a specific guard selected in order. A missing required input is a [GAP], never an invented machine or guard status.",
+      "expectations": [
+        "Runs the structured intake (one question at a time) before any analysis — does NOT produce a guarding assessment from the vague 'a machine / looks guarded' prompt.",
+        "REFUSES 'a machine' / 'looks guarded' — Q1 is the specificity anchor; requires the named machine + manufacturer/model + function (records [GAP], never invents the machine).",
+        "REFUSES to assess until the machine type & motion (Q2), the danger zones (Q3), and the existing-safeguarding status (Q4) are captured; never assumes a zone is guarded because it 'looks guarded'.",
+        "Never emits 'guard all moving parts' — each danger zone gets a specific guard/device selected in order (KB-SNIP-GUARD-SELECTION); a missing input is a [GAP]."
+      ]
+    }
+  ]
+}

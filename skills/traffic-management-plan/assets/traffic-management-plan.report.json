@@ -1,0 +1,91 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Traffic Management Plan — CDM 2015 Reg 27 / Schedule 3",
+    "subtitle": "Meadowbank Road site — vehicle/pedestrian segregation, delivery & reversing controls",
+    "author": "Construction Logistics / Temporary Works (Traffic) Coordinator",
+    "date": "2026-06-22",
+    "classification": "Traffic management plan — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "This is a site/route-level plan and carries no named individual. Any driver, operative, or banksman in the source inputs was scrubbed to a role/location label before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Site layout & access" },
+    { "type": "paragraph", "text": "Traffic management plan for the named Meadowbank Road site: a north gate for HGV deliveries and a separate south gate for operatives. The principal conflict point is the north loading bay, where reversing HGVs cross the operative route to the welfare cabins. A footway runs adjacent to the north hoarding (public interface). Routes are planned to be suitable, sufficient and separated (CDM 2015 Schedule 3)." },
+    { "type": "metrics", "metrics": [
+        { "label": "Vehicle / pedestrian accesses", "value": "Segregated", "caption": "north gate (HGV) / south gate (people)" },
+        { "label": "Conflict points", "value": "3", "caption": "north loading bay, welfare crossing, north footway" },
+        { "label": "Highest-priority control", "value": "Eliminate reversing", "caption": "one-way + drive-through bay" } ] },
+
+    { "type": "heading", "level": 1, "text": "Traffic types & volumes" },
+    { "type": "table",
+      "headers": ["Traffic type", "Route", "Interface with pedestrians"],
+      "rows": [
+        ["HGV deliveries", "North gate → loading bay → exit", "Crosses operative welfare route at the north bay — SEGREGATED below"],
+        ["Forklift / telehandler", "Loading bay → work areas", "Shared route with operatives — physically separated below"],
+        ["Operatives / pedestrians", "South gate → segregated walkway → work areas / welfare", "Kept off the vehicle area by design"],
+        ["Public (footway)", "Adjacent to north hoarding", "Protected by hoarding + covered way (not a banksman)"]
+      ],
+      "caption": "Named routes — the plan refuses a generic 'site roads' layout." },
+
+    { "type": "heading", "level": 1, "text": "Vehicle-pedestrian segregation (by design)" },
+    { "type": "callout", "text": "Segregation-by-design LEADS, NOT a banksman. The site's proposed 'operatives wear hi-vis and a banksman waves the HGVs in' pedestrian control is rejected as a PPE/admin-only treatment (controls.ppe_admin_only = True, no higher-order control, no justification) and pushed up the hierarchy: a segregated pedestrian walkway behind barriers removes operatives from the vehicle area entirely; the banksman is retained only as the LAST-resort residual control for the final manoeuvre.", "box_type": "warning" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Remove pedestrians from the vehicle area — barriered, segregated walkway from the south gate to the work areas and welfare; gated crossing where it must cross a vehicle route", "tier": "Elimination", "owner": "Traffic Coordinator" },
+        { "control": "Physical segregation — pedestrian barriers and edge protection along the shared forklift route; separate vehicle / people site access", "tier": "Engineering", "owner": "Traffic Coordinator" },
+        { "control": "Signage, speed limit and lighting at the welfare crossing (warning of approach, Schedule 3)", "tier": "Administrative", "owner": "Site Manager" },
+        { "control": "Banksman / traffic marshal — the LAST resort, only for the final reversing manoeuvre into the bay once one-way and segregation are designed in", "tier": "Administrative", "owner": "Site Manager" } ] },
+
+    { "type": "heading", "level": 1, "text": "One-way / turning & reversing controls" },
+    { "type": "callout", "text": "Reversing is ELIMINATED by design, not managed by a banksman. The HGV route is made one-way (north gate in, separate exit) with a turning circle / drive-through loading bay so vehicles do not reverse into the work area. Where a residual reversing manoeuvre remains, a trained banksman is the last-resort control — never the headline.", "box_type": "critical" },
+    { "type": "bullets", "items": [
+        "One-way HGV circulation: enter north gate, drive through the loading bay, exit — no reversing into the work area.",
+        "Turning circle provided so vehicles turn rather than reverse across the operative route.",
+        "Banksman / traffic marshal retained only for the final set-down manoeuvre, after the one-way and segregation are in place." ] },
+
+    { "type": "heading", "level": 1, "text": "Loading / delivery management" },
+    { "type": "bullets", "items": [
+        "Deliveries booked into timed windows to remove queueing and ad-hoc reversing on the highway.",
+        "Dedicated loading / unloading bay and a holding area off the public road for early arrivals.",
+        "Routing to and from the bay fixed and signed; no delivery reverses across a pedestrian route." ] },
+
+    { "type": "heading", "level": 1, "text": "Speed limits & signage" },
+    { "type": "table",
+      "headers": ["Location", "Control", "Basis"],
+      "rows": [
+        ["Site-wide", "5 mph speed limit, signed at the gate", "Schedule 3 — warning of approach"],
+        ["Welfare crossing", "Give-way markings, signage, task lighting", "Conflict-point control"],
+        ["North gate / footway", "Vehicle-emerging warning + wheel-wash to keep the highway clean", "Public-interface control"]
+      ],
+      "caption": "Routes signed and lit at conflict points (Schedule 3 warning of approach)." },
+
+    { "type": "heading", "level": 1, "text": "Public / highway interface" },
+    { "type": "callout", "text": "The public is NEVER controlled by a banksman alone. The footway adjacent to the north hoarding is protected by a continuous hoarding and a covered way; a vehicle-emerging warning and (where the highway authority requires it) the relevant traffic-signing duty manage the gate / footway interface.", "box_type": "warning" },
+    { "type": "bullets", "items": [
+        "Continuous hoarding + covered way protect the public footway from site traffic and falling materials.",
+        "Vehicle-emerging signage and a banksman ASSIST the gate egress — but the public segregation is physical, not a banksman.",
+        "Highway-signing duty applied where the live-highway interface requires it." ] },
+
+    { "type": "heading", "level": 1, "text": "Enforcement & monitoring" },
+    { "type": "recommendations", "rows": [
+        { "action": "Daily route inspection and near-miss capture on the vehicle/pedestrian interfaces; brief every operative and delivery driver on the TMP", "priority": "P1", "owner": "Site Manager", "due": "Daily / on induction" },
+        { "action": "Audit the one-way system and segregation barriers weekly; correct any breach of the segregated walkway", "priority": "P2", "owner": "Traffic Coordinator", "due": "Weekly" } ] },
+
+    { "type": "heading", "level": 1, "text": "Review schedule" },
+    { "type": "recommendations", "rows": [
+        { "action": "Re-plan and re-brief the TMP on any change of construction phase, site access, traffic type, or delivery profile", "priority": "P1", "owner": "Traffic Coordinator", "due": "On change" },
+        { "action": "Review the TMP against the live site at each phase transition", "priority": "P2", "owner": "Principal Contractor", "due": "Per phase" } ] },
+
+    { "type": "heading", "level": 1, "text": "Review & sign-off" },
+    { "type": "callout", "text": "Decision-support only. This traffic management plan must be reviewed by a competent person before it is implemented on site; it does not constitute competent-person approval.", "box_type": "critical" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": [
+        "CDM 2015 Regulation 27 — organisation of the site so pedestrians and vehicles can move safely",
+        "CDM 2015 Schedule 3 — traffic routes: suitable, sufficient and separated, with warning of approach",
+        "HSE HSG144 — The safe use of vehicles on construction sites",
+        "ISO 45001 clause 6.1.2 / 8.1.2 — hazard ID and the hierarchy of controls",
+        "Segregation-by-design hierarchy (KB-SNIP-TRAFFIC-SEGREGATION): eliminate / one-way & turning / physical segregation / signage / banksman LAST" ] }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Lift Plan — LOLER Reg 8 / BS 7121",
+    "subtitle": "Standard lift: 12.8 t AHU to level-6 plant deck, 50 t mobile crane",
+    "author": "Appointed Person",
+    "date": "2026-06-22",
+    "classification": "Lift plan — competent-person review required before lifting",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "Input-derived persons are referred to by role label and no medical-fitness detail is carried. The appointed person, operator, and slinger are named as a deliberate competence record. The re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Lift classification" },
+    { "type": "paragraph", "text": "Classified STANDARD per BS 7121 (KB-DATA-LIFT-CATEGORIES): single crane, load a significant fraction of the SWL-at-radius, overhead-line and confined-radius proximity. A named appointed person and a documented lift plan are required. (A complex / tandem / blind lift, or a lift over an occupied area, would mandate an appointed-person written plan plus contingency / abort criteria.)" },
+    { "type": "metrics", "metrics": [
+        { "label": "Lift category (BS 7121)", "value": "Standard" },
+        { "label": "Utilisation (read from chart)", "value": "90%", "caption": "12.8 t / 14.2 t SWL @ 12 m" },
+        { "label": "Highest residual risk", "value": "Medium", "caption": "overhead-line proximity" } ] },
+
+    { "type": "heading", "level": 1, "text": "Load & rigging" },
+    { "type": "table",
+      "headers": ["Item", "Confirmed weight (incl. rigging)", "Dimensions", "CoG / lifting points"],
+      "rows": [
+        ["Packaged AHU + rigging", "12.8 t (12.0 t load + 0.8 t rigging) — CONFIRMED", "4.2 x 2.1 x 2.4 m", "CoG marked; 4 certified lifting points"]
+      ],
+      "caption": "Load confirmed before planning — an unconfirmed weight is a [GAP] and a stop, never assumed." },
+
+    { "type": "heading", "level": 1, "text": "Equipment selection & SWL / utilisation (READ from the rated-capacity chart)" },
+    { "type": "table",
+      "headers": ["Parameter", "Value (transcribed)", "Source (chart / standard, year)"],
+      "rows": [
+        ["Crane", "50 t mobile, 28 m boom, on outriggers", "Site selection"],
+        ["SWL at 12 m radius", "14.2 t", "Liebherr LTM-1050 rated-capacity chart, 2021"],
+        ["Utilisation", "90% (12.8 / 14.2)", "Checked vs KB-DATA-LIFT-CATEGORIES utilisation test"],
+        ["In-service wind limit", "9.8 m/s", "Rated-capacity chart, 2021"]
+      ],
+      "caption": "SWL-at-radius and utilisation are READ from the manufacturer's rated-capacity chart and checked against BS 7121 thresholds — NOT computed (no lifting calculator). Utilisation over the planned safe margin would flag re-selection of the crane." },
+
+    { "type": "heading", "level": 1, "text": "Ground & proximity" },
+    { "type": "bullets", "items": [
+        "Ground / outrigger bearing assessed against the outrigger loads and the site ground report; mats sized accordingly.",
+        "11 kV overhead line within the slew radius — see exclusion zones below.",
+        "Confined working radius adjacent to the occupied building elevation." ] },
+
+    { "type": "heading", "level": 1, "text": "Exclusion zones & segregation" },
+    { "type": "callout", "text": "Overhead-line control LEADS with elimination / engineered exclusion, NOT PPE: the lift is re-positioned so no part of the crane or load enters the GS6 minimum-clearance envelope of the 11 kV line; goal-posts and a barriered exclusion zone enforce the boundary, with a dedicated banksman. 'Operatives to take care / wear PPE' near the line is rejected as a PPE-only control.", "box_type": "warning" },
+    { "type": "table",
+      "headers": ["Zone", "Basis", "Control"],
+      "rows": [
+        ["Overhead-line exclusion", "GS6 minimum clearance from the 11 kV line", "Re-route + goal-posts + barriered exclusion + banksman (engineered exclusion, not PPE)"],
+        ["Load swing / drop zone", "Slew radius + load footprint", "Barriered; no persons under a suspended load"],
+        ["Public / building segregation", "Occupied elevation adjacent", "Hard barrier + signage; lift timed outside occupancy where practicable"]
+      ],
+      "caption": "Exclusion zones set from the proximity tests (KB-DATA-LIFT-CATEGORIES)." },
+
+    { "type": "heading", "level": 1, "text": "Sequenced lift method" },
+    { "type": "bullets", "items": [
+        "1. Rig the load to the 4 certified lifting points; check accessory certs and CoG.",
+        "2. Trial-lift / weigh: lift clear by 150 mm, confirm load stability and the chart weight.",
+        "3. Travel / slew within the planned arc only — banksman in continuous communication.",
+        "4. Place onto the level-6 plant deck at the planned set-down point.",
+        "5. De-rig and clear the exclusion zone." ] },
+
+    { "type": "heading", "level": 1, "text": "Roles & competence" },
+    { "type": "table",
+      "headers": ["Role", "Named person (competence record)", "Competence basis"],
+      "rows": [
+        ["Appointed Person (plans & supervises)", "A. Okafor", "Appointed-person training; BS 7121"],
+        ["Crane Operator", "R. Mehta", "CPCS A66 mobile crane"],
+        ["Slinger / Signaller", "L. Nowak", "CPCS A40 slinger/signaller"]
+      ],
+      "caption": "Named as a deliberate competence record (legitimate). No medical-fitness / health detail is carried — fitness is recorded only as 'current medical certificate held' at role level." },
+
+    { "type": "heading", "level": 1, "text": "Contingency & abort criteria" },
+    { "type": "bullets", "items": [
+        "ABORT on loss of communication between operator and slinger / signaller.",
+        "ABORT if in-service wind exceeds 9.8 m/s (chart limit).",
+        "ABORT on any unplanned obstruction or person entering an exclusion zone.",
+        "On abort: land the load at the nearest safe set-down, secure, and re-plan." ] },
+
+    { "type": "heading", "level": 1, "text": "Weather limits" },
+    { "type": "paragraph", "text": "Lift suspended if the in-service wind limit (9.8 m/s, from the rated-capacity chart) is forecast or measured at the boom tip, or in conditions that impair the slinger / signaller's visibility of the load." },
+
+    { "type": "heading", "level": 1, "text": "Residual risk" },
+    { "type": "findings", "rows": [
+        { "title": "Overhead-line contact", "risk_level": "Medium",
+          "description": "Initial High; reduced to Medium after re-route + engineered exclusion + banksman (risk_matrix residual re-score). No PPE-only treatment accepted.", "evidence": "GS6 clearance; exclusion-zone plan" },
+        { "title": "Load instability / dropped load", "risk_level": "Low",
+          "description": "Trial-lift / weigh confirms the chart weight and CoG before travel; certified accessories.", "evidence": "Rated-capacity chart; accessory certs" } ] },
+    { "type": "hoc_table", "rows": [
+        { "control": "Re-position the lift to eliminate entry into the GS6 overhead-line envelope", "tier": "Elimination", "owner": "Appointed Person" },
+        { "control": "Engineered exclusion zone (goal-posts + barriers) at the line", "tier": "Engineering", "owner": "Appointed Person" },
+        { "control": "Permit-to-lift + dedicated banksman + comms check", "tier": "Administrative", "owner": "Appointed Person" } ] },
+
+    { "type": "heading", "level": 1, "text": "Review & sign-off" },
+    { "type": "recommendations", "rows": [
+        { "action": "Confirm the ground / outrigger-loading report against the chart outrigger loads before set-up", "priority": "P1", "owner": "Appointed Person", "due": "2026-06-25" },
+        { "action": "Re-plan and re-brief on any change of crane, load, radius, ground, or weather beyond the limit", "priority": "P2", "owner": "Appointed Person", "due": "On change" } ] },
+    { "type": "callout", "text": "Decision-support only. This lift plan must be reviewed by a competent person before any lifting operation proceeds; it does not constitute competent-person approval.", "box_type": "critical" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": [
+        "LOLER 1998 Reg 8 — lifting operations planned by a competent person, supervised, carried out safely",
+        "LOLER 1998 Reg 9 — thorough examination of the crane and lifting accessories",
+        "BS 7121 — Safe Use of Cranes: lift categorisation (basic / standard / complex)",
+        "ISO 45001 clause 6.1.2 / 8.1.2 — hazard ID & the hierarchy of controls",
+        "CDM 2015 — where the lift is part of construction works (the lift sits under the Construction Phase Plan)" ] }
+  ]
+}

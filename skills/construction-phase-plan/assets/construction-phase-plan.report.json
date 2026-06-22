@@ -1,0 +1,95 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Construction Phase Plan — CDM 2015 Regulation 12",
+    "subtitle": "Tower B fit-out — partition demolition, steel-frame erection & cladding, levels 3–5",
+    "author": "Principal Contractor",
+    "date": "2026-06-22",
+    "classification": "Project — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All input-derived personnel are referred to by role label. The named duty-holders below are the deliberate contractual appointments for this plan (a legitimate record), not leaked PII. Identifiers from any prior incident were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Project description & programme" },
+    { "type": "paragraph", "text": "Tower B fit-out: demolish the level-3 partitions, then erect the steel frame and install cladding to levels 3–5. Principal contractor appointed; project is NOTIFIABLE (>500 person-days) — the F10 was filed (see Notification status). Construction phase: weeks 8–20. This Construction Phase Plan is drawn up before the construction phase begins under CDM 2015 Regulation 12(1)–(2) and is proportionate to the project's risk." },
+    { "type": "metrics", "metrics": [
+        { "label": "Significant activities", "value": "3", "caption": "demolition · work at height · lifting" },
+        { "label": "Notification status", "value": "F10 filed", "caption": "Reg 12 notifiable project" },
+        { "label": "High residual risks", "value": "1", "caption": "work at height — leading edge" } ] },
+
+    { "type": "heading", "level": 1, "text": "Management & arrangements" },
+    { "type": "table",
+      "headers": ["Duty-holder (named appointment)", "CDM responsibility", "Arrangement"],
+      "rows": [
+        ["Principal Contractor — A. Mercer", "Reg 12/13 — plan, manage & monitor the construction phase", "Daily coordination; this CPP reviewed on any change of method/sequence"],
+        ["CDM Construction Manager — R. Okafor", "Site management & arrangements", "Induction for every worker before first access; weekly site H&S walk"],
+        ["Site Manager — P. Nair", "Supervision & emergency arrangements", "First-aiders rostered; muster point at Gate 2; rescue plan for at-height work"]
+      ],
+      "caption": "Duty-holders are the deliberate contractual appointments for this CPP (named record); operatives appear by role label only." },
+    { "type": "bullets", "items": [
+        "Induction: site-specific induction mandatory before first access; refreshed on phase change.",
+        "Consultation: weekly contractor coordination meeting; worker H&S representative consulted.",
+        "Welfare (Schedule 2): heated drying room, toilets, hot-water washing, rest/eating facilities sized to peak headcount.",
+        "Emergency arrangements: fire plan, muster at Gate 2, at-height rescue plan, nearest A&E recorded; emergency contacts posted." ] },
+
+    { "type": "heading", "level": 1, "text": "Site rules" },
+    { "type": "bullets", "items": [
+        "No access to a work-at-height area without edge protection in place and inspected.",
+        "Permit-to-work required for demolition, hot works, and any work near services.",
+        "Exclusion zones segregate the public footpath from the cladding-installation drop zone.",
+        "All lifting operations under an appointed person; no lift over an occupied area." ] },
+
+    { "type": "heading", "level": 1, "text": "Significant risks & controls by activity (hierarchy-ranked, residual)" },
+    { "type": "table",
+      "headers": ["Activity", "Significant hazard", "Control (hierarchy tier) — collective before personal", "Owner", "Residual"],
+      "rows": [
+        ["Partition demolition (level 3)", "Structural collapse / dust / falling debris", "Sequenced soft-strip method statement + exclusion zone (Engineering/Admin); RPE as last layer (PPE)", "Demolition Supervisor", "Medium"],
+        ["Steel-frame erection & cladding (levels 3–5)", "Fall from height at the leading edge", "Edge protection + MEWP access + nets (collective ELIMINATION/ENGINEERING leads); personal fall-arrest only where collective is not reasonably practicable, justified", "Works Supervisor", "High — hold-point until edge protection signed off"],
+        ["Lifting cladding panels", "Load failure / strike over the footpath", "Appointed-person lift plan + exclusion zone + no lift over occupied/public areas (Engineering/Admin)", "Appointed Person", "Medium"]
+      ],
+      "caption": "Each significant activity (Schedule 3) carries a hierarchy-of-controls-ranked control with a named owner. For work at height, collective protection LEADS — a harness-only control is not the headline." },
+    { "type": "heading", "level": 2, "text": "Hierarchy of controls (work-at-height worked example)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Eliminate at-height work where possible — pre-assemble cladding sub-frames at ground level", "tier": "Elimination", "owner": "Works Supervisor" },
+        { "control": "Edge protection (double-guardrail + toe-board) to every open leading edge; MEWP access; safety nets beneath", "tier": "Engineering", "owner": "Works Supervisor" },
+        { "control": "Permit-to-load + inspected anchor points; exclusion zone beneath the work", "tier": "Administrative", "owner": "Site Manager" },
+        { "control": "Personal fall-arrest (harness + lanyard) ONLY where collective protection is not reasonably practicable — justified, never the headline", "tier": "PPE", "owner": "Works Supervisor" } ] },
+    { "type": "callout", "text": "A work-at-height control of 'operatives to wear harnesses' with no collective protection is flagged PPE-led and pushed up the hierarchy: collective protection (edge protection / MEWP / nets) leads; personal fall-arrest is the justified last resort.", "box_type": "critical" },
+
+    { "type": "heading", "level": 1, "text": "Notification status (F10)" },
+    { "type": "paragraph", "text": "This is a NOTIFIABLE project under CDM 2015 (>500 person-days). The F10 notification has been filed with the HSE and is displayed on site. A sole contractor would still own this CPP under Regulation 12(2) — the duty is not excused by the contractor configuration." },
+
+    { "type": "heading", "level": 1, "text": "Welfare arrangements" },
+    { "type": "bullets", "items": [
+        "Welfare provided per CDM 2015 Schedule 2 from day one and maintained through the phase.",
+        "Toilets, washing (hot water), drinking water, changing/drying room, and a heated rest/eating area sized to peak headcount." ] },
+
+    { "type": "heading", "level": 1, "text": "Review schedule" },
+    { "type": "paragraph", "text": "This CPP is a live document reviewed and updated through the construction phase (Reg 12(3)–(4)) — at minimum on any change of method, sequence, or significant activity, and at each phase transition (demolition → erection → cladding)." },
+
+    { "type": "heading", "level": 1, "text": "Assumptions & gaps" },
+    { "type": "bullets", "items": [
+        "[GAP] Pre-Construction Information (Reg 4): where the client's PCI is not yet supplied, the ground conditions and existing-services position are recorded as [GAP]; this plan proceeds on the stated assumption of no live buried services in the demolition zone — to be confirmed against the PCI / a services survey before excavation.",
+        "Assumption: peak simultaneous headcount of 18 used to size welfare; revise if exceeded.",
+        "PCI is an optional input — this CPP does not assume the Pre-Construction Information or the Health & Safety File skills were run." ] },
+    { "type": "callout", "text": "CDM document chain (Reg 4 → 12 → 12(5)): this Construction Phase Plan (Reg 12(1)–(2)) is built from the Pre-Construction Information (Reg 4, client) and feeds the Health & Safety File (Reg 12(5), principal designer) handed to the client at completion. See KB-SNIP-CONSTRUCTION-CLAUSE-MAP — the chain is cross-referenced, not assumed to have been produced by a sibling.", "box_type": "info" },
+
+    { "type": "heading", "level": 1, "text": "Recommendations (SMART actions)" },
+    { "type": "recommendations", "rows": [
+        { "action": "Sign off edge protection to every level-3–5 leading edge and inspect before first at-height access (hold-point)", "priority": "P1", "owner": "Works Supervisor", "due": "2026-07-08" },
+        { "action": "Confirm buried-services position against the PCI / a services survey before any excavation or ground disturbance", "priority": "P1", "owner": "Site Manager", "due": "2026-07-10" } ] },
+    { "type": "divider" },
+
+    { "type": "heading", "level": 1, "text": "Review & sign-off" },
+    { "type": "paragraph", "text": "Prepared as decision-support and reviewed against the Principal Contractor and CDM Construction Manager SME lenses. This Construction Phase Plan must be reviewed by a competent person before use on site; it is not a competent-person approval and is not legal advice." },
+
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": [
+        "CDM 2015 (SI 2015/51) Regulation 12(1)–(4) + Schedule 3 — Construction Phase Plan",
+        "HSE L153 ACOP — Managing health and safety in construction",
+        "ISO 45001 §6.1.2 / §8.1.2 — hazard identification & the hierarchy of controls",
+        "USA: 29 CFR 1926 Subpart C (accident prevention) where the jurisdiction is US",
+        "India: defers to hse-india / bocw-compliance with mandatory state detection; literal [GAP], never a minted national form number" ] }
+  ]
+}

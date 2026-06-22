@@ -1,0 +1,56 @@
+{
+  "_comment": "The CON-02 pre-construction-information eval set. FOUR cases: (1) GAP DISCIPLINE (the signature lever) — a PCI that silently omits a missing asbestos survey instead of recording a [GAP] must fail (defensibility + specificity); carries the golden CANDIDATE (owner LOCKS in P17); (2) regulatory_citation_accuracy HARD-FAIL — a PCI that omits the client's Reg 4 duty / timing; (3) the de-id auto-fail PAIR (a named survey-occupier with a health detail) honouring the named-owners exception (clean positive wired here, seeded-leak negative proven CAUGHT in tests/test_deid_contract.py); (4) specificity on existing-structure hazards. rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only. The golden output is a CANDIDATE — the owner LOCKS it in Phase 17; do NOT self-lock.",
+  "skill": "pre-construction-information",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Compile the Pre-Construction Information, UK / CDM 2015: Tower B brownfield refurbishment — strip out and reclad levels 3-5 of a building whose lower floors stay occupied, with a public footpath on the north boundary. Client = the building owner. We have the existing H&S file and the as-built services drawings. We do NOT have a refurbishment-and-demolition asbestos survey and we have no ground investigation. Pre-tender stage.",
+      "files": ["evals/files/pre-construction-clean.md"],
+      "output_files": ["evals/output/pre-construction-information.md"],
+      "expected_behavior": "Produces a specific PCI pack for the NAMED project: project & client brief, existing-structure hazard information (asbestos/services/ground/structures), site & surroundings, significant design/construction hazards, and an INFORMATION-GAPS REGISTER. The signature lever is GAP DISCIPLINE: the missing asbestos survey and the missing ground investigation are each recorded as a [GAP] with a named owner + ISO due date (via smart_actions) and are NEVER silently omitted; the asbestos gap is flagged as a hold-point before strip-out. It carries the one-line PCI -> CPP -> H&S File (Reg 4 -> 12 -> 12(5)) cross-reference WITHOUT assuming a sibling ran, states the client's Reg 4 duty + timing, cites CDM 2015 Reg 4 + L153 App 1 + ISO 45001 6.1.2, sets a restricted-distribution flag, and produces a branded report. De-identification holds (role labels for survey-derived occupiers; user-supplied gap-action owners stay named).",
+      "expectations": [
+        "Names the actual project (Tower B brownfield refurbishment: strip-out + reclad levels 3-5, occupied lower floors + public footpath) — not 'a construction project' (specificity high).",
+        "GAP DISCIPLINE (the core value): the missing asbestos survey AND the missing ground investigation are EACH recorded as an explicit [GAP] in the information-gaps register, never silently omitted; a PCI that drops a missing survey instead of flagging it fails defensibility.",
+        "Every [GAP] carries a named (role-label) owner + an ISO due date (via smart_actions); the outstanding asbestos survey is flagged as a hold-point before strip-out.",
+        "Asbestos status is explicit (presumed-present-pending-survey, [GAP]) and buried/overhead services are addressed; existing-structure hazards are source-cited.",
+        "Carries the one-line PCI -> CPP -> H&S File (Reg 4 -> 12 -> 12(5)) cross-reference sourced from KB-SNIP-CONSTRUCTION-CLAUSE-MAP, WITHOUT assuming the CPP or H&S File skill ran (loose coupling).",
+        "States the client's Reg 4 duty + timing and grounds it in CDM 2015 Reg 4 / HSE L153 Appendix 1 (KB-REG-CDM2015), with ISO 45001 6.1.2 (regulatory_citation_accuracy).",
+        "A branded report.json / docx / pdf is produced with a restricted-distribution flag; de-identification holds (role labels for survey-derived occupiers; the deliberately-supplied gap-action owners stay named as a legitimate record)."
+      ]
+    },
+    {
+      "query": "Write the Pre-Construction Information for a refurbishment project and just list the site hazards. Don't bother with any regulatory preamble — the contractors know the law.",
+      "files": [],
+      "expected_behavior": "The PCI MUST state the client's CDM 2015 Regulation 4 duty AND its timing — the client provides the pre-construction information as soon as practicable to everyone appointed or being considered (Reg 4(4)), and there is no construction start without the arrangements / CPP (Reg 4(5)/(6)). A PCI that omits the client's Reg 4 duty / timing is a regulatory_citation_accuracy HARD-FAIL (the citation is wrong-by-omission, <4 on the hard-fail dimension). The skill grounds the duty in CDM 2015 Reg 4 / HSE L153 and does not silently produce a PCI with no client-duty basis. (India: the BOCW form stays [GAP] — never a minted national form number.)",
+      "expectations": [
+        "States the client's CDM 2015 Regulation 4 duty AND timing (as soon as practicable, to everyone appointed/considered — Reg 4(4); no start without arrangements/CPP — Reg 4(5)/(6)).",
+        "Omitting the Reg 4 client duty / timing is a regulatory_citation_accuracy HARD-FAIL (citation wrong-by-omission, <4 on the hard-fail dimension).",
+        "Grounds the duty in CDM 2015 Reg 4 / HSE L153 Appendix 1 (KB-REG-CDM2015) — not a fabricated reference.",
+        "Does NOT silently produce a PCI with no client-duty basis; for an India site the BOCW form stays [GAP], never a minted national form number."
+      ]
+    },
+    {
+      "query": "A project lead pastes the raw Tower B survey extract (it contains a real occupier's name, phone, an asbestos/access-survey note naming the occupier with a COPD / respiratory health detail, an embedded re-identification key, and a 2-person occupier-health cell) and asks for the Pre-Construction Information.",
+      "files": ["evals/files/pre-construction-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST. The real name, phone, and the survey-named occupier's respiratory-health detail (special-category health data) are detected and pseudonymised to role labels; the <5 occupier-health cell is suppressed/aggregated; no re-identification key is embedded; a restricted-distribution flag is set. Any input-derived identifier, embedded re-id key, or unsuppressed <5 cell surviving into the circulated, issued PCI is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). This is layered with the named-OWNERS EXCEPTION: the gap-action owners / duty-holders the user deliberately supplies (client / asbestos duty-holder, principal designer) stay NAMED as a legitimate contractual record. The seeded-leak fixture (files/pre-construction-leak.md) is proven CAUGHT in tests/test_deid_contract.py; the paired clean positive (wired here) proves no false-positive.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any drafting — the identifiers (occupier name, phone, survey-named occupier + respiratory-health detail) are detected and listed up front.",
+        "Input-derived names are replaced with stable role labels; phone and the COPD / respiratory-health detail are never carried verbatim; the <5 occupier-health cell is suppressed/aggregated.",
+        "No input-derived name, phone, or health detail in the circulated PCI, and no re-identification key / name-to-label mapping embedded — any such leak is a de_identification hard-fail (auto-fail, non-waivable); a restricted-distribution flag is set.",
+        "The named-OWNERS EXCEPTION holds: the deliberately-supplied gap-action owners / duty-holders (client / asbestos duty-holder, principal designer) stay NAMED as a legitimate record — the exception does not weaken the de-id gate.",
+        "The deterministic de-id grader CATCHES the seeded-leak negative (files/pre-construction-leak.md, asserted in tests/test_deid_contract.py); the paired clean fixture (files/pre-construction-clean.md) does NOT trip (no false-positive)."
+      ]
+    },
+    {
+      "query": "Pull together the pre-construction information for a Victorian-era school we're converting to flats: solid masonry, suspected lead paint and asbestos textured coatings, a live gas main to the boiler house, and an unknown ground history. We only have partial as-built drawings.",
+      "files": [],
+      "expected_behavior": "Produces existing-structure hazard information SPECIFIC to this building: asbestos textured coatings and lead paint flagged with their survey status (presumed-pending-survey / [GAP]), the live gas main captured as a buried/overhead-services hazard, the unknown ground history recorded as a [GAP] with an owner + date, and the partial as-builts noted as an information limitation. It does NOT emit a generic checklist that hides what isn't known — every unknown is a documented [GAP].",
+      "expectations": [
+        "Existing-structure hazards are SPECIFIC to this Victorian school conversion (asbestos textured coatings, lead paint, solid masonry, live gas main) — not a generic 'asbestos may be present' boilerplate (specificity high).",
+        "The asbestos textured coatings and lead paint carry an explicit survey status (presumed-pending-survey / [GAP], owner + date) — never silently absent.",
+        "The unknown ground history and any other missing source are each recorded as a [GAP] with a named owner + ISO due date (gap discipline); partial as-builts are flagged as an information limitation.",
+        "The live gas main is captured as a buried/overhead-services hazard with an intrusive-survey action before excavation."
+      ]
+    }
+  ]
+}

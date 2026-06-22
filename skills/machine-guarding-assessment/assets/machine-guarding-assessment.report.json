@@ -1,0 +1,77 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Machine-Guarding Assessment — PL-3 Power Press",
+    "subtitle": "Guard-by-hazard-zone register (ISO 12100/14120 + OSHA 1910 Subpart O)",
+    "author": "HSE Manufacturing",
+    "date": "2026-06-22",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. A prior amputation/crush incident is cited at role level as evidence; identifiers were pseudonymised before drafting and the re-identification key is held separately, not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Machine description & function" },
+    { "type": "paragraph", "text": "PL-3 250-ton mechanical power press, blanking line, Plant 3. Function: blanking and forming of sheet-metal components. Hazardous motions: descending platen (point of operation) and exposed rotating power-transmission shaft at the rear drive. Assessment is machine-specific (not a 'guard all moving parts' statement)." },
+    { "type": "metrics", "metrics": [
+        { "label": "Danger zones assessed", "value": "3" },
+        { "label": "Open guarding findings", "value": "2", "caption": "1 high — defeated interlock" } ] },
+
+    { "type": "heading", "level": 1, "text": "Hazard-zone register" },
+    { "type": "findings", "rows": [
+        { "title": "Point of operation — descending platen", "risk_level": "High",
+          "description": "Interlocking light-curtain bridged, allowing the platen to cycle with the operator's hands in the die area (in-running/crush). A prior amputation injury occurred at this zone (de-identified — role label only).", "evidence": "Photo MG-01; control-panel inspection; prior incident IR-role-A (de-identified)" },
+        { "title": "Power-transmission shaft — rear drive (1910.219)", "risk_level": "Medium",
+          "description": "Fixed guard over the rotating shaft/coupling removed for maintenance and not refitted; rotating-part entanglement zone exposed.", "evidence": "Maintenance work order WO-228" },
+        { "title": "In-running nip point — feed rolls", "risk_level": "Medium",
+          "description": "Nip point between the feed rolls accessible during setting; no fixed or interlocked guard fitted.", "evidence": "Task observation; setting-mode walk-through" } ] },
+
+    { "type": "heading", "level": 1, "text": "Guard/device selection by zone (ISO 14120 basis)" },
+    { "type": "table",
+      "headers": ["Danger zone", "Access frequency", "Selected guard/device (ISO 14120)", "Basis"],
+      "rows": [
+        ["Point of operation — platen", "Frequent (each cycle)", "Restore + tamper-seal the interlocking light-curtain (presence-sensing); add fixed perimeter where access not needed", "1910.212(a); ISO 12100 step 2; presence-sensing per access-frequency rule"],
+        ["Power-transmission shaft", "Rare (maintenance only)", "Refit the fixed guard (preferred — no normal-operation access)", "1910.219; ISO 14120 fixed guard"],
+        ["In-running nip — feed rolls", "Occasional (setting)", "Interlocked movable guard (opening isolates the rolls)", "1910.212(a); ISO 14120 interlocked guard"] ],
+      "caption": "Engineering-led guard selection — fixed → interlocked → presence-sensing per the access-frequency rule" },
+
+    { "type": "heading", "level": 1, "text": "Safeguarding plan — hierarchy of controls (residual-ranked)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Restore + tamper-seal the platen light-curtain interlock (presence-sensing)", "tier": "Engineering", "owner": "Maintenance Lead" },
+        { "control": "Refit + secure the fixed power-transmission shaft guard before restart", "tier": "Engineering", "owner": "Maintenance Lead" },
+        { "control": "Fit an interlocked movable guard to the feed-roll nip point", "tier": "Engineering", "owner": "Process Engineer" },
+        { "control": "Guard-integrity check added to start-of-shift checklist (supports, does not replace, the guards)", "tier": "Administrative", "owner": "Production Lead" } ] },
+    { "type": "callout", "text": "PPE-only / admin-only treatment of a mechanical hazard zone is NOT accepted. 'Operators trained to keep hands clear / wear gloves' for the platen nip is a FLAG pushed up the hierarchy — the engineering-led guard (presence-sensing / interlock) is the control; operator care is not the headline treatment.", "box_type": "warning" },
+
+    { "type": "heading", "level": 1, "text": "Interaction-mode controls (incl. maintenance LOTO)" },
+    { "type": "table",
+      "headers": ["Interaction mode", "Control"],
+      "rows": [
+        ["Normal operation", "Presence-sensing + fixed/interlocked guards in place; guard-integrity check at start of shift"],
+        ["Setting", "Interlocked feed-roll guard; hold-to-run at reduced speed where access is unavoidable"],
+        ["Cleaning", "Stop + isolate before reaching into any danger zone; no cleaning of moving parts"],
+        ["Maintenance", "LOTO energy isolation (KB-REG-LOTO): identify sources (electrical, stored mechanical/flywheel, pneumatic) → isolate + lock → VERIFY ZERO ENERGY (flywheel at rest, pressure bled) before guard removal/access"] ],
+      "caption": "Maintenance interaction cross-references the lockout/tagout energy-isolation map" },
+
+    { "type": "heading", "level": 1, "text": "Duty-holders & verification" },
+    { "type": "recommendations", "rows": [
+        { "action": "Restore + verify the platen interlock by a competent person (clears the high finding)", "priority": "P1", "owner": "Maintenance Lead", "due": "2026-06-28" },
+        { "action": "Refit the power-transmission shaft fixed guard before restart", "priority": "P1", "owner": "Maintenance Lead", "due": "2026-06-28" },
+        { "action": "Install + commission the interlocked feed-roll nip guard", "priority": "P2", "owner": "Process Engineer", "due": "2026-07-18" } ] },
+
+    { "type": "heading", "level": 1, "text": "Assumptions & gaps" },
+    { "type": "bullets", "items": [
+        "Access frequency for the feed-roll nip assumed 'occasional (setting)' — confirm with the line supervisor.",
+        "India site: state return owed — [GAP] (resolve the state via hse-india; no national form number minted).",
+        "Presence-sensing safety function performance level (ISO 13849 PL) to be confirmed against the residual risk — [GAP]." ] },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off (regulatory basis)" },
+    { "type": "bullets", "items": [
+        "OSHA 29 CFR 1910 Subpart O — 1910.212 (general machine guarding) + 1910.219 (mechanical power-transmission apparatus)",
+        "ISO 12100 (three-step method) + ISO 14120 (guard taxonomy)",
+        "UK PUWER 1998 Regs 11–12; India Factories Act §21 via hse-india",
+        "Review trigger: on machine change / on guard modification / annual — whichever is first",
+        "Decision-support only — a competent person must review before use." ] }
+  ]
+}

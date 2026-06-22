@@ -1,0 +1,65 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Health & Safety File — CDM 2015 Reg 12(5)–(9)",
+    "subtitle": "As-built residual-risk record handed to the client — Tower B fit-out",
+    "author": "Principal Designer (prepares & maintains under Reg 12(5))",
+    "date": "2026-06-22",
+    "classification": "Restricted distribution — client + future-work duty-holders; competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "Individuals named in commissioning, survey, and as-built records are referred to by role label; no worker health detail is carried into this file. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Structure description & use" },
+    { "type": "paragraph", "text": "This Health & Safety File is prepared and maintained by the principal designer under CDM 2015 Regulation 12(5) and handed to the client at completion (Reg 12(6)-(9)). It records, for the Tower B office fit-out (levels 3-9, occupied commercial use), the residual and unusual hazards a future construction, maintenance, cleaning, refurbishment, or demolition worker could NOT reasonably anticipate from the structure itself — it is NOT a copy of the general specification." },
+    { "type": "metrics", "metrics": [
+        { "label": "Located residual hazards", "value": "4" },
+        { "label": "Hazardous materials in situ", "value": "1", "caption": "presumed asbestos" },
+        { "label": "Open information gaps", "value": "1", "caption": "AHU commissioning record" } ] },
+    { "type": "heading", "level": 1, "text": "As-built & services information" },
+    { "type": "bullets", "items": [
+        "Key as-built drawings held: architectural AB-07, services AB-04, structural SB-02 (rev C).",
+        "Services & isolation points: LV distribution board in the level-9 plant room; the AHU isolation point is non-standard — located in the level-9 riser, not at the unit (a future worker could not anticipate this).",
+        "[GAP] No commissioning record held for the level-9 AHU — owner + date in the information-gaps register below." ] },
+    { "type": "heading", "level": 1, "text": "Residual & unusual hazards (located)" },
+    { "type": "table",
+      "headers": ["Residual / unusual hazard", "Location", "Could-not-anticipate basis", "Future-work owner"],
+      "rows": [
+        ["Fragile atrium roof glazing", "Level 9 atrium roof", "Glazing is non-load-bearing and visually indistinguishable from walk-on glazing — a cleaner could not anticipate the fragility", "Facilities Lead"],
+        ["No permanent edge protection at high-level plant", "Roof plant deck", "Edge protection was removed at handover; the deck looks finished but has no guarding", "Facilities Lead"],
+        ["Restricted confined-plant egress", "Basement B2 plant room", "Single restricted egress + possible atmosphere change on shutdown — not evident from the door", "Maintenance Lead"],
+        ["Buried services on an unusual route", "External courtyard", "Incoming LV runs diagonally across the courtyard, not along the boundary as a worker would assume", "Facilities Lead"]
+      ],
+      "caption": "Residual-only discipline: each hazard is one a competent future worker could NOT reasonably anticipate, and is LOCATED. A routine/anticipatable hazard or a general-spec dump is excluded." },
+    { "type": "heading", "level": 1, "text": "Hazardous materials in situ" },
+    { "type": "findings", "rows": [
+        { "title": "Presumed asbestos in riser lagging", "risk_level": "High",
+          "description": "Duct lagging in risers 3 and 5 is presumed to contain asbestos pending a refurbishment-and-demolition survey; no riser disturbance until surveyed and a management plan is in force (hold-point).", "evidence": "Asbestos register rev B + gap register G-1" } ] },
+    { "type": "heading", "level": 1, "text": "Maintenance / cleaning / refurb / demolition safety arrangements" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Specify a permanent edge-protection + anchor system for the atrium-roof cleaning route at next refurbishment (designed-in, before any harness-only access)", "tier": "Engineering", "owner": "Principal Designer" },
+        { "control": "Fragile-roof safe-system-of-work + crawl boards / staging for any atrium-glazing access; never walk on the glazing", "tier": "Engineering", "owner": "Facilities Lead" },
+        { "control": "Asbestos management plan + R&D survey before any riser disturbance (refurb/demolition)", "tier": "Administrative", "owner": "Asbestos Duty-Holder" },
+        { "control": "Permit-to-work + confined-space entry procedure for the B2 plant room", "tier": "Administrative", "owner": "Maintenance Lead" } ] },
+    { "type": "heading", "level": 1, "text": "Information gaps" },
+    { "type": "recommendations", "rows": [
+        { "action": "G-1 — Commission a refurbishment-and-demolition asbestos survey of risers 3 and 5 before any disturbance", "priority": "P1", "owner": "Asbestos Duty-Holder", "due": "2026-07-15" },
+        { "action": "G-2 — Obtain / reconstruct the level-9 AHU commissioning record (isolation sequence)", "priority": "P2", "owner": "Facilities Lead", "due": "2026-08-01" } ] },
+    { "type": "callout", "text": "Residual-only discipline: only hazards a future worker could NOT reasonably anticipate are recorded, each located. This file is NOT a general-spec dump. No work on riser lagging may proceed until the asbestos survey (G-1) is complete and the management plan is in force.", "box_type": "critical" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Revision / version control" },
+    { "type": "paragraph", "text": "Rev 1.0 — completion handover. This file is a living record: any update or single-package addition APPENDS under a new revision and NEVER overwrites prior residual-risk content. The principal designer maintains it through the project (Reg 12(5)); at completion it is handed to the client, who retains it and makes it available for future work (Reg 12(6)-(9))." },
+    { "type": "heading", "level": 1, "text": "CDM document chain & references" },
+    { "type": "paragraph", "text": "This Health & Safety File completes the chain PCI -> CPP -> H&S File (CDM 2015 Reg 4 -> 12 -> 12(5)). This file does not assume the PCI or CPP skill has run (loose coupling)." },
+    { "type": "bullets", "items": [
+        "CDM 2015 (SI 2015/51) Regulation 12(5) — the principal designer prepares & maintains the Health & Safety File",
+        "CDM 2015 Regulation 12(6)-(9) — review, update, handover to the client at completion, client retention/availability",
+        "HSE L153 ACOP — Appendix 4 H&S-file content list + the could-not-reasonably-anticipate residual-hazard test",
+        "ISO 45001 §6.1.2 / §7.5 / §8.1.2 — hazard identification, documented information, hierarchy of controls",
+        "Control of Asbestos Regulations — duty to manage asbestos in situ",
+        "India: BOCW completion records via hse-india / bocw-compliance — state resolved first, form reference [GAP], never a national form number" ] },
+    { "type": "heading", "level": 1, "text": "Review & sign-off" },
+    { "type": "paragraph", "text": "Decision-support only. This Health & Safety File must be reviewed by a competent person before issue. SME review (CDM Principal Designer persona) ran as decision-support; it does not constitute competent-person approval." }
+  ]
+}

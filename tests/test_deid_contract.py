@@ -309,3 +309,308 @@ def test_ppe_matrix_clean_fixture_passes():
     assert verdict["auto_fail"] is False, (
         f"ppe-matrix clean fixture false-positived: {verdict['reasons']}"
     )
+
+
+# =============================================================================
+# Phase-14 / MFG-01 machine-guarding-assessment de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 14-05 (do not reorder/remove the canonical
+# contract assertions above, nor the MFG-02 ergonomics section, nor the MFG-03 noise
+# section, nor the MFG-04 ppe-matrix section, nor any other skill's appended section).
+# machine-guarding-assessment is a LOW-PII / asset-level skill, but a guarding assessment
+# routinely cites a PRIOR AMPUTATION / CRUSH INCIDENT on the machine — and a named injured
+# operator from that incident is GDPR Art. 9 / India DPDP special-category health data. It
+# registers the machine-guarding de-identification PAIR against the SAME deterministic de-id
+# grader the whole pack's non-waivable privacy gate keys off:
+#   - the seeded-leak negative (evals/files/guarding-leak.md) — a named operator from a prior
+#     amputation incident + a phone + an embedded re-id key + a <5 amputation/crush injury cell —
+#     MUST auto_fail (the gate is live), and
+#   - the paired clean positive (evals/files/guarding-clean.md), wired into the skill's eval CASE,
+#     MUST NOT false-positive (the per-skill gate is not spuriously hard-failed).
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _guard_sys  # noqa: E402
+
+_GUARD_SCRIPTS = REPO / "scripts"
+if str(_GUARD_SCRIPTS) not in _guard_sys.path:
+    _guard_sys.path.insert(0, str(_GUARD_SCRIPTS))
+
+from graders import grade_deid as _guard_grade_deid  # noqa: E402
+
+_GUARD_FILES = REPO / "skills" / "machine-guarding-assessment" / "evals" / "files"
+_GUARD_LEAK = _GUARD_FILES / "guarding-leak.md"
+_GUARD_CLEAN = _GUARD_FILES / "guarding-clean.md"
+
+
+def test_machine_guarding_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _guard_grade_deid(_GUARD_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "machine-guarding seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_machine_guarding_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail)."""
+    verdict = _guard_grade_deid(_GUARD_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"machine-guarding clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# =============================================================================
+# Phase-14 / CON-01 construction-phase-plan de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 14-06 (do not reorder/remove the canonical
+# contract assertions above, nor the MFG-02 ergonomics section, nor the MFG-03 noise
+# section, nor the MFG-04 ppe-matrix section, nor the MFG-01 machine-guarding section,
+# nor any other skill's appended section). construction-phase-plan (the CDM 2015 Reg 12
+# Construction Phase Plan) is a DISTRIBUTED, site-wide document, and a CPP routinely
+# cites a PRIOR FALL-FROM-HEIGHT / WORK-AT-HEIGHT NEAR-MISS — a named injured operative
+# from that incident is GDPR Art. 9 / India DPDP special-category health data. It
+# registers the construction-phase-plan de-identification PAIR against the SAME
+# deterministic de-id grader the whole pack's non-waivable privacy gate keys off:
+#   - the seeded-leak negative (evals/files/construction-phase-leak.md) — a named operative
+#     from a prior fall-from-height near-miss + a phone + an embedded re-id key + a <5
+#     fall-injury cell — MUST auto_fail (the gate is live), and
+#   - the paired clean positive (evals/files/construction-phase-clean.md), wired into the
+#     skill's eval CASE, MUST NOT false-positive (the per-skill gate is not spuriously
+#     hard-failed) — proving the named-DUTY-HOLDERS exception (the deliberately-appointed
+#     principal contractor / CDM construction manager / site manager stay named as a
+#     legitimate record) does not trip the gate.
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _cpp_sys  # noqa: E402
+
+_CPP_SCRIPTS = REPO / "scripts"
+if str(_CPP_SCRIPTS) not in _cpp_sys.path:
+    _cpp_sys.path.insert(0, str(_CPP_SCRIPTS))
+
+from graders import grade_deid as _cpp_grade_deid  # noqa: E402
+
+_CPP_FILES = REPO / "skills" / "construction-phase-plan" / "evals" / "files"
+_CPP_LEAK = _CPP_FILES / "construction-phase-leak.md"
+_CPP_CLEAN = _CPP_FILES / "construction-phase-clean.md"
+
+
+def test_construction_phase_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _cpp_grade_deid(_CPP_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "construction-phase-plan seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_construction_phase_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail)."""
+    verdict = _cpp_grade_deid(_CPP_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"construction-phase-plan clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# =============================================================================
+# Phase-14 / CON-02 pre-construction-information de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 14-07 (do not reorder/remove the canonical
+# contract assertions above, nor the MFG-02 ergonomics section, nor the MFG-03 noise
+# section, nor the MFG-04 ppe-matrix section, nor the MFG-01 machine-guarding section,
+# nor the CON-01 construction-phase-plan section, nor any other skill's appended section).
+# pre-construction-information (the CDM 2015 Reg 4 Pre-Construction Information pack) is
+# ISSUED to every designer and contractor being appointed or considered (Reg 4(4)), so it
+# circulates beyond the client. Existing-structure surveys routinely cite a NAMED OCCUPIER /
+# RESIDENT WITH A HEALTH DETAIL (an asbestos / access survey naming a resident's respiratory
+# condition) — special-category health data under GDPR Art. 9 / India DPDP. It registers the
+# pre-construction-information de-identification PAIR against the SAME deterministic de-id
+# grader the whole pack's non-waivable privacy gate keys off:
+#   - the seeded-leak negative (evals/files/pre-construction-leak.md) — a named occupier +
+#     a survey-sourced COPD / respiratory health detail + a phone + an embedded re-id key +
+#     a <5 occupier-health cell — MUST auto_fail (the gate is live), and
+#   - the paired clean positive (evals/files/pre-construction-clean.md), wired into the
+#     skill's eval CASE, MUST NOT false-positive (the per-skill gate is not spuriously
+#     hard-failed) — proving the named-OWNERS exception (the deliberately-supplied client /
+#     asbestos duty-holder / principal designer + gap-action owners stay named as a legitimate
+#     record) does not trip the gate.
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _pci_sys  # noqa: E402
+
+_PCI_SCRIPTS = REPO / "scripts"
+if str(_PCI_SCRIPTS) not in _pci_sys.path:
+    _pci_sys.path.insert(0, str(_PCI_SCRIPTS))
+
+from graders import grade_deid as _pci_grade_deid  # noqa: E402
+
+_PCI_FILES = REPO / "skills" / "pre-construction-information" / "evals" / "files"
+_PCI_LEAK = _PCI_FILES / "pre-construction-leak.md"
+_PCI_CLEAN = _PCI_FILES / "pre-construction-clean.md"
+
+
+def test_pre_construction_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _pci_grade_deid(_PCI_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "pre-construction-information seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_pre_construction_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail)."""
+    verdict = _pci_grade_deid(_PCI_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"pre-construction-information clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# =============================================================================
+# Phase-14 / CON-03 health-safety-file de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 14-08 (do not reorder/remove the canonical
+# contract assertions above, nor the MFG-02 ergonomics section, nor the MFG-03 noise
+# section, nor the MFG-04 ppe-matrix section, nor the MFG-01 machine-guarding section,
+# nor the CON-01 construction-phase-plan section, nor the CON-02 pre-construction-information
+# section, nor any other skill's appended section). health-safety-file (the CDM 2015 Reg
+# 12(5)-(9) Health & Safety File) is the as-built residual-risk record HANDED TO THE CLIENT and
+# consulted by future maintenance / cleaning / refurbishment / demolition workers, so it
+# circulates beyond the project team. Commissioning, survey, and as-built records routinely
+# NAME AN INDIVIDUAL WITH A HEALTH/INCIDENT DETAIL (a commissioning engineer with a back-injury /
+# musculoskeletal note) — special-category health data under GDPR Art. 9 / India DPDP, and no
+# worker health detail belongs in the file at all. It registers the health-safety-file
+# de-identification PAIR against the SAME deterministic de-id grader the whole pack's
+# non-waivable privacy gate keys off:
+#   - the seeded-leak negative (evals/files/health-safety-file-leak.md) — a named commissioning
+#     engineer + a back-injury / musculoskeletal health detail + a phone + an embedded re-id key
+#     + a <5 musculoskeletal-incident cell — MUST auto_fail (the gate is live), and
+#   - the paired clean positive (evals/files/health-safety-file-clean.md), wired into the
+#     skill's eval CASE, MUST NOT false-positive (the per-skill gate is not spuriously
+#     hard-failed) — proving the named-DUTY-HOLDERS exception (the deliberately-supplied
+#     principal designer / client + open-item owners stay named as a legitimate record) does not
+#     trip the gate.
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _hsf_sys  # noqa: E402
+
+_HSF_SCRIPTS = REPO / "scripts"
+if str(_HSF_SCRIPTS) not in _hsf_sys.path:
+    _hsf_sys.path.insert(0, str(_HSF_SCRIPTS))
+
+from graders import grade_deid as _hsf_grade_deid  # noqa: E402
+
+_HSF_FILES = REPO / "skills" / "health-safety-file" / "evals" / "files"
+_HSF_LEAK = _HSF_FILES / "health-safety-file-leak.md"
+_HSF_CLEAN = _HSF_FILES / "health-safety-file-clean.md"
+
+
+def test_health_safety_file_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _hsf_grade_deid(_HSF_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "health-safety-file seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_health_safety_file_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail)."""
+    verdict = _hsf_grade_deid(_HSF_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"health-safety-file clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# =============================================================================
+# Phase-14 / CON-04 lift-plan de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 14-09 (do not reorder/remove the canonical
+# contract assertions above, nor the MFG-02 ergonomics section, nor the MFG-03 noise
+# section, nor the MFG-04 ppe-matrix section, nor the MFG-01 machine-guarding section,
+# nor the CON-01 construction-phase-plan section, nor the CON-02 pre-construction-information
+# section, nor the CON-03 health-safety-file section, nor any other skill's appended section).
+# lift-plan (the LOLER 1998 Reg 8 / BS 7121 lifting plan) is a NAMED-PERSONNEL document by
+# design — the appointed person, crane operator, and slinger / signaller are DELIBERATELY
+# NAMED for the competence record (a legitimate contractual record, not leaked PII) — so the
+# de-id challenge is PRECISE: keep the duty-holder names while scrubbing any worker
+# MEDICAL-FITNESS / health detail (a named operator with a fitness-for-duty / back-injury
+# restriction note is GDPR Art. 9 / India DPDP special-category health data) and any
+# incident-derived name. It registers the lift-plan de-identification PAIR against the SAME
+# deterministic de-id grader the whole pack's non-waivable privacy gate keys off:
+#   - the seeded-leak negative (evals/files/lift-leak.md) — a named crane operator + a
+#     medical-fitness / back-injury restriction note + a phone + an embedded re-id key +
+#     a <5 dropped-load injury cell — MUST auto_fail (the gate is live), and
+#   - the paired clean positive (evals/files/lift-clean.md), wired into the skill's eval CASE,
+#     MUST NOT false-positive (the per-skill gate is not spuriously hard-failed) — proving the
+#     named-DUTY-HOLDERS exception (the deliberately-named appointed person / crane operator /
+#     slinger stay named as a legitimate competence record) does not trip the gate.
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _lift_sys  # noqa: E402
+
+_LIFT_SCRIPTS = REPO / "scripts"
+if str(_LIFT_SCRIPTS) not in _lift_sys.path:
+    _lift_sys.path.insert(0, str(_LIFT_SCRIPTS))
+
+from graders import grade_deid as _lift_grade_deid  # noqa: E402
+
+_LIFT_FILES = REPO / "skills" / "lift-plan" / "evals" / "files"
+_LIFT_LEAK = _LIFT_FILES / "lift-leak.md"
+_LIFT_CLEAN = _LIFT_FILES / "lift-clean.md"
+
+
+def test_lift_plan_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _lift_grade_deid(_LIFT_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "lift-plan seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_lift_plan_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail)."""
+    verdict = _lift_grade_deid(_LIFT_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"lift-plan clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# =============================================================================
+# Phase-14 / CON-05 traffic-management-plan de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 14-10 (do not reorder/remove the canonical
+# contract assertions above, nor the MFG-02 ergonomics section, nor the MFG-03 noise
+# section, nor the MFG-04 ppe-matrix section, nor the MFG-01 machine-guarding section,
+# nor the CON-01 construction-phase-plan section, nor the CON-02 pre-construction-information
+# section, nor the CON-03 health-safety-file section, nor the CON-04 lift-plan section,
+# nor any other skill's appended section).
+# traffic-management-plan (the CDM 2015 Reg 27 / Schedule 3 construction traffic plan) is the
+# LOWEST-PII document in the pack — it is a SITE / ROUTE-LEVEL plan that carries NO named
+# individual (it names routes, gates, bays, and zones — not people). So the de-id challenge
+# is strict-and-simple: every personal name in the inputs is input-derived PII to scrub. It
+# registers the traffic-management-plan de-identification PAIR against the SAME deterministic
+# de-id grader the whole pack's non-waivable privacy gate keys off:
+#   - the seeded-leak negative (evals/files/traffic-leak.md) — a named HGV driver + a
+#     fitness-for-duty / back-injury restriction note + a phone + an embedded re-id key +
+#     a <5 reversing struck-by injury cell — MUST auto_fail (the gate is live), and
+#   - the paired clean positive (evals/files/traffic-clean.md), wired into the skill's eval CASE,
+#     MUST NOT false-positive (the per-skill gate is not spuriously hard-failed) — proving the
+#     site/route-level plan (which names routes, gates, and zones, not people) does not trip the
+#     gate.
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+_TMP_FILES = REPO / "skills" / "traffic-management-plan" / "evals" / "files"
+_TMP_LEAK = _TMP_FILES / "traffic-leak.md"
+_TMP_CLEAN = _TMP_FILES / "traffic-clean.md"
+
+
+def test_traffic_management_plan_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _lift_grade_deid(_TMP_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "traffic-management-plan seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_traffic_management_plan_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail)."""
+    verdict = _lift_grade_deid(_TMP_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"traffic-management-plan clean fixture false-positived: {verdict['reasons']}"
+    )

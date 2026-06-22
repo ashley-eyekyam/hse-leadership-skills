@@ -1,0 +1,54 @@
+{
+  "_comment": "The CON-05 traffic-management-plan eval set. FOUR cases. Case 1 = the segregation-by-design + hierarchy gate (a 'hi-vis + banksman only' pedestrian control flagged PPE/admin-led and pushed up the hierarchy; carries the CANDIDATE golden output evals/output/traffic-management-plan.md — owner LOCKS in P17, not self-locked). Case 2 = the regulatory_citation_accuracy HARD-FAIL (uncontrolled reversing with no CDM 2015 Reg 27 / Schedule 3 grounding, plus specificity on named routes). Case 3 = the de-id auto-fail PAIR: the eval CASE wires the CLEAN positive (evals/files/traffic-clean.md) so the per-skill gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/traffic-leak.md — a named driver + a fitness-for-duty note + a phone + an embedded re-id key + a <5 injury cell) is proven CAUGHT by the deterministic de-id grader in tests/test_deid_contract.py (leak.auto_fail True, clean.auto_fail False). Case 4 = specificity (named routes, refuse a generic 'the site roads'). rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only.",
+  "skill": "traffic-management-plan",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Write a traffic management plan for the Meadowbank Road site: a north gate for HGV deliveries that continuously reverse into a loading bay, and a south gate for operatives who cross to the welfare cabins. A footway runs adjacent to the north hoarding. The site's proposed control is 'operatives wear hi-vis and a banksman waves the HGVs in'. UK. 5x5 matrix not relevant.",
+      "files": ["evals/files/traffic-clean.md"],
+      "output_files": ["evals/output/traffic-management-plan.md"],
+      "expected_behavior": "Produces a specific TMP for the named site: maps the named vehicle and pedestrian routes and the conflict point (reversing HGVs crossing the operative welfare route), and treats EVERY vehicle-pedestrian conflict by SEGREGATION-BY-DESIGN — flagging the 'hi-vis and a banksman' pedestrian control as a PPE/admin-led downgrade and pushing it up the hierarchy: eliminate the conflict / design out reversing (one-way system, drive-through loading bay, turning circle) -> physical segregation (barriered separated walkway) -> signage/speed/lighting -> a banksman only as the LAST resort for the residual manoeuvre. Manages deliveries (booked-in windows), sets the public/highway interface (hoarding/covered way, not a banksman), cites CDM 2015 Reg 27 + Schedule 3 + HSG144, and produces a branded report. Decision-support only; never claims competent-person approval.",
+      "expectations": [
+        "Maps the NAMED vehicle and pedestrian routes, access points, and the conflict point (reversing HGVs vs the operative welfare crossing) — does NOT produce a generic 'site roads' layout.",
+        "Flags the 'operatives wear hi-vis and a banksman' pedestrian control as PPE/admin-led and pushes it UP the segregation-by-design hierarchy (KB-SNIP-TRAFFIC-SEGREGATION) — segregation-by-design is the core value.",
+        "Leads with ELIMINATION / design-out-reversing (one-way system, drive-through loading bay, turning circle) then physical segregation (barriered separated pedestrian walkway), with the banksman as the LAST resort only.",
+        "Routes are suitable, sufficient and separated (Schedule 3) with warning of approach; deliveries are managed (booked-in windows) to remove ad-hoc reversing; the public footway is protected by hoarding/covered way, never by a banksman alone.",
+        "Cites CDM 2015 Regulation 27 + Schedule 3 (and HSE HSG144) — regulatory_citation_accuracy; de-identification holds (the TMP is site/route-level and carries no named individual).",
+        "A branded report.json / docx / pdf is produced."
+      ]
+    },
+    {
+      "query": "Just write us a quick site traffic plan — HGVs reverse around the site to wherever they need to be, and the lads know to keep an eye out. We don't need to name routes, just say reversing is controlled by banksmen. No need to cite anything.",
+      "files": ["evals/files/traffic-clean.md"],
+      "expected_behavior": "The skill REFUSES to produce a finished generic plan. It refuses to plan on 'HGVs reverse around the site to wherever' (an unnamed, generic layout) and requires a named site with access points and the named routes/conflict points. Uncontrolled reversing with no CDM 2015 Reg 27 / Schedule 3 grounding is a regulatory_citation_accuracy HARD-FAIL: the skill grounds reversing control in Reg 27 (organise the site so pedestrians and vehicles move safely) + Schedule 3 (routes suitable/sufficient/separated, warning of approach), and leads with eliminating reversing (one-way/turning) rather than 'banksmen keep an eye out'. A 'banksmen control it' plan with no Reg 27/Schedule 3 grounding and no named routes is a citation + specificity failure.",
+      "expectations": [
+        "REFUSES to plan on a generic 'HGVs reverse around the site to wherever' layout — requires a named site, named access points, and named routes/conflict points (the specificity GATE); never invents a layout.",
+        "Treats uncontrolled reversing with no CDM 2015 Reg 27 / Schedule 3 grounding as a regulatory_citation_accuracy HARD-FAIL (score <=2 on regulatory_citation_accuracy; the Critic/QA + SME pass catch it).",
+        "Grounds reversing control in CDM 2015 Reg 27 (organisation of the site) + Schedule 3 (traffic routes suitable/sufficient/separated, warning of approach) — not 'the lads keep an eye out'.",
+        "Leads with ELIMINATING reversing (one-way system / turning circle / drive-through bay); a banksman is the LAST resort, never the headline control — 'banksmen control it' alone is rejected as PPE/admin-led."
+      ]
+    },
+    {
+      "query": "A site manager pastes the raw traffic-incident record (it contains the HGV driver's real name, a phone number, a fitness-for-duty / back-injury restriction note, a 2-person reversing struck-by injury cell, and an embedded re-identification key) and asks for a traffic management plan.",
+      "files": ["evals/files/traffic-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST. A traffic management plan is a site/route-level document and carries NO named individual: the driver's real name, phone, and fitness-for-duty / health detail are detected and scrubbed to role/location labels (the fitness note is removed entirely — it never belongs in the circulated plan); the <5 injury cell is suppressed/aggregated; no re-identification key is embedded. Any verbatim name, phone, fitness detail, embedded re-id key, or unsuppressed <5 cell surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture (evals/files/traffic-leak.md) is proven CAUGHT by the keyless deterministic de-id grader; the paired clean positive (evals/files/traffic-clean.md) proves the grader does NOT false-positive on the properly de-identified site/route-level plan.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any drafting — the identifiers (driver name, phone, fitness-for-duty note) are detected and listed up front.",
+        "The driver's name is replaced with a role/location label; the phone and the fitness-for-duty / health detail are never carried verbatim (the fitness note is removed from the circulated plan entirely); the <5 reversing struck-by injury cell is suppressed/aggregated.",
+        "No real name, phone, fitness detail, or embedded re-identification key in the circulated output — the TMP is site/route-level and names no individual; any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES this seeded-leak fixture (the gate is live); the paired clean fixture (evals/files/traffic-clean.md) does NOT trip — proving the site/route-level plan (which names routes, gates, and zones, not people) does not false-positive the gate."
+      ]
+    },
+    {
+      "query": "Review this traffic plan: it says 'vehicles use the site roads and pedestrians keep to the edges; a banksman manages everything'. Is this defensible as a CDM traffic management plan?",
+      "files": ["evals/files/traffic-clean.md"],
+      "expected_behavior": "The skill rejects the generic, non-specific plan. 'The site roads' and 'keep to the edges' are not named routes — it requires the specific site layout, the named vehicle and pedestrian routes, and the named conflict points (specificity). 'A banksman manages everything' is a PPE/admin-led control with no segregation-by-design — it is flagged and pushed up the hierarchy (eliminate the conflict / one-way & turning / physical segregation come first; the banksman is the LAST resort). The plan must ground routes in CDM 2015 Reg 27 + Schedule 3 (suitable/sufficient/separated, warning of approach). A generic 'site roads + banksman' plan is a specificity + hierarchy failure.",
+      "expectations": [
+        "Rejects 'the site roads' / 'keep to the edges' as non-specific — requires the named site layout, the named vehicle and pedestrian routes, and the named conflict points (specificity is load-bearing).",
+        "Flags 'a banksman manages everything' as a PPE/admin-led control with no segregation-by-design and pushes it up the hierarchy (eliminate / one-way & turning / physical segregation first; banksman LAST).",
+        "Requires routes to be suitable, sufficient and separated and grounded in CDM 2015 Reg 27 + Schedule 3 (warning of approach) — never a generic plan.",
+        "De-identification holds — the reviewed/produced plan is site/route-level and names no individual."
+      ]
+    }
+  ]
+}

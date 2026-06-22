@@ -1,0 +1,58 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Pre-Construction Information (PCI) — CDM 2015 Reg 4",
+    "subtitle": "Pre-tender hazard & information set — Tower B brownfield refurbishment",
+    "author": "Principal Designer (on behalf of the Client)",
+    "date": "2026-06-22",
+    "classification": "Restricted distribution — issued to appointed/considered designers & contractors; competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "Survey occupiers and any health detail are referred to by role label. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Project & client brief" },
+    { "type": "paragraph", "text": "This Pre-Construction Information is provided by the client under CDM 2015 Regulation 4 — as soon as practicable, to everyone appointed or being considered (Reg 4(4)). It assembles the pre-tender hazard and information set for the Tower B brownfield refurbishment (strip-out and reclad levels 3-5, occupied lower floors). No construction phase may start without the arrangements / Construction Phase Plan required by Reg 4(5)/(6)." },
+    { "type": "metrics", "metrics": [
+        { "label": "Information sources held", "value": "2", "caption": "existing H&S file + as-builts" },
+        { "label": "Documented information gaps", "value": "2", "caption": "asbestos survey + ground investigation" } ] },
+    { "type": "heading", "level": 1, "text": "Existing-structure hazard information" },
+    { "type": "table",
+      "headers": ["Content head", "Status", "Source / [GAP]", "Significance for design & construction"],
+      "rows": [
+        ["Asbestos / ACMs", "[GAP] — survey outstanding", "[GAP] R&D asbestos survey (owner + date below)", "Presumed ACMs in riser lagging until surveyed — hold-point before strip-out"],
+        ["Buried & overhead services", "Known (partial)", "As-built services drawings AB-04", "LV supply + gas main to plant room; intrusive survey to confirm before excavation"],
+        ["Ground conditions", "[GAP] — not investigated", "[GAP] ground investigation (owner + date below)", "Previous industrial use; contamination unknown — assume until investigated"],
+        ["Structural form & stability", "Known", "As-built structural drawings SB-02", "RC frame; non-load-bearing infill panels to levels 3-5"],
+        ["Existing H&S file", "Held", "Building H&S file, rev C", "Records prior refurbishment residual risks; reviewed for this pack"]
+      ],
+      "caption": "L153 Appendix-1 PCI content heads — known versus documented [GAP]" },
+    { "type": "heading", "level": 1, "text": "Site & surroundings" },
+    { "type": "bullets", "items": [
+        "Occupied lower floors (levels 0-2) remain in use throughout — segregation and access constraints apply.",
+        "Public footpath on the north boundary — public interface / falling-object exclusion required.",
+        "Adjacent occupier (role label) with a documented access constraint affects the works sequence (de-identified).",
+        "Overhead LV line crosses the east boundary — proximity controls for lifting." ] },
+    { "type": "heading", "level": 1, "text": "Significant hazards for design & construction" },
+    { "type": "findings", "rows": [
+        { "title": "Presumed asbestos in risers", "risk_level": "High",
+          "description": "Riser lagging is presumed to contain asbestos pending an R&D survey; designers and contractors must plan on that basis until the survey clears it.", "evidence": "Existing H&S file rev C + gap register row G-1" },
+        { "title": "Live buried & overhead services", "risk_level": "High",
+          "description": "LV supply, a gas main, and an overhead LV line are present; locations to be confirmed by intrusive survey before excavation or lifting.", "evidence": "As-built services drawing AB-04" } ] },
+    { "type": "heading", "level": 1, "text": "Information-gaps register (each gap owned & dated)" },
+    { "type": "recommendations", "rows": [
+        { "action": "G-1 — Commission a refurbishment-and-demolition asbestos survey of the risers and clear/identify ACMs before strip-out", "priority": "P1", "owner": "Client (asbestos duty-holder)", "due": "2026-07-15" },
+        { "action": "G-2 — Commission a ground investigation / contaminated-land assessment for the previous-industrial-use footprint", "priority": "P2", "owner": "Client (project lead)", "due": "2026-08-01" } ] },
+    { "type": "callout", "text": "Gap discipline: every missing existing-structure source is recorded as a [GAP] with a named owner and due date and is NEVER silently omitted. No strip-out may proceed until the asbestos survey (G-1) is complete and the management plan is in force.", "box_type": "critical" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "CDM document chain & references" },
+    { "type": "paragraph", "text": "This PCI feeds the Construction Phase Plan and, at completion, the Health & Safety File: PCI -> CPP -> H&S File (CDM 2015 Reg 4 -> 12 -> 12(5)). This pack does not assume the CPP or H&S File skill has run (loose coupling)." },
+    { "type": "bullets", "items": [
+        "CDM 2015 (SI 2015/51) Regulation 4 — client's pre-construction-information duty (Reg 4(4)); Reg 4(5)/(6) no start without arrangements/CPP",
+        "HSE L153 ACOP — Appendix 1 PCI content checklist",
+        "ISO 45001 §6.1.2 / §8.1.2 — hazard identification & hierarchy of controls",
+        "India: BOCW pre-work site information via hse-india / bocw-compliance — state resolved first, form reference [GAP], never a national form number" ] },
+    { "type": "heading", "level": 1, "text": "Review & sign-off" },
+    { "type": "paragraph", "text": "Decision-support only. This Pre-Construction Information must be reviewed by a competent person before issue. SME review (CDM Principal Designer + CDM Client Adviser personas) ran as decision-support; it does not constitute competent-person approval." }
+  ]
+}

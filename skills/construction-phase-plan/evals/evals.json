@@ -1,0 +1,57 @@
+{
+  "_comment": "The CON-01 construction-phase-plan eval set. FOUR cases: (1) proportionality + the WORK-AT-HEIGHT hierarchy gate (a PPE-led WAH control flagged; collective protection leads) — carries the golden CANDIDATE (owner LOCKS in P17); (2) regulatory_citation_accuracy HARD-FAIL — a notifiable project that omits the F10 / Reg 12 notification duty; (3) the de-id auto-fail PAIR honouring the named-duty-holders exception (clean positive wired here, seeded-leak negative proven CAUGHT in tests/test_deid_contract.py); (4) the specificity GATE — a generic 'a building site' refused. rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only. The golden output is a CANDIDATE — the owner LOCKS it in Phase 17; do NOT self-lock.",
+  "skill": "construction-phase-plan",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Draw up the Construction Phase Plan, UK / principal contractor (CDM 2015): Tower B fit-out — demolish the level-3 partitions, then erect the steel frame and install cladding to levels 3-5 of an occupied building with an adjacent public footpath. Notifiable (>500 person-days). Significant activities = demolition, work at height, lifting. PCI supplied. The site team's draft work-at-height control is just 'operatives to wear harnesses'.",
+      "files": ["evals/files/construction-phase-clean.md"],
+      "output_files": ["evals/output/construction-phase-plan.md"],
+      "expected_behavior": "Produces a specific, risk-proportionate CPP for the NAMED project: management & arrangements, site rules, and significant risks & controls BY ACTIVITY (hierarchy-ranked, residual). For work at height it does NOT accept the PPE-led 'wear harnesses' control — controls.ppe_admin_only=True is flagged and the control is pushed UP the hierarchy: collective protection LEADS (edge protection / MEWP / nets / eliminate the at-height task by ground-level pre-assembly), with personal fall-arrest as a justified last resort only. States the F10 / Reg 12 notification position, carries the one-line PCI -> CPP -> H&S File (Reg 4 -> 12 -> 12(5)) cross-reference without assuming a sibling ran, assigns SMART actions with named owners + ISO dates, cites CDM 2015 Reg 12 + L153 + ISO 45001 6.1.2/8.1.2, and produces a branded report. De-identification holds (role labels for input-derived persons; the user-supplied duty-holders stay named).",
+      "expectations": [
+        "Names the actual project (Tower B fit-out: demolition -> steel-frame erection -> cladding, levels 3-5, occupied building + public footpath) — not 'general construction works' (specificity high).",
+        "Significant risks & controls are organised BY ACTIVITY (demolition, work at height, lifting), each with a hierarchy-of-controls-ranked control and a named owner; the plan is proportionate to the project's risk.",
+        "WORK AT HEIGHT: the PPE-led 'operatives to wear harnesses' control is flagged (controls.ppe_admin_only=True) and pushed UP the hierarchy — collective protection LEADS (edge protection / MEWP / nets / eliminate the at-height task), and personal fall-arrest is justified as the last resort only, NOT the headline (hierarchy_of_controls is the core value).",
+        "Residual risk is shown after controls; the leading-edge work carries a hold-point until edge protection is signed off.",
+        "States the F10 / Reg 12 notification position for the notifiable project; the sole-contractor Reg 12(2) duty is not excused.",
+        "Carries the one-line PCI -> CPP -> H&S File (Reg 4 -> 12 -> 12(5)) cross-reference sourced from KB-SNIP-CONSTRUCTION-CLAUSE-MAP, WITHOUT assuming the PCI or H&S File skill ran (loose coupling).",
+        "Every action carries a named (role-label) owner + an ISO due date + a hazard link (defensibility).",
+        "CDM 2015 Reg 12 (+ L153) is cited and grounded in KB-REG-CDM2015, with ISO 45001 6.1.2/8.1.2 (regulatory_citation_accuracy).",
+        "A branded report.json / docx / pdf is produced; de-identification holds (role labels for input-derived persons; the deliberately-supplied duty-holders stay named as a legitimate record)."
+      ]
+    },
+    {
+      "query": "Build the Construction Phase Plan for a 14-week refurbishment with 28 operatives working simultaneously (clearly notifiable). The client's brief makes no mention of any F10 notification or the Regulation 12 notification duty, and asks you to 'just produce the plan'.",
+      "files": [],
+      "expected_behavior": "The project is NOTIFIABLE (>30 working days with >20 workers simultaneously). The CPP MUST state the F10 / Regulation 12 notification duty — a notifiable project whose plan omits the F10 / Reg 12 notification position is a regulatory_citation_accuracy HARD-FAIL (the citation is wrong-by-omission). The skill cites the notifiability trigger to CDM 2015 Reg 12 / L153, states the F10 must be filed, and does not silently produce a notifiable-project plan that omits the duty. (BOCW stays [GAP] for an India site — never a minted national form number.)",
+      "expectations": [
+        "Recognises the project is NOTIFIABLE (>30 working days AND >20 workers simultaneously) and says so.",
+        "States the F10 / Regulation 12 notification duty in the plan — a notifiable project whose CPP omits it is a regulatory_citation_accuracy HARD-FAIL (citation wrong-by-omission, <4 on the hard-fail dimension).",
+        "Grounds the notifiability trigger in CDM 2015 Reg 12 / HSE L153 (KB-REG-CDM2015) — not a fabricated threshold.",
+        "Does NOT silently produce a notifiable-project plan with no F10 / Reg 12 notification position; for an India site the BOCW form stays [GAP], never a minted national form number."
+      ]
+    },
+    {
+      "query": "A site manager pastes the raw Tower B fit-out brief (it contains an operative's real name, phone, a near-miss note naming the worker injured in a prior fall from height with the injury detail, an embedded re-identification key, and a 2-person fall-injury cell) and asks for a Construction Phase Plan.",
+      "files": ["evals/files/construction-phase-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST. The real name, phone, and the near-miss-named injured operative (special-category health data) are detected and pseudonymised to role labels; the <5 injury cell is suppressed/aggregated; no re-identification key is embedded. Any input-derived identifier, embedded re-id key, or unsuppressed <5 cell surviving into the circulated, site-wide plan is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). CRUCIALLY this is layered with the named-DUTY-HOLDERS EXCEPTION: the duty-holders the user deliberately appoints (principal contractor, CDM construction manager, site manager) stay NAMED in the plan as a legitimate contractual record. The seeded-leak fixture (files/construction-phase-leak.md) is proven CAUGHT in tests/test_deid_contract.py; the paired clean positive (wired here) proves no false-positive.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any drafting — the identifiers (name, phone, near-miss-named injured operative + injury detail) are detected and listed up front.",
+        "Input-derived names are replaced with stable role labels; phone and the fall-injury / medical detail are never carried verbatim; the <5 fall-injury cell is suppressed/aggregated.",
+        "No input-derived name, phone, or health detail in the circulated plan, and no re-identification key / name-to-label mapping embedded — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The named-DUTY-HOLDERS EXCEPTION holds: the deliberately-appointed duty-holders (principal contractor, CDM construction manager, site manager) stay NAMED as a legitimate record — the exception does not weaken the de-id gate.",
+        "The deterministic de-id grader CATCHES the seeded-leak negative (files/construction-phase-leak.md, asserted in tests/test_deid_contract.py); the paired clean fixture (files/construction-phase-clean.md) does NOT trip (no false-positive)."
+      ]
+    },
+    {
+      "query": "Write me a construction phase plan for a building site.",
+      "files": [],
+      "expected_behavior": "The skill does NOT produce a plan from this generic request. It runs the structured intake and REFUSES to proceed until the GATE is satisfied: a named project (scope + programme), at least one significant activity, and the contractor configuration. It asks for these one question at a time and never emits a boilerplate, template-only CPP for 'a building site'.",
+      "expectations": [
+        "Runs the structured intake (one question at a time) before any drafting.",
+        "REFUSES the generic 'a building site' — elicits the named project (scope + programme), >=1 significant activity, and the contractor configuration (the GATE) before producing anything.",
+        "Does not emit a generic / boilerplate / template-only CPP (specificity dimension <=2 if it did)."
+      ]
+    }
+  ]
+}
