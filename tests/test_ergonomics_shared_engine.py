@@ -61,6 +61,28 @@ def _score(engine, case: dict) -> dict:
     raise AssertionError(f"unknown engine kind in fixture: {kind!r}")
 
 
+def _assert_matches_golden(r: dict, case: dict, who: str) -> None:
+    """Assert one engine result reproduces the fixture's golden anchor — the real failure
+    surface for engine drift (integers EXACT, NIOSH floats within published tolerance)."""
+    kind = case["engine"]
+    if kind == "niosh":
+        assert abs(r["rwl"] - case["expected_rwl"]) <= RWL_TOL, (
+            f"[{who}] NIOSH RWL {r['rwl']} != expected {case['expected_rwl']} ({case['inputs']})"
+        )
+        if case.get("expected_li") is not None and r["li"] is not None:
+            assert abs(r["li"] - case["expected_li"]) <= LI_TOL, (
+                f"[{who}] NIOSH LI {r['li']} != expected {case['expected_li']} ({case['inputs']})"
+            )
+    elif kind == "rula":
+        assert r["grand_score"] == case["expected_grand_score"], (
+            f"[{who}] RULA grand_score {r['grand_score']} != expected {case['expected_grand_score']}"
+        )
+    elif kind == "reba":
+        assert r["final_score"] == case["expected_final_score"], (
+            f"[{who}] REBA final_score {r['final_score']} != expected {case['expected_final_score']}"
+        )
+
+
 @pytest.fixture(scope="module")
 def cases():
     data = json.loads(CASES_PATH.read_text(encoding="utf-8"))
@@ -84,23 +106,35 @@ def hra_engine():
 # (i) ONE ENGINE ---------------------------------------------------------------
 
 def test_both_consumers_symlink_the_same_engine_file():
-    """The two skills must reach the SAME on-disk ergonomics.py — no forked scorer."""
-    assert ERGO_ENGINE.resolve() == HRA_ENGINE.resolve(), (
+    """The two skills must reach the SAME on-disk ergonomics.py — no forked scorer.
+
+    Identity is asserted by INODE, not just resolved path: a same-content copy dropped at a
+    consumer's path (a re-implementation that silently drifts later) is the LANDMINE-A risk,
+    and st_ino equality is the strict 'literally one shared file' proof that catches it.
+    """
+    repo_engine = REPO / "scripts" / "hse_components" / "ergonomics.py"
+    assert ERGO_ENGINE.resolve() == HRA_ENGINE.resolve() == repo_engine.resolve(), (
         "ergonomics-assessment and health-risk-assessment resolve to DIFFERENT engine files — "
         "LANDMINE-A: there must be one engine, not two"
     )
-    # And that single resolved file is the repo engine (not a vendored copy).
-    assert ERGO_ENGINE.resolve() == (REPO / "scripts" / "hse_components" / "ergonomics.py").resolve()
+    assert ERGO_ENGINE.stat().st_ino == HRA_ENGINE.stat().st_ino == repo_engine.stat().st_ino, (
+        "consumer engine paths are not the SAME inode — a forked/copied scorer can drift; "
+        "LANDMINE-A requires one shared engine file"
+    )
 
 
 # (ii) TWO CONSUMERS, IDENTICAL SCORES -----------------------------------------
 
 def test_two_consumers_produce_identical_scores_for_identical_inputs(cases, ergo_engine, hra_engine):
-    """For every golden input, the engine loaded via each consumer's symlink returns the
-    byte-identical result — the 'two consumers, one engine' guarantee."""
+    """For every golden input, the engine loaded via EACH consumer's symlink independently
+    reproduces the verified golden anchor AND the two consumers agree. Asserting against the
+    golden (not just consumer-vs-consumer) gives this gate real failure power: if the shared
+    engine drifts, both consumer paths fail the golden — it is not a self-comparison."""
     for case in cases:
         r_ergo = _score(ergo_engine, case)
         r_hra = _score(hra_engine, case)
+        _assert_matches_golden(r_ergo, case, "ergonomics-assessment")
+        _assert_matches_golden(r_hra, case, "health-risk-assessment")
         assert r_ergo == r_hra, (
             f"{case['engine']} case diverged between consumers for inputs {case['inputs']}: "
             f"ergonomics-assessment={r_ergo} vs health-risk-assessment={r_hra}"
@@ -113,24 +147,7 @@ def test_shared_engine_matches_golden_anchors(cases, ergo_engine):
     """The shared engine reproduces the fixture's golden RWL/LI/grand_score/final_score —
     integers EXACT, NIOSH floats within the published tolerance."""
     for case in cases:
-        r = _score(ergo_engine, case)
-        kind = case["engine"]
-        if kind == "niosh":
-            assert abs(r["rwl"] - case["expected_rwl"]) <= RWL_TOL, (
-                f"NIOSH RWL {r['rwl']} != expected {case['expected_rwl']} ({case['inputs']})"
-            )
-            if case.get("expected_li") is not None and r["li"] is not None:
-                assert abs(r["li"] - case["expected_li"]) <= LI_TOL, (
-                    f"NIOSH LI {r['li']} != expected {case['expected_li']} ({case['inputs']})"
-                )
-        elif kind == "rula":
-            assert r["grand_score"] == case["expected_grand_score"], (
-                f"RULA grand_score {r['grand_score']} != expected {case['expected_grand_score']}"
-            )
-        elif kind == "reba":
-            assert r["final_score"] == case["expected_final_score"], (
-                f"REBA final_score {r['final_score']} != expected {case['expected_final_score']}"
-            )
+        _assert_matches_golden(_score(ergo_engine, case), case, "shared-engine")
 
 
 def test_report_blocks_are_identical_across_consumers(cases, ergo_engine, hra_engine):
@@ -139,4 +156,5 @@ def test_report_blocks_are_identical_across_consumers(cases, ergo_engine, hra_en
     for case in cases:
         b_ergo = ergo_engine.to_report_blocks(_score(ergo_engine, case))
         b_hra = hra_engine.to_report_blocks(_score(hra_engine, case))
+        assert b_ergo, f"to_report_blocks returned an empty/falsy block for {case['engine']} {case['inputs']}"
         assert b_ergo == b_hra, f"to_report_blocks diverged for {case['engine']} {case['inputs']}"
