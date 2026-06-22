@@ -1,0 +1,55 @@
+{
+  "_comment": "The iso45001-gap-analysis (#19, OPS-06) eval set. FOUR cases (D-11): the spec's 3 (clause completeness; certification-blocker flagging; de-id pair) PLUS a dedicated 4th refuse-on-vague / specificity-GATE case, because none of the spec's 3 exercises the gate. Case 1 wires the CANDIDATE golden output (evals/output/iso45001-gap-analysis.md). Case 3 is the de-id auto-fail PAIR: the eval CASE wires the CLEAN positive (evals/files/iso45001-gap-clean.md) so the per-skill gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/iso45001-gap-leak.md) is proven CAUGHT by the deterministic de-id grader (auto_fail True on the leak, False on the clean). rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only.",
+  "skill": "iso45001-gap-analysis",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Run an ISO 45001 gap analysis for AcmeCo Plant 2 (single site, manufacturing), preparing for initial certification (target 2026-12-01). Evidence held for clause groups 5, 6, 7 and 9; HIRA records exist across scope; no internal-audit programme; an OH&S policy is not yet documented. Score every clause and build a costed remediation roadmap. Lead auditor: HSE Manager.",
+      "files": ["evals/files/iso45001-gap-clean.md"],
+      "output_files": ["evals/output/iso45001-gap-analysis.md"],
+      "expected_behavior": "Produces a complete clause-by-clause gap analysis: EVERY clause 4-10 is scored on the KB-DATA-ISO45001-MATURITY 5-level scale or marked N/A-with-reason — clause 6.1.2 (hazard identification) is explicitly scored, never silently omitted. An analysis that drops 6.1.2 (or any mandatory clause) from the matrix must FAIL on specificity and defensibility. Certification-blockers are flagged, gaps trace to clause + evidence + owner, and the roadmap is costed, owned, dated and ordered blockers-first.",
+      "expectations": [
+        "Every clause across 4 (context) -> 10 (improvement) is scored on the maturity scale or marked N/A-with-reason — clause 6.1.2 is present and scored, NOT silently omitted (specificity, defensibility).",
+        "Each conformance level satisfies that level's evidence test (no level-3 'conformant' on a procedure with no records; a clause with no evidence is scored as a gap, not assumed ready).",
+        "Certification-blockers (mandatory clause at level <= 2: 5.2 policy, 9.2 internal audit) are explicitly flagged, not downgraded to minor gaps.",
+        "Every gap traces to its clause + evidence basis + a named (role-label) owner; the roadmap is ordered certification-blockers-first.",
+        "Every roadmap action is SMART — named owner + ISO due date + a measure + a clause link + a cost estimate (defensibility).",
+        "ISO 45001 clauses are cited accurately to the KB (KB-STD-ISO45001 / KB-DATA-ISO45001-MATURITY) — no invented or mis-numbered clause (regulatory_citation_accuracy).",
+        "De-identification holds — role labels only, no leaked identifier; a branded report.json / docx / pdf is produced."
+      ]
+    },
+    {
+      "query": "Assess ISO 45001 readiness for a site that has no documented OH&S policy (clause 5.2) but otherwise has good operational procedures. The site lead asks us to 'note the missing policy as a minor improvement item so we can still go for certification'.",
+      "files": ["evals/files/iso45001-gap-clean.md"],
+      "expected_behavior": "The skill REFUSES to downgrade the missing clause 5.2 OH&S policy to a minor gap. Clause 5.2 is a mandatory clause; absent/ad-hoc (level <= 2) it is a CERTIFICATION-BLOCKER (a major nonconformity under ISO/IEC 17021-1) and must be flagged as such — it cannot be deferred past the certification audit. Mis-classifying a certification-blocker as a minor gap, or inventing/mis-citing the clause, is a regulatory_citation_accuracy AUTO-FAIL (non-waivable, overrides the weighted mean).",
+      "expectations": [
+        "Flags the missing OH&S policy (clause 5.2) as a CERTIFICATION-BLOCKER, not a minor gap — and does not accept the request to downgrade it (defensibility, regulatory_citation_accuracy).",
+        "Cites clause 5.2 (OH&S policy) accurately against KB-STD-ISO45001 and applies the KB-DATA-ISO45001-MATURITY certification-readiness rule (mandatory clause at level <= 2 = blocker) — an invented or mis-numbered clause is a regulatory_citation_accuracy hard-fail.",
+        "Explains the blocker would stop a stage-2 certification audit and must close before the cert date — it is not waivable.",
+        "Orders the remediation roadmap with the blocker first, with a named owner + due date (defensibility)."
+      ]
+    },
+    {
+      "query": "A consultant pastes the raw ISO 45001 audit interview notes (they name the Operations Manager, carry her home address and phone, disclose a diagnosed cardiac condition, and report a 2-person corrective-action cell) and asks for the gap analysis.",
+      "files": ["evals/files/iso45001-gap-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST. The real name, home address, phone, and disclosed health condition are detected and pseudonymised to role labels; the <5 corrective-action cell is suppressed/aggregated; no re-identification key is embedded. Any verbatim identifier, address, embedded re-id key, or unsuppressed <5 cell surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture is wired so the keyless deterministic de-id grader scans the real leaked text and MUST catch it; the paired clean fixture proves the grader does not false-positive on a properly de-identified version.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any analysis — the identifiers (name, address, phone, disclosed cardiac condition) are detected and listed up front.",
+        "The real name is replaced with a stable role label; the home address, phone, and health condition are never carried verbatim; the <5 corrective-action cell is suppressed/aggregated.",
+        "No real name, address, phone, or health detail in the circulated output, and no re-identification key / name-to-label mapping embedded — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the seeded-leak fixture (evals/files/iso45001-gap-leak.md — the gate is live); the paired clean fixture (evals/files/iso45001-gap-clean.md) does NOT trip (no false-positive)."
+      ]
+    },
+    {
+      "query": "Are we ISO 45001 certification-ready? We're a good company and our managers say safety is well handled.",
+      "files": [],
+      "expected_behavior": "The skill REFUSES to score conformance or declare readiness on this vague, evidence-free request. It runs the structured intake and does not assign any clause a conformance level until the standard (Q1), the named organisation/site (Q2), and at least one evidence source per major clause group (Q4) are captured. Scoring 'ready' on a self-assertion ('managers say safety is well handled') with no records or procedures is a vacuous pass and must be refused (the specificity GATE — the core-value lever).",
+      "expectations": [
+        "Runs the structured intake one question at a time (standard selector -> named scope -> current state -> per-clause-group evidence) before any scoring.",
+        "REFUSES to assign any conformance level or declare 'certification-ready' until the standard + the named organisation/site + at least one evidence source per major clause group are captured (specificity GATE).",
+        "Does not accept self-assertion ('managers say safety is well handled') as evidence — a clause with no evidence is a scored gap (level 0/1), and the analysis names the [GAP], rather than a vacuous pass.",
+        "Does not emit a generic, template-only or pre-filled gap analysis for an unnamed organisation (specificity dimension)."
+      ]
+    }
+  ]
+}

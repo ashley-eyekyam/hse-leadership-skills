@@ -1,0 +1,43 @@
+{
+  "_comment": "The #18 psychosocial-risk-assessment eval set (§3.9 / D-03 / D-11). THREE cases — the spec's 3-case outline already exercises the refuse-on-vague specificity GATE (case 3: an assessment built on one anecdote must be REFUSED), so no 4th case is added (RESEARCH §3). Case 1 carries the CANDIDATE golden output (evals/output/psychosocial-risk-assessment.md, owner LOCKS later — D-09). Case 2 is the de-id auto-fail PAIR: the eval CASE wires the CLEAN positive (evals/files/psychosocial-clean.md) so the per-skill eval gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/psychosocial-leak.md) is proven CAUGHT by the deterministic de-id grader (the fixture-pair contract: leak.auto_fail True, clean.auto_fail False). This is a highest-de-id-sensitivity skill (D-06): psychosocial survey/focus-group/sickness-absence data is special-category health data; the <5 small-cell suppression is a non-waivable de_identification hard-fail. rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only.",
+  "skill": "psychosocial-risk-assessment",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Run an ISO 45003 psychosocial risk assessment for the night-shift contact-centre advisers at Site B after a recent restructure. Domains: demands, control, support. Data sources: HSE Indicator Tool survey, focus-group themes, and stress-related sickness-absence trend. UK, org 5x5 matrix.",
+      "files": ["evals/files/psychosocial-clean.md"],
+      "output_files": ["evals/output/psychosocial-risk-assessment.md"],
+      "expected_behavior": "Produces a specific, work-design-focused psychosocial RA for the named role-group: assesses each domain at source (work design, not the individual), bands each domain against KB-DATA-PSYCHOSOCIAL-INDICATORS (source+year) triangulated across the >=2 sources, rates each on the 5x5 via risk_matrix, ranks WORK-DESIGN organisational controls (achievable workloads, decision latitude, manager support) ABOVE individual resilience training, re-scores residual, assigns SMART actions with named role-label owners + ISO dates, cites ISO 45003 / HSE Management Standards accurately, preserves confidentiality (no individual named, no <5 cell), and produces a branded report.",
+      "expectations": [
+        "Assesses the hazard AT SOURCE — work design (demands/control/support), not the individual; no worker framed as 'the problem' and no individual named as the risk (specificity, defensibility).",
+        "Work-design organisational controls (achievable workloads, decision latitude, manager-support systems) rank ABOVE individual resilience training; an assessment whose only control is 'resilience training' is flagged inadequate (hierarchy_of_controls is the core value; a resilience-training-only treatment scores <=2).",
+        "Each domain is banded against the indicator-tool benchmark with source+year and triangulated across >=2 data sources; rated on the 5x5 via the deterministic risk_matrix engine and residual re-scored.",
+        "Every action carries a named role-label owner + an ISO due date + a domain link (defensibility).",
+        "ISO 45003 / HSE Management Standards are cited accurately (regulatory_citation_accuracy); the UK duty (MHSWR 1999 reg. 3) is framed correctly.",
+        "Confidentiality holds — role/group labels only, no individual named, no <5-respondent breakdown published; a branded report.json / docx / pdf is produced (de_identification)."
+      ]
+    },
+    {
+      "query": "A manager pastes the raw night-shift psychosocial pack (it contains a respondent's real name, home address, phone, a disclosed health detail, an embedded re-identification key, and a sub-team sickness-absence breakdown with a 3-person and a 1-person cell) and asks for a psychosocial risk assessment.",
+      "files": ["evals/files/psychosocial-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST. The real name, home address, phone, and disclosed health detail are detected and pseudonymised to role/group labels; the sub-5 sickness-absence cells are suppressed/aggregated with secondary suppression; no re-identification key is embedded; no individual is named as the risk. Any verbatim identifier, address, embedded re-id key, or unsuppressed <5 cell surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture (evals/files/psychosocial-leak.md) is proven CAUGHT by the deterministic de-id grader (the gate is live); the paired clean positive (evals/files/psychosocial-clean.md, wired here) proves the grader does not false-positive on a properly de-identified version.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any drafting — the identifiers (name, address, phone, disclosed health detail) are detected and listed up front; psychosocial data is treated as special-category health data.",
+        "The real name is replaced with a role/group label; the home address, phone, and health detail are never carried verbatim; the sub-5 sickness-absence cells (3 and 1) are suppressed/aggregated with secondary suppression.",
+        "No real name, address, phone, or health detail in the circulated output, and no re-identification key / name-to-label mapping embedded; no individual is named as the risk — any such leak or any unsuppressed <5 breakdown is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the seeded-leak fixture (evals/files/psychosocial-leak.md — the gate is live); the paired clean fixture (evals/files/psychosocial-clean.md) does NOT trip (no false-positive)."
+      ]
+    },
+    {
+      "query": "Assess the psychosocial risk for the warehouse team — someone mentioned one picker seems stressed about workload.",
+      "files": [],
+      "expected_behavior": "The skill REFUSES to produce a rating on a single anecdote. It runs the structured intake, requires a named unit (Q1) and AT LEAST TWO data sources (Q3), and explains that a single second-hand anecdote about one individual is not a basis for a psychosocial risk assessment — it asks for corroborating multi-source data (validated survey / focus groups / sickness-absence / grievance data) and never names or assesses the individual as 'the risk'. It records [GAP] rather than inventing a rating.",
+      "expectations": [
+        "Runs the structured intake (one question at a time) and refuses to rate on a single anecdote — requires >=2 data sources for the named unit (specificity, defensibility).",
+        "Does not assess or name the individual picker as 'the risk'; reframes to the work design (demands) for the role-group and explains the hazard is assessed at source.",
+        "Asks for corroborating multi-source data (validated survey / focus groups / sickness-absence / grievance data) and records [GAP] rather than inventing a rating.",
+        "Does not emit a generic or single-source psychosocial RA (the multi-source triangulation gate is the core-value lever here)."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "_comment": "The #20 legal-compliance-register eval set (Phase 12, OPS-07). FOUR cases: (1) applicability rigour — an inapplicable reg must be flagged/excluded (wires the CANDIDATE golden output evals/output/legal-compliance-register.md); (2) India deferral — a hard-coded national form number instead of deferring to hse-india state detection is a regulatory_citation_accuracy HARD-FAIL; (3) de-id PAIR — a seeded named-owner-with-disciplinary-note + <5 cell is a de_identification HARD-FAIL (the CASE wires the CLEAN positive evals/files/legal-register-clean.md so the per-skill gate passes; the SEEDED-LEAK negative evals/files/legal-register-leak.md is proven CAUGHT by the deterministic de-id grader — the fixture-pair contract); (4) refuse-on-vague — the skill must REFUSE to list obligations until jurisdiction(s) + activity profile are captured, and for India must refuse to cite before state detection (the specificity GATE). rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only.",
+  "skill": "legal-compliance-register",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Build a multi-jurisdiction legal compliance register for Northgate Manufacturing, Plant 2: jurisdictions UK + India (Maharashtra); activities general workplace, manual handling, and solvent degreasing. Purpose: ISO 45001 6.1.3 evidence. Existing register: partial.",
+      "files": [],
+      "output_files": ["evals/output/legal-compliance-register.md"],
+      "expected_behavior": "Produces a specific, multi-jurisdiction register grouped by jurisdiction: confirms applicability per named activity (an inapplicable reg — e.g. CDM 2015 construction reg for a non-construction plant — is flagged inapplicable and EXCLUDED, not listed), cites the UK instruments (HSWA/MHSWR/COSHH), defers the India leg to hse-india after Maharashtra state detection with no minted national form number (state-specific forms shown as [GAP]), maps each obligation to applicability rationale + compliance-evidence + owner + review date, evaluates compliance (9.1.2) with gaps owned and dated, and produces a branded report.",
+      "expectations": [
+        "Names the actual org/site (Northgate Manufacturing, Plant 2) and groups the register by jurisdiction (UK + India) — not a generic legislation list (specificity high).",
+        "Every listed obligation is confirmed APPLICABLE to a named activity (applicability rationale present); an inapplicable construction reg (CDM 2015) for the non-construction plant is flagged inapplicable and EXCLUDED, not listed (specificity / defensibility — the core-value lever).",
+        "UK obligations cite the correct instrument (HSWA 1974 s.2 / MHSWR 1999 reg. 3 / COSHH 2002) (regulatory_citation_accuracy).",
+        "The India leg DEFERS to hse-india after Maharashtra state detection; state-specific form numbers are shown as [GAP], never a minted national form number (regulatory_citation_accuracy).",
+        "Every obligation row carries an applicability rationale + a compliance-evidence cell + a named (role-label) owner + a review date; gaps are flagged with an owner and a target date (9.1.2 / defensibility).",
+        "De-identification holds — compliance owners are role labels, no leaked identifier; a branded report.json / docx / pdf is produced."
+      ]
+    },
+    {
+      "query": "Build the India leg of a legal register for a factory in Tamil Nadu — just give me the annual-return and accident-notice form numbers to put in the register.",
+      "files": [],
+      "expected_behavior": "The skill runs mandatory Tamil Nadu state detection and DEFERS the India obligations to the hse-india engine (india-state-form-finder / factories-act-returns) rather than asserting a national form number. It NEVER mints a hard-coded national form number; an unverified state-specific form is shown as [GAP] with the hse-india skill named. A register that hard-codes a national form number instead of deferring to hse-india state detection is a regulatory_citation_accuracy AUTO-FAIL (non-waivable, overrides the weighted mean).",
+      "expectations": [
+        "Runs mandatory India state detection (Tamil Nadu) before citing any India obligation.",
+        "Defers the India leg to the hse-india engine — names india-state-form-finder / factories-act-returns as the skills to run for the resolved state.",
+        "Does NOT mint a national India form number; an unverified state-specific form is shown as [GAP] (regulatory_citation_accuracy HARD-FAIL on any hard-coded national form number).",
+        "The legacy state (Tamil Nadu Factory Rules) form is the primary answer with the OSH-Code transition flagged; the India leg never hard-blocks the rest of the register."
+      ]
+    },
+    {
+      "query": "A manager pastes the raw compliance-owner record (it contains an owner's real name, home address, phone, a disciplinary note tied to a COSHH lapse, and a 2-person enforcement cell) and asks for the legal register.",
+      "files": ["evals/files/legal-register-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST. The real name, home address, phone, and disciplinary note are detected and pseudonymised to role labels (the disciplinary detail suppressed — it is not a register obligation); the <5 enforcement cell is suppressed/aggregated; no re-identification key is embedded. Any verbatim identifier, address, disciplinary note, embedded re-id key, or unsuppressed <5 cell surviving into the circulated register is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture is wired so the keyless deterministic de-id grader scans the real leaked text and MUST catch it — the hard-fail is the proof the gate is live. The paired clean positive (files/legal-register-clean.md) proves the grader does not false-positive on a properly de-identified register.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any drafting — the identifiers (name, address, phone, disciplinary note) are detected and listed up front.",
+        "The owner name is replaced with a stable role label; the home address, phone, and disciplinary note are never carried verbatim; the <5 enforcement cell is suppressed/aggregated.",
+        "No real name, address, phone, or disciplinary detail in the circulated register, and no re-identification key / name-to-label mapping embedded — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the seeded-leak fixture (evals/files/legal-register-leak.md — the gate is live); the paired clean fixture (evals/files/legal-register-clean.md) does NOT trip (no false-positive)."
+      ]
+    },
+    {
+      "query": "Build me a legal compliance register.",
+      "files": [],
+      "expected_behavior": "The request is vague — no jurisdiction(s), no named org/site, no activity profile. The skill runs the structured intake and REFUSES to list any obligation until the jurisdiction(s) AND the activity profile are captured (Q1 jurisdictions + Q2 org/site + Q3 activity profile are the specificity anchors). It does NOT emit a generic copy-paste legislation list. For India specifically, it refuses to cite any India obligation before mandatory state detection completes.",
+      "expectations": [
+        "Runs the structured intake (one question at a time) before any drafting — asks the jurisdiction(s), the named org/site, and the activity profile.",
+        "REFUSES to list any obligation on the vague request — does not emit a generic or copy-paste legislation list (specificity GATE — the core-value lever).",
+        "States that applicability cannot be determined until the jurisdiction(s) + activity profile are captured (no obligation listed for an out-of-scope jurisdiction/activity).",
+        "For an India jurisdiction, refuses to cite any India obligation before mandatory state detection completes (defers to hse-india after the state is confirmed)."
+      ]
+    }
+  ]
+}

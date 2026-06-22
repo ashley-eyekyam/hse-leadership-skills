@@ -1,0 +1,65 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Psychosocial Risk Assessment — ISO 45003 / HSE Management Standards",
+    "subtitle": "Night-shift contact-centre advisers, Site B",
+    "author": "HSE Operations",
+    "date": "2026-06-22",
+    "classification": "Confidential — special-category data — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "Respondents are referred to by role/group label only. Survey, focus-group and sickness-absence data is special-category health data; identifiers were pseudonymised before drafting, any breakdown of fewer than 5 respondents was suppressed with secondary suppression, and the re-identification key is held separately and is not part of this document. No individual is named as the risk."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Unit & scope" },
+    { "type": "paragraph", "text": "This psychosocial risk assessment covers the night-shift contact-centre advisers at Site B (a named work-design population), against ISO 45003:2021 and the UK HSE Management Standards. It assesses the hazard at source — work design, not the individual — following a recent restructure. Domains in scope: demands, control, support." },
+
+    { "type": "heading", "level": 1, "text": "Method & data sources" },
+    { "type": "bullets", "items": [
+        "Framework: ISO 45003:2021 + HSE Management Standards (demands · control · support · relationships · role · change).",
+        "Data triangulated across three sources (≥2 required): validated HSE Indicator Tool survey, aggregated focus-group themes, and stress-related sickness-absence trend.",
+        "Each domain banded against the HSE Management Standards Indicator Tool benchmark (source + year quoted); rated on the org 5×5 matrix via the risk_matrix engine.",
+        "Special-category data: all breakdowns of fewer than 5 respondents suppressed with secondary suppression; no individual named." ] },
+
+    { "type": "heading", "level": 1, "text": "Psychosocial hazards by domain" },
+    { "type": "findings", "rows": [
+        { "title": "Demands — sustained workload above achievable levels", "risk_level": "High",
+          "description": "Night-shift call volumes and after-call work exceed achievable workload for the role-group; survey 'demands' scores in the top-20% (urgent) band and focus-group themes corroborate.", "evidence": "HSE Indicator Tool survey (top-20% band) + focus-group theme (aggregated)" },
+        { "title": "Control — low decision latitude over work pace", "risk_level": "Medium",
+          "description": "Advisers report little say over scheduling and adherence targets; survey 'control' below-average band.", "evidence": "HSE Indicator Tool survey (below-average band)" },
+        { "title": "Support — weakened manager support after restructure", "risk_level": "Medium",
+          "description": "Reduced overnight supervisory cover since the restructure; sickness-absence trend rising for the role-group (aggregated, ≥5).", "evidence": "Focus-group theme + aggregated sickness-absence trend" } ] },
+
+    { "type": "heading", "level": 1, "text": "Risk rating" },
+    { "type": "table",
+      "headers": ["Domain", "Benchmark band (tool, year)", "Initial 5×5", "Residual 5×5", "Movement"],
+      "rows": [
+        ["Demands", "Top-20% urgent — HSE MS Indicator Tool, 2026", "High (16)", "Medium (9)", "↓"],
+        ["Control", "Below average — HSE MS Indicator Tool, 2026", "Medium (9)", "Low (4)", "↓"],
+        ["Support", "Below average — HSE MS Indicator Tool, 2026", "Medium (9)", "Low (6)", "↓"]
+      ],
+      "caption": "Each domain rated on the org 5×5 via risk_matrix; residual re-scored with work-design controls applied." },
+
+    { "type": "heading", "level": 1, "text": "Work-design controls (hierarchy of controls)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Re-balance night-shift call volumes / after-call work to an achievable workload (staffing + queue routing)", "tier": "Elimination", "owner": "Operations Manager" },
+        { "control": "Give advisers decision latitude over breaks and pacing within service levels", "tier": "Substitution", "owner": "Resource Planning Lead" },
+        { "control": "Restore overnight supervisory cover and a manager-support route", "tier": "Engineering", "owner": "Site Manager" },
+        { "control": "Manager training on supportive overnight supervision (organisational, not individual resilience)", "tier": "Administrative", "owner": "OH / HR Lead" } ] },
+    { "type": "callout", "text": "Individual resilience / EAP referral is offered as a SUPPORT measure of last resort — never the primary control. The primary treatment is the work-design controls above (achievable workloads, decision latitude, manager support).", "box_type": "info" },
+
+    { "type": "heading", "level": 1, "text": "Action plan (owners & dates)" },
+    { "type": "recommendations", "rows": [
+        { "action": "Re-balance night-shift workload and confirm achievable staffing", "priority": "P1", "owner": "Operations Manager", "due": "2026-07-20" },
+        { "action": "Pilot adviser-controlled break/pacing within service levels", "priority": "P2", "owner": "Resource Planning Lead", "due": "2026-08-10" },
+        { "action": "Reinstate overnight supervisory cover + manager-support route", "priority": "P1", "owner": "Site Manager", "due": "2026-07-31" } ] },
+
+    { "type": "heading", "level": 1, "text": "Confidentiality statement" },
+    { "type": "callout", "text": "This assessment relies on special-category psychosocial data (survey, focus-group, sickness-absence). All respondents are reported as role/group labels; no breakdown of fewer than 5 respondents is published; secondary suppression is applied; the re-identification key is held separately. No individual is named as the risk. Do not widen distribution beyond the named recipients without a further de-identification review.", "box_type": "warning" },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off" },
+    { "type": "paragraph", "text": "This is decision-support only and must be reviewed and signed off by a competent person (an occupational-health / psychosocial specialist). Regulatory basis: ISO 45003:2021; UK HSE Management Standards; ISO 45001 §6.1.2 (hazard identification); the jurisdiction's general risk-assessment duty (UK MHSWR 1999 reg. 3). Next review: on change (post-restructure re-assessment) or annual." },
+    { "type": "bullets", "items": ["ISO 45003:2021 — managing psychosocial risk", "UK HSE Management Standards — six domains", "ISO 45001 §6.1.2 — hazard identification"] }
+  ]
+}

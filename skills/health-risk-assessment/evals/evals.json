@@ -1,0 +1,55 @@
+{
+  "_comment": "The #25 health-risk-assessment eval set (OPS-08 / catalog §25). FOUR cases (spec's 3 + a dedicated 4th refuse-on-vague per RESEARCH §3 / D-11). Case 1 (OEL comparison) carries the CANDIDATE golden output evals/output/health-risk-assessment.md and asserts the regulatory_citation_accuracy[hard-fail] on a missing OEL. Case 2 is the hierarchy (noise hearing-protection-only) flag. Case 3 is the de-id PAIR: the eval CASE wires the CLEAN positive (evals/files/health-risk-clean.md) so the per-skill gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/health-risk-leak.md) is proven CAUGHT by the deterministic de-id grader (auto_fail True on a named worker's audiometry + phone + re-id key + a <5 health-outcome cell), while the paired clean version does NOT trip. Case 4 is the specificity GATE: refuse the exposure-vs-OEL comparison until the hazard + named SEG tasks/roles + an exposure basis are captured. rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only.",
+  "skill": "health-risk-assessment",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Build a health risk assessment for the press-shop operator SEG (mechanical power press, line 2, Plant 3) and the degrease-line SEG (toluene): operators measured at 92 dB(A) LEP,d; degrease-line at ~70 ppm toluene 8h TWA. UK. Compare each exposure to its OEL/WEL and set a health-surveillance schedule.",
+      "files": ["evals/files/health-risk-clean.md"],
+      "output_files": ["evals/output/health-risk-assessment.md"],
+      "expected_behavior": "Produces a specific SEG-based occupational-health risk assessment: names each SEG, compares EVERY exposure to a CITED OEL/WEL/PEL with authority+year (92 dB(A) vs the 85 dB(A) upper action value, Control of Noise at Work Regs 2005; 70 ppm toluene vs the 50 ppm WEL, EH40/2005), ranks controls up the hierarchy (substitution/engineering before PPE and before surveillance), and sets an OEL-linked surveillance schedule (audiometry on the noise SEG). An exposure assessed with NO cited OEL fails specificity + regulatory_citation_accuracy[hard-fail].",
+      "expectations": [
+        "Names each SEG specifically (press-shop operator SEG, degrease-line SEG) — not 'all staff' (specificity high).",
+        "EVERY exposure is compared to a CITED OEL/WEL/PEL with authority+year resolved from KB-DATA-OEL-LIMITS / KB-DATA-EXPOSURE-LIMITS — an exposure with no cited OEL is a regulatory_citation_accuracy hard-fail; no parallel OEL table.",
+        "Controls are ranked up the hierarchy: substitution/engineering precede PPE AND precede surveillance (hierarchy_of_controls); hearing protection is not the sole noise control.",
+        "An OEL-linked health-surveillance schedule is set — audiometry triggered because the noise SEG is above the upper action value (defensibility on the OEL linkage).",
+        "Every action carries a named (role-label) owner + an ISO due date (defensibility).",
+        "De-identification holds — SEG/role labels only, no individual surveillance result, no <5 health-outcome cell."
+      ]
+    },
+    {
+      "query": "Health-risk-assess the press-shop noise exposure (92 dB(A) LEP,d) where the only proposed control is hearing protection (ear plugs) and the only management response is putting operators on audiometry.",
+      "files": ["evals/files/health-risk-leak.md"],
+      "output_files": ["evals/output/health-risk-assessment.md"],
+      "expected_behavior": "The skill does NOT accept the PPE-only / surveillance-only treatment silently. controls.rank_controls returns ppe_admin_only=True; the output either adds a higher-order control (engineering: acoustic enclosure/damping the press; substitution: quieter tooling) or records an explicit 'higher-order controls not reasonably practicable because…' justification, and makes clear that audiometry is surveillance, NOT a control. A plan shipping ear plugs + audiometry as the whole response, with no higher-order option and no justification, scores <=2 on hierarchy_of_controls and is flagged by the Critic/QA pass.",
+      "expectations": [
+        "Walks the full hierarchy of controls: Elimination -> Substitution -> Engineering -> Administrative -> PPE.",
+        "Flags the hearing-protection-only treatment as inadequate via controls.ppe_admin_only=True; states surveillance (audiometry) is monitoring, not a control.",
+        "Either adds a higher-order control (enclose/dampen the press, quieter tooling) OR records an explicit justification — does not ship ear plugs + audiometry as the whole response (hierarchy_of_controls is the core value; an un-justified PPE/surveillance-only output scores <=2).",
+        "Assigns a named owner + a review date to each control action (defensibility)."
+      ]
+    },
+    {
+      "query": "A manager pastes the raw press-shop audiometry record (it contains a worker's real name, phone, an individual standard-threshold-shift audiometry result, a 3-case and a 2-case health-outcome cell, and an inline re-identification key) and asks for a health risk assessment.",
+      "files": ["evals/files/health-risk-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST. The real name, phone, and the individual's audiometry (special-category health) result are detected and pseudonymised to SEG/role labels; the <5 health-outcome cells are suppressed/aggregated; no re-identification key is embedded. Any verbatim identifier, named surveillance result, embedded re-id key, or unsuppressed <5 cell surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture (evals/files/health-risk-leak.md) is proven CAUGHT by the keyless deterministic de-id grader; the paired clean fixture (evals/files/health-risk-clean.md) proves the grader does not false-positive on a properly de-identified, SEG-level version.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any drafting — the identifiers (name, phone, individual audiometry result) are detected and listed up front.",
+        "The real name is replaced with a stable SEG/role label; the phone and the individual's audiometry result are never carried verbatim; the <5 health-outcome cells are suppressed/aggregated and reported by SEG.",
+        "No real name, phone, or individual surveillance result in the circulated output, and no re-identification key embedded — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the seeded-leak fixture (health-risk-leak.md — the gate is live); the paired clean fixture (health-risk-clean.md) does NOT trip (no false-positive)."
+      ]
+    },
+    {
+      "query": "Do a health risk assessment.",
+      "files": [],
+      "expected_behavior": "The request is vague — no hazard type, no named SEG tasks/roles, no exposure basis. The skill runs the structured intake one question at a time and REFUSES to produce any exposure-vs-OEL comparison until the hazard type (Q1), the named SEG tasks/roles (Q2), and an exposure basis (Q3) are all captured. It does not invent SEGs, exposures, or OELs. If asked about a hazard with no exposure data (Q3 = none-yet), it recommends a monitoring strategy first rather than fabricating a comparison.",
+      "expectations": [
+        "Runs the structured intake (one question at a time) before any analysis — does NOT produce a comparison or report from the vague prompt.",
+        "REFUSES the exposure-vs-OEL comparison until the hazard type (Q1), the named SEG tasks/roles (Q2), and an exposure basis (Q3) are captured (specificity GATE).",
+        "Refuses a generic SEG ('all staff') — Q2 is the specificity anchor; records [ASSUMPTION] / [GAP], never invents a SEG, an exposure, or an OEL.",
+        "On no exposure data, recommends a monitoring strategy first rather than fabricating an OEL comparison."
+      ]
+    }
+  ]
+}

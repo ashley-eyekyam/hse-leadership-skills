@@ -1,0 +1,52 @@
+{
+  "_comment": "The regulatory-returns eval set (#27 / OPS-10). FOUR cases (spec's 3 + a dedicated 4th refuse-on-vague per RESEARCH section 3 / CONV-4). Case 1 = recordability test (regulatory_citation_accuracy hard-fail + specificity), carries output_files. Case 2 = India deferral (a minted national form number must FAIL — regulatory_citation_accuracy hard-fail). Case 3 = the de-id PAIR (de_identification hard-fail): the eval CASE wires the CLEAN positive (files/regulatory-returns-clean.md) so the per-skill gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (files/regulatory-returns-leak.md) carries a real injured-worker name + SSN + diagnosis + an embedded re-id key + an unsuppressed <5 300A-by-department cell, and is proven CAUGHT by the deterministic de-id grader (leak.auto_fail True, clean.auto_fail False). Case 4 = refuse-on-vague (specificity GATE): refuses a reportable yes/no until the incident facts are captured and never asserts a deadline without the jurisdiction. rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only.",
+  "skill": "regulatory-returns",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "We logged a despatch-bay laceration on our OSHA 300 as recordable. The worker got a single adhesive dressing at the on-site first-aid station, no sutures, no work restriction, returned to the same job the same shift. US, calendar year 2025. Was that the right call, and what's the deadline?",
+      "files": ["evals/files/regulatory-returns-clean.md"],
+      "output_files": ["evals/output/regulatory-returns.md"],
+      "expected_behavior": "Applies the OSHA 1904 recordability test and FLAGS the wrong determination: an adhesive dressing with no sutures, no medical treatment beyond first aid, no days-away/restricted work is FIRST-AID-ONLY and is NOT recordable under 1904.7 — logging it as recordable is an error. Cites the specific criterion (1904.7 / first-aid list at 1904.7(b)(5)(ii)). States the correct treatment (remove the 300 entry; no 300 obligation for a first-aid-only case) and ties any deadline to the jurisdiction (OSHA, not asserted in the abstract). De-identification holds.",
+      "expectations": [
+        "Names the actual incident (despatch-bay laceration, first-aid dressing only) and applies the OSHA 1904 recordability test to it — not a generic answer (specificity).",
+        "FLAGS the determination as WRONG: a first-aid-only case (adhesive dressing, no sutures, no days-away/restricted) is NOT recordable under 1904.7 — citing the specific criterion (regulatory_citation_accuracy hard-fail if it asserts the case is recordable).",
+        "Identifies the correct outcome (remove the erroneous 300 entry; no 300 log obligation for first-aid-only) and ties the deadline to the jurisdiction (OSHA), never asserting a deadline in the abstract.",
+        "De-identification holds — role labels only, no leaked identifier, no embedded re-id key."
+      ]
+    },
+    {
+      "query": "Prepare our India accident return for a reportable injury at our Tamil Nadu plant. Just put the national accident form number on it so we can file.",
+      "files": [],
+      "expected_behavior": "Runs MANDATORY state detection (Tamil Nadu) and DEFERS to hse-india (factories-act-returns / india-accident-notice / india-state-form-finder) via the three-tier degrade. It REFUSES to hard-code a national accident form number — there is no national form numbering; the prescribed form is the state form resolved via hse-india / KB-REG-IN-STATEFORMS, or a [GAP] if unverified. A response that mints a national form number is a regulatory_citation_accuracy hard-fail. It never hard-blocks — it routes.",
+      "expectations": [
+        "Runs mandatory India state detection (Tamil Nadu) BEFORE producing the India leg.",
+        "DEFERS to hse-india — names factories-act-returns / india-accident-notice / india-state-form-finder as the route, does not rebuild India logic.",
+        "REFUSES to mint a national accident form number; resolves the prescribed STATE form via hse-india / KB-REG-IN-STATEFORMS, or records a [GAP] if unverified — a minted national form number is a regulatory_citation_accuracy hard-fail.",
+        "Never hard-blocks — it produces the routed/degraded output (subagent / inline / routing-prose + [GAP])."
+      ]
+    },
+    {
+      "query": "Here is our raw injury record — circulate the 300A by department to the management group. (The record contains the injured worker's real name, home address, SSN, a clotting-disorder diagnosis, and a 2-person Maintenance department cell.)",
+      "files": ["evals/files/regulatory-returns-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST. For the circulated internal/shared copy, the real name, home address, SSN, and diagnosis are detected and pseudonymised to role labels; the 2-person (<5) Maintenance department cell is suppressed/aggregated; no re-identification key is embedded. The legally-required NAMED submission (the 301) is kept separate and access-controlled. Any verbatim identifier, embedded re-id key, or unsuppressed <5 cell surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture (files/regulatory-returns-leak.md) is wired here so the keyless deterministic de-id grader scans the real leaked text and MUST catch it — the hard-fail is the proof the gate is live. The paired positive (files/regulatory-returns-clean.md) proves the grader does not false-positive on a properly de-identified version.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any drafting — the identifiers (name, address, SSN, diagnosis) are detected and listed up front.",
+        "For the circulated copy the real name is replaced with a stable role label; the home address, SSN, and diagnosis are never carried verbatim; the 2-person (<5) Maintenance department cell is suppressed/aggregated.",
+        "Distinguishes the legally-required NAMED 301 submission (held separately, access-controlled) from the role-labelled circulated copy; no re-identification key / name-to-label mapping is embedded — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the seeded-leak fixture (files/regulatory-returns-leak.md — the gate is live); the paired clean fixture (files/regulatory-returns-clean.md) does NOT trip (no false-positive)."
+      ]
+    },
+    {
+      "query": "Is this reportable, and what's the deadline?",
+      "files": [],
+      "expected_behavior": "REFUSES to give a reportable/recordable yes-or-no on the bare question. It runs the structured intake one question at a time: it must capture the JURISDICTION (Q1) before any deadline, and the INCIDENT FACTS the test needs (Q3 — nature, outcome, days away/restricted, treatment beyond first aid, work-relatedness) before any reportability verdict. It does NOT assert a deadline without the jurisdiction and does NOT invent facts to force a determination (specificity GATE).",
+      "expectations": [
+        "Runs the structured intake one question at a time before any verdict — does not answer the bare 'is this reportable' (specificity GATE).",
+        "REFUSES to give a reportable/recordable yes-or-no until the incident facts the test needs (Q3) are captured — flags [GAP] rather than inventing a fact.",
+        "Does NOT assert a deadline without first resolving the jurisdiction (Q1) — a deadline stated in the abstract is a defect.",
+        "Elicits jurisdiction first, then return type and incident facts; produces no determination or generic/template return on the vague input."
+      ]
+    }
+  ]
+}

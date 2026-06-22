@@ -1,0 +1,73 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Occupational Health Risk Assessment",
+    "subtitle": "SEG-based exposure assessment, OEL comparison & health-surveillance schedule",
+    "author": "HSE Operations — Occupational Health",
+    "date": "2026-06-22",
+    "classification": "Internal — special-category health data — competent-person (occupational hygienist / OH physician) review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All workers are referred to by similar-exposure-group (SEG) or role label. Surveillance and exposure-monitoring results are reported by SEG with <5 small-cell suppression; identifiers were pseudonymised before drafting and the re-identification key is held separately, not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Scope & similar-exposure groups (SEGs)" },
+    { "type": "paragraph", "text": "This occupational-health risk assessment covers the named tasks/roles below, grouped into similar-exposure groups (SEGs) per ISO 45001 §6.1.2. Each SEG names the task/role and the agent it is exposed to; surveillance and exposure data are reported by SEG, never by individual." },
+    { "type": "heading", "level": 1, "text": "Hazards & exposure characterisation" },
+    { "type": "bullets", "items": [
+        "Chemical / inhalation: agent, route, and the SEG exposed (measured or estimated basis stated).",
+        "Noise / vibration (HAV/WBV): measured dose vs the action level for the SEG.",
+        "Manual handling / ergonomics: the task scored with the named tool (see Ergonomic scores)." ] },
+    { "type": "heading", "level": 1, "text": "Exposure-vs-OEL comparison" },
+    { "type": "table",
+      "headers": ["SEG / agent", "Measured/estimated exposure", "OEL / WEL / PEL", "Authority + year", "Status vs limit"],
+      "rows": [
+        ["Press-shop operator SEG / noise", "92 dB(A) LEP,d", "85 dB(A) (upper action value)", "UK Control of Noise at Work Regs 2005", "Above the upper action value"],
+        ["Degrease-line SEG / toluene", "70 ppm (8h TWA)", "50 ppm TWA (8h)", "UK HSE EH40/2005 WEL, 2020 amendment", "Above the WEL"]
+      ],
+      "caption": "Every exposure compared to a cited OEL/WEL/PEL with authority+year (KB-DATA-OEL-LIMITS / KB-DATA-EXPOSURE-LIMITS — the single OEL source)." },
+    { "type": "heading", "level": 1, "text": "Ergonomic scores (tool-named — deterministic engine)" },
+    { "type": "metrics", "metrics": [
+        { "label": "RULA grand score", "value": 5 },
+        { "label": "Action level", "value": 3, "caption": "Investigation and changes required soon" } ] },
+    { "type": "table",
+      "headers": ["Step", "Value"],
+      "rows": [
+        ["posture_a", 4],
+        ["score_a", 5],
+        ["posture_b", 3],
+        ["score_b", 4]
+      ],
+      "caption": "RULA working — the ergonomics.to_report_blocks() [metrics, table] pair (engine output, not narrated)." },
+    { "type": "heading", "level": 1, "text": "Risk rating" },
+    { "type": "table",
+      "headers": ["SEG", "Health hazard", "Initial band", "Residual band", "Movement"],
+      "rows": [
+        ["Press-shop operator SEG", "Noise-induced hearing loss", "High", "Medium", "↓ after enclosure"],
+        ["Degrease-line SEG", "Solvent inhalation", "High", "Medium", "↓ after LEV + substitution"]
+      ],
+      "caption": "Residual rated on risk_matrix after controls; a residual High/Critical triggers more controls, not 'accept and proceed'." },
+    { "type": "heading", "level": 1, "text": "Controls (hierarchy of controls)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Substitute an aqueous degreaser for the solvent", "tier": "Substitution", "owner": "Process Lead" },
+        { "control": "Acoustic enclosure on the press; LEV on the degrease line", "tier": "Engineering", "owner": "Engineering Lead" },
+        { "control": "Restricted-access exposure zones + rotation", "tier": "Administrative", "owner": "Shift Manager" },
+        { "control": "Hearing protection + RPE as a backstop only", "tier": "PPE", "owner": "HSE Lead" } ] },
+    { "type": "callout", "text": "Hearing protection and surveillance are NOT controls — substitution and engineering precede PPE and precede surveillance.", "box_type": "warning" },
+    { "type": "heading", "level": 1, "text": "Health-surveillance schedule (OEL-linked)" },
+    { "type": "table",
+      "headers": ["SEG", "Trigger", "Surveillance", "Cadence", "Owner"],
+      "rows": [
+        ["Press-shop operator SEG", "Exposure ≥ upper action value", "Audiometry", "Baseline + annual", "OH Physician"],
+        ["Degrease-line SEG", "Exposure > WEL", "Respiratory / biological monitoring", "Per regime", "OH Physician"]
+      ],
+      "caption": "Cadence keyed to the cited OEL comparison (KB-SNIP-SURVEILLANCE-TRIGGERS); outcomes reported by SEG with <5 suppression." },
+    { "type": "recommendations", "rows": [
+        { "action": "Install the acoustic enclosure on press line 2", "priority": "P1", "owner": "Engineering Lead", "due": "2026-08-01" },
+        { "action": "Trial the aqueous degreaser substitution", "priority": "P1", "owner": "Process Lead", "due": "2026-07-15" },
+        { "action": "Baseline audiometry for the press-shop SEG", "priority": "P2", "owner": "OH Physician", "due": "2026-07-30" } ] },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off" },
+    { "type": "paragraph", "text": "Decision-support only; a competent person (occupational hygienist / OH physician) must review and sign off this assessment. Review on exposure change or on a surveillance trigger. Regulatory basis: ISO 45001 §6.1.2 + the jurisdiction surveillance regime (COSHH / Control of Noise / Control of Vibration / OSHA 1910.95)." }
+  ]
+}

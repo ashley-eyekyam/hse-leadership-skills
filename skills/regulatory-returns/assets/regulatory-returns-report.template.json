@@ -1,0 +1,53 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Regulatory Return — OSHA 1904 Recordability Determination",
+    "subtitle": "Despatch-bay laceration · reporting year 2025 · US OSHA",
+    "author": "HSE Operations — Regulatory Returns",
+    "date": "2026-06-22",
+    "classification": "Internal working copy — role-labelled; competent-person review required before filing",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "Internal/shared copy. The injured person and all personnel are referred to by role label; identifiers and health detail were pseudonymised before drafting. The legally-required named submission is held separately and access-controlled; the re-identification key is not part of this document. No injury/illness cell of fewer than 5 is published."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Jurisdiction & return type" },
+    { "type": "paragraph", "text": "Jurisdiction: United States — OSHA 29 CFR 1904 recordkeeping. Return type: OSHA Form 300 log entry (with a Form 301 incident report). Reporting period: calendar year 2025. The recordability test below is applied to the captured incident facts; the determination cites the specific 1904 criterion it applied." },
+    { "type": "heading", "level": 1, "text": "Recordability / reportability determination (test cited)" },
+    { "type": "findings", "rows": [
+        { "title": "Recordable — medical treatment beyond first aid (1904.7(b)(5))", "risk_level": "High",
+          "description": "Work-related (1904.5), a new case (1904.6); the laceration required sutures — medical treatment beyond first aid (1904.7) — so the case is recordable on the 300 log. A first-aid-only dressing would NOT be recordable; the suture is the deciding fact.", "evidence": "E-1 occupational-health treatment note (de-identified); E-2 supervisor incident report" } ] },
+    { "type": "heading", "level": 1, "text": "Form & deadline" },
+    { "type": "metrics", "metrics": [
+        { "label": "Form", "value": "OSHA 300 + 301", "caption": "log entry + incident report" },
+        { "label": "300 entry due", "value": "7 calendar days", "caption": "of learning of the recordable case (1904.29(b)(3))" },
+        { "label": "300A posting", "value": "Feb 1 – Apr 30, 2026", "caption": "annual summary for CY2025" } ] },
+    { "type": "callout", "text": "Electronic 300A submission (1904.41) applies if the establishment's size/SIC is in scope — confirm the SIC and employee count for CY2025 before the submission deadline. Never assert a deadline without the jurisdiction.", "box_type": "warning" },
+    { "type": "heading", "level": 1, "text": "Prepared return (de-identified)" },
+    { "type": "table",
+      "headers": ["Field", "Value (role-labelled)"],
+      "rows": [
+        ["Case no.", "300-2025-014"],
+        ["Injured worker", "Injured Worker A (picker, despatch bay)"],
+        ["Injury / illness", "Laceration to the left forearm — sutured (treatment beyond first aid)"],
+        ["Classification", "Days-away / restricted: Job transfer or restriction"],
+        ["Days restricted", "5"],
+        ["Outcome column", "300 column (J) — other recordable case"]
+      ],
+      "caption": "Working-copy 300 log entry — role-labelled. The legally-required named submission is held separately and access-controlled." },
+    { "type": "heading", "level": 1, "text": "Evidence trail" },
+    { "type": "table",
+      "headers": ["Evidence", "Supports", "Held by"],
+      "rows": [
+        ["E-1 occupational-health treatment note (de-identified)", "Treatment beyond first aid → recordable (1904.7)", "Occupational Health Lead"],
+        ["E-2 supervisor incident report", "Work-relatedness (1904.5) + the event facts", "Despatch Supervisor"],
+        ["E-3 restricted-duty roster", "5 days of restricted work → column classification", "HSE Lead"]
+      ],
+      "caption": "Every determination traces to a numbered evidence item." },
+    { "type": "heading", "level": 1, "text": "India deferral note" },
+    { "type": "callout", "text": "Not applicable to this US return. For an India return this skill runs MANDATORY state detection first and DEFERS to hse-india — factories-act-returns / india-accident-notice / india-state-form-finder. It never mints a national form number; an unverified form value is recorded as [GAP].", "box_type": "info" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off" },
+    { "type": "paragraph", "text": "Decision-support only. This determination and the prepared return must be reviewed and signed off by a competent person before filing; this is not legal advice. SME review (Regulatory Reporting Specialist) ran and precedes — never replaces — the human competent-person sign-off." }
+  ]
+}

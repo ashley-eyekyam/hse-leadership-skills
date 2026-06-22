@@ -1,0 +1,59 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "ISO 45001 Gap Analysis & Certification-Readiness Assessment",
+    "subtitle": "Clause-by-clause conformance review — {{org/site}}",
+    "author": "HSE Operations",
+    "date": "{{YYYY-MM-DD}}",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. Identifiers and any disclosed conditions in the audit interview notes were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Scope & standard" },
+    { "type": "paragraph", "text": "This gap analysis assesses {{org/site}} against {{ISO 45001:2018 | ISO 14001:2015 | ISO 45003:2021}}, clause by clause (clause set 4–10), scoring each clause's conformance from the supplied evidence on the 5-level maturity scale (KB-DATA-ISO45001-MATURITY) and framed by ISO/IEC 17021-1 certification-audit principles. Target: {{initial certification readiness | internal assurance | surveillance-audit prep}}. No clause is silently omitted — each is scored or marked N/A with a stated reason. Decision-support only; a competent person must review this output." },
+    { "type": "metrics", "metrics": [
+        { "label": "Clauses scored", "value": "{{n}}/{{n}}" },
+        { "label": "Certification-blockers", "value": "{{n}}", "caption": "mandatory clause at level <= 2" },
+        { "label": "Overall readiness", "value": "{{Not ready | Approaching | Ready}}" } ] },
+    { "type": "heading", "level": 1, "text": "Clause-by-clause conformance (scored)" },
+    { "type": "table",
+      "headers": ["Clause", "Title", "Maturity (0-4)", "Status", "Evidence basis"],
+      "rows": [
+        ["5.2", "OH&S policy", "1 — Ad hoc", "BLOCKER", "No documented OH&S policy on file"],
+        ["6.1.2", "Hazard identification & risk assessment", "3 — Implemented", "Conformant", "HIRA records across scope (E-4)"],
+        ["7.2", "Competence", "2 — Documented", "Gap", "Competence matrix exists; training records partial (E-7)"],
+        ["9.2", "Internal audit", "0 — Absent", "BLOCKER", "No internal-audit programme [GAP]"],
+        ["10.2", "Incident, nonconformity & corrective action", "2 — Documented", "BLOCKER", "Procedure on paper; no corrective-action records (E-9)"]
+      ],
+      "caption": "Conformance matrix — every clause (4-10) scored on KB-DATA-ISO45001-MATURITY or marked N/A with reason" },
+    { "type": "heading", "level": 1, "text": "Gap register" },
+    { "type": "findings", "rows": [
+        { "title": "No documented OH&S policy (clause 5.2)", "risk_level": "High",
+          "description": "Clause 5.2 requires a documented OH&S policy authorised by top management; none exists. Mandatory clause at level <= 2.", "evidence": "Leadership interview, scrubbed note L-1" },
+        { "title": "No internal-audit programme (clause 9.2)", "risk_level": "High",
+          "description": "Clause 9.2 requires a planned internal-audit programme; none is established. Mandatory clause at level 0.", "evidence": "Performance-evaluation evidence pack [GAP]" },
+        { "title": "Corrective-action loop not evidenced (clause 10.2)", "risk_level": "Medium",
+          "description": "A nonconformity/corrective-action procedure exists but no records show it operating.", "evidence": "Improvement file, scrubbed note I-1" } ] },
+    { "type": "heading", "level": 1, "text": "Certification-blocker flags" },
+    { "type": "callout", "text": "Three certification-blockers (major nonconformities under ISO/IEC 17021-1) must be closed before a stage-2 certification audit: 5.2 OH&S policy (absent), 9.2 internal audit (absent), 10.2 corrective action (not evidenced). A blocker is NOT a minor finding and cannot be deferred past the cert date.", "box_type": "warning" },
+    { "type": "heading", "level": 1, "text": "Hierarchy-of-controls check (planning clause 6.1)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Eliminate the gap: establish a documented OH&S policy authorised by top management", "tier": "Elimination", "owner": "Top Management" },
+        { "control": "Engineer the audit programme into the MS calendar with automated scheduling", "tier": "Engineering", "owner": "HSE Manager" },
+        { "control": "Administrative: monthly management-review standing item tracking corrective actions to closure", "tier": "Administrative", "owner": "Site Manager" } ] },
+    { "type": "heading", "level": 1, "text": "Prioritised costed remediation roadmap (owners + dates)" },
+    { "type": "recommendations", "rows": [
+        { "action": "Draft, approve and communicate a documented OH&S policy (cl. 5.2) — est. cost: low", "priority": "P1", "owner": "Top Management / HSE Manager", "due": "{{cert-date - 12 weeks}}" },
+        { "action": "Establish an internal-audit programme + train two internal auditors (cl. 9.2) — est. cost: medium", "priority": "P1", "owner": "HSE Manager", "due": "{{cert-date - 10 weeks}}" },
+        { "action": "Stand up the corrective-action register and run it for one cycle (cl. 10.2) — est. cost: low", "priority": "P1", "owner": "HSE Manager", "due": "{{cert-date - 8 weeks}}" },
+        { "action": "Complete competence-record backfill for clause 7.2 — est. cost: low", "priority": "P2", "owner": "Competence & Training Lead", "due": "{{cert-date - 6 weeks}}" } ] },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Assumptions & gaps" },
+    { "type": "callout", "text": "Where evidence was not supplied a clause is scored as a gap (level 0/1) and the missing evidence is named as a [GAP] — not assumed conformant. [ASSUMPTION] items are labelled inline and must be confirmed by the lead auditor before sign-off.", "box_type": "note" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off" },
+    { "type": "paragraph", "text": "Prepared by {{lead auditor role}}; SME review (persona: Lead Auditor / Management-Systems Consultant) ran before output. This gap analysis is decision-support only — it precedes and does NOT replace the human competent-person sign-off, and it does not certify the management system. Standard assessed: {{standard}}. Basis: ISO 45001:2018 clauses 4-10 + ISO/IEC 17021-1." },
+    { "type": "bullets", "items": ["Conformance scale: KB-DATA-ISO45001-MATURITY (0 Absent -> 4 Measured & improving)", "Prioritisation: KB-SNIP-GAP-PRIORITISATION (certification-blockers first)", "Related siblings via KB-SNIP-OPS-CLAUSE-MAP (e.g. legal register -> 6.1.3, competence -> 7.2)"] }
+  ]
+}
