@@ -1,0 +1,67 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Contractor Prequalification — Acme Scaffolding",
+    "subtitle": "Work-at-height scaffold package, Plant 3 turnaround — risk tier T3 (high-hazard)",
+    "author": "HSE Operations / Procurement",
+    "date": "2026-06-22",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "The contractor's accident/enforcement history was de-identified before scoring: named injured persons are referred to by role label and any injury cell below 5 is suppressed. The re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Scope & risk tier" },
+    { "type": "paragraph", "text": "Prequalification of Acme Scaffolding to erect/dismantle access scaffold for the Plant 3 turnaround. The scope contains work at height, so the package is risk-tiered T3 (high-hazard) — the tier is set by the highest-risk activity, not the average (ISO 45001 §8.1.4; UK CDM 2015 reg. 8). T3 demands the full PQQ + high-hazard module and cannot pass on PPE/competence claims alone." },
+    { "type": "metrics", "metrics": [
+        { "label": "Risk tier", "value": "T3", "caption": "high-hazard — work at height" },
+        { "label": "Evidence verified", "value": "5 / 7" },
+        { "label": "Open [GAP] items", "value": "2", "caption": "block unconditional pass" } ] },
+    { "type": "heading", "level": 1, "text": "Tiered PQQ" },
+    { "type": "table",
+      "headers": ["PQQ item", "Tier", "Required evidence"],
+      "rows": [
+        ["HSE policy signed by top management", "Core", "Signed policy"],
+        ["Employers'/public-liability insurance", "Core", "Current certificate"],
+        ["Accident & enforcement history (3–5 yr)", "Core", "Rates + any notices (de-identified)"],
+        ["Workforce competence for the work", "Core", "Training/competence records"],
+        ["Method statements / RAMS for the scope", "Task-specific", "The RAMS, hazard-specific"],
+        ["Recognised accreditation (SSIP / ISO 45001)", "Task-specific", "Valid certificate — not a claim"],
+        ["Work-at-height competence/certification", "High-hazard (T3)", "In-date certification"],
+        ["Safe-system-of-work / permit integration", "High-hazard (T3)", "The SSoW/permit procedure"],
+        ["Verified accident-rate data (height work)", "High-hazard (T3)", "Verifiable rate data"]
+      ],
+      "caption": "PQQ depth scales to the tier (KB-DATA-CONTRACTOR-TIERS / KB-SNIP-PQQ-BANK)" },
+    { "type": "heading", "level": 1, "text": "Evidence register (verification status)" },
+    { "type": "table",
+      "headers": ["Criterion", "Claim", "Evidence supplied", "Status"],
+      "rows": [
+        ["Insurance", "EL/PL cover in force", "Current certificate", "Verified"],
+        ["Accreditation", "SSIP accredited", "Valid SSIP certificate", "Verified"],
+        ["Accident history", "Low incident rate", "De-identified 3-yr rates", "Verified"],
+        ["RAMS", "Scaffold RAMS held", "RAMS document for the scope", "Verified"],
+        ["Workforce competence", "Trained scaffolders", "CISRS competence records", "Verified"],
+        ["Work-at-height certification", "Operatives certified", "Asserted — no certificate supplied", "Unverified — [GAP]"],
+        ["Verified accident-rate data (height)", "Good height-work record", "Not supplied", "Not supplied — [GAP]"]
+      ],
+      "caption": "Every score traces to a VERIFIED row; an asserted claim with no evidence is [GAP], never 'met'." },
+    { "type": "heading", "level": 1, "text": "Scorecard" },
+    { "type": "findings", "rows": [
+        { "title": "Core + task-specific criteria met on verified evidence", "risk_level": "Low",
+          "description": "Insurance, SSIP accreditation, de-identified accident history, RAMS, and trade competence are all verified against supplied evidence.", "evidence": "Evidence register, rows 1–5" },
+        { "title": "Work-at-height certification asserted but not evidenced", "risk_level": "High",
+          "description": "A self-asserted height-work certification with no certificate supplied is scored [GAP], not 'met'. T3 work cannot pass on a competence claim alone.", "evidence": "Evidence register, row 6" },
+        { "title": "Verified height accident-rate data not supplied", "risk_level": "Medium",
+          "description": "The high-hazard module requires verifiable accident-rate data for the activity; none was supplied.", "evidence": "Evidence register, row 7" } ] },
+    { "type": "heading", "level": 1, "text": "Gaps blocking an unconditional pass" },
+    { "type": "callout", "text": "Two [GAP] items remain: (1) in-date work-at-height certification (CISRS Advanced or equivalent) is asserted but not evidenced; (2) verified height-work accident-rate data is not supplied. A self-asserted claim is never scored as met, and a T3 package cannot pass on competence claims alone — these block an unconditional approval.", "box_type": "warning" },
+    { "type": "heading", "level": 1, "text": "Recommendation" },
+    { "type": "recommendations", "rows": [
+        { "action": "CONDITIONAL APPROVAL — supply in-date work-at-height certification (CISRS Advanced or equivalent) for the named operatives", "priority": "P1", "owner": "Procurement HSE Lead", "due": "2026-07-15" },
+        { "action": "Supply verifiable height-work accident-rate data for the last 3 years", "priority": "P2", "owner": "Procurement HSE Lead", "due": "2026-07-15" } ] },
+    { "type": "callout", "text": "Recommendation: CONDITIONAL. Do not mobilise Acme Scaffolding for work at height until both conditions are closed and re-verified. Review date: on certificate expiry, or 12 months, whichever is sooner.", "box_type": "info" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off" },
+    { "type": "paragraph", "text": "This prequalification is decision-support only and must be reviewed and signed off by a competent person before the contractor is appointed. It does not assert 'approved by a competent person'. Regulatory basis: ISO 45001:2018 §8.1.4 (procurement / contractors / outsourcing); UK CDM 2015 reg. 8 (duty to appoint only those with the skills, knowledge and experience); US OSHA multi-employer worksite policy CPL 02-00-124 where a US controlling-employer." }
+  ]
+}

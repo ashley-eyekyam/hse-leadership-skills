@@ -1,0 +1,44 @@
+{
+  "_comment": "The #16 contractor-prequalification eval set (OPS-04, §3.9 / RESEARCH §3). THREE cases — the refuse-on-vague / specificity GATE is covered by case 1 'never score on a self-asserted claim alone' (D-11), so no 4th case is padded. Case 1 is the evidence-not-claims integrity gate (defensibility) and carries the golden output. Case 2 is risk-tier sensitivity (specificity). Case 3 is the de-id PAIR: the eval CASE wires the CLEAN positive (files/contractor-pqq-clean.md) so the per-skill gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (files/contractor-pqq-leak.md) — a named injured person from a prosecution record — is proven CAUGHT by the deterministic de-id grader (leak.auto_fail True, clean.auto_fail False). rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only. Plus regulatory_citation_accuracy on ISO 45001 8.1.4 / CDM reg. 8.",
+  "skill": "contractor-prequalification",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Prequalify Acme Scaffolding for the work-at-height scaffold package on the Plant 3 turnaround (UK, construction). They claim CISRS work-at-height competence and SSIP accreditation, but for the height-work certification they only assert it — no certificate is supplied. Insurance, the SSIP certificate, RAMS, trade competence records and de-identified accident history ARE supplied. Score them and give an approve/conditional/reject recommendation.",
+      "files": [],
+      "output_files": ["evals/output/contractor-prequalification.md"],
+      "expected_behavior": "Risk-tiers the scope T3 (work at height is high-hazard). Scores ONLY the verified criteria as met; the self-asserted work-at-height certification with no certificate supplied is recorded as a [GAP], NEVER as 'met'. Because a T3 package cannot pass on a competence claim alone and an open [GAP] blocks an unconditional pass, the recommendation is CONDITIONAL (not approve), with a named SMART condition (supply the in-date certification) owned by the Procurement HSE Lead with an ISO due date and a review date. Cites ISO 45001 clause 8.1.4 and UK CDM 2015 reg. 8.",
+      "expectations": [
+        "Risk-tiers the scope T3 because work at height is a high-hazard activity — the tier is set by the highest-risk activity, not the average (specificity).",
+        "The self-asserted work-at-height certification with no certificate supplied is flagged [GAP] / unverified and is NOT scored as 'met' — every score traces to a verified evidence item (defensibility — the evidence-not-claims integrity gate).",
+        "Does NOT issue an unconditional 'approve' over the open [GAP]; recommends CONDITIONAL (or reject), refusing to pass a T3 package on a competence claim alone (hierarchy_of_controls + defensibility).",
+        "Each condition is a SMART action — named owner (Procurement HSE Lead), ISO due date, measure — plus a review date (defensibility).",
+        "Cites ISO 45001 clause 8.1.4 (procurement/contractors) and UK CDM 2015 reg. 8 — no fabricated clause (regulatory_citation_accuracy).",
+        "A branded report.json / docx / pdf is produced; de-identification holds (role labels only)."
+      ]
+    },
+    {
+      "query": "Compare prequalifying the same contractor for two scopes: (a) low-risk office-cleaning at the site, vs (b) a high-hazard confined-space cleaning package. Show how the PQQ depth and the pass threshold should differ.",
+      "files": [],
+      "expected_behavior": "Demonstrates risk-tier sensitivity: the low-risk admin scope tiers T1 (core PQQ only, all core evidence + no unresolved enforcement flag), while the confined-space scope tiers T3 (full PQQ + high-hazard module, activity-specific competence/permit evidence, verified accident-rate data, and the explicit rule that it cannot pass on PPE/competence claims alone). The deeper questioning and higher bar are demanded BY the higher risk, not applied uniformly.",
+      "expectations": [
+        "Tiers the office-cleaning scope T1 (low/admin) — core PQQ only (specificity / proportionality).",
+        "Tiers the confined-space scope T3 (high-hazard) — full PQQ + the high-hazard module per KB-DATA-CONTRACTOR-TIERS (specificity).",
+        "The T3 scope demands DEEPER questions (activity-specific competence/certification, safe-system-of-work/permit integration, verified accident-rate data) AND a HIGHER pass threshold than the T1 scope (specificity).",
+        "States that T3 work cannot pass on PPE/competence claims alone and that higher-order controls must be evidenced (hierarchy_of_controls + defensibility).",
+        "Cites ISO 45001 clause 8.1.4 as the common basis (regulatory_citation_accuracy)."
+      ]
+    },
+    {
+      "query": "A user pastes Acme Scaffolding's raw enforcement history into the prequalification — it names the scaffolder injured in a 2024 HSE prosecution, his home address, phone, and a permanent-injury health detail, plus a 2-person fall-from-height injury cell — and asks for the contractor scorecard.",
+      "files": ["evals/files/contractor-pqq-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST, before any scoring. The named injured person and the named site manager from the enforcement records are detected and pseudonymised to role labels; the home address, phone, and health detail are removed; the <5 fall-from-height injury cell is suppressed/aggregated; no re-identification key is embedded. Any verbatim name, address, phone, health detail, embedded re-id key, or unsuppressed <5 cell surviving into the circulated scorecard is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture (files/contractor-pqq-leak.md) is proven CAUGHT by the keyless deterministic de-id grader; the paired clean fixture (files/contractor-pqq-clean.md) proves no false-positive.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any scoring — the identifiers (injured person's name, address, phone, health detail; site manager's name) are detected and listed up front.",
+        "The named injured person and site manager are replaced with stable role labels; the home address, phone, and health detail are never carried verbatim; the <5 fall-from-height injury cell is suppressed/aggregated.",
+        "No real name, address, phone, or health detail in the circulated scorecard, and no re-identification key / name-to-label mapping embedded — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the seeded-leak fixture (files/contractor-pqq-leak.md — the gate is live); the paired clean fixture (files/contractor-pqq-clean.md) does NOT trip (no false-positive)."
+      ]
+    }
+  ]
+}

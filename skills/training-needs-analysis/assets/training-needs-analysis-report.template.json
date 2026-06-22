@@ -1,0 +1,75 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Training Needs Analysis — Role × Competence",
+    "subtitle": "Scaffolding crew, North-tower project",
+    "author": "HSE Operations",
+    "date": "2026-06-22",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "Competence and appraisal data is personal data. The matrix circulates by ROLE LABEL, not personal name. Identifiers were pseudonymised before drafting; where one named person is the sole holder of a competence the gap is reported, not the identity. The re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Scope & method" },
+    { "type": "paragraph", "text": "This Training Needs Analysis baselines the role×competence profile for the named roles in scope (ISO 45001 §7.2 competence, §7.3 awareness), scoring each cell current-vs-required on the 4-level scale (aware/trained/competent/expert) from a named evidence source. It flags single-points-of-failure, tracks certification expiry, and prioritises a costed training plan by risk × legal mandate × gap size. Decision-support only; a competent person must review the output." },
+    { "type": "metrics", "metrics": [
+        { "label": "Roles in scope", "value": "5" },
+        { "label": "Competence gaps", "value": "7", "caption": "2 statutory" },
+        { "label": "Single-points-of-failure", "value": "1", "caption": "critical competence" } ] },
+
+    { "type": "heading", "level": 1, "text": "Role × competence matrix" },
+    { "type": "table",
+      "headers": ["Role (headcount)", "Scaffold inspection (req. L3)", "Work-at-height rescue (req. L3)", "Manual handling (req. L2)"],
+      "rows": [
+        ["Scaffolding Supervisor (×1)", "L2 — GAP 1 [LEGAL]", "L3 ✓", "L3 ✓"],
+        ["Advanced Scaffolder (×2)", "L3 ✓ (sole night-shift holder — SPOF)", "L2 — GAP 1", "L2 ✓"],
+        ["Labourer (×2)", "L1 — supervised only", "L1 — GAP 2", "L1 — GAP 1"]
+      ],
+      "caption": "Current level vs required level; cell = current (gap). Banded on KB-DATA-COMPETENCE-LEVELS from training records + appraisal evidence." },
+
+    { "type": "heading", "level": 1, "text": "Competence gaps (scored, prioritised)" },
+    { "type": "findings", "rows": [
+        { "title": "Scaffolding Supervisor below statutory scaffold-inspection competence", "risk_level": "High",
+          "description": "Required level 3 (competent person for scaffold inspection) is unmet (current level 2). Statutory competence requirement — cited to the jurisdiction's legal-required-competency duty; never downgraded to pass.", "evidence": "Training record TR-114; legal-required-competency map (Q5 row)" },
+        { "title": "Single inspection-competent scaffolder on nights", "risk_level": "High",
+          "description": "Only one named person holds level-3 scaffold-inspection competence on the night shift — a single-point-of-failure; if absent, no compliant inspection. Reported by role, not identity.", "evidence": "Competence register (role-labelled)" },
+        { "title": "Labourers lack work-at-height rescue awareness", "risk_level": "Medium",
+          "description": "Required level 2 for rescue assist is unmet (current level 1).", "evidence": "Appraisal data; incident-driven gap" } ] },
+
+    { "type": "heading", "level": 1, "text": "Single-point-of-failure register" },
+    { "type": "table",
+      "headers": ["Critical competence", "Sole-holder role", "Task it gates", "Resilience action"],
+      "rows": [
+        ["Scaffold inspection (L3)", "Advanced Scaffolder (night shift)", "Pre-use scaffold inspection sign-off", "Cross-train a second night-shift scaffolder to L3"]
+      ],
+      "caption": "Competences held by only one person (reported by role, not identity — small-cell suppression)." },
+
+    { "type": "heading", "level": 1, "text": "Certification / expiry tracker" },
+    { "type": "table",
+      "headers": ["Competence / certificate", "Holder role", "Expiry", "Refresher due"],
+      "rows": [
+        ["First aid at work", "Scaffolding Supervisor", "2026-09-30", "2026-08-01"],
+        ["Scaffold inspection (CISRS-equiv.)", "Advanced Scaffolder ×2", "2027-03-15", "2027-01-15"],
+        ["IPAF / work-at-height", "Advanced Scaffolder ×2", "2026-07-31", "2026-06-30 (overdue — P1)"]
+      ],
+      "caption": "Time-limited certificates with refresher lead-time; an expired statutory certificate is high-priority." },
+
+    { "type": "heading", "level": 1, "text": "Prioritised training plan (SMART, owners, dates, cost)" },
+    { "type": "recommendations", "rows": [
+        { "action": "Enrol Scaffolding Supervisor on accredited scaffold-inspection competent-person course; assess to L3", "priority": "P1", "owner": "Site HSE Lead", "due": "2026-07-31" },
+        { "action": "Renew the two work-at-height/IPAF certificates (overdue) before next access work", "priority": "P1", "owner": "Training Coordinator", "due": "2026-07-05" },
+        { "action": "Cross-train a second night-shift scaffolder to L3 inspection (resolve the SPOF)", "priority": "P2", "owner": "Scaffolding Supervisor", "due": "2026-09-30" },
+        { "action": "Deliver work-at-height rescue-assist training to the two labourers (L1→L2)", "priority": "P3", "owner": "Training Coordinator", "due": "2026-10-31" } ] },
+    { "type": "heading", "level": 2, "text": "Training in the hierarchy of controls" },
+    { "type": "paragraph", "text": "Training is an administrative control (KB-SNIP-HOC). It is paired with the higher-order site controls (edge protection, exclusion zones, a managed inspection regime) — it is never offered as the sole control of the fall-from-height hazard." },
+
+    { "type": "heading", "level": 1, "text": "Assumptions & gaps" },
+    { "type": "callout", "text": "Indicative course costs are [ASSUMPTION] pending supplier quotes. Where a current competence level had no evidence source it is flagged [GAP] and treated as unmet until evidenced — not assumed competent.", "box_type": "info" },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off" },
+    { "type": "paragraph", "text": "This TNA is decision-support and must be reviewed and signed off by a competent person (the Competence & Training Manager SME persona ran a pre-output review; it precedes and does not replace the human competent-person sign-off). Next review: on workforce change or annually." },
+    { "type": "bullets", "items": ["ISO 45001 §7.2 (competence) + §7.3 (awareness)", "Jurisdiction legal-required-competency duty (resolved at Q5; India → hse-india, no national form number)"] }
+  ]
+}

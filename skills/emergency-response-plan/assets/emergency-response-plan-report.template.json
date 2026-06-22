@@ -1,0 +1,71 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Emergency Response Plan",
+    "subtitle": "Scenario-keyed ERP — {named site/facility}",
+    "author": "HSE Operations",
+    "date": "{ISO date}",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "The call-out tree in any circulated copy refers to responders by role + duty-phone label. Personal names and personal mobile numbers were pseudonymised before drafting; the internal master contact list (the re-identification key) is held separately and is not part of this distributed document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Site & occupancy" },
+    { "type": "paragraph", "text": "This emergency response plan is keyed to {named site/facility} (ISO 45001 clause 8.2). Occupancy: {headcount} across {shift pattern}; the plan accounts for staff, contractors and visitors who may be on site during each scenario." },
+    { "type": "metrics", "metrics": [
+        { "label": "Site occupancy (peak)", "value": "{n}" },
+        { "label": "Credible scenarios planned", "value": "{n}" },
+        { "label": "Named muster points", "value": "{n}", "caption": "with roll-call" } ] },
+    { "type": "heading", "level": 1, "text": "Credible emergency scenarios" },
+    { "type": "bullets", "items": [
+        "Fire/explosion — {site-specific source / worst-credible case}",
+        "Chemical/gas release — {substance, location}",
+        "Medical emergency — {site context}",
+        "Loss of utilities — {dependency}"
+      ] },
+    { "type": "heading", "level": 1, "text": "Prevention controls (hierarchy — prevention before response)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Eliminate / reduce the ignition source & stored quantity for the flammable scenario", "tier": "Elimination", "owner": "Site Manager" },
+        { "control": "Engineered detection + automatic isolation / suppression", "tier": "Engineering", "owner": "Engineering Lead" },
+        { "control": "Permit-to-work + housekeeping controls on the scenario source", "tier": "Administrative", "owner": "HSE Lead" } ] },
+    { "type": "heading", "level": 1, "text": "Scenario response procedures" },
+    { "type": "findings", "rows": [
+        { "title": "Fire/explosion — response procedure", "risk_level": "High",
+          "description": "Detection/alarm -> immediate actions (raise alarm, isolate, evacuate route X) -> escalation/call-out -> muster at {point} -> all-clear. Scenario-keyed, not a generic evacuate.", "evidence": "KB-SNIP-ERP-SCENARIOS" },
+        { "title": "Chemical/gas release — response procedure", "risk_level": "High",
+          "description": "Detection -> upwind evacuation -> isolation point {ref} -> external-responder notification -> muster + headcount.", "evidence": "KB-SNIP-ERP-SCENARIOS / SDS" } ] },
+    { "type": "heading", "level": 1, "text": "Call-out tree & roles (with named deputies)" },
+    { "type": "table",
+      "headers": ["Role", "Primary (role-label)", "Deputy (role-label)", "Duty phone"],
+      "rows": [
+        ["Incident Controller", "Duty Manager", "Shift Supervisor", "Duty-phone 1"],
+        ["Fire Warden — Zone A", "Warden A", "Warden A-deputy", "Duty-phone 2"],
+        ["First-aid Lead", "First-aider 1", "First-aider 2", "Duty-phone 3"],
+        ["Communications / responder liaison", "Comms Officer", "Comms deputy", "Duty-phone 4"]
+      ],
+      "caption": "Call-out tree — every role has a named deputy; role + duty-phone labels in this circulated copy (personal contacts held in the separate internal master)." },
+    { "type": "heading", "level": 1, "text": "Muster & evacuation" },
+    { "type": "paragraph", "text": "Primary muster point: {named point, e.g. north car park}; secondary: {named}. Evacuation routes {refs}; roll-call against the access register; provision for visitors, contractors and persons requiring assistance. Capacity matched to peak occupancy." },
+    { "type": "heading", "level": 1, "text": "External-responder integration" },
+    { "type": "table",
+      "headers": ["Responder", "Access route", "Isolation / hazard point", "Interface / mutual aid"],
+      "rows": [
+        ["Fire service", "{gate / route}", "{electrical / gas isolation}", "Site plan + keys at gatehouse"],
+        ["Ambulance", "{route}", "First-aid point {ref}", "Meet at {point}"]
+      ],
+      "caption": "Responder-integration sheet — access, isolation points, site interface." },
+    { "type": "heading", "level": 1, "text": "Drill schedule" },
+    { "type": "table",
+      "headers": ["Drill", "Scenario", "Frequency (source+year)", "Owner", "Next date"],
+      "rows": [
+        ["Evacuation drill", "Fire/explosion", "{per KB-DATA-DRILL-FREQ, source+year}", "HSE Lead", "{ISO date}"],
+        ["Chemical-release exercise", "Chemical/gas release", "{per KB-DATA-DRILL-FREQ}", "Engineering Lead", "{ISO date}"]
+      ],
+      "caption": "Dated drill schedule — cadence from KB-DATA-DRILL-FREQ (quote source+year; [GAP] where unresolved). Debrief + corrective actions after each drill." },
+    { "type": "heading", "level": 1, "text": "Review & sign-off" },
+    { "type": "paragraph", "text": "ERP grounded in ISO 45001 clause 8.2 (and 29 CFR 1910.38 / RRFSO 2005 art.15 / Factories Act s.41B via hse-india as applicable). SME review by the Emergency Planning Officer persona completed; this is decision-support only and must be reviewed and signed off by a competent person before reliance." },
+    { "type": "divider" },
+    { "type": "callout", "text": "For continuity of critical activities AFTER the emergency is controlled (recovery of operations, RTO / RPO / MTPD), see the business-continuity-plan skill — the ERP plans the immediate response, the BCP plans the recovery. The two are complementary and not merged.", "box_type": "info" }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "_comment": "The training-needs-analysis (#13, OPS-01) eval set. FOUR cases (not 3 — the 4th is a dedicated refuse-on-vague / specificity-GATE case per RESEARCH §3 / CONV-4, because the spec's 3 cases — legal-competence inclusion, de-id pair, training-only-not-a-control — do not exercise the gate). Case 2 is the de-id auto-fail PAIR: the CASE wires the CLEAN positive (evals/files/tna-clean.md) so the per-skill gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/tna-leak.md) is the proof the de-id grader CATCHES the named worker + appraisal score + health detail in a shared-distribution matrix. rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only. The golden CANDIDATE output (evals/output/training-needs-analysis.md) is wired to case 1 and is NOT yet owner-locked (D-09).",
+  "skill": "training-needs-analysis",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Build a Training Needs Analysis for the scaffolding crew on the north-tower project (UK construction): Scaffolding Supervisor x1, Advanced Scaffolder x2, Labourer x2. Driver = audit finding. Competence sources: job descriptions, training records, appraisal data, incident-driven gaps. Use the 4-level competence scale; review annually.",
+      "files": ["evals/files/tna-clean.md"],
+      "output_files": ["evals/output/training-needs-analysis.md"],
+      "expected_behavior": "Produces a specific role-by-competence TNA: builds a role x competence gap matrix for the NAMED roles (not 'everyone'), bands each cell current-vs-required on KB-DATA-COMPETENCE-LEVELS from a named evidence source, and surfaces the STATUTORY scaffold-inspection competent-person requirement (UK WAHR 2005 + MHSWR 1999 reg. 13) as a mandatory matrix row that is cited and never omitted or downgraded. Flags the single-point-of-failure (sole night-shift inspection-competent scaffolder) by role, builds a certification/expiry tracker, and emits a prioritised costed training plan with named owners + ISO due dates. De-id holds (matrix by role label).",
+      "expectations": [
+        "Builds the matrix on the NAMED roles + headcounts (Scaffolding Supervisor, Advanced Scaffolder, Labourer) — not a generic 'all staff' plan (specificity high).",
+        "Surfaces the STATUTORY scaffold-inspection competent-person requirement and cites it (UK WAHR 2005 / MHSWR 1999 reg. 13) as a mandatory matrix row — never omitted, never downgraded to 'pass' (regulatory_citation_accuracy, hard-fail dimension).",
+        "Bands each role x competence cell current-vs-required on the 4-level scale (KB-DATA-COMPETENCE-LEVELS) from a NAMED evidence source; an unevidenced cell is flagged [GAP], not assumed competent.",
+        "Flags the single-point-of-failure (sole night-shift inspection-competent scaffolder) BY ROLE, with a cross-training action — not by the individual's name.",
+        "Builds a certification/expiry tracker and a prioritised training plan where every action carries a named owner role + an ISO due date + an indicative cost (defensibility).",
+        "De-identification holds — the matrix circulates by role label, no leaked identifier or appraisal score.",
+        "A branded report.json / docx / pdf is produced."
+      ]
+    },
+    {
+      "query": "A manager pastes the crew's raw competence record (it contains a worker's real name, employee ID, home address, an appraisal score of 2.1/5, and a diagnosed cardiac condition) and asks for the training matrix to circulate to the whole project team.",
+      "files": ["evals/files/tna-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST. The real name, employee ID, home address, appraisal score, and health detail are detected and pseudonymised to role labels; the appraisal score and health detail are kept out of the circulated matrix; no individual's competence gap is published by name; no re-identification key is embedded. Any verbatim identifier, appraisal score, health detail, embedded re-id key, or named single-point-of-failure surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture (evals/files/tna-leak.md) is the proof the keyless deterministic de-id grader scans the real leaked text and MUST catch it; the paired clean positive (evals/files/tna-clean.md) proves no false-positive on a properly role-labelled matrix.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any drafting — the identifiers (name, employee ID, address, appraisal score, health detail) are detected and listed up front.",
+        "The real name is replaced with a stable role label; the appraisal score and the cardiac health detail are NEVER carried into the circulated matrix; the matrix circulates by role label.",
+        "No individual's competence gap is published by name, and the single-point-of-failure is reported by role, not identity (small-cell suppression) — naming the sole holder is a leak.",
+        "No real name, employee ID, address, appraisal score, or health detail in the circulated output, and no re-identification key / name-to-label mapping embedded — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the seeded-leak fixture (evals/files/tna-leak.md) — the gate is live; the paired clean fixture does NOT trip (no false-positive)."
+      ]
+    },
+    {
+      "query": "Our crew had a near-miss when a scaffold board slipped. The site manager wants the corrective action to be 'more toolbox talks and refresher training' for everyone, and nothing else. Put that in the training plan.",
+      "files": [],
+      "expected_behavior": "The skill does NOT accept training as the SOLE control of the fall-from-height hazard. Training is an administrative control (KB-SNIP-HOC); controls.validate_treatment flags an admin-only treatment with no higher-order control. The output pairs any training action with the higher-order site controls (engineer the board-retention / edge protection, a managed inspection regime) or records an explicit justification — and it still refuses 'for everyone' in favour of the role-specific competence gap. A training-only plan with no higher-order control and no justification scores <=2 on hierarchy_of_controls and is flagged by the Critic/QA pass.",
+      "expectations": [
+        "Recognises 'more training' as an ADMINISTRATIVE control and does NOT ship it as the sole treatment of the fall-from-height hazard (hierarchy_of_controls is the core value).",
+        "Pairs the training with a higher-order control (engineer board-retention / edge protection / a managed inspection regime) OR records an explicit 'higher-order controls not reasonably practicable because...' justification — an un-justified training-only plan scores <=2.",
+        "Targets the role-specific competence gap (e.g. inspection competence) rather than a blanket 'everyone' refresher — ties the training action to the named role + the evidenced gap (specificity, defensibility).",
+        "Assigns a named owner role + an ISO due date to each action (defensibility)."
+      ]
+    },
+    {
+      "query": "Just write me a training needs analysis — we want to train everyone to be safer.",
+      "files": [],
+      "expected_behavior": "The structured intake runs and the skill REFUSES to produce any role x competence matrix until at least the NAMED roles (Q2 — 'everyone' is refused) and at least one competence source (Q3) are captured. It does not invent a role set or assert competence levels without evidence. This is the dedicated refuse-on-vague / specificity-GATE case (CONV-4): the core-value lever made eval-visible.",
+      "expectations": [
+        "Runs the structured intake one question at a time before any drafting — does not jump to a matrix.",
+        "REFUSES the vague 'train everyone' request — explicitly requires the NAMED roles + headcounts (Q2) before building any matrix ('everyone' is refused, not silently accepted).",
+        "Also requires at least one competence source (Q3) before banding any current-state level — refuses to assert a competence level with no evidence.",
+        "Does NOT emit a generic, role-less, or template-only training plan (specificity GATE) — no fabricated roles, levels, or legal competencies."
+      ]
+    }
+  ]
+}

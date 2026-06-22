@@ -1,0 +1,65 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Site Health & Safety Induction Pack",
+    "subtitle": "Site-specific induction, verification record & refresher schedule — {{site}}",
+    "author": "HSE Operations",
+    "date": "{{YYYY-MM-DD}}",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "Inductee names appear ONLY on the signed competence-verification record (a legitimate signed record). Any widely distributed copy of this pack uses role labels; no inductee health/medical detail appears anywhere in this pack, and no re-identification key is part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Site & audience" },
+    { "type": "paragraph", "text": "This induction pack is for {{audience: permanent new starters | contractors | visitors | agency/temporary}} at {{named site/project/asset}} ({{sector}}). It is built over the mandatory induction baseline (KB-SNIP-INDUCTION-BASELINE) — emergency, welfare, site rules, site-specific hazards, incident reporting — with this named site's real arrangements layered on; a generic induction is not produced. Delivery: {{face-to-face | e-learning | blended}}. Legal-induction baseline: {{UK MHSWR reg. 10/13 | US OSHA orientation | India Factories Act s.111A → hse-india}}. ISO 45001:2018 cl. 7.2 (competence) & 7.3 (awareness). Decision-support only; a competent person must review this output." },
+    { "type": "metrics", "metrics": [
+        { "label": "Site-specific hazards covered", "value": "{{n}}" },
+        { "label": "Verification level required", "value": "{{aware | trained | competent | expert}}", "caption": "KB-DATA-COMPETENCE-LEVELS" },
+        { "label": "Refresher cadence", "value": "{{annual | 2-yearly | on-change}}" } ] },
+    { "type": "heading", "level": 1, "text": "Induction content (baseline + site-specific)" },
+    { "type": "paragraph", "text": "Every topic below is grounded in THIS named site's real arrangement — not generic boilerplate. The five baseline topics (emergency · welfare & first aid · site rules · site-specific hazards & controls · incident/concern reporting) are each layered with the site's specifics; a baseline topic with no named site arrangement is flagged [GAP], never filled with boilerplate." },
+    { "type": "bullets", "items": [
+        "Emergency arrangements — {{named muster point(s) + evacuation routes for THIS site}}",
+        "Welfare & first aid — {{first-aiders, first-aid location, welfare facilities for THIS site}}",
+        "Site rules — {{access/egress, PPE rules, traffic management, PTW awareness for THIS site}}",
+        "Site-specific hazards & controls — {{the real hazards of THIS site, controls ranked via KB-SNIP-HOC}}",
+        "Incident & concern reporting — {{how to report a hazard/near-miss + the no-blame expectation}}" ] },
+    { "type": "heading", "level": 1, "text": "Site hazards & controls summary" },
+    { "type": "hoc_table", "rows": [
+        { "control": "{{Eliminate/segregate the named site hazard at source — e.g. pedestrian/FLT segregation}}", "tier": "Elimination", "owner": "Site Manager" },
+        { "control": "{{Engineering control for the named hazard — e.g. mezzanine edge protection}}", "tier": "Engineering", "owner": "Facilities Lead" },
+        { "control": "{{Administrative control — e.g. one-way traffic routes + signage}}", "tier": "Administrative", "owner": "Warehouse HSE Lead" },
+        { "control": "{{PPE — e.g. hi-vis in the yard (only where higher-order controls justified)}}", "tier": "PPE", "owner": "Warehouse HSE Lead" } ] },
+    { "type": "heading", "level": 1, "text": "Emergency & welfare arrangements" },
+    { "type": "bullets", "items": [
+        "Alarm & evacuation — {{the alarm signal, the named evacuation routes}}",
+        "Muster point(s) — {{the actual named muster point for THIS site}}",
+        "First aid — {{named first-aiders, first-aid room/kit location}}",
+        "Welfare — {{welfare facilities, reporting feeling unwell}}",
+        "On discovering an incident — {{the site's first-response instruction (ties to emergency-response-plan #15)}}" ] },
+    { "type": "heading", "level": 1, "text": "Competence-verification record (per inductee, role-labelled)" },
+    { "type": "table",
+      "headers": ["Inductee (role label)", "Role", "Verification method", "Level required", "Verified by", "Date"],
+      "rows": [
+        ["Operative-A", "Warehouse operative", "Supervised sign-off", "Trained", "Warehouse HSE Lead", "{{YYYY-MM-DD}}"],
+        ["Operative-B", "Warehouse operative", "Questions / quiz", "Trained", "Warehouse HSE Lead", "{{YYYY-MM-DD}}"],
+        ["Supervisor-C", "Shift supervisor", "Competence demonstration", "Competent", "Site Manager", "{{YYYY-MM-DD}}"]
+      ],
+      "caption": "Competence-verification record — per inductee (role-labelled in this shared copy; named inductees only on the signed original); level set on KB-DATA-COMPETENCE-LEVELS by role task-risk. An induction with no verification record fails the quality gate." },
+    { "type": "heading", "level": 1, "text": "Refresher schedule" },
+    { "type": "table",
+      "headers": ["Role", "Refresher trigger", "Cadence", "Owner", "Next due (ISO)"],
+      "rows": [
+        ["Warehouse operative", "Routine + on change of site rules", "Annual", "Warehouse HSE Lead", "{{induction-date + 12 months}}"],
+        ["Shift supervisor (high-hazard)", "Routine + after any incident", "Annual", "Site Manager", "{{induction-date + 12 months}}"],
+        ["Contractor cohort", "Per mobilisation + on scope change", "Each mobilisation", "Site Manager", "{{next mobilisation}}"]
+      ],
+      "caption": "Refresher schedule — SMART (named owner + ISO due date); higher-risk roles refresh more often. No anonymous actions, no ASAP." },
+    { "type": "callout", "text": "Inductee names belong ONLY on the signed competence-verification original. This circulated pack uses role labels; no inductee health/medical detail appears here, and no re-identification key is embedded.", "box_type": "warning" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off" },
+    { "type": "paragraph", "text": "Prepared by {{induction owner role}}; SME review (persona: Site HSE Manager) ran before output — no generic-only content, every topic tied to a named site arrangement, the verification record present, no inductee health detail in this shared copy. This induction pack is decision-support only — it precedes and does NOT replace the human competent-person sign-off, and it does not certify any individual as inducted. Basis: ISO 45001:2018 cl. 7.2/7.3 + the resolved jurisdiction's legal-induction baseline + KB-SNIP-INDUCTION-BASELINE + KB-DATA-COMPETENCE-LEVELS." },
+    { "type": "bullets", "items": ["Baseline: KB-SNIP-INDUCTION-BASELINE (emergency · welfare · rules · site hazards · reporting)", "Verification scale: KB-DATA-COMPETENCE-LEVELS (aware → trained → competent → expert)", "Related siblings via KB-SNIP-OPS-CLAUSE-MAP (competence-matrix → training-needs-analysis #13; emergency plan → emergency-response-plan #15; contractor vetting → contractor-prequalification #16)"] }
+  ]
+}

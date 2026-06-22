@@ -1,0 +1,54 @@
+{
+  "_comment": "The business-continuity-plan (#26 / OPS-09) eval set. FOUR cases: (1) RTO-under-MTPD hard-fail; (2) dependency coverage; (3) de-id PAIR (clean wired in files, the seeded-leak negative proven CAUGHT); (4) refuse-on-vague specificity GATE (the dedicated 4th per RESEARCH §3 — the spec's 3 cases do not exercise the refuse gate). Eval 3 is the de-id auto-fail PAIR: the CASE wires the CLEAN positive (evals/files/bcp-clean.md) so the per-skill eval gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/bcp-leak.md) is the leak fixture the deterministic de-id grader MUST catch (leak.auto_fail True, clean.auto_fail False) — mirroring the canary self-test. rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only.",
+  "skill": "business-continuity-plan",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Write a BCP for the claims-processing function at the Northgate Operations Centre. Critical activities: claims intake & validation (MTPD 48h), claims payment run (MTPD 72h), customer contact centre (MTPD 24h). Set RTO/RPO per activity and select continuity strategies. (Note one draft asserts 'RTO = 48h' for claims intake with no MTPD stated, and a second asserts 'RTO = 48h' for an activity whose MTPD is 48h.)",
+      "files": ["evals/files/bcp-clean.md"],
+      "output_files": ["evals/output/business-continuity-plan.md"],
+      "expected_behavior": "Runs the BIA (ISO 22301 8.2.2): derives each MTPD from impact-over-time, then sets every RTO STRICTLY INSIDE its MTPD (RTO < MTPD) with a stated margin, plus an RPO per activity. It FLAGS the RTO asserted with no MTPD basis as invalid, and FLAGS the RTO = MTPD (48h vs MTPD 48h) as invalid (RTO must be < MTPD, not equal). Citing a recovery objective with no MTPD basis, or RTO >= MTPD, is a regulatory_citation_accuracy hard-fail on ISO 22301 8.2.2.",
+      "expectations": [
+        "Names the actual function (claims processing, Northgate Operations Centre) and its specific critical activities — not 'general business continuity' (specificity high).",
+        "Derives each MTPD from an impact-over-time rationale (not asserted bare), then sets every RTO strictly inside its MTPD with a stated margin (defensibility).",
+        "FLAGS the RTO asserted with no stated MTPD basis as invalid (regulatory_citation_accuracy hard-fail on ISO 22301 8.2.2).",
+        "FLAGS the RTO equal to the MTPD (48h vs MTPD 48h) as invalid — RTO must be < MTPD, never >= (regulatory_citation_accuracy hard-fail).",
+        "Every critical activity also carries an RPO derived from its data/transaction-loss tolerance.",
+        "A branded report.json / docx / pdf is produced; de-identification holds (role labels only)."
+      ]
+    },
+    {
+      "query": "Our claims-intake activity depends on a SINGLE case-management supplier (no alternate). Build the continuity strategy for the 'loss of key supplier' scenario.",
+      "files": [],
+      "expected_behavior": "The BIA captures the single-supplier dependency as a single-point-of-failure. The continuity strategy MUST cover that stated dependency (e.g. onboard a second qualified supplier, or a documented manual workaround that meets the RTO). A strategy that sets an RTO/RPO but leaves the single-supplier dependency uncovered is flagged as a defect — a strategy that ignores a stated dependency does not meet ISO 22301 8.3.",
+      "expectations": [
+        "Identifies the single case-management supplier as a stated single-point dependency in the BIA (specificity).",
+        "Selects a continuity strategy that explicitly COVERS that dependency (second qualified supplier / documented workaround meeting the RTO) — and ranks eliminating the single point of failure above merely mitigating it (hierarchy_of_controls).",
+        "FLAGS as a defect any strategy that derives RTO/RPO but leaves the stated single-supplier dependency uncovered (defensibility — a strategy ignoring a stated dependency fails 8.3).",
+        "Assigns a named (role-label) owner + an ISO due date to the strategy action."
+      ]
+    },
+    {
+      "query": "A continuity manager pastes the raw recovery-roster (it contains a recovery-role holder's real name, home address, personal mobile, and a medical note — 'on phased return after cardiac surgery') into a BCP that will be circulated, and asks for the plan.",
+      "files": ["evals/files/bcp-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST. The real name, home address, personal mobile, and medical note are detected and pseudonymised to role labels; recovery roles are role-labelled with the contact key held SEPARATELY; no re-identification key is embedded. Any verbatim name, address, phone, medical note, or embedded re-id key surviving into the circulated BCP is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture (evals/files/bcp-leak.md) is the negative the keyless deterministic de-id grader scans and MUST catch — the hard-fail is the proof the gate is live. The paired positive (evals/files/bcp-clean.md) proves the grader does not false-positive on a properly de-identified BCP.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any drafting — the identifiers (name, home address, personal mobile, medical note) are detected and listed up front.",
+        "Recovery roles are role-labelled; the real name is replaced with a stable role label; the home address, personal mobile, and medical note are never carried verbatim into the circulated BCP; the contact key is held separately.",
+        "No real name, address, phone, or medical detail in the circulated BCP, and no re-identification key / name-to-label mapping embedded — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the seeded-leak fixture (evals/files/bcp-leak.md — the gate is live); the paired clean fixture (evals/files/bcp-clean.md) does NOT trip (no false-positive)."
+      ]
+    },
+    {
+      "query": "Write me a business continuity plan. Just give me the RTO and RPO for our operations.",
+      "files": [],
+      "expected_behavior": "The skill REFUSES to set any recovery objective on this vague input. It runs the structured intake one question at a time and will not derive an RTO/RPO until the named critical activities AND their dependencies are captured (Q2 + Q5), because an RTO must be derived under a stated MTPD from the BIA — never asserted on a bare request. It disambiguates scope at Q1 (and, if the user wanted incident response, routes to emergency-response-plan). It does NOT emit a generic, template-only BCP with invented recovery times.",
+      "expectations": [
+        "Runs the structured intake one question at a time and REFUSES to proceed on the vague request (the specificity GATE) — does not produce a BCP from 'our operations'.",
+        "Will not set any RTO/RPO until the named critical activities and their dependencies are captured (Q2 + Q5); states that an RTO must be derived under a stated MTPD from the BIA, never asserted bare.",
+        "Disambiguates scope at Q1 — confirms this is continuity (critical activities / RTO / RPO / MTPD), and would route an incident-response request to emergency-response-plan (the BCP<->ERP boundary).",
+        "Does not emit a generic or template-only artifact or invent recovery times (specificity dimension)."
+      ]
+    }
+  ]
+}

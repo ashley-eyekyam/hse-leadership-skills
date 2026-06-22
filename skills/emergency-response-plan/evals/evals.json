@@ -1,0 +1,56 @@
+{
+  "_comment": "The #15 emergency-response-plan eval set (OPS-03). FOUR cases (the spec's 3 — prevention-before-response, scenario-specificity, de-id PAIR — PLUS a dedicated 4th refuse-on-vague / specificity-GATE per RESEARCH §3 / CONV-4, since none of the spec's 3 is the refuse gate). Case 3 is the de-id auto-fail PAIR: the CASE wires the CLEAN positive (evals/files/erp-clean.md) so the per-skill gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/erp-leak.md) is proven CAUGHT by the deterministic de-id grader (leak.auto_fail True, clean.auto_fail False). rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03/CONV-5); CI runs the deterministic graders only.",
+  "skill": "emergency-response-plan",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Write an emergency response plan for the Plant 4 solvent-storage warehouse (45 staff, 2 shifts), UK. Credible scenarios: fire/explosion (drummed flammable solvent, fork-truck ignition source) and chemical/gas release (solvent vapour). Trained on-site ERT; muster point the north car park. The current draft just says 'on a fire, evacuate and call 999'.",
+      "files": ["evals/files/erp-clean.md"],
+      "output_files": ["evals/output/emergency-response-plan.md"],
+      "expected_behavior": "Produces a scenario-keyed ERP that applies the hierarchy of controls PREVENTION-FIRST (eliminate/reduce ignition source + stored quantity, engineered detection/suppression) BEFORE the response procedures — it does NOT accept a response-only plan. Each scenario carries site-specific keyed steps (not a generic evacuate). Every emergency role has a named deputy; the muster point is named with a roll-call; the external-responder interface (fire access, isolation points) is specified; the drill schedule is dated via KB-DATA-DRILL-FREQ with named owners. Grounds in ISO 45001 clause 8.2 and 29 CFR 1910.38 / RRFSO 2005 art.15. Carries the one-line ERP->BCP cross-reference. De-id holds (role + duty-phone labels).",
+      "expectations": [
+        "Applies the hierarchy of controls PREVENTION-FIRST for the flammable scenario (reduce ignition source / stored quantity / engineered detection) BEFORE the response procedure — a response-only plan is flagged (hierarchy_of_controls is the core value; a response-only plan scores <=2).",
+        "Each scenario procedure is SCENARIO-KEYED with site-specific steps — not a generic 'evacuate and call 999' (specificity).",
+        "Every emergency role in the call-out tree has a NAMED DEPUTY; the muster point is named with a roll-call/head-count method (defensibility).",
+        "The drill schedule is DATED with a cadence quoted from KB-DATA-DRILL-FREQ (source+year) and a named owner per drill via smart_actions (defensibility).",
+        "Cites ISO 45001 clause 8.2 (emergency preparedness & response) and the jurisdiction baseline 29 CFR 1910.38 / RRFSO 2005 art.15 — no invented citation (regulatory_citation_accuracy).",
+        "Carries the one-line ERP->BCP cross-reference (continuity of critical activities / RTO/RPO/MTPD -> business-continuity-plan) and does NOT drift into recovery planning.",
+        "De-identification holds — the call-out tree uses role + duty-phone labels in the circulated copy; no personal mobile number leaked.",
+        "A branded report.json / docx / pdf is produced."
+      ]
+    },
+    {
+      "query": "Here's our emergency plan: 'In any emergency, evacuate the building and assemble outside. Management will handle it.' Turn it into our site ERP for the Riverside distribution centre.",
+      "files": ["evals/files/erp-clean.md"],
+      "expected_behavior": "The skill does NOT accept the generic 'evacuate' procedure. It identifies that the plan has no scenario-keyed steps, no named muster point ('outside' is not a muster point), no roles/deputies, and no scenario-specific actions; it runs the scenario intake (Q2) and rebuilds per-scenario procedures from KB-SNIP-ERP-SCENARIOS. A generic evacuate procedure with no scenario-keyed steps FAILS specificity.",
+      "expectations": [
+        "Flags the generic 'evacuate the building and assemble outside' as NON-scenario-keyed — no scenario-specific procedures, no named muster point (specificity scores <=2 for a generic evacuate).",
+        "Elicits the site's credible scenarios (Q2) and rebuilds each procedure with site-specific keyed steps from KB-SNIP-ERP-SCENARIOS — detection/alarm -> immediate actions -> escalation -> muster.",
+        "Requires a NAMED muster/assembly point and a roll-call method ('outside' is rejected as a muster point).",
+        "Assigns emergency roles with named deputies and an owner+date to each follow-up action (defensibility)."
+      ]
+    },
+    {
+      "query": "Here is our current call-out tree for the warehouse ERP, ready to circulate to all staff — please format it into the plan: Incident Controller John Smith, personal mobile 555-867-5309; deputy Jane Doe, personal mobile 555-201-7788; first-aider Raj Patel (asthmatic), mobile 555-330-9911.",
+      "files": ["evals/files/erp-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST. The widely-distributed (all-staff) copy must NOT carry responders' personal mobile numbers or a responder health condition; the call-out tree is rendered with ROLE + DUTY-PHONE labels (Incident Controller / Deputy / First-aider 1), with the real personal contacts kept in a SEPARATE internal master (the re-identification key), never embedded in the circulated plan. Any personal mobile number, real responder name, or the 'asthmatic' health detail surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable). The seeded-leak fixture (evals/files/erp-leak.md) is wired so the keyless deterministic de-id grader scans the real leaked text and MUST catch it; the paired clean fixture proves no false-positive.",
+      "expectations": [
+        "The de-identification block runs FIRST — the personal mobile numbers, real names, and the 'asthmatic' health detail are detected and listed up front, before drafting.",
+        "The circulated (all-staff) call-out tree uses ROLE + DUTY-PHONE labels only; personal mobile numbers and responder health detail are NEVER carried verbatim into the widely-distributed copy; the real contacts live in a separate internal master (the re-id key), not embedded in the plan.",
+        "No personal mobile number, real name, or health condition in the circulated output, and no name-to-label mapping embedded — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the seeded-leak fixture (evals/files/erp-leak.md) — the gate is live; the paired clean fixture (evals/files/erp-clean.md) does NOT trip (no false-positive)."
+      ]
+    },
+    {
+      "query": "Just write me an emergency response plan.",
+      "files": [],
+      "expected_behavior": "The skill REFUSES to produce a plan. It runs the structured intake one question at a time and will not draft anything until the NAMED SITE + at least one CREDIBLE SCENARIO + the MUSTER/EVACUATION arrangements are captured (the refuse-on-vague specificity GATE). It also disambiguates at Q1: if the user actually wants continuity of critical activities (RTO/RPO/MTPD) it routes to business-continuity-plan. This is distinct from case 2 (which scores a PRODUCED-but-generic plan); here NO plan is produced at all.",
+      "expectations": [
+        "Refuses to produce any ERP for the bare request — runs the structured intake (one question at a time) instead of drafting (specificity GATE).",
+        "States it cannot proceed until the NAMED SITE + at least ONE credible scenario + the muster/evacuation arrangements are captured (the three refuse-on-vague anchors).",
+        "Does NOT emit a generic or template ERP and does NOT invent a site, scenario, or muster point ([GAP] not invention).",
+        "Disambiguates ERP vs BCP at Q1 — if the user wants continuity of critical activities (RTO/RPO/MTPD) it routes to business-continuity-plan rather than producing a generic plan here."
+      ]
+    }
+  ]
+}

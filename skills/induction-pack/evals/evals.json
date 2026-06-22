@@ -1,0 +1,55 @@
+{
+  "_comment": "The induction-pack (#14, OPS-02) eval set. FOUR cases (D-11): the spec's 3 (site-specificity warehouse != oil-terminal; de-id pair; verification-present) PLUS a dedicated 4th refuse-on-generic / specificity-GATE case, because the spec's case 1 exercises differ-not-generic but not the explicit refusal of a generic induction. Case 1 wires the CANDIDATE golden output (evals/output/induction-pack.md). Case 2 is the de-id auto-fail PAIR: the eval CASE wires the CLEAN positive (evals/files/induction-clean.md) so the per-skill gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/induction-leak.md) is proven CAUGHT by the deterministic de-id grader (auto_fail True on the leak, False on the clean). rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only.",
+  "skill": "induction-pack",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Build a site health & safety induction pack for permanent new starters (warehouse operatives) at the Tilbury distribution warehouse (warehouse & logistics). Site-specific hazards: FLT/pedestrian interaction in the yard, a mezzanine edge, manual handling of palletised goods. Emergency: muster point at the front gatehouse car park. Delivery blended, UK jurisdiction, verification by supervised sign-off, each operative to reach 'trained'. Induction owner: Warehouse HSE Lead. Refreshers annual.",
+      "files": ["evals/files/induction-clean.md"],
+      "output_files": ["evals/output/induction-pack.md"],
+      "expected_behavior": "Produces a site-specific induction pack for the NAMED Tilbury warehouse: the mandatory baseline (emergency, welfare, site rules, site-specific hazards, reporting) is laid and each topic is layered with THIS site's real arrangement (the named gatehouse muster point, the real FLT/pedestrian and mezzanine-edge hazards) — never generic boilerplate. Each site-specific hazard carries a control ranked up the hierarchy (FLT/pedestrian segregation before hi-vis PPE). A competence-verification record (per inductee, role-labelled, level 'trained' on KB-DATA-COMPETENCE-LEVELS) and an annual refresher schedule (named owner + ISO date) are present. An induction that is generic, or that drops the site's real hazards, or that has no verification record, must FAIL on specificity / defensibility. A warehouse induction must differ from an oil-terminal induction on its named hazards and arrangements.",
+      "expectations": [
+        "Grounds the pack in the NAMED Tilbury warehouse — every baseline topic tied to a named site arrangement (the gatehouse muster point, the real FLT/pedestrian and mezzanine-edge hazards), not generic boilerplate (specificity).",
+        "Each site-specific hazard carries its control ranked via the hierarchy of controls — FLT/pedestrian segregation (elimination/engineering) before hi-vis PPE; no PPE-only line without justification (hierarchy_of_controls).",
+        "A competence-verification record is present — per inductee, role-labelled in this shared copy, at the 'trained' level on KB-DATA-COMPETENCE-LEVELS, with the verification method named (defensibility).",
+        "A refresher schedule is present — annual, with a named (role-label) owner and an ISO due date; no anonymous actions, no 'ASAP' (defensibility).",
+        "A warehouse induction differs from an oil-terminal induction on its named hazards/arrangements — the pack is not a template that would read identically for any site (specificity).",
+        "The legal-induction baseline is cited accurately to the KB (UK MHSWR reg. 10/13 / ISO 45001 7.2-7.3) — no invented or mis-cited regulation, no national form number minted (regulatory_citation_accuracy).",
+        "De-identification holds — role labels only, no inductee name or health detail in this circulated copy; a branded report.json / docx / pdf is produced."
+      ]
+    },
+    {
+      "query": "A consultant pastes the warehouse induction's verification list (it names an operative, Maria Gonzalez, with her home address and phone, and notes she has a diagnosed cardiac condition on reduced lifting duties) and asks for the circulated induction pack.",
+      "files": ["evals/files/induction-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST. The real inductee name, home address, phone, and disclosed cardiac condition are detected and pseudonymised; the name is replaced with a role label and the health/medical detail is REMOVED from the pack entirely (it never belongs in an induction pack). Named inductees survive only on the signed verification original (held separately), never in this widely distributed copy; no re-identification key is embedded. Any verbatim inductee name, address, embedded re-id key, or any inductee health/medical detail surviving into the circulated pack is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture is wired so the keyless deterministic de-id grader scans the real leaked text and MUST catch it; the paired clean fixture proves the grader does not false-positive on a properly de-identified version.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any drafting — the identifiers (name, address, phone, disclosed cardiac condition) are detected and listed up front.",
+        "The real inductee name is replaced with a stable role label; the home address and phone are never carried verbatim, and the disclosed cardiac/medical detail is REMOVED from the pack entirely — no inductee health detail belongs in an induction pack.",
+        "No real inductee name, address, phone, or health detail in the circulated pack, and no re-identification key / name-to-label mapping embedded — named inductees appear only on the signed verification original; any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the seeded-leak fixture (evals/files/induction-leak.md — the gate is live); the paired clean fixture (evals/files/induction-clean.md) does NOT trip (no false-positive)."
+      ]
+    },
+    {
+      "query": "Here's the induction content for our Bravo oil-terminal contractors — the delivery slides and the topic list. Just turn it into the pack; we don't bother with any sign-off or quiz, attendance is enough for us.",
+      "files": [],
+      "expected_behavior": "The skill REFUSES to produce an induction pack with no competence-verification record. Every induction must produce a competence-verification record (per inductee, role-labelled) proving the content was understood — at the verification level the role needs on KB-DATA-COMPETENCE-LEVELS — not merely an attendance sheet. An induction with no verification record fails the quality gate (the repudiation defence: proof of understanding). For an oil-terminal contractor cohort it also pulls site-rules + permit-to-work awareness and follows contractor-prequalification. A pack delivered as content-only with no verification record, accepting 'attendance is enough', must FAIL on defensibility.",
+      "expectations": [
+        "REFUSES to ship an induction with no competence-verification record — a verification record (per inductee, role-labelled, with the method and the required level on KB-DATA-COMPETENCE-LEVELS) is always present (defensibility).",
+        "Does not accept 'attendance is enough' — an attendance sheet is not proof of understanding; the verification record proves the content was understood (defensibility).",
+        "For the oil-terminal contractor cohort, pulls site-rules + permit-to-work awareness and follows contractor-prequalification (#16) — the contractor branch is exercised (specificity).",
+        "Sets the refresher schedule and the verification level by the role's task risk, never downgraded to pass an inductee (defensibility)."
+      ]
+    },
+    {
+      "query": "Write me a generic health & safety induction I can hand to any new starter at any of our sites.",
+      "files": [],
+      "expected_behavior": "The skill REFUSES to produce a generic, site-less induction. It runs the structured intake and does not draft any pack until the named site (Q2) + at least the emergency arrangements + at least one site-specific hazard (Q3) are captured. A 'generic induction for any site' is exactly the boilerplate this skill exists to refuse — the core-value lever is forcing the named site's real hazards and arrangements into the induction. Producing a one-size-fits-all template for an unnamed site is a vacuous output and must be refused (the specificity GATE).",
+      "expectations": [
+        "Runs the structured intake one question at a time (audience -> named site -> site-specific hazards/arrangements) before any drafting.",
+        "REFUSES to produce a generic, template-only induction for an unnamed 'any site' — explicitly refuses a generic induction (specificity GATE — the core-value lever).",
+        "Does not draft any pack until the named site + at least the emergency arrangements + at least one site-specific hazard are captured; a baseline topic with no named site arrangement is named as a [GAP], never filled with boilerplate.",
+        "Names the requirement that every induction topic is tied to a named site arrangement and the site's real hazards — not a one-size-fits-all template (specificity dimension)."
+      ]
+    }
+  ]
+}
