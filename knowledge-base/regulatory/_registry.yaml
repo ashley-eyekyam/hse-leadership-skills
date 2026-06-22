@@ -538,3 +538,109 @@
   last_reviewed: 2026-06-22
   volatile: false
   supersedes: null
+
+# --- Phase 15: hse-utilities-power + hse-healthcare regulatory fragments -----
+- id: KB-REG-OSHA1910-269
+  file: osha-1910-269.md
+  title: "United States — OSHA 1910.269 (electric power generation, transmission & distribution) + 1910.333"
+  facets:
+    jurisdiction: [US]
+    industry: [Gen]
+    topics: [osha-1910-269, electrical-safety, de-energize-first, eswc, loto, protective-grounding, live-work-justification, transmission-distribution]
+    audience: [M, C]
+  summary: "OSHA 1910.269 T&D + 1910.333 work-practices duty→artifact map: de-energize first / establish an ESWC, LOTO 269(d), protective grounding 269(n), live-work justification 269(l)/333(a)(2) → grounds the hse-utilities-power skills. Arc-flash figure from arcflash.py + KB-STD-NFPA70E, never invented. Citation map, not the regulation text."
+  source: "OSHA 29 CFR 1910.269 + 29 CFR 1910.333 (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-REG-UK-EAWR
+  file: uk-eawr.md
+  title: "United Kingdom — Electricity at Work Regulations 1989 (EAWR) + HSR25/HSG85"
+  facets:
+    jurisdiction: [UK]
+    industry: [Gen]
+    topics: [eawr, electrical-safety, dead-working, isolation, prove-dead, live-work-three-part-test, reg-14, hsg85]
+    audience: [M, C]
+  summary: "EAWR 1989 regulation→artifact map: isolation reg 12, prove-dead reg 13, the reg-14 three-part live-work test, with HSG85 safe-working-practice steps → grounds the hse-utilities-power skills. Dead-working default; PPE residual-only. Citation map, not the regulation text."
+  source: "Electricity at Work Regulations 1989 + HSE HSR25 + HSG85 (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-REG-IN-ELECTRICAL
+  file: in-electrical.md
+  title: "India — electrical safety (CEA Safety Regulations 2010 + state rules, legacy-first)"
+  facets:
+    jurisdiction: [IN]
+    industry: [Gen]
+    topics: [cea-safety-regs, electrical-safety, permit-to-work, isolation, electrical-accident-notice, state-detection, osh-code-transition]
+    audience: [M, C]
+  summary: "India electrical-safety duty→artifact map: CEA Safety Regs 2010 framework + state electrical rules (permit, isolation, accident notice) → grounds hse-utilities-power India work. Legacy-first; resolves state first (KB-REG-IN-STATEFORMS) and defers state form content to the hse-india engine; no national form minted; [GAP] per state. Citation map, not the rules text."
+  source: "CEA (Measures relating to Safety and Electric Supply) Regulations 2010 + state electrical rules (per-state cite via hse-india)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-OSHA-BBP
+  file: osha-bbp.md
+  title: "United States — OSHA Bloodborne Pathogens Standard (1910.1030) + Needlestick Act"
+  facets:
+    jurisdiction: [US]
+    industry: [Healthcare]
+    topics: [bloodborne-pathogens, exposure-control-plan, sharps, engineering-controls-first, sharps-injury-log, pep, needlestick-act]
+    audience: [M, C]
+  summary: "OSHA 1910.1030 paragraph→artifact map: Exposure Control Plan (c), engineering & work-practice controls first (d)(2), HBV/PEP (f), sharps-injury log (h)(5), annual safer-device evaluation (Needlestick Act) → grounds hse-healthcare sharps/IPC skills. Hierarchy of controls; PPE/PEP residual. De-id + small-cell suppression. Citation map, not the standard text."
+  source: "OSHA 29 CFR 1910.1030 + Needlestick Safety and Prevention Act 2000 (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-REG-EU-SHARPS-2010-32
+  file: eu-sharps-2010-32.md
+  title: "European Union / United Kingdom — Sharps in healthcare (Directive 2010/32/EU + UK Sharps Regs 2013)"
+  facets:
+    jurisdiction: [EU, UK]
+    industry: [Healthcare]
+    topics: [sharps, needlestick, safer-engineered-devices, eliminate-sharps, safe-disposal, pep, sharps-regs-2013]
+    audience: [M, C]
+  summary: "Directive 2010/32/EU + UK Sharps Regs 2013 clause→artifact map: eliminate unnecessary sharps, safer engineered devices, safe procedures/disposal, report + PEP → grounds hse-healthcare sharps work. Cite the member-state transposition for the binding obligation. De-id + small-cell suppression. Citation map, not the directive text."
+  source: "Council Directive 2010/32/EU + UK Health and Safety (Sharps Instruments in Healthcare) Regulations 2013 + COSHH (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-REG-UK-MHOR
+  file: uk-mhor.md
+  title: "United Kingdom — Manual Handling Operations Regulations 1992 (MHOR)"
+  facets:
+    jurisdiction: [UK]
+    industry: [Healthcare]
+    topics: [manual-handling, mhor, avoid-assess-reduce, tile, patient-handling, move-toward-zero]
+    audience: [M, C]
+  summary: "MHOR 1992 regulation→artifact map: avoid (4(1)(a)) → assess (4(1)(b)(i)) → reduce (4(1)(b)(ii)) with Schedule 1 TILE factors → grounds patient-handling-assessment (HC-03). Move-toward-zero manual lift; residual risk on risk_matrix 5x5. De-id. Citation map, not the regulation text."
+  source: "Manual Handling Operations Regulations 1992 + HSE L23 (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-REG-IN-BMW2016
+  file: in-bmw2016.md
+  title: "India — Bio-Medical Waste Management Rules 2016 (legacy-first, state-PCB)"
+  facets:
+    jurisdiction: [IN]
+    industry: [Healthcare]
+    topics: [bio-medical-waste, segregation, colour-coding, authorisation, annual-return, state-pcb, state-detection]
+    audience: [M, C]
+  summary: "BMW Rules 2016 duty→artifact map: four-colour segregation (yellow/red/white/blue), State-PCB authorisation, annual report → grounds India hse-healthcare waste work. Legacy-first; resolves state first (KB-REG-IN-STATEFORMS) and defers state form content to the hse-india engine; no national form minted; [GAP] per state. Citation map, not the rules text."
+  source: "Bio-Medical Waste Management Rules 2016 under Environment (Protection) Act 1986 + state PCB notifications (per-state cite via hse-india)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: true
+  supersedes: null

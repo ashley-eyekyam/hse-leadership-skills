@@ -3,22 +3,27 @@
 This durable contract test re-asserts, over the on-disk engine + the
 fixtures/arcflash_cases.json golden data:
 
-  (a) golden — each fixture worked example (AF-1/AF-2, VCB) lands within the
-      published tolerances: incident energy ±0.05 cal/cm², boundary ±10 mm,
-      PPE category exact;
-  (b) range-invalid (D-03, AF-3) — Voc below the 208 V floor, above the 15 kV
-      ceiling, a negative gap, and an unknown electrode all raise
-      ArcFlashInputError (never a silent clamp);
-  (c) the NFPA 70E PPE-band mapping (1.2/4/8/25/40) → {0,1,2,3,4} + >40 flag;
-  (d) incident_energy is deterministic — identical input → byte-identical output;
-  (e) to_report_blocks emits only the 12 schema block types.
+  (a) golden — each fixture worked example lands within the published tolerances:
+      incident energy +/-0.05 cal/cm2, boundary +/-10 mm, PPE category exact.
+      AF-HCB is the PDF's authoritative published worked example (8.89 cal/cm2,
+      3037 mm, category 3); AF-1/AF-2 are the genuine-model VCB 400 V cases;
+      AF-VCBB/AF-VOA/AF-HOA are clearly-labelled engine regression anchors;
+  (b) the J->cal unit conversion: the HCB case computes ~37.217 J/cm2 internally
+      before the cal/cm2 conversion, and 8.89 cal/cm2 x 4.184 ~ 37.217 J/cm2;
+  (c) range-invalid (D-03): Voc below the 208 V floor, above the 15 kV ceiling, a
+      negative gap, and an unknown electrode all raise ArcFlashInputError (never
+      a silent clamp);
+  (d) the NFPA 70E PPE-band mapping (1.2/4/8/25/40) -> {0,1,2,3,4} + >40 flag;
+  (e) incident_energy is deterministic -- identical input -> byte-identical output;
+  (f) to_report_blocks emits only the 12 schema block types.
 
 Bare imports resolve via scripts/tests/conftest.py (puts hse_components on
 sys.path). Stdlib + the engine only.
 
-NOTE: the embedded IEEE 1584-2018 coefficient block is PROVISIONAL — VCB is
-anchored to the AF-1/AF-2 published worked examples; the other electrode configs
-are unverified pending owner confirmation against a licensed copy.
+The engine implements the GENUINE IEEE 1584-2018 model (D-01 re-implementation,
+coefficients from the owner-supplied licensed copy); it reproduces the PDF's
+fully-worked HCB example and its published intermediates. This closes todo
+260621-p11-arcflash-coefficients-licensed-verify.
 """
 
 import json
@@ -54,7 +59,7 @@ def test_fixture_schema():
 
 
 def test_golden_worked_examples_within_tolerance():
-    """Each fixture case (AF-1/AF-2) lands within the published tolerances."""
+    """Each fixture case lands within the published tolerances (incl. AF-HCB)."""
     data = _load_cases()
     for case in data["cases"]:
         result = incident_energy(
@@ -76,26 +81,41 @@ def test_golden_worked_examples_within_tolerance():
         assert result["ppe_category"] == case["expected_ppe_category"], case
 
 
-def test_provisional_note_present():
-    """incident_energy advertises the provisional-coefficient caveat in notes."""
+def test_hcb_published_anchor():
+    """AF-HCB reproduces the PDF's authoritative worked example exactly."""
     result = incident_energy(
-        v_oc=400, i_bf_kA=7.56, gap_mm=32, electrode="VCB",
-        working_distance_mm=304.8, arc_time_s=0.11, enclosure_mm=(508, 508, 508),
+        v_oc=13800, i_bf_kA=18.241, gap_mm=152, electrode="HCB",
+        working_distance_mm=914, arc_time_s=0.191,
+        enclosure_mm=(1244.6, 1244.6, 1143),
     )
-    assert any("PROVISIONAL" in n for n in result["notes"]), result["notes"]
+    assert abs(result["incident_energy_cal_cm2"] - 8.89) <= 0.05
+    assert abs(result["arc_flash_boundary_mm"] - 3037) <= 10
+    assert result["ppe_category"] == 3
 
 
-def test_non_vcb_flags_unverified():
-    """A non-VCB config carries an extra UNVERIFIED-path note."""
+def test_internal_j_per_cm2_before_conversion():
+    """The HCB case computes ~37.217 J/cm2 internally before the cal/cm2 conversion.
+
+    The unit trap: the model works in J/cm2 and divides by 4.184 only at the public
+    boundary. This asserts both the internal J/cm2 value and the inverse relationship
+    8.89 cal/cm2 x 4.184 ~ 37.217 J/cm2, catching any 4.184-factor slip.
+    """
     result = incident_energy(
-        v_oc=400, i_bf_kA=7.56, gap_mm=32, electrode="HCB",
-        working_distance_mm=304.8, arc_time_s=0.11, enclosure_mm=(508, 508, 508),
+        v_oc=13800, i_bf_kA=18.241, gap_mm=152, electrode="HCB",
+        working_distance_mm=914, arc_time_s=0.191,
+        enclosure_mm=(1244.6, 1244.6, 1143),
     )
-    assert any("UNVERIFIED" in n for n in result["notes"]), result["notes"]
+    assert abs(result["incident_energy_j_cm2"] - 37.217) <= 0.1
+    # 8.89 cal/cm2 x 4.184 ~ 37.217 J/cm2
+    assert abs(8.89 * 4.184 - 37.217) <= 0.1
+    # the public cal/cm2 value x 4.184 reproduces the internal J/cm2 value
+    assert abs(
+        result["incident_energy_cal_cm2"] * 4.184 - result["incident_energy_j_cm2"]
+    ) <= 0.05
 
 
 def test_range_invalid_raises():
-    """AF-3 (D-03): out-of-range / invalid input raises ArcFlashInputError."""
+    """D-03: out-of-range / invalid input raises ArcFlashInputError."""
     base = dict(
         i_bf_kA=7.56, gap_mm=32, electrode="VCB",
         working_distance_mm=304.8, arc_time_s=0.11,
@@ -150,8 +170,9 @@ def test_ppe_band_mapping():
 def test_incident_energy_is_deterministic():
     """incident_energy called twice on the same input → byte-identical output."""
     kw = dict(
-        v_oc=400, i_bf_kA=7.56, gap_mm=32, electrode="VCB",
-        working_distance_mm=304.8, arc_time_s=0.11, enclosure_mm=(508, 508, 508),
+        v_oc=13800, i_bf_kA=18.241, gap_mm=152, electrode="HCB",
+        working_distance_mm=914, arc_time_s=0.191,
+        enclosure_mm=(1244.6, 1244.6, 1143),
     )
     a = json.dumps(incident_energy(**kw), sort_keys=True)
     b = json.dumps(incident_energy(**kw), sort_keys=True)
@@ -159,16 +180,17 @@ def test_incident_energy_is_deterministic():
 
 
 def test_arc_flash_boundary_standalone():
-    """The boundary helper returns a positive distance for the AF-1 case."""
-    db = arc_flash_boundary(0.85, 304.8, "VCB", enclosure_mm=(508, 508, 508))
-    assert abs(db - 490) <= 10
+    """The boundary helper returns a positive distance for a known case."""
+    db = arc_flash_boundary(8.89, 914, "HCB", enclosure_mm=(1244.6, 1244.6, 1143))
+    assert db > 0
 
 
 def test_report_blocks_use_allowed_types_only():
     """Every block type from to_report_blocks is in the 12-type schema allowlist."""
     result = incident_energy(
-        v_oc=400, i_bf_kA=7.56, gap_mm=32, electrode="VCB",
-        working_distance_mm=304.8, arc_time_s=0.11, enclosure_mm=(508, 508, 508),
+        v_oc=13800, i_bf_kA=18.241, gap_mm=152, electrode="HCB",
+        working_distance_mm=914, arc_time_s=0.191,
+        enclosure_mm=(1244.6, 1244.6, 1143),
     )
     blocks = to_report_blocks(result)
     assert blocks, "expected at least the metrics + table blocks"

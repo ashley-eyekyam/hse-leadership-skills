@@ -5,11 +5,28 @@
     "Tolerances: incident energy +/-0.05 cal/cm2; arc-flash boundary +/-10 mm; PPE category EXACT (no tolerance).",
     "Reference time = 0.2 s; bare-skin boundary energy Eb = 1.2 cal/cm2 (5.0 J/cm2).",
     "NFPA 70E PPE thresholds: <1.2 -> 0, 1.2-<4 -> 1, 4-<8 -> 2, 8-<25 -> 3, 25-<=40 -> 4, >40 -> extreme flag.",
-    "Worked-example sources cited per case in the 'why' field. The k1..k13 / x IEEE 1584-2018 coefficient block is PROVISIONAL (VCB anchored to AF-1/AF-2; other configs unverified) pending owner verification against the licensed standard (Plan 11-02 Task 2 checkpoint resolved 'provisional + caveat + todo').",
-    "PPE category note: both AF-1 (0.85 cal/cm2) and AF-2 (0.62 cal/cm2) fall BELOW the 1.2 cal/cm2 NFPA 70E PPE floor, so the strict incident-energy method maps both to category 0 (no arc-rated PPE listed). The elek.com source labels these 'Cat 1'; that looser label conflicts with the strict NFPA 70E 1.2-threshold method this engine implements (research PPE table: <1.2 -> no AF PPE). expected_ppe_category is therefore 0 (defensible threshold mapping wins over the source's label).",
-    "Range-invalid / must-raise cases (AF-3: v_oc 50 V below 208 floor, v_oc 20 kV above 15 kV ceiling, negative gap) live in test_arcflash.py per D-03 (raise ArcFlashInputError, never clamp), not in this fixture."
+    "Coefficients are the GENUINE IEEE 1584-2018 standard, transcribed from the owner-supplied licensed copy (Maple Flow worked implementation: hse-skills-screenshot/acrflashcalculation_iee1584-2018_final.pdf). The re-implementation (D-01) closes todo 260621-p11-arcflash-coefficients-licensed-verify; the engine reproduces the PDF's fully-worked HCB switchgear example and its published intermediate values.",
+    "AF-HCB is the PDF's authoritative published worked example (HCB, 13.8 kV): E ~ 8.89 cal/cm2 (37.217 J/cm2 internal), AFB ~ 3037 mm, PPE category 3. It is the gold-standard anchor that proves the genuine model is correct.",
+    "AF-1/AF-2 are the two 400 V VCB cases retained from Phase-11. The genuine IEEE 1584-2018 model (validated 208 V-15 kV) extrapolates these below its 600 V reference floor and yields E = 2.41 / 1.67 cal/cm2 (PPE category 1) -- DIFFERENT from the Phase-11 surrogate's 0.85 / 0.62 cal/cm2 (which mapped to category 0). The surrogate values were never genuine-model outputs; the expected values here are the genuine IEEE 1584-2018 model's, recomputed by the re-implemented engine. The previous category-0 mapping is superseded by the authoritative model.",
+    "VCBB/VOA/HOA cases are clearly-labelled ENGINE REGRESSION ANCHORS computed by the re-stamped engine on a documented input set -- NOT independent published worked examples (no fabricated published provenance, OQ3). They guard against future structural/unit regressions across the three configs the PDF does not fully work.",
+    "Range-invalid / must-raise cases (v_oc 50 V below 208 floor, v_oc 20 kV above 15 kV ceiling, negative gap) live in test_arcflash.py per D-03 (raise ArcFlashInputError, never clamp), not in this fixture."
   ],
   "cases": [
+    {
+      "id": "AF-HCB",
+      "v_oc": 13800,
+      "i_bf_kA": 18.241,
+      "gap_mm": 152,
+      "electrode": "HCB",
+      "enclosure_mm": [1244.6, 1244.6, 1143],
+      "working_distance_mm": 914,
+      "arc_time_s": 0.191,
+      "expected_incident_energy_cal_cm2": 8.89,
+      "expected_boundary_mm": 3037,
+      "expected_ppe_category": 3,
+      "provenance": "IEEE 1584-2018 published worked example (licensed PDF, fully worked HCB switchgear case): Iarc 16.31 kA, VarCf 0.023, CF 1.177 (EES 50.882 mm), E_600/2700/14300 = 20.503/32.178/37.444 J/cm2, E (interp) 37.217 J/cm2 = 8.89 cal/cm2; AFB_600/2700/14300 = 1817/2667/3054 mm, AFB (interp) 3037 mm. Authoritative anchor.",
+      "why": "The gold-standard anchor proving the genuine IEEE 1584-2018 model: E 8.89 cal/cm2 in the 8-25 band -> PPE category 3."
+    },
     {
       "id": "AF-1",
       "v_oc": 400,
@@ -19,10 +36,11 @@
       "enclosure_mm": [508, 508, 508],
       "working_distance_mm": 304.8,
       "arc_time_s": 0.11,
-      "expected_incident_energy_cal_cm2": 0.85,
-      "expected_boundary_mm": 490,
-      "expected_ppe_category": 0,
-      "why": "elek.com IEEE 1584-2018 worked example -- main switchboard (Iarc ~5.07 kA). 0.85 cal/cm2 < 1.2 floor -> NFPA 70E category 0 (source labels 'Cat 1'; strict threshold method governs)."
+      "expected_incident_energy_cal_cm2": 2.41,
+      "expected_boundary_mm": 437,
+      "expected_ppe_category": 1,
+      "provenance": "Engine value from the genuine IEEE 1584-2018 model (VCB, 400 V switchboard, extrapolated below the 600 V reference floor). Supersedes the Phase-11 surrogate's 0.85 cal/cm2 (category 0), which was not a genuine-model output.",
+      "why": "Genuine-model VCB 400 V case: E 2.41 cal/cm2 in the 1.2-4 band -> PPE category 1 (was category 0 under the superseded surrogate)."
     },
     {
       "id": "AF-2",
@@ -33,10 +51,54 @@
       "enclosure_mm": [355.6, 304.8, 203.5],
       "working_distance_mm": 304.8,
       "arc_time_s": 0.11,
-      "expected_incident_energy_cal_cm2": 0.62,
-      "expected_boundary_mm": 302,
-      "expected_ppe_category": 0,
-      "why": "elek.com IEEE 1584-2018 worked example -- distribution switchboard (Iarc ~3.885 kA). 0.62 cal/cm2 < 1.2 floor -> NFPA 70E category 0 (source labels 'Cat 1'; strict threshold method governs)."
+      "expected_incident_energy_cal_cm2": 1.67,
+      "expected_boundary_mm": 349,
+      "expected_ppe_category": 1,
+      "provenance": "Engine value from the genuine IEEE 1584-2018 model (VCB, 400 V distribution switchboard). Supersedes the Phase-11 surrogate's 0.62 cal/cm2 (category 0).",
+      "why": "Genuine-model VCB 400 V case: E 1.67 cal/cm2 in the 1.2-4 band -> PPE category 1 (was category 0 under the superseded surrogate)."
+    },
+    {
+      "id": "AF-VCBB",
+      "v_oc": 4160,
+      "i_bf_kA": 15.0,
+      "gap_mm": 104,
+      "electrode": "VCBB",
+      "enclosure_mm": [1244.6, 1244.6, 1143],
+      "working_distance_mm": 455,
+      "arc_time_s": 0.2,
+      "expected_incident_energy_cal_cm2": 13.67,
+      "expected_boundary_mm": 1828,
+      "expected_ppe_category": 3,
+      "provenance": "ENGINE REGRESSION ANCHOR, not an independent published example: computed by the re-stamped IEEE 1584-2018 engine on the documented input (VCBB, 4.16 kV, 15 kA, 104 mm gap, 455 mm WD, 0.2 s, 1244.6/1244.6/1143 mm box). Guards the VCBB config path against structural/unit regression.",
+      "why": "Regression anchor for the VCBB config (8-25 band -> PPE category 3)."
+    },
+    {
+      "id": "AF-VOA",
+      "v_oc": 4160,
+      "i_bf_kA": 15.0,
+      "gap_mm": 104,
+      "electrode": "VOA",
+      "working_distance_mm": 455,
+      "arc_time_s": 0.2,
+      "expected_incident_energy_cal_cm2": 5.20,
+      "expected_boundary_mm": 1176,
+      "expected_ppe_category": 2,
+      "provenance": "ENGINE REGRESSION ANCHOR, not an independent published example: computed by the re-stamped IEEE 1584-2018 engine on the documented input (VOA open-air, 4.16 kV, 15 kA, 104 mm gap, 455 mm WD, 0.2 s, no enclosure -> CF = 1). Guards the open-air VOA config path against regression.",
+      "why": "Regression anchor for the VOA (open-air) config (4-8 band -> PPE category 2)."
+    },
+    {
+      "id": "AF-HOA",
+      "v_oc": 4160,
+      "i_bf_kA": 15.0,
+      "gap_mm": 104,
+      "electrode": "HOA",
+      "working_distance_mm": 455,
+      "arc_time_s": 0.2,
+      "expected_incident_energy_cal_cm2": 15.58,
+      "expected_boundary_mm": 2124,
+      "expected_ppe_category": 3,
+      "provenance": "ENGINE REGRESSION ANCHOR, not an independent published example: computed by the re-stamped IEEE 1584-2018 engine on the documented input (HOA open-air, 4.16 kV, 15 kA, 104 mm gap, 455 mm WD, 0.2 s, no enclosure -> CF = 1). Guards the open-air HOA config path against regression.",
+      "why": "Regression anchor for the HOA (open-air) config (8-25 band -> PPE category 3)."
     }
   ]
 }

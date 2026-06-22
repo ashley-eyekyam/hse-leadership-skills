@@ -27,6 +27,7 @@ calculation route; this fragment is the structural reference the engine and skil
 | Incident energy (IEEE 1584-2018) | calculated cal/cm² at the working distance | the labelled incident-energy value |
 | Arc-flash boundary | distance at which incident energy = 1.2 cal/cm² (second-degree-burn onset) | the boundary marked on the equipment label |
 | PPE category selection | category 1–4 by incident-energy band (structure only) | the PPE specification + warning label |
+| Equipment labeling (130.5(H)) | nominal system voltage; arc-flash boundary; available incident energy + working distance *or* required PPE category; study date | the arc-flash warning label |
 | Justification for energized work | shock/arc-flash hazard analysis + energized-work permit | the energized-work permit |
 
 ## PPE-category structure (paraphrased — never the table)

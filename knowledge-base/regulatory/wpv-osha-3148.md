@@ -28,10 +28,34 @@ must produce.
 | Safety & health training | Train staff on recognition, de-escalation, reporting | training records |
 | Recordkeeping & program evaluation | Log incidents; review and improve the program | WPV incident log + annual program review |
 
+## Workplace-violence type taxonomy (Cal/OSHA / NIOSH type-1–4)
+
+The worksite analysis classifies WPV by the relationship of the aggressor to the
+workplace — used to target environmental and administrative controls:
+
+| Type | Aggressor relationship | Typical healthcare context |
+|---|---|---|
+| Type 1 — Criminal intent | No legitimate relationship to the workplace | robbery, theft, intrusion |
+| Type 2 — Customer / client / patient | Receiving a service from the workplace | patient / visitor aggression (the dominant healthcare type) |
+| Type 3 — Worker-on-worker | Current / former employee | bullying, internal assault |
+| Type 4 — Personal relationship | Personal relationship with a worker, not the workplace | domestic violence spilling into work |
+
+## California — Cal/OSHA WPV in healthcare (8 CCR 3342)
+
+Where the jurisdiction is California, the WPV program is a **mandatory standard**,
+not guidance: Cal/OSHA **8 CCR 3342** requires healthcare employers to implement a
+written WPV Prevention Plan, maintain a **violent-incident log**, train staff, and
+report serious incidents — operating the same five program elements with binding
+recordkeeping. Cite 8 CCR 3342 (not just the General Duty Clause) for California
+healthcare employers.
+
 ## How the skill uses this fragment
 - A healthcare WPV skill grounds each of the five elements above and applies the
-  hierarchy of controls at the prevention/control step (engineering and
-  administrative controls before relying on response/PPE).
+  hierarchy of controls at the prevention/control step (environmental and
+  administrative controls before relying on response/PPE — `KB-SNIP-WPV-CONTROLS`),
+  classifying hazards by the type-1–4 taxonomy.
 - The General Duty Clause is cited as the enforcement basis where a recognized WPV
-  hazard exists. De-identify any incident detail per the mandatory de-id block; a
+  hazard exists; in California, cite **8 CCR 3342** as the binding standard.
+- De-identify any incident detail per the mandatory de-id block + the healthcare PHI
+  extension; report small incident populations with small-cell suppression. A
   missing element is `[GAP]`, never invented.

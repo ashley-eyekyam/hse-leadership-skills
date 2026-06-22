@@ -377,3 +377,150 @@ def test_phase14_loto_isolation_snippet_not_authored():
             f"KB-SNIP-LOTO-ISOLATION must NOT be authored (found in {folder}/)"
         )
     assert "KB-REG-LOTO" in _registry_ids("regulatory"), "KB-REG-LOTO must still resolve (reused by MFG-01)"
+
+
+# --- Phase 15-01: the 20 NEW utilities-power + healthcare KB fragments (rule-9) --
+#
+# Every Wave-2/3 UTIL-/HC- skill plan depends_on 15-01 and references these IDs by
+# name via its kb-selection; this asserts each resolves in its folder's
+# _registry.yaml AND its .md file exists on disk (opening with its own ID marker),
+# so no downstream skill hits a rule-9 dead-ref / vacuous kb-selection. The 20 count
+# is the BOTH-REUSED figure (OQ1: KB-STD-NFPA70E reused not minted; OQ2:
+# KB-REG-WPV-OSHA3148 reused/extended not minted). The id→folder mapping reuses
+# PREFIX_FOLDER (REG→regulatory, STD→standards, SNIP→prompt-snippets).
+PHASE15_NEW_IDS = [
+    # 7 utilities (3 regulatory + 4 prompt-snippets)
+    "KB-REG-OSHA1910-269",
+    "KB-REG-UK-EAWR",
+    "KB-REG-IN-ELECTRICAL",
+    "KB-SNIP-DEENERGIZE-FIRST",
+    "KB-SNIP-SWITCHING-SEQUENCE",
+    "KB-SNIP-LIVE-WORK-JUSTIFICATION",
+    "KB-SNIP-UTILITIES-CLAUSE-MAP",
+    # 13 healthcare (4 regulatory + 3 standards + 6 prompt-snippets)
+    "KB-REG-OSHA-BBP",
+    "KB-REG-EU-SHARPS-2010-32",
+    "KB-REG-UK-MHOR",
+    "KB-REG-IN-BMW2016",
+    "KB-STD-IPC-CDC-WHO",
+    "KB-STD-SPHM",
+    "KB-STD-BIOSAFETY-BMBL-WHO",
+    "KB-SNIP-SHARPS-HIERARCHY",
+    "KB-SNIP-IPC-PRECAUTIONS",
+    "KB-SNIP-TILE-PEOPLE",
+    "KB-SNIP-WPV-CONTROLS",
+    "KB-SNIP-BIOSAFETY-RA",
+    "KB-SNIP-HEALTHCARE-CLAUSE-MAP",
+]
+
+# The folder each new id resides in (every id sits in its PREFIX folder; Rule-9 LOCKED:
+# KB-REG-*→regulatory/, KB-STD-*→standards/, KB-SNIP-*→prompt-snippets/).
+PHASE15_ID_FOLDER = {
+    "KB-REG-OSHA1910-269": "regulatory",
+    "KB-REG-UK-EAWR": "regulatory",
+    "KB-REG-IN-ELECTRICAL": "regulatory",
+    "KB-SNIP-DEENERGIZE-FIRST": "prompt-snippets",
+    "KB-SNIP-SWITCHING-SEQUENCE": "prompt-snippets",
+    "KB-SNIP-LIVE-WORK-JUSTIFICATION": "prompt-snippets",
+    "KB-SNIP-UTILITIES-CLAUSE-MAP": "prompt-snippets",
+    "KB-REG-OSHA-BBP": "regulatory",
+    "KB-REG-EU-SHARPS-2010-32": "regulatory",
+    "KB-REG-UK-MHOR": "regulatory",
+    "KB-REG-IN-BMW2016": "regulatory",
+    "KB-STD-IPC-CDC-WHO": "standards",
+    "KB-STD-SPHM": "standards",
+    "KB-STD-BIOSAFETY-BMBL-WHO": "standards",
+    "KB-SNIP-SHARPS-HIERARCHY": "prompt-snippets",
+    "KB-SNIP-IPC-PRECAUTIONS": "prompt-snippets",
+    "KB-SNIP-TILE-PEOPLE": "prompt-snippets",
+    "KB-SNIP-WPV-CONTROLS": "prompt-snippets",
+    "KB-SNIP-BIOSAFETY-RA": "prompt-snippets",
+    "KB-SNIP-HEALTHCARE-CLAUSE-MAP": "prompt-snippets",
+}
+
+
+def test_phase15_new_ids_count():
+    """Exactly 20 NEW fragments (7 utilities + 13 healthcare). Both reuse targets
+    (KB-STD-NFPA70E / KB-REG-WPV-OSHA3148) are NOT counted (OQ1/OQ2 reuse)."""
+    assert len(PHASE15_NEW_IDS) == 20
+    assert len(set(PHASE15_NEW_IDS)) == 20  # no dupes
+    assert set(PHASE15_NEW_IDS) == set(PHASE15_ID_FOLDER)  # folder map covers exactly these
+
+
+@pytest.mark.parametrize("kid", PHASE15_NEW_IDS)
+def test_phase15_new_id_resolves_in_registry_and_on_disk(kid):
+    """Each NEW Phase-15 id resolves in its folder's _registry.yaml AND its .md file
+    exists on disk, opening with its own ID marker comment (anti-mismatch)."""
+    folder = PHASE15_ID_FOLDER[kid]
+    assert kid in _registry_ids(folder), f"{kid} not in {folder}/_registry.yaml"
+    reg = yaml.safe_load((KB / folder / "_registry.yaml").read_text(encoding="utf-8"))
+    entry = next(e for e in reg if e["id"] == kid)
+    target = KB / folder / entry["file"]
+    assert target.is_file(), f"{kid} file '{entry['file']}' missing in {folder}/"
+    assert target.read_text(encoding="utf-8").lstrip().startswith(
+        f"<!-- {kid} -->"
+    ), f"{target.name} does not open with <!-- {kid} -->"
+
+
+def test_phase15_clause_maps_carry_the_crosswalk():
+    """Both CONV-10 clause-maps carry their axis (utilities: Article 120 / 130.5;
+    healthcare: 6.1.2 / PPE)."""
+    util = (KB / "prompt-snippets" / "utilities-clause-map.md").read_text(encoding="utf-8")
+    for token in ("Article 120", "130.5"):
+        assert token in util, f"{token} missing from utilities-clause-map.md"
+    hc = (KB / "prompt-snippets" / "healthcare-clause-map.md").read_text(encoding="utf-8")
+    for token in ("6.1.2", "PPE"):
+        assert token in hc, f"{token} missing from healthcare-clause-map.md"
+
+
+def test_phase15_india_pointers_route_to_hse_india():
+    """India electrical + BMW pointers route to hse-india and leave unverified
+    state values as [GAP] (CONV-8; no national form minted)."""
+    for fname in ("regulatory/in-electrical.md", "regulatory/in-bmw2016.md"):
+        text = (KB / fname).read_text(encoding="utf-8")
+        assert "hse-india" in text, f"{fname} must point into hse-india"
+        assert "[GAP]" in text, f"{fname} must leave unverified India values as [GAP]"
+
+
+def test_phase15_arcflash_ieee1584_datapoint_not_authored():
+    """D-02: KB-DP-ARCFLASH-IEEE1584 is NEVER minted — the arcflash.py engine is the
+    single source of truth for the arc-flash bands (a KB copy is a drift surface).
+    Asserted absent from EVERY registry and not on disk under either id form."""
+    for folder in ("data-points", "standards", "prompt-snippets", "regulatory"):
+        assert "KB-DP-ARCFLASH-IEEE1584" not in _registry_ids(folder), (
+            f"KB-DP-ARCFLASH-IEEE1584 must NOT be minted (found in {folder}/)"
+        )
+        assert "KB-DATA-ARCFLASH-IEEE1584" not in _registry_ids(folder), (
+            f"KB-DATA-ARCFLASH-IEEE1584 must NOT be minted (found in {folder}/)"
+        )
+    assert not (KB / "data-points" / "arcflash-ieee1584.md").is_file()
+
+
+def test_phase15_nfpa70e_reg_not_minted():
+    """OQ1: KB-REG-NFPA70E is NOT minted — UTIL-01 reuses the shipped KB-STD-NFPA70E
+    (standards/nfpa-70e.md). Asserted absent from the regulatory registry + no
+    regulatory/nfpa-70e.md; the reused KB-STD-NFPA70E still resolves."""
+    assert "KB-REG-NFPA70E" not in _registry_ids("regulatory"), (
+        "KB-REG-NFPA70E must NOT be minted (OQ1 — reuse KB-STD-NFPA70E)"
+    )
+    assert not (KB / "regulatory" / "nfpa-70e.md").is_file()
+    assert "KB-STD-NFPA70E" in _registry_ids("standards"), (
+        "KB-STD-NFPA70E must still resolve (reused by UTIL-01)"
+    )
+
+
+def test_phase15_wpv_osha3148_reg_not_minted():
+    """OQ2: KB-REG-OSHA-WPV-3148 (the transposed id) is NOT minted — HC-04 reuses /
+    extends the shipped KB-REG-WPV-OSHA3148 in place. Asserted absent + the existing
+    KB-REG-WPV-OSHA3148 still resolves and carries the extended taxonomy."""
+    assert "KB-REG-OSHA-WPV-3148" not in _registry_ids("regulatory"), (
+        "KB-REG-OSHA-WPV-3148 must NOT be minted (OQ2 — reuse/extend KB-REG-WPV-OSHA3148)"
+    )
+    assert not (KB / "regulatory" / "osha-wpv-3148.md").is_file()
+    assert "KB-REG-WPV-OSHA3148" in _registry_ids("regulatory"), (
+        "KB-REG-WPV-OSHA3148 must still resolve (reused/extended by HC-04)"
+    )
+    # The in-place extension added the type-1–4 taxonomy + Cal/OSHA 8 CCR 3342.
+    text = (KB / "regulatory" / "wpv-osha-3148.md").read_text(encoding="utf-8")
+    assert "Type 2" in text, "wpv-osha-3148.md must carry the type-1–4 taxonomy"
+    assert "3342" in text, "wpv-osha-3148.md must carry the Cal/OSHA 8 CCR 3342 row"

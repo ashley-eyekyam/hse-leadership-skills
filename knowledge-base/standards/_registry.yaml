@@ -366,3 +366,49 @@
   last_reviewed: 2026-06-22
   volatile: false
   supersedes: null
+
+# --- Phase 15: hse-healthcare standards fragments ---------------------------
+- id: KB-STD-IPC-CDC-WHO
+  file: ipc-cdc-who.md
+  title: "Infection prevention & control — CDC isolation precautions + WHO IPC core components + Spaulding"
+  facets:
+    jurisdiction: [All]
+    industry: [Healthcare]
+    topics: [infection-control, standard-precautions, transmission-based-precautions, contact, droplet, airborne, who-ipc-core-components, spaulding]
+    audience: [M, C]
+  summary: "CDC Standard + Transmission-Based precautions (contact/droplet/airborne) + WHO IPC core components + Spaulding reprocessing → grounds infection-control-plan (HC-02). Per-route precaution logic (KB-SNIP-IPC-PRECAUTIONS); engineering/admin before PPE. De-id + small-cell suppression. Structure map, not the guideline text."
+  source: "CDC Guideline for Isolation Precautions + WHO Core Components of IPC Programmes + Spaulding classification"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-STD-SPHM
+  file: sphm.md
+  title: "Safe patient handling & mobility — ANA SPHM standards + ISO/TR 12296 + NIOSH safe-lift"
+  facets:
+    jurisdiction: [All]
+    industry: [Healthcare]
+    topics: [safe-patient-handling, sphm, move-toward-zero, manual-handling-of-people, mechanical-lift, iso-tr-12296]
+    audience: [M, C]
+  summary: "ANA SPHM 8 standards + ISO/TR 12296 + NIOSH safe-lift structure → grounds patient-handling-assessment (HC-03). Move-toward-zero manual lift (KB-SNIP-TILE-PEOPLE); residual risk on risk_matrix 5x5, NOT a NIOSH-equation engine (that lives in ergonomics). De-id. Structure map, not the standard text."
+  source: "ANA SPHM Interprofessional National Standards (2nd ed.) + ISO/TR 12296:2012 + NIOSH safe-patient-handling guidance"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-STD-BIOSAFETY-BMBL-WHO
+  file: biosafety-bmbl-who.md
+  title: "Laboratory biosafety — BMBL biosafety levels + BSC classes + WHO LBM risk groups"
+  facets:
+    jurisdiction: [All]
+    industry: [Healthcare]
+    topics: [biosafety, biosafety-levels, bsl, biosafety-cabinet, risk-groups, containment, bmbl, who-lbm]
+    audience: [M, C]
+  summary: "CDC/NIH BMBL BSL-1–4 + BSC classes + WHO risk groups RG1–RG4 + risk-assessment + NIH Guidelines pointer → grounds lab-biosafety-assessment (HC-05). Risk-group→BSL containment gate (KB-SNIP-BIOSAFETY-RA); engineering/BSC before PPE; unknown risk group → [GAP]. De-id. Structure map, not the manual text."
+  source: "CDC/NIH BMBL 6th ed. + WHO Laboratory Biosafety Manual + NIH Guidelines (recombinant/synthetic NA)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null

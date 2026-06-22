@@ -529,3 +529,155 @@
   last_reviewed: 2026-06-22
   volatile: false
   supersedes: null
+
+# --- Phase 15: hse-utilities-power prompt-snippets ---------------------------
+- id: KB-SNIP-DEENERGIZE-FIRST
+  file: deenergize-first.md
+  title: "De-energize first — the electrically-safe-work-condition (ESWC) control spine"
+  facets:
+    jurisdiction: [All]
+    industry: [Gen]
+    topics: [de-energize-first, eswc, electrical-control-hierarchy, ppe-residual, arc-flash]
+    audience: [M, C]
+  summary: "Electrical control-hierarchy spine: establish an ESWC (de-energize + verify) before any reliance on arc-rated PPE or approach controls. NFPA 70E Article 120 + OSHA 1910.269(m)/333 + EAWR 13–14. Incident energy from arcflash.py + KB-STD-NFPA70E, never invented. Rejects PPE-led/convenience-led treatment. Prompt text, not a generator."
+  source: "NFPA 70E Article 120 + OSHA 1910.269/1910.333 + EAWR regs 13–14"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-SWITCHING-SEQUENCE
+  file: switching-sequence.md
+  title: "Switching sequence — isolation, prove dead, earthing, sanction-to-test discipline"
+  facets:
+    jurisdiction: [All]
+    industry: [Gen]
+    topics: [switching, isolation, prove-dead, earthing, permit-to-work, sanction-to-test, safety-document]
+    audience: [M, C]
+  summary: "Electrical switching/isolation discipline: plan → isolate → prove dead → earth → issue permit-to-work/sanction-to-test → restore. Carries the full isolation/prove-dead/earthing/sanction vocabulary so UTIL-02 needs no separate ELEC-ISOLATION fragment. HSG85 + EAWR 12–13 + OSHA 1910.269. Prompt text, not a generator."
+  source: "HSG85 safe-working-practice steps + EAWR regs 12–13 + OSHA 1910.269(d)/(m)/(n)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-LIVE-WORK-JUSTIFICATION
+  file: live-work-justification.md
+  title: "Live-work justification — the three-part gate (convenience is not a justification)"
+  facets:
+    jurisdiction: [All]
+    industry: [Gen]
+    topics: [live-work, energized-work, three-part-test, reg-14, energized-work-permit, dead-working-default]
+    audience: [M, C]
+  summary: "Live/energized-work gate: permitted only where (1) unreasonable to work dead AND (2) reasonable to work live AND (3) suitable precautions taken (EAWR reg 14 / OSHA 1910.333(a)(2) / NFPA 70E 130.2). Convenience/cost/schedule is never a justification; requires an energized-work permit; arc-flash PPE against the engine output. Prompt text, not a generator."
+  source: "EAWR reg 14 + OSHA 1910.333(a)(2) + NFPA 70E 130.2"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-UTILITIES-CLAUSE-MAP
+  file: utilities-clause-map.md
+  title: "hse-utilities-power clause cross-walk — NFPA 70E Article 120 / 130.4 / 130.5 → owning skill (CONV-10)"
+  facets:
+    jurisdiction: [All]
+    industry: [Gen]
+    topics: [clause-cross-walk, utilities, bundle-shared, routing, article-120, 130.4, 130.5, de-energize-first]
+    audience: [M, C]
+  summary: "Bundle-shared cross-walk: NFPA 70E Article 120 ESWC (de-energize first) + 130.4 shock + 130.5 arc-flash → the 3 utilities skills (arc-flash/switching/live-work), each leading with the ESWC spine; PPE residual against the arcflash.py engine output + KB-STD-NFPA70E. Referenced by every hse-utilities-power skill's kb-selection; single source, never duplicated."
+  source: "NFPA 70E Article 120 + 130.4 + 130.5 + IEEE 1584-2018"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+# --- Phase 15: hse-healthcare prompt-snippets -------------------------------
+- id: KB-SNIP-SHARPS-HIERARCHY
+  file: sharps-hierarchy.md
+  title: "Sharps hierarchy — engineering-first control of sharps & needlestick exposure"
+  facets:
+    jurisdiction: [All]
+    industry: [Healthcare]
+    topics: [sharps, needlestick, engineering-first, safer-devices, ppe-residual, pep, hierarchy-of-controls]
+    audience: [M, C]
+  summary: "Sharps control gate: eliminate unnecessary sharps → engineer (safer devices, point-of-use disposal) → administrative → PPE/PEP residual. OSHA 1910.1030(d)(2) + Directive 2010/32/EU + KB-SNIP-HOC. Rejects PPE-led 'be careful'; small-cell suppression on exposure reporting. Prompt text, not a generator."
+  source: "OSHA 1910.1030(d)(2) + Directive 2010/32/EU + the hierarchy of controls"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-IPC-PRECAUTIONS
+  file: ipc-precautions.md
+  title: "IPC precautions — Standard + Transmission-Based precautions by route"
+  facets:
+    jurisdiction: [All]
+    industry: [Healthcare]
+    topics: [infection-control, standard-precautions, transmission-based, contact, droplet, airborne, hierarchy-of-controls]
+    audience: [M, C]
+  summary: "Per-route precaution selection: Standard Precautions always, then layer contact/droplet/airborne by route; engineering (ventilation, single rooms, negative pressure) and administrative controls before PPE. CDC isolation precautions + KB-SNIP-HOC. Small-cell suppression on cluster reporting. Prompt text, not a generator."
+  source: "CDC Guideline for Isolation Precautions + the hierarchy of controls"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-TILE-PEOPLE
+  file: tile-people.md
+  title: "TILE for people — move-toward-zero manual lifting of patients"
+  facets:
+    jurisdiction: [All]
+    industry: [Healthcare]
+    topics: [patient-handling, tile, avoid-assess-reduce, move-toward-zero, mechanical-aids, manual-handling-of-people]
+    audience: [M, C]
+  summary: "Patient-handling assessment + control gate: avoid → assess by TILE (Task/Individual/Load/Environment) → reduce, moving toward zero manual lift with mechanical aids as default; manual lifting last resort. MHOR reg 4 + Schedule 1 + ANA SPHM + KB-SNIP-HOC. Residual risk on risk_matrix 5x5. Prompt text, not a generator."
+  source: "MHOR 1992 reg 4 + Schedule 1 (TILE) + ANA SPHM + the hierarchy of controls"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-WPV-CONTROLS
+  file: wpv-controls.md
+  title: "Workplace-violence controls — environmental & administrative before reactive"
+  facets:
+    jurisdiction: [All]
+    industry: [Healthcare]
+    topics: [workplace-violence, wpv, environmental-controls, administrative-controls, worksite-analysis, type-1-4-taxonomy, hierarchy-of-controls]
+    audience: [M, C]
+  summary: "WPV control gate: worksite analysis (type-1–4 taxonomy) → environmental/engineering → administrative → training/response/PPE residual. OSHA 3148 + §5(a)(1) + KB-SNIP-HOC. Rejects reactive-led 'training + panic buttons'; small-cell suppression on incident counts. Prompt text, not a generator."
+  source: "OSHA 3148 program elements + OSH Act §5(a)(1) + the hierarchy of controls"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-BIOSAFETY-RA
+  file: biosafety-ra.md
+  title: "Biosafety risk assessment — risk group → biosafety level containment gate"
+  facets:
+    jurisdiction: [All]
+    industry: [Healthcare]
+    topics: [biosafety, risk-group, biosafety-level, bsl, biosafety-cabinet, containment, gap-not-invent, hierarchy-of-controls]
+    audience: [M, C]
+  summary: "Biosafety RA gate: classify agent risk group (RG1–RG4; unknown → [GAP], never invent) → assess procedure → select BSL → engineering/BSC containment before PPE. WHO LBM + BMBL + KB-SNIP-HOC. Small-cell suppression on exposure reporting. Prompt text, not a generator."
+  source: "WHO Laboratory Biosafety Manual risk assessment + CDC/NIH BMBL + the hierarchy of controls"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-HEALTHCARE-CLAUSE-MAP
+  file: healthcare-clause-map.md
+  title: "hse-healthcare clause cross-walk — ISO 45001 6.1.2 + clinical PPE-last hierarchy → owning skill (CONV-10)"
+  facets:
+    jurisdiction: [All]
+    industry: [Healthcare]
+    topics: [clause-cross-walk, healthcare, bundle-shared, routing, iso45001, 6.1.2, ppe-last, phi-de-identification]
+    audience: [M, C]
+  summary: "Bundle-shared cross-walk: ISO 45001 6.1.2 hazard-id + the clinical PPE-last hierarchy → the 5 healthcare skills (sharps/IPC/patient-handling/WPV/biosafety), each applying eliminate→engineer→admin with PPE the residual last line, and the PHI de-identification + small-cell suppression discipline. Referenced by every hse-healthcare skill's kb-selection; single source, never duplicated."
+  source: "ISO 45001:2018 (clause 6.1.2) + the hierarchy of controls (PPE last)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
