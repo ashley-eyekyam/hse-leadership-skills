@@ -159,6 +159,64 @@ A PR merges only when the linter is green, ≥3 evals pass weighted ≥4.0 with 
 hard-fail (**confirmed locally**), the SME-persona pass ran, and a competent person
 approved.
 
+### Golden eval-output authoring (`evals/output/*.md`)
+
+A golden output is a **CANDIDATE** the owner LOCKs before the milestone-wide
+LOCAL ≥4.0 sweep — it is the exemplar the model grader scores against. It must
+read like a **real consultant deliverable**, not a rubric-compliance
+demonstration. This matters because the deterministic CI de-id gate scans the
+**intake fixtures**, never the golden prose: a personal name or a piece of
+rule-narration sitting in a golden is **invisible to CI** and surfaces only in
+the owner eye-review or the LOCAL model sweep. That is precisely why this
+convention is enforced by authoring discipline, not by the linter.
+
+Three rules govern every golden:
+
+1. **Owners by role label, never a realistic personal name.** Show
+   accountability as a role — "Site Manager (role)", "Appointed Person", "the
+   Principal Designer" — not a person. A personal name in a de-identified
+   deliverable reads as a leak, and defensibility's "named owner" requirement is
+   fully satisfied by the role. 33 of the 34 v1.0/v1.1 goldens already do this.
+2. **No process meta-narration in the golden prose.** Cut the lines that exist
+   only to show the grader the skill obeyed its rules — "De-identification ran
+   first…", "…the engine's output, never narrated", "No parameter was invented",
+   "(by design — the core value)". A real deliverable never contains them. KEEP
+   the honest `[ASSUMPTION]` / `[GAP]` flags — those belong in a genuine
+   deliverable and are not meta-narration.
+3. **Representative deliverable depth.** A real CPP, lift plan, RAMS, or ERP runs
+   many pages; goldens should reflect that document density without padding into
+   noise.
+
+DO / DON'T — owner accountability cell:
+
+```markdown
+DON'T:  | Principal Contractor — A. Mercer | Reg 12/13 — plan, manage & monitor | … |
+DO:     | Principal Contractor (role)      | Reg 12/13 — plan, manage & monitor | … |
+```
+
+The DON'T form is the lone outlier in the repo today — the CON-01
+`construction-phase-plan` golden names three personal owners
+(`A. Mercer` / `R. Okafor` / `P. Nair`). It is cited here **only** as the
+cautionary teaching example; do not edit it under this guidance (its fix lands
+in the Phase-17 backfill, below).
+
+DO / DON'T — process meta-narration:
+
+```markdown
+DON'T:  > De-identification ran first; the matrix is the engine's output, never
+        > narrated. No parameter was invented (by design — the core value).
+DO:     [ASSUMPTION] Daytime works assumed; confirm if any night shift is planned.
+        [GAP] Asbestos survey ref not supplied — flagged for the duty-holder.
+```
+
+Keep the de-identification and traceability discipline **silent in the
+deliverable body**; surface only the honest `[ASSUMPTION]` / `[GAP]` flags a real
+report would carry.
+
+The existing 34 goldens are being backfilled to this convention in the Phase-17
+pre-LOCK QA (Track B); this guidance therefore governs all **new** goldens from
+Phase 15 onward.
+
 ### The ten linter rules (the machine contract)
 
 `lint_skills.py` (CI) and `validate_repo_skill.py` (forge) are the same shared
