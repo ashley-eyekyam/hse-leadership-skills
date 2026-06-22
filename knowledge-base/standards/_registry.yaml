@@ -320,3 +320,65 @@
   last_reviewed: 2026-05-15
   volatile: false
   supersedes: null
+
+# --- Phase 14 hse-construction bundle (1 standards fragment) ------------------
+- id: KB-REG-LOLER-BS7121
+  file: loler-bs7121.md
+  title: "Lifting operations — LOLER 1998 + BS 7121 (lift-planning / appointed-person / SWL map)"
+  facets:
+    jurisdiction: [All]
+    industry: [Con]
+    topics: [loler, bs7121, lifting-operations, appointed-person, swl, thorough-examination, exclusion-zone]
+    audience: [M, C]
+  summary: "LOLER 1998 Reg 8 (plan/organise/supervise) + Reg 9 (thorough examination) + BS 7121 lift categorisation (basic/standard/complex), appointed-person role, SWL-at-radius/utilisation method (transcribed from the rated-capacity chart, never computed), exclusion-zone method → grounds lifting-plan (CON-04). Citation map, not the regulation/standard text; carries no rated-capacity tables."
+  source: "Lifting Operations and Lifting Equipment Regulations 1998 (SI 1998/2307) + HSE L113 ACOP + BS 7121 Safe Use of Cranes (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+# --- Phase 14 hse-manufacturing bundle (3 standards fragments) ----------------
+- id: KB-STD-ISO12100-14120
+  file: iso12100-14120.md
+  title: "ISO 12100:2010 + ISO 14120:2015 — machine safety design + guard taxonomy (method→artifact map)"
+  facets:
+    jurisdiction: [All]
+    industry: [Mfg]
+    topics: [machine-safety, three-step-method, inherent-safe-design, safeguarding, guard-taxonomy, fixed-guard, movable-guard]
+    audience: [M, C]
+  summary: "ISO 12100:2010 three-step method (inherent safe design → safeguarding → information for use) + ISO 14120:2015 guard-type taxonomy (fixed/movable/interlocking guards) → grounds machine-guarding-assessment (MFG-01). Method structure only, not the standard text."
+  source: "ISO 12100:2010 + ISO 14120:2015 (method/clause structure; user holds the licensed standards)"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-STD-ISO11228
+  file: iso11228.md
+  title: "ISO 11228-1/-2/-3 — manual handling method scope + handling decision flow (method→artifact map)"
+  facets:
+    jurisdiction: [All]
+    industry: [Mfg]
+    topics: [manual-handling, lifting-carrying, pushing-pulling, repetitive-handling, msd, decision-flow]
+    audience: [M, C]
+  summary: "ISO 11228-1 (lifting/carrying), -2 (pushing/pulling), -3 (repetitive handling at low load) method scope + the handling decision flow (which part applies to which task) → grounds ergonomics-assessment (MFG-02). The RULA/REBA/NIOSH action bands live in the ergonomics.py engine (D-02), NOT here. Method structure only, not the standard text."
+  source: "ISO 11228-1/-2/-3 (method scope; user holds the licensed standards)"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-STD-ISO1999-9612
+  file: iso1999-9612.md
+  title: "ISO 1999:2013 + ISO 9612:2009 — NIHL estimation + occupational-noise measurement (method→artifact map)"
+  facets:
+    jurisdiction: [All]
+    industry: [Mfg]
+    topics: [noise, nihl-estimation, occupational-noise-measurement, dosimetry, hearing-loss, twa]
+    audience: [M, C]
+  summary: "ISO 1999:2013 (estimation of noise-induced hearing loss) + ISO 9612:2009 (measurement of occupational noise exposure — the dosimetry/sampling method) → grounds noise-exposure-health-surveillance (MFG-03). The action-level comparison runs against the cited 85/90 dBA thresholds (KB-REG-OSHA1910-95); no dosimetry computed by the skill. Method structure only, not the standard text."
+  source: "ISO 1999:2013 + ISO 9612:2009 (method structure; user holds the licensed standards)"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null

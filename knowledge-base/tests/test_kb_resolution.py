@@ -249,3 +249,132 @@ def test_road_safety_indicators_cite_iso39001_single_home():
     cited to ISO 39001:2012, and cross-references (not computes) fatigue/HOS."""
     text = (KB / "data-points" / "road-safety-indicators.md").read_text(encoding="utf-8")
     assert "39001" in text, "road-safety indicators must cite ISO 39001"
+
+
+# --- Phase 14-01: the 18 NEW construction + manufacturing KB fragments (rule-9) ---
+#
+# Every Wave-2/3 CON-/MFG- skill plan depends_on 14-01 and references these IDs by name
+# via its kb-selection; this asserts each resolves in its folder's _registry.yaml AND its
+# .md file exists on disk (opening with its own ID marker), so no downstream skill hits a
+# rule-9 dead-ref / vacuous kb-selection. The id→folder mapping reuses PREFIX_FOLDER
+# (REG→regulatory, STD→standards, DATA→data-points, SNIP→prompt-snippets). Note the two
+# Con standards/regulatory ids land in their PREFIX folder, not by jurisdiction.
+CONSTRUCTION_NEW_IDS = [
+    # standards/ (KB-REG-* by prefix → regulatory? no — see folder map below)
+    "KB-REG-LOLER-BS7121",  # lives in standards/ (KB-REG- prefix, Con); asserted explicitly below
+    "KB-SNIP-CPP-STRUCTURE",
+    "KB-SNIP-PCI-CHECKLIST",
+    "KB-SNIP-HS-FILE-CONTENT",
+    "KB-DATA-LIFT-CATEGORIES",
+    "KB-SNIP-TRAFFIC-SEGREGATION",
+    "KB-SNIP-CONSTRUCTION-CLAUSE-MAP",
+]
+MANUFACTURING_NEW_IDS = [
+    "KB-REG-OSHA1910-O",
+    "KB-STD-ISO12100-14120",
+    "KB-SNIP-GUARD-SELECTION",
+    "KB-STD-ISO11228",
+    "KB-SNIP-ERGO-CONTROLS",
+    "KB-REG-OSHA1910-95",
+    "KB-STD-ISO1999-9612",
+    "KB-SNIP-NOISE-CONTROL-HIERARCHY",
+    "KB-REG-OSHA1910-I",
+    "KB-SNIP-PPE-MATRIX-LOGIC",
+    "KB-SNIP-MANUFACTURING-CLAUSE-MAP",
+]
+
+# The folder each new id actually resides in (KB-REG-LOLER-BS7121 is a standards-folder
+# entry despite its KB-REG- prefix — it is a lifting-standard map, not a jurisdiction reg).
+PHASE14_ID_FOLDER = {
+    "KB-REG-LOLER-BS7121": "standards",
+    "KB-SNIP-CPP-STRUCTURE": "prompt-snippets",
+    "KB-SNIP-PCI-CHECKLIST": "prompt-snippets",
+    "KB-SNIP-HS-FILE-CONTENT": "prompt-snippets",
+    "KB-DATA-LIFT-CATEGORIES": "data-points",
+    "KB-SNIP-TRAFFIC-SEGREGATION": "prompt-snippets",
+    "KB-SNIP-CONSTRUCTION-CLAUSE-MAP": "prompt-snippets",
+    "KB-REG-OSHA1910-O": "regulatory",
+    "KB-STD-ISO12100-14120": "standards",
+    "KB-SNIP-GUARD-SELECTION": "prompt-snippets",
+    "KB-STD-ISO11228": "standards",
+    "KB-SNIP-ERGO-CONTROLS": "prompt-snippets",
+    "KB-REG-OSHA1910-95": "regulatory",
+    "KB-STD-ISO1999-9612": "standards",
+    "KB-SNIP-NOISE-CONTROL-HIERARCHY": "prompt-snippets",
+    "KB-REG-OSHA1910-I": "regulatory",
+    "KB-SNIP-PPE-MATRIX-LOGIC": "prompt-snippets",
+    "KB-SNIP-MANUFACTURING-CLAUSE-MAP": "prompt-snippets",
+}
+
+
+def test_phase14_new_ids_count():
+    """Exactly 18 NEW fragments (7 construction + 11 manufacturing). NOT 21."""
+    assert len(CONSTRUCTION_NEW_IDS) == 7
+    assert len(MANUFACTURING_NEW_IDS) == 11
+    all_ids = CONSTRUCTION_NEW_IDS + MANUFACTURING_NEW_IDS
+    assert len(all_ids) == 18
+    assert len(set(all_ids)) == 18  # no dupes
+    assert set(all_ids) == set(PHASE14_ID_FOLDER)  # folder map covers exactly these
+
+
+@pytest.mark.parametrize("kid", CONSTRUCTION_NEW_IDS + MANUFACTURING_NEW_IDS)
+def test_phase14_new_id_resolves_in_registry_and_on_disk(kid):
+    """Each NEW Phase-14 id resolves in its folder's _registry.yaml AND its .md file
+    exists on disk, opening with its own ID marker comment (anti-mismatch)."""
+    folder = PHASE14_ID_FOLDER[kid]
+    assert kid in _registry_ids(folder), f"{kid} not in {folder}/_registry.yaml"
+    reg = yaml.safe_load((KB / folder / "_registry.yaml").read_text(encoding="utf-8"))
+    entry = next(e for e in reg if e["id"] == kid)
+    target = KB / folder / entry["file"]
+    assert target.is_file(), f"{kid} file '{entry['file']}' missing in {folder}/"
+    assert target.read_text(encoding="utf-8").lstrip().startswith(
+        f"<!-- {kid} -->"
+    ), f"{target.name} does not open with <!-- {kid} -->"
+
+
+def test_phase14_cdm2015_carries_schedule3_traffic_row():
+    """CON-05: KB-REG-CDM2015 is EXTENDED in place with a Reg 27 + Schedule 3 traffic
+    row (same id, same file — no second CDM fragment minted)."""
+    text = (KB / "regulatory" / "cdm-2015.md").read_text(encoding="utf-8")
+    assert "Schedule 3" in text, "cdm-2015.md must carry the Schedule 3 traffic row"
+    assert "Reg 27" in text or "Regulation 27" in text, "cdm-2015.md must cite Reg 27"
+    # exactly one CDM fragment exists (no duplicate id)
+    cdm_count = sum(
+        1 for e in yaml.safe_load((KB / "regulatory" / "_registry.yaml").read_text())
+        if e["id"] == "KB-REG-CDM2015"
+    )
+    assert cdm_count == 1, "exactly one KB-REG-CDM2015 entry must exist"
+
+
+def test_phase14_clause_maps_carry_the_crosswalk():
+    """Both bundle clause-maps carry their axis (D-04/D-06)."""
+    con = (KB / "prompt-snippets" / "construction-clause-map.md").read_text(encoding="utf-8")
+    for clause in ("Reg 4", "Reg 12", "Reg 27", "LOLER"):
+        assert clause in con, f"{clause} missing from construction-clause-map.md"
+    mfg = (KB / "prompt-snippets" / "manufacturing-clause-map.md").read_text(encoding="utf-8")
+    for token in ("6.1.2", "12100"):
+        assert token in mfg, f"{token} missing from manufacturing-clause-map.md"
+
+
+def test_phase14_ergonomics_scores_fragment_not_authored():
+    """D-02: KB-DATA-ERGONOMICS-SCORES is NEVER minted — the ergonomics.py engine is the
+    single scores source (a KB copy is a drift surface). Asserted absent from EVERY
+    registry and not on disk under either the CONV-1 or legacy id."""
+    for folder in ("data-points", "standards", "prompt-snippets", "regulatory"):
+        assert "KB-DATA-ERGONOMICS-SCORES" not in _registry_ids(folder), (
+            f"KB-DATA-ERGONOMICS-SCORES must NOT be minted (found in {folder}/)"
+        )
+        assert "KB-DP-ERGONOMICS-SCORES" not in _registry_ids(folder), (
+            f"legacy KB-DP-ERGONOMICS-SCORES must NOT be minted (found in {folder}/)"
+        )
+    assert not (KB / "data-points" / "ergonomics-scores.md").is_file()
+
+
+def test_phase14_loto_isolation_snippet_not_authored():
+    """RESEARCH reconciliation (D-03 OBE): KB-SNIP-LOTO-ISOLATION is NEVER authored —
+    MFG-01 reuses the shipped KB-REG-LOTO. Asserted absent + KB-REG-LOTO resolves."""
+    for folder in ("prompt-snippets", "regulatory", "standards", "data-points"):
+        assert "KB-SNIP-LOTO-ISOLATION" not in _registry_ids(folder), (
+            f"KB-SNIP-LOTO-ISOLATION must NOT be authored (found in {folder}/)"
+        )
+    assert "KB-REG-LOTO" in _registry_ids("regulatory"), "KB-REG-LOTO must still resolve (reused by MFG-01)"

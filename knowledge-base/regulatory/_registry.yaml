@@ -287,12 +287,12 @@
   facets:
     jurisdiction: [UK]
     industry: [Con]
-    topics: [cdm, principal-designer, principal-contractor, construction-phase-plan, health-safety-file, f10]
+    topics: [cdm, principal-designer, principal-contractor, construction-phase-plan, health-safety-file, f10, traffic-routes, schedule-3]
     audience: [M, C]
-  summary: "CDM 2015 dutyholder→artifact map: Client/PD/Designer/PC/Contractor duties, PCI / Construction Phase Plan / Health & Safety File, F10 notification trigger → grounds UK construction permit/plan + risk-assessment skills. Citation map, not the regulation/ACOP text."
+  summary: "CDM 2015 dutyholder→artifact map: Client/PD/Designer/PC/Contractor duties, PCI / Construction Phase Plan / Health & Safety File, F10 notification trigger, Reg 27 + Schedule 3 traffic-routes (suitable/sufficient/separated) → grounds UK construction permit/plan + traffic + risk-assessment skills. Citation map, not the regulation/ACOP text."
   source: "Construction (Design and Management) Regulations 2015 (SI 2015/51) + HSE L153 ACOP (citation map)"
   year: 2026
-  last_reviewed: 2026-06-21
+  last_reviewed: 2026-06-22
   volatile: true
   supersedes: null
 
@@ -475,4 +475,50 @@
   year: 2026
   last_reviewed: 2026-06-21
   volatile: true
+  supersedes: null
+
+# === Phase 14 hse-manufacturing bundle (3 OSHA 1910 regulatory fragments) =====
+- id: KB-REG-OSHA1910-O
+  file: osha-1910-o.md
+  title: "United States — OSHA 29 CFR 1910 Subpart O (Machinery & Machine Guarding map)"
+  facets:
+    jurisdiction: [US]
+    industry: [Mfg]
+    topics: [osha-1910, machine-guarding, point-of-operation, power-transmission, anchoring, subpart-o]
+    audience: [M, C]
+  summary: "OSHA 29 CFR 1910 Subpart O hazard→section→control map: 1910.212 general guarding (point of operation, nip points, rotating parts, anchoring) + 1910.219 power transmission + machine-specific sections → grounds machine-guarding-assessment (MFG-01) and the machine leg of ppe-matrix (MFG-04). Citation map, not the regulation text."
+  source: "OSHA 29 CFR 1910 Subpart O (Machinery and Machine Guarding) (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-REG-OSHA1910-95
+  file: osha-1910-95.md
+  title: "United States / United Kingdom — Occupational noise exposure (OSHA 1910.95 + UK Noise Regs 2005 map)"
+  facets:
+    jurisdiction: [US, UK]
+    industry: [Mfg]
+    topics: [osha-1910-95, noise, action-level, pel, hearing-conservation, audiometry, standard-threshold-shift, uk-noise-regs]
+    audience: [M, C]
+  summary: "Occupational-noise threshold→duty→artifact map: OSHA 1910.95 action level 85 dBA / PEL 90 dBA / hearing-conservation + audiometry + STS, with UK Noise Regs 2005 action (80/85) + limit (87 dB(A)) in jurisdiction rows → grounds noise-exposure-health-surveillance (MFG-03). Measured TWA is a transcribed input; no dosimetry computed. Citation map, not the regulation text."
+  source: "OSHA 29 CFR 1910.95 (Occupational Noise Exposure) + UK Control of Noise at Work Regulations 2005 (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-REG-OSHA1910-I
+  file: osha-1910-i.md
+  title: "United States — OSHA 29 CFR 1910 Subpart I (Personal Protective Equipment map)"
+  facets:
+    jurisdiction: [US]
+    industry: [Mfg]
+    topics: [osha-1910, ppe, hazard-assessment, written-certification, eye-face, head, foot, hand, subpart-i]
+    audience: [M, C]
+  summary: "OSHA 29 CFR 1910 Subpart I duty→artifact map: 1910.132 PPE hazard assessment + WRITTEN certification 1910.132(d)(2) + body-region sections (.133/.135/.136/.138) → grounds ppe-matrix (MFG-04). PPE is residual-only after higher-order controls; the written certification is mandatory. Citation map, not the regulation text."
+  source: "OSHA 29 CFR 1910 Subpart I (Personal Protective Equipment) (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
   supersedes: null

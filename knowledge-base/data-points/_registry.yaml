@@ -276,3 +276,19 @@
   last_reviewed: 2026-06-22
   volatile: true
   supersedes: null
+
+# --- Phase 14 hse-construction bundle (1 data-points fragment) ----------------
+- id: KB-DATA-LIFT-CATEGORIES
+  file: lift-categories.md
+  title: "Lift categorisation — BS 7121 basic/standard/complex criteria (source+year)"
+  facets:
+    jurisdiction: [All]
+    industry: [Con]
+    topics: [lifting-operations, lift-categorisation, bs7121, swl, utilisation, proximity-threshold]
+    audience: [M, C]
+  summary: "BS 7121 basic/standard/complex classification criteria → planning depth (complex = appointed-person written plan + contingency); SWL-at-radius utilisation + overhead-line/ground proximity thresholds, each a transcribed-and-cited input from the rated-capacity chart / GS6 (never computed). Pairs with KB-REG-LOLER-BS7121. Consumed by lifting-plan (CON-04). (CONV-1 rename from KB-DP-LIFT-CATEGORIES.)"
+  source: "BS 7121 Safe Use of Cranes (categorisation framework) + HSE GS6 (overhead-line clearance) + manufacturer rated-capacity chart (per-lift)"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null

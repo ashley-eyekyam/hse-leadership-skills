@@ -377,3 +377,155 @@
   last_reviewed: 2026-06-22
   volatile: false
   supersedes: null
+
+# --- Phase 14 hse-construction bundle (5 prompt-snippets) ---------------------
+- id: KB-SNIP-CPP-STRUCTURE
+  file: cpp-structure.md
+  title: "Construction Phase Plan — proportionate content skeleton (CDM 2015 Reg 12)"
+  facets:
+    jurisdiction: [All]
+    industry: [Con]
+    topics: [construction-phase-plan, cdm, reg-12, proportionate, site-rules, risk-by-activity]
+    audience: [M, C]
+  summary: "Proportionate CPP content skeleton (CDM Reg 12(1)-(4)): project description / management & arrangements / site rules / significant-risk controls by activity (hierarchy-ranked, work-at-height collective-first) / F10 status / review. Built from the named project's real activities; generic refused. Consumed by construction-phase-plan (CON-01)."
+  source: "CDM 2015 (SI 2015/51) Reg 12(1)-(4) + HSE L153 ACOP"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-PCI-CHECKLIST
+  file: pci-checklist.md
+  title: "Pre-Construction Information — L153 Appendix-1 content checklist (CDM 2015 Reg 4)"
+  facets:
+    jurisdiction: [All]
+    industry: [Con]
+    topics: [pre-construction-information, cdm, reg-4, l153-appendix-1, gap-discipline, existing-structure]
+    audience: [M, C]
+  summary: "HSE L153 Appendix-1 PCI content checklist (project/client brief, existing structure, services, ground, surroundings, significant hazards, gaps register) grounded in CDM Reg 4 (client provides as soon as practicable, Reg 4(4)); a missing survey is a [GAP], never silently omitted. Consumed by pre-construction-information (CON-02)."
+  source: "CDM 2015 (SI 2015/51) Reg 4 + HSE L153 ACOP Appendix 1"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-HS-FILE-CONTENT
+  file: hs-file-content.md
+  title: "Health & Safety File — L153 Appendix-4 content list (CDM 2015 Reg 12(5))"
+  facets:
+    jurisdiction: [All]
+    industry: [Con]
+    topics: [health-safety-file, cdm, reg-12-5, l153-appendix-4, residual-hazard, principal-designer]
+    audience: [M, C]
+  summary: "HSE L153 Appendix-4 H&S-file content list (structure/use, as-built & services, residual & unusual hazards with locations, hazardous materials in situ, maintenance/demolition arrangements, gaps) + the 'could-not-reasonably-anticipate' residual-hazard test; preparation is the principal designer's duty (Reg 12(5)), handover at completion (Reg 12(6)-(9)). Consumed by health-and-safety-file (CON-03)."
+  source: "CDM 2015 (SI 2015/51) Reg 12(5)-(9) + HSE L153 ACOP Appendix 4"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-TRAFFIC-SEGREGATION
+  file: traffic-segregation.md
+  title: "Site traffic — segregation-by-design hierarchy (CDM 2015 Reg 27 + Schedule 3)"
+  facets:
+    jurisdiction: [All]
+    industry: [Con]
+    topics: [traffic-management, segregation-by-design, cdm, reg-27, schedule-3, reversing, banksman-last]
+    audience: [M, C]
+  summary: "Segregation-by-design hierarchy (eliminate reversing/conflict → one-way/turning → physical segregation → signage/speed/lighting → banksman LAST) grounded in CDM Reg 27 + Schedule 3 (routes suitable/sufficient/separated, warning of approach); a 'hi-vis + banksman'-only plan is PPE/admin-led and pushed up. Consumed by traffic-management-plan (CON-05)."
+  source: "CDM 2015 (SI 2015/51) Reg 27 + Schedule 3 + HSE HSG144"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-CONSTRUCTION-CLAUSE-MAP
+  file: construction-clause-map.md
+  title: "hse-construction clause cross-walk — CDM 2015 duty → artifact → owning skill (D-04)"
+  facets:
+    jurisdiction: [All]
+    industry: [Con]
+    topics: [clause-cross-walk, construction, bundle-shared, routing, cdm, document-chain]
+    audience: [M, C]
+  summary: "Bundle-shared CDM duty→artifact→skill cross-walk (Reg 4→PCI/CON-02; Reg 12(1)-(2)→CPP/CON-01; Reg 12(5)→H&S-File/CON-03; Reg 27+Sch3→traffic/CON-05; LOLER Reg 8 / BS 7121→lift/CON-04) + the PCI→CPP→H&S-File document chain (D-06). Referenced by every hse-construction skill's kb-selection; single source, never duplicated."
+  source: "CDM 2015 (SI 2015/51) Reg 4/12/27 + Schedule 3 + LOLER 1998 Reg 8 + BS 7121"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+# --- Phase 14 hse-manufacturing bundle (5 prompt-snippets) --------------------
+- id: KB-SNIP-GUARD-SELECTION
+  file: guard-selection.md
+  title: "Machine guard/device selection logic — fixed→interlocked→presence-sensing (ISO 12100/14120)"
+  facets:
+    jurisdiction: [All]
+    industry: [Mfg]
+    topics: [machine-guarding, guard-selection, interlock, presence-sensing, two-hand, access-frequency]
+    audience: [M, C]
+  summary: "Guard/device selection logic (fixed → interlocked → presence-sensing → two-hand/hold-to-run → trip) + the access-frequency rule; a cited decision rule, not a calculation. Engineering-control-led, never 'operators to be careful'. Grounds on KB-REG-OSHA1910-O + KB-STD-ISO12100-14120. Consumed by machine-guarding-assessment (MFG-01)."
+  source: "ISO 12100:2010 + ISO 14120:2015 (guard taxonomy) + OSHA 29 CFR 1910 Subpart O"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-ERGO-CONTROLS
+  file: ergo-controls.md
+  title: "MSD control hierarchy — eliminate handling → engineer → admin → training last"
+  facets:
+    jurisdiction: [All]
+    industry: [Mfg]
+    topics: [ergonomics, msd, control-hierarchy, work-design, mechanisation, training-not-a-control]
+    audience: [M, C]
+  summary: "MSD control hierarchy (eliminate handling → engineer workstation/aid/mechanise → admin rotation → training LAST; 'training is not a control for biomechanical overload'). Ranks controls once a risk is scored; the RULA/REBA/NIOSH scores come from the ergonomics.py engine (D-02), not here. Consumed by ergonomics-assessment (MFG-02)."
+  source: "ISO 11228 series + the hierarchy of controls (work-design-first)"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-NOISE-CONTROL-HIERARCHY
+  file: noise-control-hierarchy.md
+  title: "Noise-control hierarchy — source → enclosure/damping → distance/time → HPD last"
+  facets:
+    jurisdiction: [All]
+    industry: [Mfg]
+    topics: [noise, control-hierarchy, source-control, enclosure, distance-time, hpd-last]
+    audience: [M, C]
+  summary: "Noise-control hierarchy prompts (eliminate/substitute source → engineering enclosure/damping → distance/time admin → hearing protection LAST), never HPD as the first/only control. Thresholds from KB-REG-OSHA1910-95; method from KB-STD-ISO1999-9612. Consumed by noise-exposure-health-surveillance (MFG-03)."
+  source: "OSHA 29 CFR 1910.95 + UK Control of Noise at Work Regulations 2005 + the hierarchy of controls"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-PPE-MATRIX-LOGIC
+  file: ppe-matrix-logic.md
+  title: "PPE-matrix logic — residual-hazard-only selection + controls-first gate (KB-SNIP-HOC)"
+  facets:
+    jurisdiction: [All]
+    industry: [Mfg]
+    topics: [ppe, residual-hazard, controls-first-gate, ppe-last, body-region, written-certification]
+    audience: [M, C]
+  summary: "Residual-hazard-only PPE-selection logic + the controls-first gate (higher-order controls applied/justified before PPE); select against the cited conformity standard (KB-DATA-PPE-STANDARDS) + produce the 1910.132(d)(2) written certification. The literal spine of #4's controls-first gate. Grounds on KB-REG-OSHA1910-I. Consumed by ppe-matrix (MFG-04)."
+  source: "OSHA 29 CFR 1910 Subpart I (1910.132 hazard assessment + written certification) + the hierarchy of controls"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-MANUFACTURING-CLAUSE-MAP
+  file: manufacturing-clause-map.md
+  title: "hse-manufacturing clause cross-walk — ISO 45001 6.1.2 + ISO 12100 three-step → owning skill (D-04)"
+  facets:
+    jurisdiction: [All]
+    industry: [Mfg]
+    topics: [clause-cross-walk, manufacturing, bundle-shared, routing, iso45001, iso12100]
+    audience: [M, C]
+  summary: "Bundle-shared cross-walk: ISO 45001 6.1.2 hazard-id + ISO 12100 three-step method → the 4 MFG skills (guarding/ergonomics/noise/ppe), each applying design-out → safeguard → inform with PPE/HPD/training as the residual-only last line. US grounding via KB-REG-OSHA1910-O/-95/-I; LOTO reuses KB-REG-LOTO. Referenced by every hse-manufacturing skill's kb-selection; single source, never duplicated."
+  source: "ISO 45001:2018 (clause 6.1.2) + ISO 12100:2010 (three-step method)"
+  year: 2026
+  last_reviewed: 2026-06-22
+  volatile: false
+  supersedes: null

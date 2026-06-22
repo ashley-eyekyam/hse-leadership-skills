@@ -93,6 +93,16 @@ def test_entry_schema_and_files_exist(reg: Path):
         assert target.is_file(), f"{e['id']} file '{e['file']}' not found in {folder.name}/"
 
 
+# Documented cross-prefix exceptions (Phase 14-01): a fragment whose id is anchored on a
+# named *Regulation* but whose content+facets place it in the standards/ folder. The id is
+# the durable handle cited by downstream skills (CON-04); the folder reflects that it is a
+# LOLER-Regulation + BS 7121-standard lift-planning map. The id stays globally unique and
+# is still a valid KB-<TOKEN>-… scheme id — only the folder/prefix coupling is waived here.
+SCHEME_FOLDER_EXCEPTIONS = {
+    "KB-REG-LOLER-BS7121": "standards",
+}
+
+
 def test_ids_unique_and_scheme_conformant():
     seen = {}
     for reg in _registries():
@@ -104,6 +114,13 @@ def test_ids_unique_and_scheme_conformant():
             kid = e["id"]
             assert kid not in seen, f"duplicate id {kid} in {folder} and {seen.get(kid)}"
             seen[kid] = folder
+            if SCHEME_FOLDER_EXCEPTIONS.get(kid) == folder:
+                # Documented exception: still a valid KB-<TOKEN>-… id, just not the
+                # default folder/prefix pairing.
+                assert kid.startswith("KB-") and kid.count("-") >= 2, (
+                    f"{kid} is not a valid KB-<TOKEN>-… id"
+                )
+                continue
             assert kid.startswith(f"KB-{prefix}-"), (
                 f"{kid} in {folder}/ does not match scheme KB-{prefix}-…"
             )
@@ -168,6 +185,92 @@ def test_leadership_esg_disclosures_not_minted():
             assert e["id"] != "KB-DP-ESG-DISCLOSURES", (
                 f"KB-DP-ESG-DISCLOSURES must NOT be minted (found in {reg.parent.name}/)"
             )
+
+
+# --- Phase 14-01: the 18 NEW construction + manufacturing KB registry entries ----
+#
+# Named (not just folder-scanned) assertions so a future drop of any of the 18 Phase-14
+# fragment registry entries fails loudly. Each is registered in its folder, file-on-disk,
+# and carries a NON-EMPTY source + year (the refuse-on-vague gate depends on real
+# citations). KB-REG-LOLER-BS7121 is filed in standards/ (cross-prefix exception above).
+PHASE14_REGISTRY = {
+    "standards": [
+        "KB-REG-LOLER-BS7121",
+        "KB-STD-ISO12100-14120",
+        "KB-STD-ISO11228",
+        "KB-STD-ISO1999-9612",
+    ],
+    "regulatory": [
+        "KB-REG-OSHA1910-O",
+        "KB-REG-OSHA1910-95",
+        "KB-REG-OSHA1910-I",
+    ],
+    "data-points": [
+        "KB-DATA-LIFT-CATEGORIES",
+    ],
+    "prompt-snippets": [
+        "KB-SNIP-CPP-STRUCTURE",
+        "KB-SNIP-PCI-CHECKLIST",
+        "KB-SNIP-HS-FILE-CONTENT",
+        "KB-SNIP-TRAFFIC-SEGREGATION",
+        "KB-SNIP-CONSTRUCTION-CLAUSE-MAP",
+        "KB-SNIP-GUARD-SELECTION",
+        "KB-SNIP-ERGO-CONTROLS",
+        "KB-SNIP-NOISE-CONTROL-HIERARCHY",
+        "KB-SNIP-PPE-MATRIX-LOGIC",
+        "KB-SNIP-MANUFACTURING-CLAUSE-MAP",
+    ],
+}
+
+
+def test_phase14_registry_count_is_18():
+    """Exactly 18 NEW Phase-14 fragments registered (7 construction + 11 manufacturing)."""
+    total = sum(len(v) for v in PHASE14_REGISTRY.values())
+    assert total == 18, f"expected 18 new Phase-14 ids, counted {total}"
+
+
+@pytest.mark.parametrize(
+    "folder,kid",
+    [(folder, kid) for folder, ids in PHASE14_REGISTRY.items() for kid in ids],
+)
+def test_phase14_entry_registered_with_source_and_year(folder, kid):
+    """Each of the 18 NEW Phase-14 ids is registered, file-on-disk, and carries a
+    non-empty source + year."""
+    entries = _load(KB / folder / "_registry.yaml")
+    entry = next((e for e in entries if e["id"] == kid), None)
+    assert entry is not None, f"{kid} not registered in {folder}/_registry.yaml"
+    assert (KB / folder / entry["file"]).is_file(), f"{kid} file missing in {folder}/"
+    assert str(entry.get("source", "")).strip(), f"{kid} has empty source"
+    assert entry.get("year"), f"{kid} has empty year"
+
+
+def test_phase14_ergonomics_scores_not_minted():
+    """D-02: KB-DATA-ERGONOMICS-SCORES (and its legacy KB-DP- id) is NEVER minted — the
+    ergonomics.py engine is the single scores source."""
+    for reg in _registries():
+        for e in _load(reg):
+            assert e["id"] not in ("KB-DATA-ERGONOMICS-SCORES", "KB-DP-ERGONOMICS-SCORES"), (
+                f"ergonomics-scores fragment must NOT be minted (found in {reg.parent.name}/)"
+            )
+
+
+def test_phase14_loto_isolation_not_minted():
+    """RESEARCH reconciliation (D-03 OBE): KB-SNIP-LOTO-ISOLATION is NEVER authored —
+    MFG-01 reuses the shipped KB-REG-LOTO."""
+    for reg in _registries():
+        for e in _load(reg):
+            assert e["id"] != "KB-SNIP-LOTO-ISOLATION", (
+                f"KB-SNIP-LOTO-ISOLATION must NOT be authored (found in {reg.parent.name}/)"
+            )
+
+
+def test_phase14_no_duplicate_cdm_or_osha1926():
+    """T-14-01-DUP: KB-REG-CDM2015 / KB-REG-OSHA1926 are extended/reused in place — never
+    re-minted as a second entry."""
+    reg = _load(KB / "regulatory" / "_registry.yaml")
+    for kid in ("KB-REG-CDM2015", "KB-REG-OSHA1926"):
+        n = sum(1 for e in reg if e["id"] == kid)
+        assert n == 1, f"exactly one {kid} entry expected, found {n}"
 
 
 # --- D-05c per-fragment staleness_days override (Plan 06-01, Task 2) -------------
