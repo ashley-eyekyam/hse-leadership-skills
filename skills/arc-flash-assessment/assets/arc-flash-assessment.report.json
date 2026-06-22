@@ -1,0 +1,91 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Arc-Flash Assessment — MCC-2 480 V Motor Control Centre",
+    "subtitle": "Incident-energy study + arc-flash label (NFPA 70E 130.5 / IEEE 1584-2018)",
+    "author": "HSE Utilities & Power",
+    "date": "2026-06-22",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. A prior arc-flash burn incident is cited at role level as context; identifiers were pseudonymised before drafting and the re-identification key is held separately, not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Equipment & task description" },
+    { "type": "paragraph", "text": "MCC-2, 480 V motor control centre, Substation 2 — bucket-replacement and feeder-breaker maintenance. The hazardous condition is an arc-flash event at the 480 V bus. The de-energization decision (below) was recorded BEFORE any PPE selection. The incident energy, arc-flash boundary, and PPE category are COMPUTED by the IEEE 1584-2018 engine, not narrated." },
+
+    { "type": "heading", "level": 1, "text": "De-energization decision & ESWC steps" },
+    { "type": "callout", "text": "De-energize-first: the maintenance task CAN be done de-energized. An electrically safe work condition (NFPA 70E Article 120) is established BEFORE any reliance on arc-rated PPE — arc-rated PPE is the documented last line, never the headline control.", "box_type": "info" },
+    { "type": "table",
+      "headers": ["ESWC step (Article 120)", "Action"],
+      "rows": [
+        ["Identify sources", "Identify all sources feeding MCC-2 (incomer + any back-feed)"],
+        ["Disconnect / isolate", "Open the upstream feeder breaker; rack out where designed"],
+        ["Lock / tag", "Apply lockout/tagout to the isolating device"],
+        ["Test for absence of voltage", "Test-before-touch with a proven, tested voltage detector"],
+        ["Ground if required", "Apply protective grounds where stored/induced energy is credible"] ],
+      "caption": "Establishing an electrically safe work condition before access (de-energize first)" },
+
+    { "type": "heading", "level": 1, "text": "Incident energy @ working distance (IEEE 1584-2018 — computed)" },
+    { "type": "metrics", "metrics": [
+        { "label": "Incident energy", "value": 7.51, "unit": "cal/cm²" },
+        { "label": "Arc-flash boundary", "value": 1332.0, "unit": "mm" },
+        { "label": "NFPA 70E PPE category", "value": "2" } ] },
+    { "type": "table",
+      "headers": ["Parameter", "Value"],
+      "rows": [
+        ["Open-circuit voltage (V)", 480],
+        ["Bolted fault current (kA)", 22.6],
+        ["Conductor gap (mm)", 25],
+        ["Electrode configuration", "VCB"],
+        ["Working distance (mm)", 457.2],
+        ["Arc duration (s)", 0.2],
+        ["Arcing current (kA)", 18.55] ],
+      "caption": "IEEE 1584-2018 arc-flash inputs and computed arcing current (via arcflash.py — never narrated)" },
+
+    { "type": "heading", "level": 1, "text": "Shock approach boundaries (NFPA 70E 130.4)" },
+    { "type": "bullets", "items": [
+        "Limited approach boundary — per the 480 V system voltage row of NFPA 70E Table 130.4 (cite the table; do not paste the cells).",
+        "Restricted approach boundary — per the same 130.4 row; entry requires a qualified person + an energized-work permit (only if energized work is later justified).",
+        "Arc-flash boundary: 1332 mm (the distance to 1.2 cal/cm²; second-degree-burn onset)." ] },
+
+    { "type": "heading", "level": 1, "text": "Hierarchy-ranked controls (de-energize first, arc-rated PPE last)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "De-energize and establish an ESWC (Article 120) — the primary control for this maintenance task", "tier": "Elimination", "owner": "Authorised Person" },
+        { "control": "Reduce clearing time via a maintenance-mode / arc-energy-reduction trip setting", "tier": "Engineering", "owner": "Electrical Engineer" },
+        { "control": "Mark the 1332 mm arc-flash boundary on the floor and update the panel label", "tier": "Administrative", "owner": "HSE Utilities & Power" },
+        { "control": "CAT 2 arc-rated PPE as the residual-hazard last line during the isolation/verification step", "tier": "PPE", "owner": "Authorised Person" } ] },
+    { "type": "callout", "text": "Arc-rated PPE is NOT the primary control. A treatment that leads with 'issue a CAT 2 suit' on a task that can be de-energized is a FLAG pushed up the hierarchy — the de-energization decision comes first; the CAT 2 rating is the residual protection during isolation/verification.", "box_type": "warning" },
+
+    { "type": "heading", "level": 1, "text": "NFPA 70E 130.5(H) label content" },
+    { "type": "table",
+      "headers": ["Label field (130.5(H))", "Value"],
+      "rows": [
+        ["Nominal system voltage", "480 V"],
+        ["Arc-flash boundary", "1332 mm"],
+        ["Available incident energy + working distance", "7.51 cal/cm² @ 457.2 mm"],
+        ["Required PPE category (alternative)", "CAT 2"],
+        ["Study date", "study date to be stamped at issue"] ],
+      "caption": "Equipment arc-flash warning-label content per NFPA 70E 130.5(H)" },
+
+    { "type": "heading", "level": 1, "text": "Owned/dated actions" },
+    { "type": "recommendations", "rows": [
+        { "action": "Install the updated arc-flash label with the computed boundary and category", "priority": "P1", "owner": "Electrical Engineer", "due": "2026-07-10" },
+        { "action": "Commission the maintenance-mode arc-energy-reduction trip setting", "priority": "P2", "owner": "Electrical Engineer", "due": "2026-07-31" },
+        { "action": "Refresh the arc-flash study on any protection or system change", "priority": "P3", "owner": "HSE Utilities & Power", "due": "2026-12-15" } ] },
+
+    { "type": "heading", "level": 1, "text": "Assumptions & gaps" },
+    { "type": "bullets", "items": [
+        "Bolted fault current (22.6 kA) and clearing time (0.2 s) taken from the supplied short-circuit/protection study — a missing input would be a [GAP], never an invented value.",
+        "India site: state electricity-rule return owed — [GAP] (resolve the state via hse-india; no national form number minted)." ] },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off (regulatory basis)" },
+    { "type": "bullets", "items": [
+        "NFPA 70E (2024) — 130.5 (arc-flash RA), 130.5(G) (incident-energy method), 130.5(H) (label content), 130.4 (shock + approach boundaries), 130.7(C)(15) (PPE-category table), Article 120 (ESWC)",
+        "IEEE 1584-2018 — the incident-energy + arc-flash-boundary calculation (208 V – 15 kV)",
+        "OSHA 29 CFR 1910.333 (de-energize-first / energized-work justification) + 1910.269 (T&D approach distances); UK EAWR 1989 reg 14 + HSG85; India CEA / state rules via hse-india",
+        "Review trigger: on system change / on protection change / 5-yearly — whichever is first",
+        "Decision-support only — a competent person (qualified electrical engineer) must review before use." ] }
+  ]
+}

@@ -1,0 +1,88 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Live-Working Risk Assessment — Energized LV Switchboard SB-2",
+    "subtitle": "De-energize-first evaluation + EAWR reg-14 live-working justification + energized-work permit (NFPA 70E Annex J)",
+    "author": "HSE Utilities & Power",
+    "date": "2026-06-22",
+    "classification": "Internal — competent-person review required; live work must be sanctioned by a competent authority",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. A prior contact/arc-flash incident is cited at role level as context; identifiers were pseudonymised before drafting and the re-identification key is held separately, not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Task & live-conductor description" },
+    { "type": "paragraph", "text": "Thermographic survey on the energized LV switchboard SB-2 (400 V), Substation 2. The task is performed within the limited approach boundary of exposed live conductors. Assessment is task- and conductor-specific (not 'work near the live parts'). De-energization was evaluated FIRST; arc-rated PPE is the documented last line, not the headline control." },
+    { "type": "metrics", "metrics": [
+        { "label": "De-energization decision", "value": "Live (justified)" },
+        { "label": "Statutory test", "value": "EAWR reg 14 — 3/3 met" },
+        { "label": "Energized-work permit", "value": "Issued (Annex J)" } ] },
+
+    { "type": "heading", "level": 1, "text": "De-energization evaluation + ESWC recommendation (the default)" },
+    { "type": "paragraph", "text": "The default is to establish an electrically safe work condition (NFPA 70E Article 120 / EAWR dead-working). For an in-service thermographic survey, de-energizing the board removes the thermal load the survey exists to measure, so dead working defeats the purpose of the task — the de-energization evaluation is recorded BEFORE the justification, and live work is treated as the exception. A task that could be done dead would be recommended for an ESWC and would NOT be assessed live." },
+
+    { "type": "heading", "level": 1, "text": "Statutory live-working justification (EAWR reg 14 / OSHA 1910.333(a)(2))" },
+    { "type": "callout", "text": "Live work is permitted ONLY where ALL three statutory tests hold: (a) it is UNREASONABLE to work dead — de-energizing the board defeats the in-service thermal survey it exists to perform; (b) it is REASONABLE to work live — a non-contact survey within a controlled approach boundary by a qualified person; (c) SUITABLE PRECAUTIONS are taken — approach-boundary control, no-contact technique, arc-rated PPE selected against the cross-referenced incident energy, and an energized-work permit. A justification of convenience / cost / 'production cannot stop / it's quicker' is REJECTED — economic convenience alone never justifies live work.", "box_type": "warning" },
+
+    { "type": "heading", "level": 1, "text": "Approach boundaries (shock — NFPA 70E 130.4 / OSHA 1910.269)" },
+    { "type": "table",
+      "headers": ["Boundary / parameter", "Value", "Basis"],
+      "rows": [
+        ["Nominal system voltage", "400 V (LV)", "Named apparatus SB-2"],
+        ["Limited approach boundary", "Per NFPA 70E 130.4 Table — confirm for 400 V", "NFPA 70E 130.4 (shock approach)"],
+        ["Restricted approach boundary", "Per NFPA 70E 130.4 Table — confirm for 400 V", "NFPA 70E 130.4 (shock approach)"],
+        ["Working distance", "As surveyed (non-contact, outside restricted boundary)", "Task method"],
+        ["Arc-flash incident energy at working position", "Cross-referenced from arc-flash-assessment (#1) — not recomputed here", "arc-flash-assessment / arcflash.py"],
+        ["NFPA 70E PPE category at working position", "Cross-referenced from arc-flash-assessment (#1)", "arc-flash-assessment / NFPA 70E 130.7"] ],
+      "caption": "Limited/restricted approach boundaries (shock) defined; the arc-flash incident energy + PPE category are cross-referenced from arc-flash-assessment, never re-derived in this skill" },
+
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "Task proposed live but de-energization not initially evaluated", "risk_level": "High",
+          "description": "The work was initially scoped as 'just do it live, it's quicker'. A bare convenience reason is NOT a valid EAWR reg 14 / 1910.333 justification — the de-energization evaluation and the three-part statutory test were applied before any live work was accepted; the convenience reason was REJECTED and replaced with the recorded reg-14 justification (in-service survey is unreasonable to perform dead).", "evidence": "Intake Q2/Q3; prior contact incident IR-role-A (de-identified)" },
+        { "title": "Approach-boundary control needed during the survey", "risk_level": "Medium",
+          "description": "Without a defined restricted approach boundary and a no-contact technique, the survey would risk shock contact with exposed 400 V conductors.", "evidence": "Task walk-through; NFPA 70E 130.4" } ] },
+
+    { "type": "heading", "level": 1, "text": "Hierarchy-ranked precautions (de-energize first → arc-rated PPE last)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "De-energize + establish an ESWC (Article 120) — the default; applied wherever the task can be done dead", "tier": "Elimination", "owner": "Authorised Person" },
+        { "control": "Non-contact survey technique + fixed/insulated barriers between the worker and the live conductors", "tier": "Engineering", "owner": "Electrical Engineer" },
+        { "control": "Approach-boundary control + qualified-person & accompaniment requirement + energized-work permit", "tier": "Administrative", "owner": "Authorised Person" },
+        { "control": "Arc-rated PPE selected against the cross-referenced incident energy — the documented LAST line, never the headline control", "tier": "PPE", "owner": "Qualified Electrical Worker" } ] },
+    { "type": "callout", "text": "A live-working plan whose ONLY control is 'wear the arc-flash suit', with no recorded de-energization evaluation, is NOT accepted — it is a FLAG pushed up the hierarchy. Arc-rated PPE is the residual-hazard last line; the de-energization decision and the statutory justification come first.", "box_type": "warning" },
+
+    { "type": "heading", "level": 1, "text": "Energized electrical work permit (NFPA 70E Annex J content)" },
+    { "type": "table",
+      "headers": ["Permit element (Annex J)", "Content"],
+      "rows": [
+        ["Description of the energized work + apparatus", "Thermographic survey, energized LV switchboard SB-2 (400 V)"],
+        ["Justification for energized work", "EAWR reg 14 three-part test met (recorded verbatim); convenience reason rejected"],
+        ["Shock approach boundaries + protection", "Limited/restricted approach boundaries (130.4); non-contact technique; insulated barriers"],
+        ["Arc-flash boundary + incident energy + PPE", "Cross-referenced from arc-flash-assessment (#1); arc-rated PPE per the computed category"],
+        ["Qualified persons + accompaniment", "Qualified Electrical Worker + Authorised Person accompaniment"],
+        ["Authorising signature", "Competent authority sign-off (role) — REQUIRED before live work proceeds"] ],
+      "caption": "Energized-work permit (NFPA 70E Annex J) — issued only after the de-energization evaluation + the three-part statutory justification" },
+
+    { "type": "heading", "level": 1, "text": "Duty-holders & verification (owned + dated actions)" },
+    { "type": "recommendations", "rows": [
+        { "action": "Cross-reference the arc-flash incident energy + PPE category from arc-flash-assessment before the survey (no re-derivation)", "priority": "P1", "owner": "Electrical Engineer", "due": "2026-07-05" },
+        { "action": "Confirm the limited/restricted approach boundaries for 400 V (NFPA 70E 130.4) and brief the work party", "priority": "P1", "owner": "Authorised Person", "due": "2026-07-05" },
+        { "action": "Issue + authorise the energized-work permit (Annex J content) with the recorded justification", "priority": "P1", "owner": "Authorised Person", "due": "2026-07-08" } ] },
+
+    { "type": "heading", "level": 1, "text": "Assumptions & gaps" },
+    { "type": "bullets", "items": [
+        "Arc-flash incident energy at the working position is cross-referenced from arc-flash-assessment (#1); a missing arc-flash study is a [GAP], never an invented cal/cm² value.",
+        "Where the cross-referenced incident energy exceeds 40 cal/cm², the live work is flagged PROHIBITED.",
+        "India site: state electricity-rule line-clearance return owed — [GAP] (resolve the state via hse-india; no national form number minted)." ] },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off (regulatory basis)" },
+    { "type": "bullets", "items": [
+        "NFPA 70E (2024) — 110.5/130.2 (energized-work justification + permit), 130.4 (shock approach boundaries), Annex J (energized electrical work permit), Article 120 (the de-energize-first ESWC default)",
+        "OSHA 29 CFR 1910.333(a)(2) (de-energize-first / additional-hazard-or-infeasible justification) + 1910.269 (T&D minimum approach distances)",
+        "UK EAWR 1989 reg 14 (the three-part live-working test) + HSG85 + HSR25; India CEA / state electricity rules via hse-india",
+        "ISO 45001 §6.1.2",
+        "Review trigger: per live-work operation / on equipment change / on procedure change — whichever is first",
+        "Decision-support only — a competent person must review and a competent authority must sanction any live work before use." ] }
+  ]
+}

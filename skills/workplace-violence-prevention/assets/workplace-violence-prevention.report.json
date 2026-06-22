@@ -1,0 +1,102 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Workplace-Violence Prevention Program — Emergency Department",
+    "subtitle": "WPV program (OSHA 3148 five elements / OSH Act §5(a)(1) / Cal-OSHA 8 CCR 3342)",
+    "author": "HSE Healthcare",
+    "date": "2026-06-23",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel, patients, and visitors are referred to by role label. No victim, assailant, or known-risk patient is named, and no behavioural-health flag is tied to a person; any known-risk flagging is a de-identified clinical mechanism held confidentially and separately. The WPV incident log below is de-identified and aggregated, with categories of fewer than five suppressed. Identifiers were pseudonymised before drafting and the re-identification key is held separately, not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Service & exposure" },
+    { "type": "paragraph", "text": "Emergency department — evening / overnight reception & triage. Violence types in scope: type 2 (patient / visitor — the dominant healthcare type) and type 1 (criminal-intent at reception). The worksite hazard analysis (below) was recorded BEFORE any control. Any named victim, assailant, or known-risk patient and any behavioural-health flag were scrubbed to role level before drafting." },
+
+    { "type": "heading", "level": 1, "text": "Violence-type taxonomy (type 1-4) — each type drives its control set" },
+    { "type": "table",
+      "headers": ["Type", "Aggressor relationship", "ED context", "Lead control set"],
+      "rows": [
+        ["Type 1 — Criminal intent", "No legitimate relationship to the workplace", "Robbery / intrusion at reception", "Controlled access, secure design, alarm/duress"],
+        ["Type 2 — Customer / patient / client", "Receiving a service", "Patient / visitor aggression (dominant)", "Triage sightlines, staffing/skill-mix, de-identified flagging, de-escalation"],
+        ["Type 3 — Worker-on-worker", "Current / former employee", "Internal conflict / bullying", "Behavioural standards, no-retaliation reporting"],
+        ["Type 4 — Personal relationship", "Personal relationship, not the workplace", "Domestic violence spilling into work", "Access control, workplace safety planning"] ],
+      "caption": "OSHA / NIOSH / Cal-OSHA type-1-4 violence taxonomy (KB-REG-WPV-OSHA3148)" },
+
+    { "type": "heading", "level": 1, "text": "Worksite hazard analysis (de-identified / aggregated — OSHA 3148 element 2)" },
+    { "type": "callout", "text": "The worksite analysis is recorded FIRST and is the basis of every control. It draws on the de-identified records / incident review, a walkthrough, and a staff survey — never a named victim or assailant. A program with no worksite analysis fails.", "box_type": "info" },
+    { "type": "table",
+      "headers": ["High-risk area / task", "Source (de-identified)", "Findings (walkthrough + survey)", "Type"],
+      "rows": [
+        ["Reception / triage (evening-overnight)", "Aggregated incident review + survey", "Open desk, no barrier, poor sightlines to waiting area; no duress alarm", "Type 2 / Type 1"],
+        ["Waiting area", "Aggregated incident review", "Crowding + long waits driving verbal aggression; no de-escalation prompts", "Type 2"],
+        ["Lone clinical assessment rooms", "Staff survey", "No line-of-sight, no personal duress, single-staff assessment", "Type 2"],
+        ["Ambulance handover bay", "Walkthrough", "Uncontrolled external access after hours", "Type 1"],
+        ["Discharge / car-park route", "Staff survey", "Lone-working risk on late-shift egress", "Type 4"] ],
+      "caption": "De-identified, aggregated worksite analysis — no victim/assailant/known-risk patient named; small populations suppressed" },
+
+    { "type": "heading", "level": 1, "text": "Hierarchy-ranked controls (worksite analysis → environmental → administrative → reactive last)" },
+    { "type": "callout", "text": "Environmental-and-administrative-first: the exposure is designed out by controlled access, sightlines, alarms/duress, and staffing BEFORE any reactive measure. A 'issue personal alarms / run self-defence training' program with no environmental or administrative control is a FLAG pushed up the hierarchy — de-escalation, response training, and personal alarms are the documented last lines, never the headline control.", "box_type": "info" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Substitute the exposure where possible — relocate uncontrolled external access; remove the open ambulance-bay route after hours", "tier": "Substitution", "owner": "Facilities Lead" },
+        { "control": "Environmental: controlled access & egress, reception barrier + improved triage sightlines, duress/panic alarms, CCTV, waiting-area / queue redesign", "tier": "Engineering", "owner": "Estates & Security Lead" },
+        { "control": "Administrative: staffing & skill-mix at peak, lone-working procedure for assessment rooms + late-shift egress, de-identified known-risk-patient flagging, no-retaliation reporting", "tier": "Administrative", "owner": "ED Nurse Manager" },
+        { "control": "De-escalation & response training, response team, post-incident support, and personal alarms — the residual last line", "tier": "PPE", "owner": "WPV Program Lead" } ] },
+    { "type": "callout", "text": "Reactive measures are NOT the primary control. A program whose headline control is 'personal alarms + self-defence training' with no access-control, sightline, alarm-system, or staffing/lone-working control is a FLAG pushed up the hierarchy.", "box_type": "warning" },
+
+    { "type": "heading", "level": 1, "text": "De-escalation, response & training (residual lines)" },
+    { "type": "bullets", "items": [
+        "De-escalation procedure — recognition of escalation cues, verbal de-escalation, environmental separation; trained to all front-of-house staff.",
+        "Response protocol — duress activation → response team → security escalation → safe withdrawal; rehearsed.",
+        "Post-incident support — confidential debrief, occupational-health / EAP referral, no-retaliation, return-to-work support.",
+        "Training plan — WPV awareness, type-1-4 recognition, de-escalation, reporting; refreshed annually with employee involvement (OSHA 3148 element 4)." ] },
+
+    { "type": "heading", "level": 1, "text": "Confidential WPV incident log structure (de-identified / aggregated — OSHA 3148 element 5 / Cal-OSHA 8 CCR 3342)" },
+    { "type": "table",
+      "headers": ["Type", "Location (area)", "Antecedents", "Controls in place", "Cases (aggregated)"],
+      "rows": [
+        ["Type 2 — patient/visitor", "Reception / triage", "Long wait + intoxication", "Pre-changeover open desk", "aggregated ≥ 5"],
+        ["Type 2 — patient/visitor", "Waiting area", "Crowding", "Pre-changeover queue design", "aggregated ≥ 5"],
+        ["Type 1 — criminal-intent", "Ambulance bay", "After-hours access", "Uncontrolled (pre-changeover)", "small cells < 5 suppressed (secondary suppression applied)"],
+        ["Type 4 — personal-relationship", "Discharge route", "Lone late-shift egress", "No lone-working procedure", "small cells < 5 suppressed (secondary suppression applied)"] ],
+      "caption": "Structural / aggregated log only — never line-level identified; categories of fewer than five suppressed so a suppressed cell cannot be back-calculated from totals" },
+    { "type": "metrics", "metrics": [
+        { "label": "WPV incidents this period (aggregated)", "value": "≥ 5", "caption": "small cells <5 suppressed" },
+        { "label": "Front-of-house staff trained in de-escalation", "value": "100", "unit": "%", "caption": "post-program" },
+        { "label": "High-risk areas with duress alarm", "value": "aggregated", "caption": "target: all reception/assessment areas" } ] },
+
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "Reactive-led control proposed where the exposure could be designed out", "risk_level": "High",
+          "description": "A draft program headlined 'issue personal alarms + run self-defence training' was flagged and pushed up the hierarchy — the exposure is first designed out by controlled access, triage sightlines, duress alarms, and staffing.", "evidence": "controls.validate_treatment (ppe_admin_only=True)" },
+        { "title": "No worksite hazard analysis underpinning the original draft", "risk_level": "High",
+          "description": "The original draft proposed controls with no worksite hazard analysis; a de-identified records/walkthrough/survey analysis was authored as the basis of every control (OSHA 3148 element 2).", "evidence": "Worksite analysis + incident log review" } ] },
+
+    { "type": "heading", "level": 1, "text": "Residual risk" },
+    { "type": "paragraph", "text": "After substitution (controlled external access), environmental controls (reception barrier, triage sightlines, duress alarms, CCTV, queue redesign), and administrative controls (peak staffing, lone-working procedure, de-identified flagging), the residual violence risk is framed via risk_matrix as Low-Medium, with de-escalation / response training and personal alarms as the last line." },
+
+    { "type": "heading", "level": 1, "text": "Owned/dated actions" },
+    { "type": "recommendations", "rows": [
+        { "action": "Install the reception barrier + duress alarms and improve triage sightlines", "priority": "P1", "owner": "Estates & Security Lead", "due": "2026-08-15" },
+        { "action": "Control after-hours ambulance-bay / external access", "priority": "P1", "owner": "Facilities Lead", "due": "2026-07-31" },
+        { "action": "Implement the lone-working procedure for assessment rooms + late-shift egress", "priority": "P1", "owner": "ED Nurse Manager", "due": "2026-07-20" },
+        { "action": "Deliver de-escalation & response training with employee involvement; stand up the confidential WPV incident log", "priority": "P2", "owner": "WPV Program Lead", "due": "2026-09-30" } ] },
+
+    { "type": "heading", "level": 1, "text": "Assumptions & gaps" },
+    { "type": "bullets", "items": [
+        "WPV incident counts taken from the de-identified, aggregated incident log; categories of fewer than five are suppressed — a missing figure is a [GAP], never invented.",
+        "India site: state occupational-safety return owed — [GAP] (resolve the state via hse-india; no national form number minted)." ] },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off (regulatory basis)" },
+    { "type": "bullets", "items": [
+        "OSHA Publication 3148 (2016) — the five program elements (management commitment & worker participation, worksite analysis, hazard prevention & control, training, recordkeeping & evaluation), enforced under the OSH Act §5(a)(1) General Duty Clause where a recognized WPV hazard exists",
+        "Cal/OSHA Workplace Violence Prevention in Health Care, 8 CCR 3342 — the binding standard in California (written plan, type-1-4 taxonomy, employee involvement, violent-incident log)",
+        "UK HSE management of work-related violence guidance + NICE NG10 (violence & aggression: short-term management) for the UK leg",
+        "India occupational-safety provisions via hse-india (no national form number)",
+        "ISO 45001 §6.1.2 — hazard identification & risk assessment (with the ISO 45003 psychosocial link for the violence aftermath)",
+        "Review trigger: annual program review / on-incident / on-service-change — whichever is first",
+        "Decision-support only — a competent person (healthcare-security / WPV / occupational-health professional) must review before use." ] }
+  ]
+}

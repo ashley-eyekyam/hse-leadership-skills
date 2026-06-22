@@ -1,0 +1,96 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Sharps & Needlestick Management — Phlebotomy Round, Day-Ward 4B",
+    "subtitle": "Sharps-injury prevention + bloodborne-pathogen exposure control plan (OSHA 1910.1030 / EU 2010/32)",
+    "author": "HSE Healthcare",
+    "date": "2026-06-23",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel and patients are referred to by role label. The source patient is referenced by role only; the injured worker's identity and post-exposure (PEP) medical record are held confidentially and separately per OSHA 1910.1030(f). The Sharps Injury Log below is de-identified and aggregated, with categories of fewer than five suppressed. Identifiers were pseudonymised before drafting and the re-identification / exposure key is held separately, not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Service & sharps inventory" },
+    { "type": "paragraph", "text": "Phlebotomy round, Day-Ward 4B. Sharps in use: hollow-bore venepuncture needles, winged blood-collection sets, IV cannulae, and lancets. The elimination/substitution decision (below) was recorded BEFORE any device or PPE. Source-patient identity/serostatus and the injured worker's PEP record were scrubbed to role level before drafting." },
+
+    { "type": "heading", "level": 1, "text": "Hierarchy-ranked controls (eliminate → safety-engineered devices → work practices → PPE/PEP last)" },
+    { "type": "callout", "text": "Engineering-first: unnecessary sharps are eliminated first (needle-free IV connectors), then the residual sharps are controlled by safety-engineered devices and point-of-use disposal. A 'staff to take care / wear gloves' treatment of a sharp that could be eliminated or engineered out is a FLAG pushed up the hierarchy — PPE and PEP are the documented last lines, never the headline control.", "box_type": "info" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Eliminate unnecessary sharps — needle-free connectors on IV lines; ban recapping by hand", "tier": "Elimination", "owner": "IPC Lead" },
+        { "control": "Safety-engineered venepuncture needles + winged sets with integrated sharps-injury protection (residual sharps)", "tier": "Engineering", "owner": "Procurement Lead" },
+        { "control": "Point-of-use sharps containers at every trolley (fill line marked); no-recapping rule + single-handed scoop where re-sheathing is by design", "tier": "Administrative", "owner": "Ward Manager" },
+        { "control": "Gloves / eye protection as the residual barrier + the confidential PEP pathway", "tier": "PPE", "owner": "Occupational Health Lead" } ] },
+    { "type": "callout", "text": "PPE and PEP are NOT the primary control. A plan whose headline control is 'staff to take care / wear gloves' with no elimination or safety-engineered-device step, or that permits recapping by hand, is a FLAG pushed up the hierarchy.", "box_type": "warning" },
+
+    { "type": "heading", "level": 1, "text": "Documented safer-device consideration (frontline-worker involvement)" },
+    { "type": "table",
+      "headers": ["Device", "Safety-engineered?", "Frontline-input / justification"],
+      "rows": [
+        ["Venepuncture needles", "Yes — retractable", "Selected by the phlebotomy team trial (non-managerial frontline input)"],
+        ["Winged blood-collection sets", "Yes — shielded", "Adopted after frontline evaluation"],
+        ["IV cannulae", "Yes — passive safety", "Frontline evaluation; needle-free connectors substituted on lines"],
+        ["Lancets", "Yes — single-use auto-retract", "Non-engineered alternative withdrawn (no recorded justification to retain)"] ],
+      "caption": "Annual safer-device evaluation with non-managerial frontline-worker input (OSHA 1910.1030(c)(1)(iv) / Needlestick Act)" },
+
+    { "type": "heading", "level": 1, "text": "Sharps Injury Log structure (de-identified / aggregated — OSHA 1910.1030(h)(5))" },
+    { "type": "table",
+      "headers": ["Device type", "Brand class", "Work area", "How it occurred", "Cases (aggregated)"],
+      "rows": [
+        ["Hollow-bore needle", "Conventional (pre-changeover)", "Phlebotomy", "During / after blood draw", "aggregated ≥ 5"],
+        ["Winged set", "Conventional (pre-changeover)", "Phlebotomy", "After use, before disposal", "aggregated ≥ 5"],
+        ["IV cannula", "Conventional (pre-changeover)", "Ward", "During insertion / removal", "small cells < 5 suppressed (secondary suppression applied)"],
+        ["Suture / lancet", "Mixed", "Ward / minor procedures", "Handling / disposal", "small cells < 5 suppressed (secondary suppression applied)"] ],
+      "caption": "Structural / aggregated log only — never line-level identified; categories of fewer than five suppressed so a suppressed cell cannot be back-calculated from totals" },
+    { "type": "metrics", "metrics": [
+        { "label": "Sharps-injury cases this period (aggregated)", "value": "≥ 5", "caption": "small cells <5 suppressed" },
+        { "label": "Safety-engineered-device coverage", "value": "100", "unit": "%", "caption": "post-changeover" },
+        { "label": "HBV-vaccination uptake", "value": "aggregated", "caption": "individual status held confidentially" } ] },
+
+    { "type": "heading", "level": 1, "text": "Confidential post-exposure (PEP) pathway" },
+    { "type": "callout", "text": "Confidential pathway — the source patient is referenced by role only, source-patient testing is performed WITH CONSENT, and the injured worker's exposure/PEP medical record is held confidentially and separately from this plan (OSHA 1910.1030(f)). No source patient or worker is named in this circulated artifact.", "box_type": "info" },
+    { "type": "bullets", "items": [
+        "Immediate first aid — encourage bleeding, wash with soap and water, irrigate mucous membranes / eyes.",
+        "Confidential incident report — logged to the de-identified Sharps Injury Log; the worker is a role label.",
+        "Source-patient testing — with the source patient's CONSENT and confidentiality; the source patient is 'the source patient' by role only; the serostatus result is held in a separate confidential record, never in this plan.",
+        "PEP — HBV (vaccination status check + immunoglobulin/booster per protocol), HCV (baseline + follow-up testing), HIV (risk-assess + PEP started within the protocol window where indicated).",
+        "Follow-up — the confidential occupational-health follow-up schedule, held separately." ] },
+
+    { "type": "heading", "level": 1, "text": "HBV-vaccination status" },
+    { "type": "bullets", "items": [
+        "Hepatitis-B vaccination offered to all staff with occupational sharps exposure (OSHA 1910.1030(f)); uptake reported in aggregate only.",
+        "Individual vaccination / serostatus is special-category health data — held confidentially, never circulated in this plan." ] },
+
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "Behaviour-led control proposed where the sharp could be eliminated", "risk_level": "High",
+          "description": "A draft control headlined 'staff to take care / wear gloves' was flagged and pushed up the hierarchy — unnecessary sharps are eliminated and the residual controlled by safety-engineered devices first.", "evidence": "controls.validate_treatment (ppe_admin_only=True)" },
+        { "title": "Non-engineered lancet retained without justification", "risk_level": "Medium",
+          "description": "A non-engineered lancet was in use without a recorded justification; withdrawn in favour of a single-use auto-retract device.", "evidence": "Device inventory + safer-device evaluation" } ] },
+
+    { "type": "heading", "level": 1, "text": "Residual risk" },
+    { "type": "paragraph", "text": "After elimination (needle-free IV connectors), safety-engineered devices, point-of-use disposal, and the no-recapping rule, the residual sharps-exposure risk is framed via risk_matrix as Low–Medium, with the confidential PEP pathway as the last line." },
+
+    { "type": "heading", "level": 1, "text": "Owned/dated actions" },
+    { "type": "recommendations", "rows": [
+        { "action": "Complete the changeover to safety-engineered venepuncture needles + winged sets across the round", "priority": "P1", "owner": "Procurement Lead", "due": "2026-07-15" },
+        { "action": "Withdraw the non-engineered lancet; document the safer-device decision with frontline input", "priority": "P1", "owner": "IPC Lead", "due": "2026-07-10" },
+        { "action": "Run the annual safer-device evaluation with non-managerial frontline-worker input", "priority": "P2", "owner": "Occupational Health Lead", "due": "2026-09-30" },
+        { "action": "Verify the confidential PEP pathway + HBV-vaccination offer are in place and tested", "priority": "P2", "owner": "Occupational Health Lead", "due": "2026-08-31" } ] },
+
+    { "type": "heading", "level": 1, "text": "Assumptions & gaps" },
+    { "type": "bullets", "items": [
+        "Sharps-injury counts taken from the de-identified Sharps Injury Log; categories of fewer than five are suppressed — a missing figure is a [GAP], never invented.",
+        "India site: state biomedical-waste sharps-segregation return owed — [GAP] (resolve the state via hse-india; BMW Rules 2016; no national form number minted)." ] },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off (regulatory basis)" },
+    { "type": "bullets", "items": [
+        "OSHA 29 CFR 1910.1030 — (c) Exposure Control Plan + (c)(1)(iv) annual safer-device evaluation with frontline input, (d)(2) engineering & work-practice controls, (f) confidential post-exposure follow-up + HBV vaccination, (h)(5) Sharps Injury Log; the Needlestick Safety and Prevention Act (PL 106-430)",
+        "EU Council Directive 2010/32/EU + the UK Health and Safety (Sharp Instruments in Healthcare) Regulations 2013 with COSHH (cite the member-state transposition; RIDDOR for reportable exposures)",
+        "India Bio-Medical Waste Management Rules 2016 sharps segregation via hse-india (no national form number)",
+        "ISO 45001 §6.1.2 — hazard identification & risk assessment",
+        "Review trigger: annual safer-device review / on-device-change / on-incident — whichever is first",
+        "Decision-support only — a competent person (occupational-health / infection-control professional) must review before use." ] }
+  ]
+}

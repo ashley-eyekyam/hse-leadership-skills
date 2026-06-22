@@ -1,0 +1,96 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Patient Handling (Moving & Handling of People) Assessment — Bed-to-Chair Transfer, Rehab Ward",
+    "subtitle": "TILE / SPHM move-toward-zero-manual-lift assessment (MHOR 1992 reg 4 / ANA SPHM 2021 / ISO/TR 12296)",
+    "author": "HSE Healthcare",
+    "date": "2026-06-23",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel and patients are referred to by role label or de-identified attribute. The patient is assessed by de-identified mobility / dependency level and weight band only — no name, MRN/hospital number, ward/bay, diagnosis, or care-plan detail. The worker's capability under TILE Individual is assessed by role; any fitness / back-condition / occupational-health record is held confidentially and separately. Any handling-injury data below is de-identified and aggregated, with categories of fewer than five suppressed. Identifiers were pseudonymised before drafting and the re-identification key is held separately, not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Care task & setting" },
+    { "type": "paragraph", "text": "Bed-to-chair transfer, rehab ward. The avoid-the-manual-lift decision (below) was recorded BEFORE any equipment or technique. The patient is assessed by de-identified mobility / dependency / weight band; the worker is assessed by role only; no name, ward/bay, or diagnosis is carried into this circulated assessment." },
+
+    { "type": "heading", "level": 1, "text": "Lift-avoidance decision (mechanical aid first)" },
+    { "type": "callout", "text": "Avoid-first: the hazardous manual lift is avoided by substituting a ceiling/mobile hoist with the matched sling for the full transfer, and a slide sheet for in-bed repositioning (MHOR reg 4(1)(a) avoid; ANA SPHM / NIOSH move-toward-zero). A 'two-person manual lift' where a hoist is reasonably available, or a 'use good technique / wear a back belt' headline, is a FLAG pushed up the hierarchy — technique and PPE are the documented last lines, never the control.", "box_type": "info" },
+
+    { "type": "heading", "level": 1, "text": "TILE assessment (Task / Individual / Load / Environment)" },
+    { "type": "table",
+      "headers": ["TILE element", "Assessment (de-identified)"],
+      "rows": [
+        ["Task", "Bed-to-chair transfer + in-bed repositioning; low-frequency per shift; static-posture hold risk during positioning; minimise twisting and reaching"],
+        ["Individual", "Two trained handlers, hoist-competent (assessed by role; the worker's capability is recorded without any name or fitness/back-condition record in this copy)"],
+        ["Load", "Patient by mobility/dependency: fully dependent, limited cooperation, standard weight band; one IV line attachment — assessed by de-identified mobility/dependency, no name/diagnosis"],
+        ["Environment", "Adequate floor space; ceiling-track hoist available over the bed; bed/chair height adjustable; clear transfer path"]
+      ],
+      "caption": "TILE assessment of the residual handling per MHOR Schedule 1 — all four elements assessed (a TILE assessment missing any element is not suitable and sufficient)" },
+
+    { "type": "heading", "level": 1, "text": "Mobility-and-equipment matrix (dependency level → equipment + handler count)" },
+    { "type": "table",
+      "headers": ["Mobility / dependency level", "Matched equipment", "Handlers", "Manual lift?"],
+      "rows": [
+        ["Independent / supervision only", "Stand-by assist; grab rails", "1", "No — no handling required"],
+        ["Minimal assist (weight-bearing)", "Stand-aid / sit-to-stand hoist; transfer belt (guide only)", "1", "No — mechanical aid"],
+        ["Moderate assist (partial weight-bearing)", "Active/standing hoist with sling; slide sheet for repositioning", "1-2", "No — mechanical aid"],
+        ["Fully dependent (non weight-bearing)", "Mobile or ceiling-track passive hoist + matched sling; slide sheet", "2", "No — hoist; manual lift NOT used"],
+        ["Bariatric / fully dependent", "Bariatric-rated hoist (verified SWL); bariatric sling; lateral-transfer aid; environmental loading checked", "2+", "No — bariatric-rated hoist; SWL verified"],
+        ["Falls recovery (on floor)", "Mobile hoist with floor-recovery sling or inflatable lifting cushion; post-fall handling plan", "2", "No — mechanical floor-recovery aid"]
+      ],
+      "caption": "The core artifact: each dependency level maps to the matched mechanical aid + handler count; a manual lift is NOT recommended where a mechanical aid is reasonably available (move-toward-zero)" },
+
+    { "type": "heading", "level": 1, "text": "Hierarchy-ranked controls (eliminate manual lift → mechanical aids → safe systems of work → technique/PPE last)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Eliminate the manual lift — ceiling/mobile hoist + matched sling for the transfer; slide sheet for repositioning", "tier": "Elimination", "owner": "Moving-and-Handling Lead" },
+        { "control": "Maintained, SWL-verified hoist + sling inventory; adjustable bed/chair; ceiling-track coverage over the bed", "tier": "Engineering", "owner": "Estates Lead" },
+        { "control": "Safe system of work for the transfer; hoist/sling competency training; the mobility-and-equipment matrix posted at point of care", "tier": "Administrative", "owner": "Ward Manager" },
+        { "control": "Handling technique + back-care guidance as the residual last line (never the primary control); back belt only where justified", "tier": "PPE", "owner": "Occupational Health / Back-Care Advisor" } ] },
+    { "type": "callout", "text": "Technique and PPE are NOT the primary control. An assessment whose headline control is 'use good technique / wear a back belt', or that recommends a manual lift where a hoist or slide aid is reasonably available, is a FLAG pushed up the hierarchy (MHOR reg 4 avoid-first duty).", "box_type": "warning" },
+
+    { "type": "heading", "level": 1, "text": "Bariatric / falls plan" },
+    { "type": "bullets", "items": [
+        "Bariatric: verify the hoist + sling safe-working-load (SWL) against the patient's weight band; check environmental floor/ceiling-track loading; allow extended planning time and additional handlers.",
+        "Falls: a post-fall handling plan uses a mechanical floor-recovery aid (mobile hoist + floor-recovery sling or inflatable lifting cushion) — never a manual lift from the floor." ] },
+
+    { "type": "heading", "level": 1, "text": "Handling-injury context (de-identified / aggregated)" },
+    { "type": "metrics", "metrics": [
+        { "label": "Moving-and-handling injuries this period (aggregated)", "value": "≥ 5", "caption": "small cells <5 suppressed (secondary suppression applied)" },
+        { "label": "Transfers covered by a mechanical aid", "value": "100", "unit": "%", "caption": "post-assessment" },
+        { "label": "Handler hoist-competency", "value": "aggregated", "caption": "individual records held confidentially" } ] },
+
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "Manual two-person lift proposed where a ceiling hoist is available", "risk_level": "High",
+          "description": "A draft control proposed a two-person manual lift for the full transfer; flagged and pushed up the hierarchy — the manual lift is avoided with the ceiling-track hoist (move-toward-zero).", "evidence": "controls.validate_treatment (ppe_admin_only=True)" },
+        { "title": "Back belt offered as the primary control", "risk_level": "Medium",
+          "description": "A back belt was proposed as the headline control; reduced to a residual measure only — avoiding the lift and the mechanical aid are the higher-order controls.", "evidence": "TILE assessment + hierarchy review" } ] },
+
+    { "type": "heading", "level": 1, "text": "Residual risk" },
+    { "type": "paragraph", "text": "After avoiding the manual lift (ceiling-track hoist + slide sheet), SWL-verified equipment, the safe system of work, and competency training, the residual moving-and-handling risk is framed via risk_matrix as Low–Medium, with handling technique / back-care as the last line." },
+
+    { "type": "heading", "level": 1, "text": "Owned/dated actions" },
+    { "type": "recommendations", "rows": [
+        { "action": "Confirm ceiling-track hoist coverage + matched sling inventory over the transfer bed; verify SWL", "priority": "P1", "owner": "Estates Lead", "due": "2026-07-15" },
+        { "action": "Withdraw the manual-lift instruction; post the mobility-and-equipment matrix at point of care", "priority": "P1", "owner": "Moving-and-Handling Lead", "due": "2026-07-10" },
+        { "action": "Refresh hoist/sling competency training for the ward handlers", "priority": "P2", "owner": "Ward Manager", "due": "2026-09-30" },
+        { "action": "Verify the bariatric SWL + falls floor-recovery plan are in place and tested", "priority": "P2", "owner": "Occupational Health / Back-Care Advisor", "due": "2026-08-31" } ] },
+
+    { "type": "heading", "level": 1, "text": "Assumptions & gaps" },
+    { "type": "bullets", "items": [
+        "Handling-injury counts taken from the de-identified moving-and-handling record; categories of fewer than five are suppressed — a missing figure is a [GAP], never invented.",
+        "India site: state factory/occupational-ergonomics provision owed — [GAP] (resolve the state via hse-india; no national form number minted)." ] },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off (regulatory basis)" },
+    { "type": "bullets", "items": [
+        "UK Manual Handling Operations Regulations 1992 — reg 4(1)(a) avoid, reg 4(1)(b)(i) suitable & sufficient assessment, reg 4(1)(b)(ii) reduce, Schedule 1 TILE factors, reg 4(2) review",
+        "ANA Safe Patient Handling and Mobility (SPHM): Interprofessional National Standards, 2nd ed. (2021) — the move-toward-zero-manual-lift culture + the 8 standards",
+        "NIOSH safe-lifting guidance (minimize manual patient lifting) + ISO/TR 12296:2012 (manual handling of people in healthcare)",
+        "India factory/occupational ergonomics via hse-india (no national form number)",
+        "ISO 45001 §6.1.2 — hazard identification & risk assessment",
+        "Review trigger: annual / on-change-of-task-or-patient / on-incident — whichever is first",
+        "Decision-support only — a competent person (moving-and-handling / ergonomics specialist) must review before use." ] }
+  ]
+}

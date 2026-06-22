@@ -614,3 +614,481 @@ def test_traffic_management_plan_clean_fixture_passes():
     assert verdict["auto_fail"] is False, (
         f"traffic-management-plan clean fixture false-positived: {verdict['reasons']}"
     )
+
+
+# =============================================================================
+# Phase-15 / UTIL-01 arc-flash-assessment de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 15-02 (do not reorder/remove the canonical
+# contract assertions above, nor any Phase-14 MFG/CON section, nor any other skill's
+# appended section). arc-flash-assessment is a LOW-PII / asset-level skill (the
+# equipment / IEEE 1584 parameters dominate), but an arc-flash assessment routinely
+# cites a PRIOR ARC-FLASH BURN / ELECTROCUTION INCIDENT on the equipment — and a named
+# injured worker from that incident is GDPR Art. 9 / India DPDP special-category health
+# data. It registers the arc-flash de-identification PAIR against the SAME deterministic
+# de-id grader the whole pack's non-waivable privacy gate keys off:
+#   - the seeded-leak negative (evals/files/arc-flash-leak.md) — a named electrician from a
+#     prior arc-flash burn incident + a phone + an embedded re-id key + a <5 arc-flash/shock
+#     injury cell — MUST auto_fail (the gate is live), and
+#   - the paired clean positive (evals/files/arc-flash-clean.md), wired into the skill's eval
+#     CASE, MUST NOT false-positive (the per-skill gate is not spuriously hard-failed).
+# This is the LOW de-id tier (no dedicated small-cell assertion needed for utilities).
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _arc_sys  # noqa: E402
+
+_ARC_SCRIPTS = REPO / "scripts"
+if str(_ARC_SCRIPTS) not in _arc_sys.path:
+    _arc_sys.path.insert(0, str(_ARC_SCRIPTS))
+
+from graders import grade_deid as _arc_grade_deid  # noqa: E402
+
+_ARC_FILES = REPO / "skills" / "arc-flash-assessment" / "evals" / "files"
+_ARC_LEAK = _ARC_FILES / "arc-flash-leak.md"
+_ARC_CLEAN = _ARC_FILES / "arc-flash-clean.md"
+
+
+def test_arc_flash_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _arc_grade_deid(_ARC_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "arc-flash-assessment seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_arc_flash_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail)."""
+    verdict = _arc_grade_deid(_ARC_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"arc-flash-assessment clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# =============================================================================
+# Phase-15 / UTIL-02 electrical-permit-switching-program de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 15-03 (do not reorder/remove the canonical
+# contract assertions above, nor any Phase-14 MFG/CON section, nor the UTIL-01
+# arc-flash section, nor any other skill's appended section).
+# electrical-permit-switching-program is a LOW-PII / apparatus-level skill (the
+# named apparatus / points of isolation dominate, and the authorised/senior
+# authorised person is a legitimate retained operational record), but a switching
+# program routinely cites a PRIOR SWITCHING / ELECTROCUTION INCIDENT on the
+# apparatus — and a named injured operator from that incident is GDPR Art. 9 /
+# India DPDP special-category health data. It registers the switching-program
+# de-identification PAIR against the SAME deterministic de-id grader the whole
+# pack's non-waivable privacy gate keys off:
+#   - the seeded-leak negative (evals/files/switching-leak.md) — a named operator from a
+#     prior switching incident + a phone + an embedded re-id key + a <5 shock/burn injury
+#     cell — MUST auto_fail (the gate is live), and
+#   - the paired clean positive (evals/files/switching-clean.md), wired into the skill's eval
+#     CASE, MUST NOT false-positive (the per-skill gate is not spuriously hard-failed).
+# This is the LOW de-id tier (no dedicated small-cell assertion needed for utilities).
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _switching_sys  # noqa: E402
+
+_SWITCHING_SCRIPTS = REPO / "scripts"
+if str(_SWITCHING_SCRIPTS) not in _switching_sys.path:
+    _switching_sys.path.insert(0, str(_SWITCHING_SCRIPTS))
+
+from graders import grade_deid as _switching_grade_deid  # noqa: E402
+
+_SWITCHING_FILES = REPO / "skills" / "electrical-permit-switching-program" / "evals" / "files"
+_SWITCHING_LEAK = _SWITCHING_FILES / "switching-leak.md"
+_SWITCHING_CLEAN = _SWITCHING_FILES / "switching-clean.md"
+
+
+def test_switching_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _switching_grade_deid(_SWITCHING_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "electrical-permit-switching-program seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_switching_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail)."""
+    verdict = _switching_grade_deid(_SWITCHING_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"electrical-permit-switching-program clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# =============================================================================
+# Phase-15 / UTIL-03 live-working-risk-assessment de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 15-04 (do not reorder/remove the canonical
+# contract assertions above, nor any Phase-14 MFG/CON section, nor the UTIL-01
+# arc-flash section, nor the UTIL-02 switching section, nor any other skill's
+# appended section). live-working-risk-assessment is a LOW-PII / apparatus-level
+# skill (the named task / live conductors / approach boundaries dominate, and the
+# live-work authority is a legitimate retained operational record on the
+# energized-work permit), but a live-working assessment routinely cites a PRIOR
+# CONTACT / ELECTROCUTION / ARC-FLASH BURN INCIDENT on the apparatus — and a named
+# injured worker from that incident is GDPR Art. 9 / India DPDP special-category
+# health data. It registers the live-working de-identification PAIR against the
+# SAME deterministic de-id grader the whole pack's non-waivable privacy gate keys
+# off:
+#   - the seeded-leak negative (evals/files/live-working-leak.md) — a named worker from a
+#     prior contact/electrocution incident + a phone + an embedded re-id key + a <5
+#     electrocution/arc-flash injury cell — MUST auto_fail (the gate is live), and
+#   - the paired clean positive (evals/files/live-working-clean.md), wired into the skill's eval
+#     CASE, MUST NOT false-positive (the per-skill gate is not spuriously hard-failed).
+# This is the LOW de-id tier (no dedicated small-cell assertion needed for utilities).
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _live_working_sys  # noqa: E402
+
+_LIVE_WORKING_SCRIPTS = REPO / "scripts"
+if str(_LIVE_WORKING_SCRIPTS) not in _live_working_sys.path:
+    _live_working_sys.path.insert(0, str(_LIVE_WORKING_SCRIPTS))
+
+from graders import grade_deid as _live_working_grade_deid  # noqa: E402
+
+_LIVE_WORKING_FILES = REPO / "skills" / "live-working-risk-assessment" / "evals" / "files"
+_LIVE_WORKING_LEAK = _LIVE_WORKING_FILES / "live-working-leak.md"
+_LIVE_WORKING_CLEAN = _LIVE_WORKING_FILES / "live-working-clean.md"
+
+
+def test_live_working_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _live_working_grade_deid(_LIVE_WORKING_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "live-working-risk-assessment seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_live_working_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail)."""
+    verdict = _live_working_grade_deid(_LIVE_WORKING_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"live-working-risk-assessment clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# =============================================================================
+# Phase-15 / HC-01 sharps-needlestick-management de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 15-05 (do not reorder/remove the canonical
+# contract assertions above, nor any other skill's appended section). This is the
+# catalog's HIGHEST-PHI tier: bloodborne-pathogen exposure data — the source
+# patient's identity + serostatus and the injured worker's post-exposure (PEP)
+# medical record — is special-category health data (PHI). It registers the
+# sharps-needlestick-management de-identification PAIR against the SAME deterministic
+# de-id grader the whole pack's non-waivable privacy gate keys off:
+#   - the seeded-leak negative (evals/files/sharps-leak.md) — a named injured worker +
+#     the source patient's identity & HIV/HCV serostatus + the worker's PEP record + a
+#     phone + an embedded re-id key + a <5 sharps-injury cell — MUST auto_fail (the
+#     gate is live), and the small-cell <5 suppression catch is asserted EXPLICITLY
+#     (the D-03 HARD-fail — a sub-5 sharps-injury cell that allows re-identification of
+#     a worker's exposure/serostatus must be suppressed), and
+#   - the paired clean positive (evals/files/sharps-clean.md), wired into the skill's
+#     eval CASE, MUST NOT false-positive (the per-skill gate is not spuriously
+#     hard-failed).
+# This append is a SERIAL / orchestrator-batched edit (D-04) — applied in order with
+# the other Wave-3 appends; parallel executors must NOT race-write this shared file.
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _sharps_sys  # noqa: E402
+
+_SHARPS_SCRIPTS = REPO / "scripts"
+if str(_SHARPS_SCRIPTS) not in _sharps_sys.path:
+    _sharps_sys.path.insert(0, str(_SHARPS_SCRIPTS))
+
+from graders import grade_deid as _sharps_grade_deid  # noqa: E402
+
+_SHARPS_FILES = REPO / "skills" / "sharps-needlestick-management" / "evals" / "files"
+_SHARPS_LEAK = _SHARPS_FILES / "sharps-leak.md"
+_SHARPS_CLEAN = _SHARPS_FILES / "sharps-clean.md"
+
+
+def test_sharps_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _sharps_grade_deid(_SHARPS_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "sharps seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_sharps_small_cell_suppression_caught():
+    """HIGHEST-PHI TIER (T-15-05-02): the sub-5 sharps-injury breakdown MUST be caught as a
+    small-cell leak — the <5 suppression rule (with secondary back-calc) is the sharps skill's
+    defining D-03 de-id HARD-fail (a <5 cell de-anonymizes a worker's exposure/serostatus)."""
+    verdict = _sharps_grade_deid(_SHARPS_LEAK.read_text(encoding="utf-8"))
+    assert verdict["conditions"]["no_small_cell"] is False, (
+        "sharps seeded-leak <5 sharps-injury cell was NOT caught — small-cell suppression gate is dead"
+    )
+    assert any("small-cell" in r for r in verdict["reasons"]), (
+        "the <5 small-cell leak is not among the auto_fail reasons"
+    )
+
+
+def test_sharps_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail)."""
+    verdict = _sharps_grade_deid(_SHARPS_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"sharps clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# =============================================================================
+# Phase-15 / HC-02 infection-control-plan de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 15-06 (do not reorder/remove the canonical
+# contract assertions above, nor any other skill's appended section). This is the
+# catalog's HIGHEST-PHI tier: healthcare infection data — a patient's infection /
+# colonisation status and any outbreak / cluster surveillance — is special-category
+# health data (PHI). It registers the infection-control-plan de-identification PAIR
+# against the SAME deterministic de-id grader the whole pack's non-waivable privacy
+# gate keys off:
+#   - the seeded-leak negative (evals/files/infection-control-leak.md) — a named IPC
+#     lead + phone + a named patient's TB-positive infection status + a 3-case TB
+#     outbreak on the named Ward 4B + an embedded re-id key — MUST auto_fail (the
+#     gate is live), and the small-cell <5 suppression catch is asserted EXPLICITLY
+#     (the D-03 HARD-fail — a sub-5 cluster on a named ward de-anonymizes patients
+#     via the small-cell back-calculation, and must be suppressed), and
+#   - the paired clean positive (evals/files/infection-control-clean.md), wired into
+#     the skill's eval CASE, MUST NOT false-positive (the per-skill gate is not
+#     spuriously hard-failed).
+# This append is a SERIAL / orchestrator-batched edit (D-04) — applied in order with
+# the other Wave-3 appends; parallel executors must NOT race-write this shared file.
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _infection_control_sys  # noqa: E402
+
+_INFECTION_CONTROL_SCRIPTS = REPO / "scripts"
+if str(_INFECTION_CONTROL_SCRIPTS) not in _infection_control_sys.path:
+    _infection_control_sys.path.insert(0, str(_INFECTION_CONTROL_SCRIPTS))
+
+from graders import grade_deid as _infection_control_grade_deid  # noqa: E402
+
+_INFECTION_CONTROL_FILES = REPO / "skills" / "infection-control-plan" / "evals" / "files"
+_INFECTION_CONTROL_LEAK = _INFECTION_CONTROL_FILES / "infection-control-leak.md"
+_INFECTION_CONTROL_CLEAN = _INFECTION_CONTROL_FILES / "infection-control-clean.md"
+
+
+def test_infection_control_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _infection_control_grade_deid(_INFECTION_CONTROL_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "infection-control seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_infection_control_small_cell_suppression_caught():
+    """HIGHEST-PHI TIER (T-15-06-02): the sub-5 TB cluster on a named ward MUST be caught as a
+    small-cell leak — the <5 suppression rule (with secondary back-calc) is the IPC skill's
+    defining D-03 de-id HARD-fail (a 3-case cluster on a named ward de-anonymizes patients)."""
+    verdict = _infection_control_grade_deid(_INFECTION_CONTROL_LEAK.read_text(encoding="utf-8"))
+    assert verdict["conditions"]["no_small_cell"] is False, (
+        "infection-control seeded-leak <5 ward cluster was NOT caught — small-cell suppression gate is dead"
+    )
+    assert any("small-cell" in r for r in verdict["reasons"]), (
+        "the <5 small-cell leak is not among the auto_fail reasons"
+    )
+
+
+def test_infection_control_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail)."""
+    verdict = _infection_control_grade_deid(_INFECTION_CONTROL_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"infection-control clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# =============================================================================
+# Phase-15 / HC-03 patient-handling-assessment de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 15-07 (do not reorder/remove the canonical
+# contract assertions above, nor any other skill's appended section). This is the
+# catalog's HIGHEST-PHI tier: patient-handling health data — a patient's mobility /
+# dependency / diagnosis and a worker's musculoskeletal / back-condition
+# occupational-health record — is special-category health data (PHI). It registers
+# the patient-handling-assessment de-identification PAIR against the SAME deterministic
+# de-id grader the whole pack's non-waivable privacy gate keys off:
+#   - the seeded-leak negative (evals/files/patient-handling-leak.md) — a named,
+#     diagnosed patient (ward/bay + MRN) + a named handler's back-condition OH record +
+#     phone + a 3-case back / 2-case shoulder handling-injury cell + an embedded re-id
+#     key — MUST auto_fail (the gate is live), and the small-cell <5 suppression catch
+#     is asserted EXPLICITLY (the D-03 HARD-fail — a sub-5 handling-injury cell on a
+#     named ward de-anonymizes the injured handlers via the small-cell back-calculation,
+#     and must be suppressed), and
+#   - the paired clean positive (evals/files/patient-handling-clean.md), wired into the
+#     skill's eval CASE, MUST NOT false-positive (the per-skill gate is not spuriously
+#     hard-failed).
+# This append is a SERIAL / orchestrator-batched edit (D-04) — applied in order with
+# the other Wave-3 appends; parallel executors must NOT race-write this shared file.
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _patient_handling_sys  # noqa: E402
+
+_PATIENT_HANDLING_SCRIPTS = REPO / "scripts"
+if str(_PATIENT_HANDLING_SCRIPTS) not in _patient_handling_sys.path:
+    _patient_handling_sys.path.insert(0, str(_PATIENT_HANDLING_SCRIPTS))
+
+from graders import grade_deid as _patient_handling_grade_deid  # noqa: E402
+
+_PATIENT_HANDLING_FILES = REPO / "skills" / "patient-handling-assessment" / "evals" / "files"
+_PATIENT_HANDLING_LEAK = _PATIENT_HANDLING_FILES / "patient-handling-leak.md"
+_PATIENT_HANDLING_CLEAN = _PATIENT_HANDLING_FILES / "patient-handling-clean.md"
+
+
+def test_patient_handling_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _patient_handling_grade_deid(_PATIENT_HANDLING_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "patient-handling seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_patient_handling_small_cell_suppression_caught():
+    """HIGHEST-PHI TIER (T-15-07-02): the sub-5 handling-injury cell on a named ward MUST be caught as
+    a small-cell leak — the <5 suppression rule (with secondary back-calc) is the patient-handling
+    skill's defining D-03 de-id HARD-fail (a <5 cell de-anonymizes the injured handlers)."""
+    verdict = _patient_handling_grade_deid(_PATIENT_HANDLING_LEAK.read_text(encoding="utf-8"))
+    assert verdict["conditions"]["no_small_cell"] is False, (
+        "patient-handling seeded-leak <5 handling-injury cell was NOT caught — small-cell suppression gate is dead"
+    )
+    assert any("small-cell" in r for r in verdict["reasons"]), (
+        "the <5 small-cell leak is not among the auto_fail reasons"
+    )
+
+
+def test_patient_handling_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail)."""
+    verdict = _patient_handling_grade_deid(_PATIENT_HANDLING_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"patient-handling clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# =============================================================================
+# Phase-15 / HC-04 workplace-violence-prevention de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 15-08 (do not reorder/remove the canonical
+# contract assertions above, nor any other skill's appended section). This is the
+# catalog's HIGHEST-PHI tier: workplace-violence incident data — a named victim,
+# assailant, or known-risk patient and any behavioural-health flag — is
+# special-category health data (PHI). It registers the workplace-violence-prevention
+# de-identification PAIR against the SAME deterministic de-id grader the whole pack's
+# non-waivable privacy gate keys off:
+#   - the seeded-leak negative (evals/files/workplace-violence-leak.md) — a named
+#     triage nurse + phone + a named assailant patient with a behavioural-health flag
+#     + a 2-incident type-1 / 3-incident type-2 category on the named Ward 4B + an
+#     embedded re-id key — MUST auto_fail (the gate is live), and the small-cell <5
+#     suppression catch is asserted EXPLICITLY (the D-03 HARD-fail — a sub-5 incident
+#     category on a named ward de-anonymizes the people involved via the small-cell
+#     back-calculation, and must be suppressed), and
+#   - the paired clean positive (evals/files/workplace-violence-clean.md), wired into
+#     the skill's eval CASE, MUST NOT false-positive (the per-skill gate is not
+#     spuriously hard-failed).
+# This append is a SERIAL / orchestrator-batched edit (D-04) — applied in order with
+# the other Wave-3 appends; parallel executors must NOT race-write this shared file.
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _workplace_violence_sys  # noqa: E402
+
+_WORKPLACE_VIOLENCE_SCRIPTS = REPO / "scripts"
+if str(_WORKPLACE_VIOLENCE_SCRIPTS) not in _workplace_violence_sys.path:
+    _workplace_violence_sys.path.insert(0, str(_WORKPLACE_VIOLENCE_SCRIPTS))
+
+from graders import grade_deid as _workplace_violence_grade_deid  # noqa: E402
+
+_WORKPLACE_VIOLENCE_FILES = REPO / "skills" / "workplace-violence-prevention" / "evals" / "files"
+_WORKPLACE_VIOLENCE_LEAK = _WORKPLACE_VIOLENCE_FILES / "workplace-violence-leak.md"
+_WORKPLACE_VIOLENCE_CLEAN = _WORKPLACE_VIOLENCE_FILES / "workplace-violence-clean.md"
+
+
+def test_workplace_violence_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _workplace_violence_grade_deid(_WORKPLACE_VIOLENCE_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "workplace-violence seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_workplace_violence_small_cell_suppression_caught():
+    """HIGHEST-PHI TIER (T-15-08-02): the sub-5 WPV-incident category on a named ward MUST be caught as
+    a small-cell leak — the <5 suppression rule (with secondary back-calc) is the WPV skill's defining
+    D-03 de-id HARD-fail (a 2-incident category on a named ward de-anonymizes the people involved)."""
+    verdict = _workplace_violence_grade_deid(_WORKPLACE_VIOLENCE_LEAK.read_text(encoding="utf-8"))
+    assert verdict["conditions"]["no_small_cell"] is False, (
+        "workplace-violence seeded-leak <5 incident cell was NOT caught — small-cell suppression gate is dead"
+    )
+    assert any("small-cell" in r for r in verdict["reasons"]), (
+        "the <5 small-cell leak is not among the auto_fail reasons"
+    )
+
+
+def test_workplace_violence_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail)."""
+    verdict = _workplace_violence_grade_deid(_WORKPLACE_VIOLENCE_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"workplace-violence clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# =============================================================================
+# Phase-15 / HC-05 lab-biosafety-assessment de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 15-09 (do not reorder/remove the canonical
+# contract assertions above, nor any other skill's appended section). This is the
+# catalog's HIGHEST-PHI tier: laboratory biosafety inputs are special-category health
+# data (PHI) — the specimen-source patient's identity & clinical/serostatus detail and
+# the worker's serological-surveillance / occupational-health record. It registers the
+# lab-biosafety-assessment de-identification PAIR against the SAME deterministic de-id
+# grader the whole pack's non-waivable privacy gate keys off:
+#   - the seeded-leak negative (evals/files/biosafety-leak.md) — a named specimen-source
+#     patient + a named worker's serological-surveillance record + a phone + an embedded
+#     re-id key + a <5 lab-incident/exposure cell — MUST auto_fail (the gate is live),
+#     and the small-cell <5 suppression catch is asserted EXPLICITLY (the D-03 HARD-fail
+#     — a sub-5 lab-incident cell that allows re-identification of a worker's exposure
+#     must be suppressed), and
+#   - the paired clean positive (evals/files/biosafety-clean.md), wired into the skill's
+#     eval CASE, MUST NOT false-positive (the per-skill gate is not spuriously
+#     hard-failed).
+# This append is a SERIAL / orchestrator-batched edit (D-04) — applied in order with
+# the other Wave-3 appends; parallel executors must NOT race-write this shared file.
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _biosafety_sys  # noqa: E402
+
+_BIOSAFETY_SCRIPTS = REPO / "scripts"
+if str(_BIOSAFETY_SCRIPTS) not in _biosafety_sys.path:
+    _biosafety_sys.path.insert(0, str(_BIOSAFETY_SCRIPTS))
+
+from graders import grade_deid as _biosafety_grade_deid  # noqa: E402
+
+_BIOSAFETY_FILES = REPO / "skills" / "lab-biosafety-assessment" / "evals" / "files"
+_BIOSAFETY_LEAK = _BIOSAFETY_FILES / "biosafety-leak.md"
+_BIOSAFETY_CLEAN = _BIOSAFETY_FILES / "biosafety-clean.md"
+
+
+def test_biosafety_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _biosafety_grade_deid(_BIOSAFETY_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "biosafety seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_biosafety_small_cell_suppression_caught():
+    """HIGHEST-PHI TIER (T-15-09-01): the sub-5 lab-incident/exposure breakdown MUST be caught as a
+    small-cell leak — the <5 suppression rule (with secondary back-calc) is the D-03 de-id HARD-fail
+    (a <5 lab-incident cell de-anonymizes a worker's exposure)."""
+    verdict = _biosafety_grade_deid(_BIOSAFETY_LEAK.read_text(encoding="utf-8"))
+    assert verdict["conditions"]["no_small_cell"] is False, (
+        "biosafety seeded-leak <5 lab-incident cell was NOT caught — small-cell suppression gate is dead"
+    )
+    assert any("small-cell" in r for r in verdict["reasons"]), (
+        "the <5 small-cell leak is not among the auto_fail reasons"
+    )
+
+
+def test_biosafety_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail)."""
+    verdict = _biosafety_grade_deid(_BIOSAFETY_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"biosafety clean fixture false-positived: {verdict['reasons']}"
+    )

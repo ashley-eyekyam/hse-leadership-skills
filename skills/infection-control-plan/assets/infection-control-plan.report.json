@@ -1,0 +1,97 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Infection Control Plan — Respiratory Unit, Ward 4B",
+    "subtitle": "Transmission-based IPC plan (CDC isolation precautions / WHO IPC core components / Spaulding)",
+    "author": "HSE Healthcare",
+    "date": "2026-06-23",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel and patients are referred to by role label. Cases and clusters are reported de-identified and aggregated, with categories of fewer than five suppressed and secondary suppression applied so a suppressed cell cannot be back-calculated from totals. Identifiers were pseudonymised before drafting; no patient infection status is attributed to a named person, and the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Unit, agents & transmission routes" },
+    { "type": "paragraph", "text": "Respiratory Unit, Ward 4B. Agents in scope and their transmission routes were identified BEFORE control selection: a contact agent (multidrug-resistant organism), a droplet agent (influenza-like illness), and an airborne agent (suspected pulmonary tuberculosis). Surveillance case detail and any patient infection status were scrubbed to role/aggregate level before drafting; no named patient's infection status is carried into this circulated plan." },
+
+    { "type": "heading", "level": 1, "text": "Engineering & administrative controls (applied BEFORE PPE — the hierarchy lever)" },
+    { "type": "callout", "text": "Controls-first: ventilation, single-room / negative-pressure isolation (AIIR), cohorting, screening and signage are applied BEFORE relying on PPE. An airborne agent managed by an N95/FFP3 respirator alone, with no airborne-infection isolation room or ventilation provision, is a FLAG pushed up the hierarchy — PPE is the residual barrier, never the headline control.", "box_type": "info" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Airborne-infection isolation room (negative pressure, monitored air changes per hour) for the airborne agent; ventilation upgrade where rooms are inadequate", "tier": "Engineering", "owner": "Estates Lead" },
+        { "control": "Single rooms / spatial separation for droplet; dedicated single-room or cohorting + dedicated equipment for contact", "tier": "Engineering", "owner": "IPC Lead" },
+        { "control": "Cohorting, early screening / triage, isolation signage, restricted entry, hand-hygiene programme + audit", "tier": "Administrative", "owner": "Ward Manager" },
+        { "control": "Route-appropriate PPE as the residual barrier (gown+gloves contact; surgical mask droplet; fit-tested respirator airborne)", "tier": "PPE", "owner": "Occupational Health Lead" } ] },
+    { "type": "callout", "text": "PPE is NOT the primary control. A plan whose only airborne control is 'wear an N95/FFP3' with no negative-pressure isolation room, ventilation, or restricted-entry provision is a FLAG pushed up the hierarchy.", "box_type": "warning" },
+
+    { "type": "heading", "level": 1, "text": "Transmission-based precautions by route (Standard Precautions always)" },
+    { "type": "table",
+      "headers": ["Transmission route", "Engineering / administrative control (first)", "Patient placement", "Residual PPE", "Owner"],
+      "rows": [
+        ["Standard (every patient)", "Hand hygiene programme; safe injection; environmental cleaning", "Routine placement", "PPE by anticipated exposure", "Ward Manager"],
+        ["Contact", "Dedicated equipment; cohorting; enhanced cleaning", "Single room or cohort", "Gown + gloves", "IPC Lead"],
+        ["Droplet", "Spatial separation; respiratory etiquette; signage", "Single room / spatial separation", "Surgical mask within range", "IPC Lead"],
+        ["Airborne", "Airborne-infection isolation room (negative pressure); restricted entry; ventilation", "AIIR (negative pressure)", "Fit-tested respirator", "Estates Lead"],
+        ["Environmental", "Terminal-clean protocol; ATP-swab assurance", "n/a", "Task PPE", "Domestic Lead"] ],
+      "caption": "Standard Precautions for every patient, then Transmission-Based precautions layered by route — engineering/administrative controls precede PPE (CDC isolation precautions / KB-SNIP-IPC-PRECAUTIONS)" },
+
+    { "type": "heading", "level": 1, "text": "Spaulding reprocessing decision (device → required level)" },
+    { "type": "table",
+      "headers": ["Spaulding class", "Contact with", "Required reprocessing", "Example device"],
+      "rows": [
+        ["Critical", "Sterile tissue / bloodstream", "Sterilization", "Surgical instruments, biopsy forceps"],
+        ["Semi-critical", "Mucous membranes / non-intact skin", "High-level disinfection (sterilization where feasible)", "Flexible endoscopes, laryngoscope blades"],
+        ["Non-critical", "Intact skin", "Low-level disinfection", "BP cuffs, stethoscopes"] ],
+      "caption": "Spaulding classification (KB-STD-IPC-CDC-WHO). A critical device reprocessed by high-level disinfection only — not sterilization — is a Spaulding mis-application and FAILS." },
+    { "type": "callout", "text": "A critical device (entering sterile tissue / the bloodstream) must be STERILIZED. High-level disinfection of a critical device is a Spaulding mis-application and is rejected.", "box_type": "warning" },
+
+    { "type": "heading", "level": 1, "text": "WHO IPC programme structure (core components)" },
+    { "type": "bullets", "items": [
+        "IPC programme with a trained team and clear governance (WHO core component 1).",
+        "Evidence-based IPC guidelines + education and training (core components 2–3).",
+        "Surveillance of healthcare-associated infection, de-identified and aggregated (core component 4).",
+        "Multimodal improvement strategy + monitoring/audit and feedback (core components 5–6).",
+        "Workload, staffing, bed-occupancy and the built environment / materials (core components 7–8)." ] },
+
+    { "type": "heading", "level": 1, "text": "Surveillance (de-identified / aggregated — small cells suppressed)" },
+    { "type": "metrics", "metrics": [
+        { "label": "HAI cases this period (aggregated)", "value": "≥ 5", "caption": "small cells fewer than five suppressed; secondary suppression applied" },
+        { "label": "Hand-hygiene compliance", "value": "82", "unit": "%", "caption": "vs 95% target", "color": "#C77700" },
+        { "label": "Isolation-room negative-pressure verification", "value": "aggregated", "caption": "daily log; gaps tracked at unit level" } ] },
+    { "type": "paragraph", "text": "Cluster and case counts are reported at unit/aggregate level only. Any category of fewer than five individuals is suppressed, and a second category is suppressed (or aggregated up) so the suppressed value cannot be back-calculated from a published total. No outbreak is reported on a named ward in a way that re-identifies a patient." },
+
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "Airborne agent controlled by respirator alone", "risk_level": "High",
+          "description": "A draft plan relied on an N95/FFP3 respirator with no negative-pressure isolation room or ventilation provision; flagged and pushed up the hierarchy — an airborne-infection isolation room is the engineering control, PPE the residual barrier.", "evidence": "KB-SNIP-IPC-PRECAUTIONS gate (PPE-led, no AIIR)" },
+        { "title": "Daily negative-pressure verification not logged", "risk_level": "Medium",
+          "description": "The isolation-room negative-pressure log has weekend gaps; an automated alarm + log is recommended.", "evidence": "Pressure-log review" } ] },
+
+    { "type": "heading", "level": 1, "text": "Residual risk" },
+    { "type": "paragraph", "text": "After the engineering controls (AIIR / negative pressure, single rooms, ventilation), administrative controls (cohorting, screening, hand-hygiene audit) and route-appropriate residual PPE, the residual transmission risk is framed via risk_matrix as Low–Medium, with PPE as the documented last line." },
+
+    { "type": "heading", "level": 1, "text": "Owned/dated actions" },
+    { "type": "recommendations", "rows": [
+        { "action": "Commission daily negative-pressure verification with an automated alarm + log for the AIIR", "priority": "P1", "owner": "Estates Lead", "due": "2026-07-15" },
+        { "action": "Confirm the Spaulding reprocessing matrix per device class; sterilize all critical devices", "priority": "P1", "owner": "IPC Lead", "due": "2026-07-10" },
+        { "action": "Reinstate night-shift hand-hygiene audit + feedback", "priority": "P2", "owner": "Ward Manager", "due": "2026-08-05" },
+        { "action": "Run the WHO IPC core-component self-assessment and close the gaps", "priority": "P2", "owner": "IPC Lead", "due": "2026-09-30" } ] },
+
+    { "type": "heading", "level": 1, "text": "Assumptions & gaps" },
+    { "type": "bullets", "items": [
+        "Surveillance counts taken from the de-identified aggregated record; categories of fewer than five are suppressed — a missing figure is a [GAP], never invented.",
+        "India site: state biomedical-waste / IPC return owed — [GAP] (resolve the state via hse-india; BMW Rules 2016; no national form number minted)." ] },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off (regulatory basis)" },
+    { "type": "bullets", "items": [
+        "CDC Guideline for Isolation Precautions — Standard + Transmission-Based (contact / droplet / airborne) precautions",
+        "WHO Core Components of Infection Prevention and Control Programmes",
+        "Spaulding classification — critical (sterilization) / semi-critical (high-level disinfection) / non-critical (low-level disinfection)",
+        "UK Health and Social Care Act 2008 Code of Practice on the prevention and control of infections (the Hygiene Code)",
+        "OSHA bloodborne pathogens standard — confidential handling of exposure / health data via KB-REG-OSHA-BBP",
+        "India Bio-Medical Waste Management Rules 2016 segregation via hse-india (no national form number)",
+        "ISO 45001 §6.1.2 — hazard identification & risk assessment; §8.1.2 — hierarchy of controls",
+        "Review trigger: annual IPC review / on-outbreak / on-guideline-change — whichever is first",
+        "Decision-support only — a competent person (infection-prevention & control professional) must review before use." ] }
+  ]
+}

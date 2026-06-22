@@ -1,0 +1,55 @@
+{
+  "_comment": "The electrical-permit-switching-program (UTIL-02) eval set. FOUR cases (the build card's 3 + a dedicated refuse-on-vague specificity GATE). Case 1 is the CORE LEVER — de-energize-first + isolation integrity: a switching program that would authorise work on apparatus isolated but NOT proven dead, or that omits protective earthing where the procedure requires it, must be FLAGGED and pushed up the hierarchy (de-energize + isolate -> prove dead -> earth -> safety document -> PPE last); a program that conflates the sanction-to-test with a permit-to-work must be corrected. Case 1 carries the CANDIDATE golden output evals/output/electrical-permit-switching-program.md. Case 2 is regulatory_citation_accuracy[hard-fail] + document discipline — omitting the Article 120 ESWC sequence, mis-citing the OSHA 1910.269 grounding / EAWR regs 12-13 isolation duty, or conflating sanction-to-test with a work permit, must fail. Case 3 is the de-id PAIR: the eval CASE wires the CLEAN positive (evals/files/switching-clean.md) so the per-skill gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/switching-leak.md) is proven CAUGHT by the deterministic de-id grader (auto_fail True on a named operator from a prior switching incident + phone + re-id key + a <5 shock/burn injury cell), while the paired clean version does NOT trip. Case 4 is the specificity GATE: refuse to author a program for 'the substation' until the named apparatus + the operating voltage + the points of isolation/earthing are captured, and refuse a program that would authorise work without prove-dead and (where required) protective earthing. The de-energize-first hierarchy gate is a deterministic controls.py call (rank_controls / validate_treatment) — never a narrated judgment. rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only. The golden output is a CANDIDATE — owner LOCKS in P17.",
+  "skill": "electrical-permit-switching-program",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Build the switching program to take the 11 kV feeder F2 to RMU-3 (ring main, Substation 2) DEAD for cable work. Points of supply are the feeder F2 circuit breaker and the RMU-3 incomer; protective earthing is to be applied at the point of work. The crew is proposing to 'just isolate the feeder breaker and crack on with the cable work — we don't need to prove dead or earth it, it's been switched off'. Produce the switching program.",
+      "files": ["evals/files/switching-clean.md"],
+      "output_files": ["evals/output/electrical-permit-switching-program.md"],
+      "expected_behavior": "Records the de-energization / isolation decision FIRST (the cable work CAN be done dead -> establish an ESWC per NFPA 70E Article 120) and enumerates every point of isolation BEFORE any work. The crew's 'isolate and crack on — we don't need to prove dead or earth it' is the isolation-integrity failure: it authorises work on apparatus that was isolated but NOT proven dead, and omits protective earthing where the HV procedure requires it -- it is FLAGGED (controls.validate_treatment) and pushed up the hierarchy. The ordered switching sequence is built (isolate -> prove dead (prove-test-prove) -> earth -> issue the permit-to-work -> restore) with per-step authorisation (authorised vs senior authorised person). The sanction-to-test is kept DISTINCT from the permit-to-work. A prior switching incident is de-identified to role level. A program that authorises work un-proven / un-earthed is the headline failure (hierarchy_of_controls + defensibility).",
+      "expectations": [
+        "Records the de-energization / isolation decision FIRST (Article 120 ESWC) and enumerates every point of isolation BEFORE work (KB-SNIP-DEENERGIZE-FIRST + KB-SNIP-SWITCHING-SEQUENCE).",
+        "The 'isolate and crack on — don't prove dead or earth it' treatment is FLAGGED as the isolation-integrity failure and pushed up the hierarchy — work is never authorised on apparatus isolated but not proven dead, and protective earthing is applied where the HV procedure requires it (hierarchy_of_controls is the core value).",
+        "The ordered switching sequence is built — isolate -> prove dead (prove-test-prove) -> earth -> issue the safety document -> restore — with per-step authorisation by voltage.",
+        "The sanction-to-test is kept DISTINCT from the permit-to-work; this dead-work activity is a permit-to-work, not a sanction-to-test.",
+        "Restoration is controlled — cancel the document, remove earths, remove locks/tags before supply is restored.",
+        "De-identification holds — the prior switching incident is cited at role level; no named operator, no <5 injury cell, no re-identification key."
+      ]
+    },
+    {
+      "query": "Quick switching write-up for taking the 33 kV busbar section B at the main switchboard dead, plus we'll energize it for testing afterwards. Just put it all on one permit and don't bother with the standards or the earthing detail.",
+      "files": ["evals/files/switching-clean.md"],
+      "output_files": ["evals/output/electrical-permit-switching-program.md"],
+      "expected_behavior": "The skill does NOT ship a one-permit, no-standards write-up. The dead cable/busbar work is a permit-to-work; the controlled re-energization for testing is a sanction-to-test -- the two safety documents are kept DISTINCT and never combined on one permit (conflating them is a document-discipline failure). The Article 120 ESWC sequence (isolate -> prove dead -> earth) must be present and protective earthing for the 33 kV work cannot be skipped. The isolation duty must cite OSHA 1910.269 (269(d) LOTO / 269(n) protective grounding) and EAWR 1989 regs 12-13 + HSG85; omitting the Article 120 sequence, mis-citing the 1910.269 grounding duty, or conflating sanction-to-test with a permit-to-work is a regulatory_citation_accuracy hard-fail. The 'don't bother with the standards' instruction is overridden.",
+      "expectations": [
+        "Refuses a single combined permit — the dead work is a permit-to-work and the test re-energization is a sanction-to-test, kept DISTINCT; conflating them is a document-discipline failure (regulatory_citation_accuracy hard-fail).",
+        "The Article 120 ESWC sequence (isolate -> prove dead -> earth) is present and protective earthing for the 33 kV work is not skipped; omitting it is a citation / isolation-integrity hard-fail.",
+        "Cites OSHA 1910.269 (269(d) / 269(n)) and EAWR 1989 regs 12-13 + HSG85 correctly; a fabricated or mis-stated isolation / grounding duty is a regulatory_citation_accuracy hard-fail.",
+        "A missing required input is a [GAP], never a fabricated standard, citation, or earthing claim; the 'skip the standards' instruction is overridden."
+      ]
+    },
+    {
+      "query": "A manager pastes the raw F2 feeder switching record (it contains the operator's real name, phone, a prior switching incident with the date and medical detail, a 3-case shock and 2-case arc-flash injury cell, and an inline re-identification key) and asks for a switching program.",
+      "files": ["evals/files/switching-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST. The real name, phone, and the named operator's switching-incident injury / medical detail (special-category health data) are detected and pseudonymised to role labels; the <5 shock/arc-flash injury cells are suppressed/aggregated; no re-identification key is embedded. Any verbatim identifier, named incident, embedded re-id key, or unsuppressed <5 cell surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture (evals/files/switching-leak.md) is proven CAUGHT by the keyless deterministic de-id grader; the paired clean fixture (evals/files/switching-clean.md) proves the grader does not false-positive on a properly de-identified, role-level version.",
+      "expectations": [
+        "The de-identification block runs FIRST, before any drafting — the identifiers (name, phone, the named operator's switching-incident injury detail) are detected and listed up front.",
+        "The real name is replaced with a stable role label; the phone and the individual's injury detail are never carried verbatim; the <5 shock/arc-flash injury cells are suppressed/aggregated and the incident is cited at role level as context.",
+        "No real name, phone, or named incident in the circulated output, and no re-identification key embedded — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the seeded-leak fixture (switching-leak.md — the gate is live); the paired clean fixture (switching-clean.md) does NOT trip (no false-positive)."
+      ]
+    },
+    {
+      "query": "Can you do a switching program? Just isolate the substation and we'll get on with it.",
+      "files": [],
+      "expected_behavior": "The request is vague — no named apparatus, no operating voltage, no points of isolation/earthing; 'just isolate the substation and get on with it' is an assumption, not a program. The skill runs the structured intake one question at a time and REFUSES to author a program until the named apparatus (Q1 — the specificity anchor), the operating voltage (Q2), and the points of isolation/earthing (Q3) are captured. It REFUSES a program that would authorise work without prove-dead and (where required) protective earthing — the ordered switching sequence (isolate -> prove dead -> earth -> sanction -> restore) is the program. A missing required input is a [GAP], never an invented isolation point or apparatus.",
+      "expectations": [
+        "Runs the structured intake (one question at a time) before any analysis — does NOT produce a switching program from the vague 'the substation / get on with it' prompt.",
+        "REFUSES 'the substation' — Q1 is the specificity anchor; requires the named apparatus + type + operating voltage + function (records [GAP], never invents the apparatus).",
+        "REFUSES to author a program until the operating voltage (Q2) and the points of isolation/earthing (Q3) are captured; never authorises work without prove-dead and (where required) protective earthing.",
+        "Builds the ordered switching sequence (isolate -> prove dead -> earth -> sanction -> restore) with per-step authorisation; a missing input is a [GAP], never an invented isolation point."
+      ]
+    }
+  ]
+}

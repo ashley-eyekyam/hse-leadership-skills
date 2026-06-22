@@ -1,0 +1,97 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Lab Biosafety Assessment — Diagnostic Mycobacteriology Lab, Block-C Room 12",
+    "subtitle": "Risk-group → biosafety-level determination + containment plan (CDC/NIH BMBL 6th ed / WHO LBM 4th ed)",
+    "author": "HSE Healthcare",
+    "date": "2026-06-23",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel and specimen-source patients are referred to by role label. The specimen-source patient is referenced by role only; the worker's identity and serological-surveillance / occupational-health record are held confidentially and separately per OSHA 1910.1030(f) / GDPR Art. 9. The lab-incident / exposure summary below is de-identified and aggregated, with categories of fewer than five suppressed. Identifiers were pseudonymised before drafting and the re-identification key is held separately, not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Laboratory & agent / material" },
+    { "type": "paragraph", "text": "Diagnostic mycobacteriology laboratory, Block-C Room 12. Agent: Mycobacterium tuberculosis (primary culture from clinical respiratory specimens). The risk-group → biosafety-level determination (below) was recorded BEFORE any containment or PPE decision. The specimen-source patient identity and the worker's serological-surveillance record were scrubbed to role level before drafting." },
+
+    { "type": "heading", "level": 1, "text": "Risk-group → biosafety-level determination" },
+    { "type": "callout", "text": "The agent's risk group is determined FIRST and is the primary input to the biosafety level. Where an agent's risk group is unknown or unlisted, the assessment emits a literal [GAP] and routes to a competent biosafety officer — it NEVER invents a risk group or a BSL. A BSL assigned from the agent alone, ignoring aerosolization, is FLAGGED.", "box_type": "info" },
+    { "type": "table",
+      "headers": ["Determination step", "Input", "Outcome"],
+      "rows": [
+        ["1. Agent risk group (RG1–RG4)", "M. tuberculosis", "RG3 (WHO LBM — established; not invented)"],
+        ["2. Procedure / aerosol potential", "Primary culture + manipulation", "Aerosol-generating — modifies the required containment"],
+        ["3. Biosafety level (BSL-1–BSL-4)", "RG3 + aerosol-generating procedure", "BSL-3 containment practices, facility, equipment"],
+        ["4. Unlisted / unknown agent (gate)", "n/a (RG3 established)", "If unknown → [GAP] + route to a competent biosafety officer (never invent)"] ],
+      "caption": "The risk-group → BSL determination (BMBL 6th ed / WHO LBM 4th ed) — recorded traceably; an unknown agent risk group is a [GAP], never invented" },
+
+    { "type": "heading", "level": 1, "text": "Hierarchy-ranked controls (engineering containment → procedures → PPE last)" },
+    { "type": "callout", "text": "Engineering-containment-first: the biosafety cabinet (class matched to the aerosol potential), directional airflow, and waste decontamination are selected BEFORE PPE. A 'wear a respirator and gloves' treatment with no biosafety cabinet or BSL-appropriate facility is a FLAG pushed up the hierarchy — PPE is the residual barrier matched to the BSL, never the headline control.", "box_type": "info" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Class II A2 biosafety cabinet for all aerosol-generating manipulation (primary containment matched to the aerosol potential)", "tier": "Engineering", "owner": "Biosafety Officer" },
+        { "control": "BSL-3 facility — inward directional airflow, sealed room, anteroom; double-door autoclave for waste decontamination", "tier": "Engineering", "owner": "Estates Lead" },
+        { "control": "Biosafety procedures + competence sign-off + access restriction; immunisation / serological-surveillance offer", "tier": "Administrative", "owner": "Lab Manager" },
+        { "control": "Respiratory protection (fit-tested) + gown + gloves as the residual barrier matched to BSL-3", "tier": "PPE", "owner": "Biosafety Officer" } ] },
+    { "type": "callout", "text": "PPE is NOT the primary control. A plan whose headline control is 'wear a respirator and gloves' with no biosafety cabinet / BSL facility, or a BSL selected from a guessed risk group, is a FLAG pushed up the hierarchy or a [GAP].", "box_type": "warning" },
+
+    { "type": "heading", "level": 1, "text": "Primary containment (biosafety-cabinet class & facility)" },
+    { "type": "table",
+      "headers": ["Containment element", "Selection", "Basis"],
+      "rows": [
+        ["Biosafety cabinet", "Class II A2", "Aerosol-generating manipulation of an RG3 agent — personnel + product + environmental protection"],
+        ["Directional airflow", "Inward, sealed BSL-3 room + anteroom", "BMBL BSL-3 facility features"],
+        ["Waste decontamination", "On-site autoclave (double-door)", "BMBL — decontaminate before disposal; lab-waste stream via hse-india for India"],
+        ["PPE (residual)", "Fit-tested respirator + gown + gloves", "Residual barrier matched to BSL-3 — never the primary control"] ],
+      "caption": "Primary containment selected by engineering-first hierarchy; PPE is the residual barrier matched to the determined BSL" },
+
+    { "type": "heading", "level": 1, "text": "Biosecurity, immunisation & surveillance" },
+    { "type": "callout", "text": "Restricted access and agent accountability where the agent warrants it; the immunisation / serological-surveillance offer is held confidentially. The worker's serological-surveillance / occupational-health record is held confidentially and separately from this assessment (OSHA 1910.1030(f) / GDPR Art. 9). No worker is named in this circulated artifact.", "box_type": "info" },
+    { "type": "bullets", "items": [
+        "Access control — restricted to trained, authorised staff; the agent inventory / accountability maintained per the biosecurity assessment.",
+        "Immunisation / serological-surveillance — offered and recorded confidentially; individual results are special-category health data, held separately, never circulated.",
+        "Exposure response — immediate first aid → confidential incident report → occupational-health follow-up; the specimen-source patient is referenced by role only." ] },
+
+    { "type": "heading", "level": 1, "text": "Lab-incident / exposure summary (de-identified / aggregated)" },
+    { "type": "metrics", "metrics": [
+        { "label": "Lab-acquired-infection / exposure cases this period (aggregated)", "value": "≥ 5", "caption": "small cells <5 suppressed" },
+        { "label": "BSL-3 containment compliance (audited)", "value": "aggregated", "caption": "reported at programme level only" },
+        { "label": "Serological-surveillance uptake", "value": "aggregated", "caption": "individual status held confidentially" } ] },
+    { "type": "paragraph", "text": "The lab-incident / exposure summary is reported at programme level only; categories of fewer than five individuals are suppressed, with secondary suppression so a suppressed cell cannot be back-calculated from totals. No specimen-source-patient identity, no named worker, and no <5 lab-incident cell is circulated." },
+
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "PPE-led control proposed where engineering containment is required", "risk_level": "High",
+          "description": "A draft control headlined 'wear a respirator and gloves' (no biosafety cabinet / BSL-3 facility) was flagged and pushed up the hierarchy — the Class II A2 cabinet + BSL-3 facility are the primary containment; PPE is the residual barrier.", "evidence": "controls.validate_treatment (ppe_admin_only=True)" },
+        { "title": "BSL proposed from the agent alone, ignoring aerosolization", "risk_level": "Medium",
+          "description": "An initial BSL was proposed from the agent's risk group without the aerosol-generating procedure; the determination was corrected to include the procedure (the procedure modifies the required containment).", "evidence": "KB-SNIP-BIOSAFETY-RA determination" } ] },
+
+    { "type": "heading", "level": 1, "text": "Residual risk" },
+    { "type": "paragraph", "text": "After engineering containment (Class II A2 cabinet, BSL-3 facility, autoclave decontamination), the biosafety procedures, and the residual PPE, the residual biosafety risk is framed via risk_matrix as Low–Medium, with the confidential exposure-response pathway as the last line." },
+
+    { "type": "heading", "level": 1, "text": "Owned/dated actions" },
+    { "type": "recommendations", "rows": [
+        { "action": "Verify Class II A2 biosafety-cabinet certification + the BSL-3 directional-airflow log", "priority": "P1", "owner": "Biosafety Officer", "due": "2026-07-15" },
+        { "action": "Confirm autoclave decontamination validation for the lab-waste stream", "priority": "P1", "owner": "Estates Lead", "due": "2026-07-10" },
+        { "action": "Run the immunisation / serological-surveillance offer + record uptake confidentially", "priority": "P2", "owner": "Occupational Health Lead", "due": "2026-09-30" },
+        { "action": "Review access control + agent accountability against the biosecurity assessment", "priority": "P2", "owner": "Lab Manager", "due": "2026-08-31" } ] },
+
+    { "type": "heading", "level": 1, "text": "Assumptions & gaps" },
+    { "type": "bullets", "items": [
+        "Where an agent's risk group is unknown or unlisted, the determination is a [GAP] routed to a competent biosafety officer — a risk group or BSL is never invented.",
+        "Lab-incident / exposure counts taken from the de-identified summary; categories of fewer than five are suppressed — a missing figure is a [GAP], never invented.",
+        "India site: state lab-waste / biomedical-waste segregation return owed — [GAP] (resolve the state via hse-india; BMW Rules 2016; no national form number minted)." ] },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off (regulatory basis)" },
+    { "type": "bullets", "items": [
+        "CDC/NIH BMBL 6th ed (2020) — biosafety levels BSL-1–4 + biosafety-cabinet classes (the containment-level decision)",
+        "WHO Laboratory Biosafety Manual 4th ed (2020) — risk groups RG1–RG4 + the risk-assessment approach (the risk-group determination)",
+        "NIH Guidelines — recombinant / synthetic nucleic-acid work + IBC oversight (where applicable)",
+        "OSHA 29 CFR 1910.1030 — where a lab procedure handles human blood / OPIM ((c) ECP / (d)(2) engineering & work-practice controls / (f) confidential follow-up + HBV vaccination)",
+        "UK COSHH 2002 + the ACDP hazard groups (EU/UK binding duty)",
+        "India Bio-Medical Waste Management Rules 2016 lab-waste segregation via hse-india (no national form number)",
+        "ISO 45001 §6.1.2 — hazard identification & risk assessment",
+        "Review trigger: annual / on-agent-change / on-procedure-change / on-incident — whichever is first",
+        "Decision-support only — a competent person (a Biological Safety Officer) must review before use." ] }
+  ]
+}
