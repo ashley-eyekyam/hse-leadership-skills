@@ -1,0 +1,62 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Offshore Safety Case — Argument Map (Thistle Bravo, worked example)",
+    "subtitle": "Fixed production platform — SI 2015/398 Schedule 6/7 claim → argument → evidence",
+    "author": "offshore-safety-case (assistive)",
+    "date": "2026-06-23",
+    "classification": "Confidential — competent-person review required; precedes competent-authority acceptance",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "This worked example structures the duty-holder's offshore safety case for the Thistle Bravo fixed production platform under SI 2015/398 (SCR 2015) as a goal-structured claim → argument → evidence map. Where the duty-holder supplied evidence it is recorded with its provenance; where it was not supplied the element is recorded [GAP]. No QRA or consequence figure is computed or invented here, no barrier/SCE is asserted effective without a cited performance standard, and the output does not assert acceptance — it precedes competent-authority acceptance." },
+    { "type": "callout", "text": "Top claim (to be demonstrated by the duty-holder's evidence): major-accident hazards on Thistle Bravo are controlled so that risks to personnel and the environment are reduced to ALARP.", "box_type": "info" },
+    { "type": "heading", "level": 1, "text": "Safety-case argument map (SI 2015/398 Schedule 6/7)" },
+    { "type": "table",
+      "headers": ["Claim", "Sub-claim / element", "Argument strategy", "Evidence reference (duty-holder-supplied)", "Status"],
+      "rows": [
+        ["Risks are ALARP", "MAH identification", "Identify MAH from the duty-holder's HAZID/bowtie", "HAZID-TB-2025; Bowtie BT-01..BT-04 (supplied)", "Supported"],
+        ["Risks are ALARP", "Hydrocarbon release controlled", "Prevention + detection + mitigation barriers, each to a performance standard", "Bowtie BT-01; F&G SCE PS-07 (verified)", "Supported"],
+        ["Risks are ALARP", "ALARP demonstration", "Record the external QRA with provenance (never computed here)", "[GAP] — external QRA not yet supplied", "Pending external input"],
+        ["Risks are ALARP", "SCE register + performance standards", "List the SCEs and the performance standard each must meet", "SCE register TB-SCE-v3 (supplied, 2 PS [GAP])", "Partially supported"],
+        ["Risks are ALARP", "Independent verification", "Record the verifier findings against the SCE performance standards", "Verifier report VR-2025-11 (supplied)", "Supported"],
+        ["Risks are ALARP", "Emergency response (EER)", "Cross-reference the marine-emergency-response (MAR-03) EER plan", "marine-emergency-response (MAR-03) plan — Thistle Bravo", "Cross-referenced"]
+      ],
+      "caption": "Goal-structured safety-case argument — element / strategy / evidence / status. Unsupplied evidence is [GAP], never asserted Supported." },
+    { "type": "heading", "level": 2, "text": "Supporting evidence (duty-holder-supplied; [GAP] where absent)" },
+    { "type": "bullets", "items": [
+        "HAZID-TB-2025 and bowtie analyses BT-01 to BT-04 (supplied)",
+        "Fire & gas SCE performance standard PS-07 with verifier finding (supplied)",
+        "External QRA / consequence-modelling report — [GAP], not yet supplied (the skill records, never computes)",
+        "SCE register TB-SCE-v3 — two performance standards still [GAP]",
+        "Emergency response (EER) — see the marine-emergency-response (MAR-03) plan for Thistle Bravo"
+      ] },
+    { "type": "heading", "level": 1, "text": "Key findings (structuring gaps, not analysis)" },
+    { "type": "findings", "rows": [
+        { "title": "External QRA / ALARP demonstration not supplied", "risk_level": "High",
+          "description": "The ALARP demonstration cannot be assembled without the duty-holder's external QRA. Recorded [GAP] — no figure is invented or computed.", "evidence": "Argument map, ALARP row" },
+        { "title": "Two SCE performance standards outstanding", "risk_level": "Medium",
+          "description": "Two SCEs in register TB-SCE-v3 lack a stated performance standard; neither is asserted effective until the standard and a verifier finding are supplied. Recorded [GAP].", "evidence": "SCE register TB-SCE-v3" } ] },
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls (HoC-ranked risk-reduction measures)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Inherently safer design — topsides inventory minimisation", "tier": "Elimination", "owner": "Process Authority" },
+        { "control": "Fire & gas detection with automatic deluge (SCE PS-07, verified)", "tier": "Engineering", "owner": "Technical Authority" },
+        { "control": "Permit-to-work and safe-isolation regime", "tier": "Administrative", "owner": "OIM" } ] },
+    { "type": "heading", "level": 1, "text": "Recommendations ([GAP]-closure, SMART)" },
+    { "type": "recommendations", "rows": [
+        { "action": "Supply the external QRA / consequence analysis so the ALARP demonstration can be recorded with provenance", "priority": "P1", "owner": "Technical Authority", "due": "2026-09-30" },
+        { "action": "Supply the two outstanding SCE performance standards and the verifier findings against them", "priority": "P1", "owner": "Duty Holder", "due": "2026-08-31" } ] },
+    { "type": "callout", "text": "This is decision-support that PRECEDES competent-authority acceptance. It does not assert, and must not be read as, an accepted/approved/authorised safety case. A competent person must review it; acceptance is the act of HSE + OPRED.", "box_type": "critical" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": [
+        "Offshore Installations (Offshore Safety Directive) (Safety Case etc.) Regulations 2015 — SI 2015/398 (current; SCR 2005 is the superseded legacy reference)",
+        "Offshore Safety Directive 2013/30/EU",
+        "ALARP demonstration principles (external QRA recorded, never computed here)",
+        "ISO 45001 §8.1.2 — hierarchy of controls"
+      ] }
+  ]
+}

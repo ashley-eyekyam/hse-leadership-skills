@@ -1,0 +1,50 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Warehouse Racking & MHE Safety Assessment — <named site / installation>",
+    "subtitle": "EN 15635 inspection regime · SEMA RAG remedial priority · engineered MHE/pedestrian segregation",
+    "author": "HSE Logistics & Transport",
+    "date": "<ISO date>",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "Personnel and any prior struck-by / rack-collapse incident are referred to by role label only. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "<One-paragraph summary: the named site/installation, the EN 15635 inspection-regime status, the headline SEMA RAG findings (Red = immediate off-load), and the engineered MHE/pedestrian segregation gaps. State that controls are SWL-design / inspection / engineered-segregation led.>" },
+    { "type": "metrics", "metrics": [
+        { "label": "Bays assessed", "value": "<n>" },
+        { "label": "SEMA Red findings", "value": "<n>", "caption": "immediate off-load" },
+        { "label": "SWL [GAP]s", "value": "<n>", "caption": "rating not supplied" } ] },
+    { "type": "heading", "level": 1, "text": "Racking installation & SWL" },
+    { "type": "table",
+      "headers": ["Run / bays", "Rack type", "SWL load notice", "Configuration verified", "Status"],
+      "rows": [
+        ["<bays>", "<APR / drive-in / ...>", "<rating or [GAP]>", "<yes / [GAP]>", "<OK / [GAP] / finding>"]
+      ],
+      "caption": "Racking configuration vs displayed SWL — an unsupplied SWL is [GAP], never assumed" },
+    { "type": "heading", "level": 1, "text": "EN 15635 inspection regime" },
+    { "type": "bullets", "items": ["PRRS appointment: <named role / [GAP]>", "Weekly visual inspection: <in place / gap>", ">=12-monthly expert inspection: <date / [GAP] — high-priority finding>"] },
+    { "type": "heading", "level": 1, "text": "SEMA RAG damage findings" },
+    { "type": "findings", "rows": [
+        { "title": "<Red-band damage finding>", "risk_level": "High",
+          "description": "SEMA Red — critical. Immediate off-load + isolate the affected run; repair before reuse.", "evidence": "<inspection record / [GAP]>" }
+      ] },
+    { "type": "heading", "level": 1, "text": "MHE & pedestrian segregation" },
+    { "type": "paragraph", "text": "<Describe the traffic layout and whether vehicles and pedestrians are ENGINEERED apart by barriers, one-way systems, and marked/protected walkways/crossings — before any reliance on hi-vis or signage.>" },
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls" },
+    { "type": "hoc_table", "rows": [
+        { "control": "<SWL-correction / column protection / engineered segregation>", "tier": "Elimination", "owner": "<role>" },
+        { "control": "<rack-end protectors / barriers / one-way routing>", "tier": "Engineering", "owner": "<role>" },
+        { "control": "<PRRS inspection regime / operator competence>", "tier": "Administrative", "owner": "<role>" } ] },
+    { "type": "heading", "level": 1, "text": "Recommendations" },
+    { "type": "recommendations", "rows": [
+        { "action": "<Red-band run: immediate off-load + isolate>", "priority": "P1", "owner": "<role>", "due": "<immediate>" }
+      ] },
+    { "type": "callout", "text": "Any SEMA Red-band finding triggers an IMMEDIATE off-load + isolate of the affected run — it is never down-rated to 'monitor'. Amber repairs within 4 weeks and auto-escalates to Red.", "box_type": "warning" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": ["BS EN 15635:2008 + SEMA Code of Practice (racking inspection regime + RAG)", "OSHA 29 CFR 1910.178 / PUWER 1998 / HSE ACOP L117 / HSG136 (MHE + engineered segregation)", "India: Motor Transport Workers Act 1961 / Factories Act via hse-india (state detection; [GAP], no national form)", "ISO 45001 §8.1.2"] }
+  ]
+}

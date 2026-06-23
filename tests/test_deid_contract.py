@@ -1493,3 +1493,296 @@ def test_wind_turbine_clean_fixture_passes():
     assert verdict["auto_fail"] is False, (
         f"wind-turbine clean fixture false-positived: {verdict['reasons']}"
     )
+
+
+# =============================================================================
+# Phase-16 / LOG-02 warehouse-racking-mhe-safety de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 16-09 (do not reorder/remove the canonical
+# contract assertions above, nor any Phase-14/15 section, nor any other Phase-16
+# section — LOG-01 driver-fatigue, RAIL-01, REN-01 wind-turbine, etc.).
+# warehouse-racking-mhe-safety (LOG-02) is the logistics racking-inspection +
+# MHE/pedestrian-segregation skill. Its inputs are MOSTLY asset/installation data
+# (bay configs, SWL ratings, SEMA RAG damage findings) which carry NO personal
+# data — this is the LOWER de-id tier — but a racking + traffic assessment routinely
+# cites a prior struck-by / rack-collapse / forklift-impact incident, and a named
+# injured worker from that incident is special-category health data (GDPR Art. 9 /
+# India DPDP). So the PAIR registers the lower-tier struck-by-incident scrub against
+# the SAME deterministic de-id grader the whole pack's non-waivable privacy gate
+# keys off:
+#   - the seeded-leak negative (evals/files/warehouse-racking-mhe-safety-leak.md) — a
+#     named injured worker from a prior struck-by incident + a phone + the medical
+#     outcome + an embedded re-identification key + a <5 forklift-strike injury cell —
+#     MUST hard-fail (auto_fail True), and the <5 cell MUST be caught as a small-cell
+#     leak (a <5 struck-by cell on a named crossing de-anonymizes the worker);
+#   - the paired clean positive (evals/files/warehouse-racking-mhe-safety-clean.md),
+#     authored DEFENSIVELY (no name pair, no phone digit-run, no <5 cell, no embedded
+#     key; the prior incident cited at role level only), MUST NOT false-positive.
+# This append is a SERIAL / orchestrator-batched edit (D-04) — applied in order with
+# the other Wave-4 appends; parallel executors must NOT race-write this shared file.
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _warehouse_racking_sys  # noqa: E402
+
+_WAREHOUSE_RACKING_SCRIPTS = REPO / "scripts"
+if str(_WAREHOUSE_RACKING_SCRIPTS) not in _warehouse_racking_sys.path:
+    _warehouse_racking_sys.path.insert(0, str(_WAREHOUSE_RACKING_SCRIPTS))
+
+from graders import grade_deid as _warehouse_racking_grade_deid  # noqa: E402
+
+_WAREHOUSE_RACKING_FILES = REPO / "skills" / "warehouse-racking-mhe-safety" / "evals" / "files"
+_WAREHOUSE_RACKING_LEAK = _WAREHOUSE_RACKING_FILES / "warehouse-racking-mhe-safety-leak.md"
+_WAREHOUSE_RACKING_CLEAN = _WAREHOUSE_RACKING_FILES / "warehouse-racking-mhe-safety-clean.md"
+
+
+def test_warehouse_racking_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live):
+    a reproduced injured-worker NAME from a prior struck-by incident + a personal phone +
+    an embedded re-identification key + a <5 forklift-strike injury cell."""
+    verdict = _warehouse_racking_grade_deid(_WAREHOUSE_RACKING_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "warehouse-racking seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_warehouse_racking_seeded_leak_small_cell_suppression_caught():
+    """LOWER TIER (T-16-09-01): the sub-5 forklift-strike / near-miss struck-by cell on a named
+    goods-in crossing MUST be caught as a small-cell leak — a <5 cell de-anonymizes the worker
+    involved in the prior struck-by incident."""
+    verdict = _warehouse_racking_grade_deid(_WAREHOUSE_RACKING_LEAK.read_text(encoding="utf-8"))
+    assert verdict["conditions"]["no_small_cell"] is False, (
+        "warehouse-racking seeded-leak <5 struck-by cell was NOT caught — small-cell gate is dead"
+    )
+    assert any("small-cell" in r for r in verdict["reasons"]), (
+        "the <5 small-cell leak is not among the auto_fail reasons"
+    )
+
+
+def test_warehouse_racking_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail; in
+    particular no _PHONE_RE false-positive — the clean fixture carries NO phone/digit-run — and no
+    name false-positive on the role-labelled personnel; the prior struck-by incident is cited at
+    role level only)."""
+    verdict = _warehouse_racking_grade_deid(_WAREHOUSE_RACKING_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"warehouse-racking clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# =============================================================================
+# Phase-16 / MAR-02 dropped-objects-prevention de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 16-10 (do not reorder/remove the canonical
+# contract assertions above, nor any other skill's appended section). LOWER tier:
+# a dropped-objects-prevention artifact is MOSTLY asset/installation data (at-height
+# inventories, securing standards, DROPS survey findings, masses/fall-heights) which
+# carry NO personal data — but a DROPS survey routinely cites a prior dropped-object
+# struck-by / fatality incident, and a named injured worker from that incident is
+# special-category health data (GDPR Art. 9 / India DPDP). So the PAIR registers the
+# lower-tier struck-by-incident scrub against the SAME deterministic de-id grader the
+# whole pack's non-waivable privacy gate keys off:
+#   - the seeded-leak negative (evals/files/dropped-objects-prevention-leak.md) — a
+#     named injured worker from a prior struck-by incident + named personnel + a phone
+#     + a payroll/employee id + an embedded re-identification key + a <5 struck-by
+#     injury cell — MUST hard-fail (auto_fail True), and the <5 cell MUST be caught as
+#     a small-cell leak (a <5 struck-by cell on a named installation de-anonymizes the
+#     worker);
+#   - the paired clean positive (evals/files/dropped-objects-prevention-clean.md),
+#     authored DEFENSIVELY (no name pair, no phone digit-run, no <5 cell, no embedded
+#     key; the m·g·h figures and DROPS RP / API RP citations do NOT trip the phone/name
+#     detectors; the prior incident cited at role level only), MUST NOT false-positive.
+# This append is a SERIAL / orchestrator-batched edit (D-04) — applied in order with
+# the other Wave-4 appends; parallel executors must NOT race-write this shared file.
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _dropped_objects_sys  # noqa: E402
+
+_DROPPED_OBJECTS_SCRIPTS = REPO / "scripts"
+if str(_DROPPED_OBJECTS_SCRIPTS) not in _dropped_objects_sys.path:
+    _dropped_objects_sys.path.insert(0, str(_DROPPED_OBJECTS_SCRIPTS))
+
+from graders import grade_deid as _dropped_objects_grade_deid  # noqa: E402
+
+_DROPPED_OBJECTS_FILES = REPO / "skills" / "dropped-objects-prevention" / "evals" / "files"
+_DROPPED_OBJECTS_LEAK = _DROPPED_OBJECTS_FILES / "dropped-objects-prevention-leak.md"
+_DROPPED_OBJECTS_CLEAN = _DROPPED_OBJECTS_FILES / "dropped-objects-prevention-clean.md"
+
+
+def test_dropped_objects_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live):
+    a reproduced injured-worker NAME from a prior dropped-object struck-by incident + named
+    personnel + a personal phone + a payroll/employee id + an embedded re-identification key +
+    a <5 struck-by injury cell."""
+    verdict = _dropped_objects_grade_deid(_DROPPED_OBJECTS_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "dropped-objects seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_dropped_objects_seeded_leak_small_cell_suppression_caught():
+    """LOWER TIER (T-16-10-01): the sub-5 dropped-object struck-by / near-miss cell on a named
+    installation MUST be caught as a small-cell leak — a <5 cell de-anonymizes the worker involved
+    in the prior struck-by incident."""
+    verdict = _dropped_objects_grade_deid(_DROPPED_OBJECTS_LEAK.read_text(encoding="utf-8"))
+    assert verdict["conditions"]["no_small_cell"] is False, (
+        "dropped-objects seeded-leak <5 struck-by cell was NOT caught — small-cell gate is dead"
+    )
+    assert any("small-cell" in r for r in verdict["reasons"]), (
+        "the <5 small-cell leak is not among the auto_fail reasons"
+    )
+
+
+def test_dropped_objects_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail; in
+    particular no _PHONE_RE false-positive on the m·g·h figures or the DROPS RP / API RP 2D/54
+    citations, and no name false-positive on the role-labelled personnel; the prior struck-by
+    incident is cited at role level only)."""
+    verdict = _dropped_objects_grade_deid(_DROPPED_OBJECTS_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"dropped-objects clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# =============================================================================
+# Phase-16 / MAR-01 offshore-safety-case de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 16-11 (do not reorder/remove the canonical
+# contract assertions above, nor any Phase-14/15 section, nor any other Phase-16
+# section — LOG-01 driver-fatigue, RAIL-01, RAIL-02, RAIL-03, MAR-03 marine-emergency,
+# REN-02 lone-working, REN-01 wind-turbine, LOG-02 warehouse-racking, MAR-02
+# dropped-objects). offshore-safety-case (MAR-01) is the phase's ONLY ASSISTIVE skill;
+# it STRUCTURES the SI 2015/398 safety-case argument. Its inputs are MOSTLY
+# installation/asset-level data (MAH set, SCE register, performance standards,
+# bowtie/HAZOP references) which carry NO personal data — this is the LOWER de-id
+# tier — but a safety case routinely cites a prior major-accident / loss-of-containment
+# incident and a duty-holder / station-bill roster, and a named individual from either
+# is special-category health data (GDPR Art. 9 / India DPDP). So the PAIR registers the
+# lower-tier prior-incident + roster scrub against the SAME deterministic de-id grader
+# the whole pack's non-waivable privacy gate keys off:
+#   - the seeded-leak negative (evals/files/offshore-safety-case-leak.md) — a named OIM +
+#     a personal phone + a named technical authority + an OPITO competence-card number +
+#     an employee number + an embedded re-identification key + a <5 loss-of-containment
+#     injury cell — MUST hard-fail (auto_fail True), and the <5 cell MUST be caught as a
+#     small-cell leak (a <5 prior-incident cell on a named installation de-anonymizes the
+#     worker);
+#   - the paired clean positive (evals/files/offshore-safety-case-clean.md), authored
+#     DEFENSIVELY (no name pair, no phone digit-run, no <5 cell, no embedded key; the
+#     SI 2015/398 / 2013/30/EU citations and the prior incident cited at role/aggregate
+#     level only do NOT trip the phone/name detectors), MUST NOT false-positive.
+# This append is a SERIAL / orchestrator-batched edit (D-04) — applied in order with the
+# other Wave-4 appends; parallel executors must NOT race-write this shared file.
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _offshore_safety_case_sys  # noqa: E402
+
+_OFFSHORE_SAFETY_CASE_SCRIPTS = REPO / "scripts"
+if str(_OFFSHORE_SAFETY_CASE_SCRIPTS) not in _offshore_safety_case_sys.path:
+    _offshore_safety_case_sys.path.insert(0, str(_OFFSHORE_SAFETY_CASE_SCRIPTS))
+
+from graders import grade_deid as _offshore_safety_case_grade_deid  # noqa: E402
+
+_OFFSHORE_SAFETY_CASE_FILES = REPO / "skills" / "offshore-safety-case" / "evals" / "files"
+_OFFSHORE_SAFETY_CASE_LEAK = _OFFSHORE_SAFETY_CASE_FILES / "offshore-safety-case-leak.md"
+_OFFSHORE_SAFETY_CASE_CLEAN = _OFFSHORE_SAFETY_CASE_FILES / "offshore-safety-case-clean.md"
+
+
+def test_offshore_safety_case_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live):
+    a reproduced OIM NAME + personal phone + a named technical authority + an OPITO
+    competence-card number + an employee number + an embedded re-identification key +
+    a <5 loss-of-containment injury cell."""
+    verdict = _offshore_safety_case_grade_deid(_OFFSHORE_SAFETY_CASE_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "offshore-safety-case seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_offshore_safety_case_seeded_leak_small_cell_suppression_caught():
+    """LOWER TIER (T-16-11-03): the sub-5 prior loss-of-containment / isolation-injury cell on a
+    named installation MUST be caught as a small-cell leak — a <5 cell de-anonymizes the worker
+    involved in the prior major-accident incident."""
+    verdict = _offshore_safety_case_grade_deid(_OFFSHORE_SAFETY_CASE_LEAK.read_text(encoding="utf-8"))
+    assert verdict["conditions"]["no_small_cell"] is False, (
+        "offshore-safety-case seeded-leak <5 prior-incident cell was NOT caught — small-cell gate is dead"
+    )
+    assert any("small-cell" in r for r in verdict["reasons"]), (
+        "the <5 small-cell leak is not among the auto_fail reasons"
+    )
+
+
+def test_offshore_safety_case_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail; in
+    particular no _PHONE_RE false-positive on the SI 2015/398 / 2013/30/EU / ISO 45001 citations,
+    and no name false-positive on the role-labelled accountabilities; the prior incident is cited
+    at role/aggregate level only)."""
+    verdict = _offshore_safety_case_grade_deid(_OFFSHORE_SAFETY_CASE_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"offshore-safety-case clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# =============================================================================
+# Phase-16 / REN-03 weather-dynamic-risk-assessment de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 16-12 (do not reorder/remove the canonical
+# contract assertions above, nor any other skill's appended section). It registers
+# the weather-dynamic-risk-assessment de-identification PAIR against the SAME
+# deterministic de-id grader the whole pack's non-waivable privacy gate keys off,
+# mirroring the scripts/tests/test_b*_deid_pair.py precedent:
+#   - the seeded-leak negative (evals/files/weather-dynamic-risk-assessment-leak.md) —
+#     a reproduced worker NAME from a prior weather-incident context + a personal phone
+#     + an embedded re-identification key + a <5 weather-related injury cell — MUST
+#     auto_fail (the gate is live), and the <5 cell MUST be caught as a small-cell leak
+#     (a <5 prior-incident cell on a named site de-anonymizes the worker involved);
+#   - the paired clean positive (evals/files/weather-dynamic-risk-assessment-clean.md),
+#     wired into the skill's eval CASE, MUST NOT false-positive — in particular no
+#     _PHONE_RE false-positive on the threshold figures / the BS 7121-1 man-riding
+#     anchor, and no name false-positive on the role-labelled accountabilities; the
+#     prior incident is cited at role/aggregate level only.
+# This append is a SERIAL / orchestrator-batched edit (D-04) — applied in order with
+# the other Wave-4 appends; parallel executors must NOT race-write this shared file.
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _weather_dynamic_sys  # noqa: E402
+
+_WEATHER_DYNAMIC_SCRIPTS = REPO / "scripts"
+if str(_WEATHER_DYNAMIC_SCRIPTS) not in _weather_dynamic_sys.path:
+    _weather_dynamic_sys.path.insert(0, str(_WEATHER_DYNAMIC_SCRIPTS))
+
+from graders import grade_deid as _weather_dynamic_grade_deid  # noqa: E402
+
+_WEATHER_DYNAMIC_FILES = REPO / "skills" / "weather-dynamic-risk-assessment" / "evals" / "files"
+_WEATHER_DYNAMIC_LEAK = _WEATHER_DYNAMIC_FILES / "weather-dynamic-risk-assessment-leak.md"
+_WEATHER_DYNAMIC_CLEAN = _WEATHER_DYNAMIC_FILES / "weather-dynamic-risk-assessment-clean.md"
+
+
+def test_weather_dynamic_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live):
+    a reproduced worker NAME from a prior weather-incident context + a personal phone +
+    an embedded re-identification key + a <5 weather-related injury cell."""
+    verdict = _weather_dynamic_grade_deid(_WEATHER_DYNAMIC_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "weather-dynamic-risk-assessment seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_weather_dynamic_seeded_leak_small_cell_suppression_caught():
+    """LOWER TIER: the sub-5 prior weather-related injury cell on a named site MUST be caught
+    as a small-cell leak — a <5 cell de-anonymizes the worker involved in the prior incident."""
+    verdict = _weather_dynamic_grade_deid(_WEATHER_DYNAMIC_LEAK.read_text(encoding="utf-8"))
+    assert verdict["conditions"]["no_small_cell"] is False, (
+        "weather-dynamic-risk-assessment seeded-leak <5 prior-incident cell was NOT caught — small-cell gate is dead"
+    )
+    assert any("small-cell" in r for r in verdict["reasons"]), (
+        "the <5 small-cell leak is not among the auto_fail reasons"
+    )
+
+
+def test_weather_dynamic_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail; in
+    particular no _PHONE_RE false-positive on the threshold figures / the BS 7121-1 man-riding
+    anchor, and no name false-positive on the role-labelled accountabilities)."""
+    verdict = _weather_dynamic_grade_deid(_WEATHER_DYNAMIC_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"weather-dynamic-risk-assessment clean fixture false-positived: {verdict['reasons']}"
+    )

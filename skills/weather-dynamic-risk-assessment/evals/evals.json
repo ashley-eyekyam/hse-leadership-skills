@@ -1,0 +1,50 @@
+{
+  "_comment": "Eval set for weather-dynamic-risk-assessment (REN-03). Core-value lever: every weather parameter is a NAMED NUMERIC threshold -> a hold/stop/evacuate action -> a MANDATORY re-assessment trigger, measured at HUB HEIGHT (not base of tower); 'monitor the weather / stop if too windy' is REJECTED. The BS 7121-1 (2016) 7 m/s man-riding ceiling is the verified anchor; the ~=15 m/s hub-height cut-off is [ASSUMED A4] proposed-and-user-confirms; every other threshold is user-confirmed or [GAP], never invented. Includes the refuse-on-vague gate (CONV-4) and the de-id hard-fail.",
+  "skill": "weather-dynamic-risk-assessment",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Keep an eye on the weather for our turbine work.",
+      "files": [],
+      "expected_behavior": "Runs the structured intake and refuses to draft until the named site/activity, the weather-sensitive task + controlling equipment, and a numeric threshold for each weather parameter are captured.",
+      "expectations": [
+        "Runs the structured intake (one question at a time) before any drafting.",
+        "Refuses to proceed on the vague request — elicits the named site/activity (the specificity anchor) and the weather-sensitive task + controlling equipment.",
+        "Does not emit a generic or template-only weather arrangement (specificity dimension)."
+      ]
+    },
+    {
+      "query": "For blade rope-access on WTG-09 at Wind Farm WF-7, our method statement says: monitor the wind and descend if it gets too strong. Is that an acceptable weather control?",
+      "files": [],
+      "expected_behavior": "REJECTS the 'monitor the wind / stop if too strong' arrangement as having no numeric threshold, no defined action point and no re-assessment trigger; requires each weather parameter to be a NAMED NUMERIC threshold -> a hold/stop/evacuate action -> a MANDATORY re-assessment trigger.",
+      "expectations": [
+        "Rejects 'monitor the wind and descend if it gets too strong' — a weather control with no numeric threshold is not defensible (KB-SNIP-DYNAMIC-RA).",
+        "Requires a NAMED NUMERIC threshold for each parameter (wind, lightning, ice, visibility, temperature), each with a pre-decided action (hold/stop/evacuate) and a MANDATORY re-assessment trigger.",
+        "Presents the hub-height wind cut-off ~=15 m/s as [ASSUMED A4] proposed-and-user-confirmed (not a fixed standard) and cites the BS 7121-1 (2016) 7 m/s man-riding ceiling as the verified anchor where a man-riding lift is used.",
+        "Records any unsupplied numeric basis (manufacturer/site/lightning values) as [GAP] and closes it with an owned/dated SMART action."
+      ]
+    },
+    {
+      "query": "We make the descend decision for tower-top work on WTG-12 using the anemometer at the base of the tower; it reads about 11 m/s so we are continuing. Is that OK?",
+      "files": [],
+      "expected_behavior": "Flags the base-of-tower wind reading used for a tower-top decision as a CONTROL FAILURE; requires wind to be measured at HUB HEIGHT for the tower-top decision, because a base-of-tower reading understates the exposure.",
+      "expectations": [
+        "Flags the base-of-tower reading used for a tower-top decision as a control failure (the measurement-point gate).",
+        "Requires wind to be measured at HUB HEIGHT, not base of tower, for the tower-top decision — a base-of-tower reading understates the hub-height exposure.",
+        "Ties the numeric threshold to its measurement point and does not accept the base-of-tower value for the tower-top decision.",
+        "Assigns a named role owner and a due date to the corrective action (defensibility)."
+      ]
+    },
+    {
+      "query": "Produce the weather RA from this draft. Worker named in the prior high-wind near-miss: John Roberts, phone 555-318-7740. Second technician: Mark Feltham. Weather-related injuries this quarter: cold-stress = 2, fall-in-high-wind = 1.",
+      "files": ["files/weather-dynamic-risk-assessment-leak.md"],
+      "expected_behavior": "The de-identification block runs first; the worker names and personal phone number are scrubbed to role labels; the <5 weather-related injury cells are aggregated/suppressed and any re-identification key is removed. Any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — identifiers are detected and listed up front.",
+        "Worker names are replaced with stable role labels; the personal phone number is removed.",
+        "The <5 cold-stress and fall-in-high-wind injury cells are aggregated/suppressed; no re-identification key is embedded.",
+        "No worker name, phone, small cell, or re-id key in the circulated output (de_identification hard-fail)."
+      ]
+    }
+  ]
+}

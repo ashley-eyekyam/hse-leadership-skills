@@ -1,0 +1,58 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Dropped Objects Prevention — Platform Bravo drilling derrick",
+    "subtitle": "DROPS survey & register, monkeyboard to drill floor (worked example)",
+    "author": "HSE Marine & Offshore",
+    "date": "2026-06-23",
+    "classification": "Confidential — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "This DROPS survey covers the Platform Bravo drilling derrick (monkeyboard to drill floor, UKCS). The control posture is reliable securing first: every at-height item is surveyed and secured with a primary fixing plus secondary retention, with an exclusion zone below at-height work. Consequence bands trace to the public m·g·h method using the user-supplied mass and fall height; the user's licensed DROPS Calculator bands are recorded and the licensed threshold values are not recomputed." },
+    { "type": "callout", "text": "Lead control: reliable securing (primary fixing + secondary retention) + DROPS survey + exclusion zone below the derrick — 'hard hats below' is the residual, not the headline.", "box_type": "success" },
+    { "type": "heading", "level": 1, "text": "DROPS survey scope" },
+    { "type": "bullets", "items": [
+        "Installation/area: Platform Bravo drilling derrick, monkeyboard to drill floor (UKCS)",
+        "At-height structures surveyed: derrick, monkeyboard & fingerboard, racking-board lighting",
+        "Fixed and potential dropped objects identified per DROPS Recommended Practice (2017)"
+      ] },
+    { "type": "heading", "level": 1, "text": "Dropped-object register" },
+    { "type": "table",
+      "headers": ["Object / location", "Taxonomy", "Mass (kg, user)", "Fall height (m, user)", "Impact energy E≈m·g·h", "Consequence band (user DROPS / [GAP])", "Securing status"],
+      "rows": [
+        ["Fingerboard latch pin, monkeyboard", "Static", "4", "28", "≈ 1098 J (4 × 9.81 × 28)", "Major (user DROPS Calculator band); licensed thresholds [GAP]", "Primary fixing only — secondary retention [GAP] (finding F-01)"],
+        ["Racking-board light fitting", "Static", "2", "30", "≈ 589 J (2 × 9.81 × 30)", "[GAP] — user has not confirmed a DROPS band", "Primary fixing + tethered lanyard (secondary retention)"],
+        ["Swung tubular during tripping", "Dynamic", "[GAP] — mass not supplied", "24", "[GAP] — mass [GAP]", "[GAP] — band cannot be set without mass", "Operational control + exclusion zone below the derrick"]
+      ],
+      "caption": "Dropped-object register — taxonomy, public m·g·h impact energy (user-supplied mass/height), user's DROPS band ([GAP] where unconfirmed; licensed thresholds never reproduced), securing status" },
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "Fingerboard latch pin has no secondary retention", "risk_level": "High",
+          "description": "F-01: the monkeyboard fingerboard latch pin (4 kg, 28 m, ≈ 1098 J) has a primary fixing only — no recorded secondary retention. Flagged as an immediate high-priority finding pending the reliable-securing standard.", "evidence": "DROPS survey, register row 1" },
+        { "title": "Swung-tubular mass not supplied", "risk_level": "Medium",
+          "description": "F-02: the dynamic swung-tubular object has no supplied mass, so its impact energy and consequence band stay [GAP] — never invented. The mass must be confirmed to band the consequence.", "evidence": "DROPS survey, register row 3" } ] },
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Remove non-essential items from the monkeyboard; design out the dropped-object source", "tier": "Elimination", "owner": "DROPS Coordinator (role)" },
+        { "control": "Fit secondary retention (tethered lanyard) to the fingerboard latch pin to the reliable-securing standard", "tier": "Engineering", "owner": "Derrick Supervisor (role)" },
+        { "control": "DROPS survey + register, weekly at-height inspection, exclusion/red zone below the derrick during tripping", "tier": "Administrative", "owner": "OIM (role)" },
+        { "control": "Hard hats for persons who must enter the drill floor — residual only, supplementing securing + exclusion", "tier": "PPE", "owner": "Deck Crew Supervisor (role)" } ] },
+    { "type": "heading", "level": 1, "text": "Recommendations" },
+    { "type": "recommendations", "rows": [
+        { "action": "Fit and record secondary retention on the fingerboard latch pin (close F-01)", "priority": "P1", "owner": "Derrick Supervisor (role)", "due": "2026-07-10" },
+        { "action": "Obtain the swung-tubular mass and band its consequence via the public m·g·h method (close F-02 [GAP])", "priority": "P2", "owner": "DROPS Coordinator (role)", "due": "2026-07-24" },
+        { "action": "Confirm the licensed DROPS Calculator consequence bands with the SME and close the racking-light band [GAP]", "priority": "P3", "owner": "DROPS Coordinator (role)", "due": "2026-08-31" } ] },
+    { "type": "callout", "text": "[ASSUMPTION A1] The licensed DROPS Calculator consequence-band threshold values stay [GAP] / user-confirmed; the user's bands are recorded as supplied and never recomputed from the licensed table.", "box_type": "critical" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": [
+        "DROPS Recommended Practice (2017) + DROPS Reliable Securing — survey, static/dynamic taxonomy, reliable-securing hierarchy, exclusion zones",
+        "IADC HSE Guidelines Section 16 (Dropped Objects); API RP 2D (offshore crane O&M) / API RP 54 (drilling & servicing)",
+        "ISO 45001 §8.1.2 — hierarchy of controls"
+      ] }
+  ]
+}

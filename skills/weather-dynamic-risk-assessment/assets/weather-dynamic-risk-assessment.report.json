@@ -1,0 +1,52 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Dynamic Weather Risk Assessment",
+    "subtitle": "{site} / {activity} — weather working limits",
+    "author": "HSE Renewables",
+    "date": "{date}",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label; site / turbine / threshold data are asset data, not PII. Any prior weather-incident context was de-identified before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "This dynamic weather risk assessment sets the point-of-work weather working limits for {activity} at {site}. Each weather parameter is led by a NAMED NUMERIC threshold -> a hold / stop / evacuate action -> a mandatory re-assessment trigger. Wind is measured at hub height, not base of tower. The BS 7121-1 (2016) 7 m/s man-riding ceiling is the verified anchor; the hub-height cut-off ~= 15 m/s is [ASSUMED — proposed-and-user-confirmed]; every other threshold is user-confirmed or [GAP]." },
+    { "type": "metrics", "metrics": [
+        { "label": "Parameters limited", "value": "{N}", "caption": "wind / lightning / ice / visibility / temperature" },
+        { "label": "Measurement point", "value": "Hub height", "caption": "not base of tower" },
+        { "label": "Man-riding ceiling", "value": "7 m/s", "caption": "BS 7121-1 (2016) [VERIFIED]" } ] },
+    { "type": "callout", "text": "A weather control with no number is rejected. Every threshold names a value, a hold/stop/evacuate action and a re-assessment trigger. 'Monitor the wind and stop if it gets too windy' is NOT a defensible control.", "box_type": "warning" },
+    { "type": "heading", "level": 1, "text": "Weather working limits — threshold -> action -> re-assessment" },
+    { "type": "table",
+      "headers": ["Parameter", "Threshold (measurement point)", "Action", "Re-assessment trigger", "Owner"],
+      "rows": [
+        ["Wind (tower-top)", "{value} at hub height [ASSUMED ~15 m/s — proposed-and-confirmed]", "Hold then stop", "Forecast change or threshold approached", "Site Lead (role)"],
+        ["Wind (man-riding lift)", "7 m/s — BS 7121-1 (2016) [VERIFIED]", "Stop the man-riding lift", "Each lift / forecast change", "Lift Supervisor (role)"],
+        ["Lightning", "{detection radius/time} per NFPA 780 practice [GAP — service-confirmed]", "Stand down and evacuate exposed positions", "Strike detected within radius", "Site Lead (role)"],
+        ["Ice accretion / visibility / temperature", "{site-defined trigger} [GAP — user-confirmed]", "Hold or stop per the trigger", "Onset / forecast change", "Rope-Access Supervisor (role)"]
+      ],
+      "caption": "Each parameter: a named numeric threshold (with its measurement point) -> a pre-decided action -> a mandatory re-assessment trigger" },
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "{finding title}", "risk_level": "{High/Medium/Low}",
+          "description": "{description traced to evidence — e.g. an activity lacked a numeric wind stop limit, or a base-of-tower reading was used for a tower-top decision}", "evidence": "{method statement / permit ref}" } ] },
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Reschedule weather-sensitive work to a forecast low-weather window (eliminate the exposure)", "tier": "Elimination", "owner": "{Site Lead role}" },
+        { "control": "Real-time hub-height anemometer with an automated stop alert at the threshold", "tier": "Engineering", "owner": "{SCADA Lead role}" },
+        { "control": "Lightning-detection stand-down procedure + the published weather working-limits matrix in every permit", "tier": "Administrative", "owner": "{Site Lead role}" } ] },
+    { "type": "heading", "level": 1, "text": "Recommendations" },
+    { "type": "recommendations", "rows": [
+        { "action": "{SMART action closing a [GAP] — e.g. confirm the hub-height wind cut-off with the turbine OEM in-service limit}", "priority": "P1", "owner": "{role}", "due": "{ISO date}" } ] },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory & reference basis" },
+    { "type": "bullets", "items": [
+        "Work at Height Regulations 2005 (SI 2005/735) reg 4 / 6 / 7 — weather governs whether work at height proceeds",
+        "BS 7121-1 (2016 edition) — man-riding wind ceiling 16 mph / 7 m/s [VERIFIED anchor]",
+        "NFPA 780 — lightning stand-down practice (detection radius + time user/service-confirmed)",
+        "Hub-height wind cut-off ~= 15 m/s [ASSUMED A4 — industry baseline, proposed-and-user-confirmed, not a fixed standard]",
+        "ISO 45001 cl 6.1.2 (dynamic / point-of-work risk assessment)" ] }
+  ]
+}

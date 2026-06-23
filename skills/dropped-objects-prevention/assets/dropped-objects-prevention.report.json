@@ -1,0 +1,55 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Dropped Objects Prevention — DROPS Survey & Register",
+    "subtitle": "Named installation, dropped-object survey extract",
+    "author": "HSE Marine & Offshore",
+    "date": "2026-06-23",
+    "classification": "Confidential — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "This extract presents the dropped-objects-prevention basis for the named installation: the DROPS survey scope, the dropped-object register (static vs dynamic taxonomy), the reliable-securing controls and the exclusion zones. The control posture is reliable securing first; consequence bands trace to the public m·g·h method with user-supplied mass and fall height (licensed DROPS Calculator threshold values are recorded as the user's band, not recomputed)." },
+    { "type": "callout", "text": "Lead control: every at-height item is reliably secured (primary fixing + secondary retention) and surveyed, with exclusion zones below at-height work — 'hard hats for the people below' is the residual, never the headline.", "box_type": "success" },
+    { "type": "heading", "level": 1, "text": "DROPS survey scope" },
+    { "type": "bullets", "items": [
+        "Named installation / vessel and area surveyed",
+        "At-height structures: derrick/mast, crane boom & pedestal, monkeyboard & fingerboard, flare tip & boom, riser/wellhead deck, piping & small-bore fittings, lighting & instruments",
+        "Fixed and potential dropped objects identified per DROPS Recommended Practice (2017)"
+      ] },
+    { "type": "heading", "level": 1, "text": "Dropped-object register" },
+    { "type": "table",
+      "headers": ["Object / location", "Taxonomy", "Mass (kg, user)", "Fall height (m, user)", "Impact energy E≈m·g·h", "Consequence band (user DROPS / [GAP])", "Securing status"],
+      "rows": [
+        ["At-height fitting, monkeyboard", "Static", "[user]", "[user]", "E ≈ m·g·h", "[user band] / [GAP]", "Primary fixing + secondary retention"],
+        ["Swung tubular, drill floor", "Dynamic", "[user]", "[user]", "E ≈ m·g·h", "[user band] / [GAP]", "Operational control + exclusion zone"]
+      ],
+      "caption": "Dropped-object register — taxonomy, public m·g·h impact energy (user-supplied mass/height), user's DROPS band ([GAP] where unconfirmed; licensed thresholds never reproduced), securing status" },
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "At-height item with no recorded securing standard", "risk_level": "High",
+          "description": "An at-height item carries no recorded primary fixing / secondary retention standard — flagged as an immediate high-priority finding pending the reliable-securing standard.", "evidence": "DROPS survey, register row" },
+        { "title": "Reliable securing verified on surveyed items", "risk_level": "Low",
+          "description": "Surveyed at-height items have a recorded primary fixing + secondary retention standard and a current DROPS inspection.", "evidence": "DROPS survey verification" } ] },
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Remove non-essential items from height; design out the dropped-object source", "tier": "Elimination", "owner": "DROPS Coordinator (role)" },
+        { "control": "Primary fixing + secondary retention (tethering/lanyards) to a reliable-securing standard", "tier": "Engineering", "owner": "Deck Supervisor (role)" },
+        { "control": "DROPS survey + register, inspection regime, exclusion/red zones below at-height work", "tier": "Administrative", "owner": "OIM (role)" } ] },
+    { "type": "heading", "level": 1, "text": "Recommendations" },
+    { "type": "recommendations", "rows": [
+        { "action": "Apply the reliable-securing standard to the unsecured at-height item and record it in the register", "priority": "P1", "owner": "Deck Supervisor (role)", "due": "2026-07-15" },
+        { "action": "Confirm the licensed DROPS Calculator consequence bands with the SME and close the [GAP] band values", "priority": "P2", "owner": "DROPS Coordinator (role)", "due": "2026-08-31" } ] },
+    { "type": "callout", "text": "Consequence bands trace to user-supplied mass and fall height via the public m·g·h method; the licensed DROPS Calculator threshold values stay [GAP] / user-confirmed and are never reproduced.", "box_type": "critical" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": [
+        "DROPS Recommended Practice (2017) + DROPS Reliable Securing — survey, taxonomy, reliable-securing hierarchy, exclusion zones",
+        "IADC HSE Guidelines Section 16 (Dropped Objects); API RP 2D (offshore crane O&M) / API RP 54 (drilling & servicing)",
+        "ISO 45001 §8.1.2 — hierarchy of controls"
+      ] }
+  ]
+}

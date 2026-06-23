@@ -1,0 +1,56 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Dynamic Weather Risk Assessment",
+    "subtitle": "Blade rope-access, WTG-09 — Wind Farm WF-7",
+    "author": "HSE Renewables",
+    "date": "2026-06-23",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label; turbine / anemometer / threshold data are asset data, not PII. The prior weather-incident context was de-identified before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "This dynamic weather risk assessment sets the point-of-work weather working limits for blade rope-access on WTG-09 at Wind Farm WF-7. The method statement previously said 'monitor the wind and descend if it gets too strong' with no numeric limit, and the wind reading was taken at the base of the tower — both rejected. Each weather parameter now carries a named numeric threshold (referenced to its measurement point at hub height) -> a hold / stop / evacuate action -> a mandatory re-assessment trigger." },
+    { "type": "metrics", "metrics": [
+        { "label": "Parameters limited", "value": "4", "caption": "wind / lightning / ice / visibility" },
+        { "label": "Measurement point", "value": "Hub height", "caption": "corrected from base-of-tower" },
+        { "label": "Hub-height wind hold", "value": "15 m/s", "caption": "[ASSUMED] proposed-and-confirmed" } ] },
+    { "type": "callout", "text": "A weather control with no number is rejected. The prior 'monitor the wind and descend if it gets too strong' arrangement carried no threshold, no defined action point and no re-assessment trigger, and used a base-of-tower wind reading for a tower-top decision (a control failure). It is replaced below.", "box_type": "warning" },
+    { "type": "heading", "level": 1, "text": "Weather working limits — threshold -> action -> re-assessment" },
+    { "type": "table",
+      "headers": ["Parameter", "Threshold (measurement point)", "Action", "Re-assessment trigger", "Owner"],
+      "rows": [
+        ["Wind (blade rope-access)", "15 m/s at hub height [ASSUMED — proposed-and-user-confirmed against the OEM in-service limit; not a fixed standard]", "Hold at 13 m/s sustained, stop and descend at 15 m/s", "Forecast change, a gust exceeding the hold value, or every 30 minutes", "Site Lead (role)"],
+        ["Wind (man-riding lift to platform)", "7 m/s — BS 7121-1 (2016) man-riding ceiling [VERIFIED]", "Stop the man-riding lift; no personnel-carrier movement above 7 m/s", "Each lift and on a forecast change", "Lift Supervisor (role)"],
+        ["Lightning", "Any detected strike within 10 km [GAP — radius and all-clear time confirmed with the site lightning-warning service]", "Stand down, descend and evacuate exposed positions", "On any strike detected within the radius", "Site Lead (role)"],
+        ["Visibility / ice", "Visibility below the safe-supervision distance, or any blade-surface ice [GAP — site-defined values]", "Hold; do not commit to rope-access", "Onset, or a forecast of freezing precipitation", "Rope-Access Supervisor (role)"]
+      ],
+      "caption": "Each parameter: a named numeric threshold (with its measurement point) -> a pre-decided action -> a mandatory re-assessment trigger" },
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "Method statement named no numeric wind limit for blade rope-access", "risk_level": "High",
+          "description": "The prior method statement relied on 'monitor the wind and descend if it gets too strong' with no threshold, no defined action point and no re-assessment trigger — rejected; replaced with a hold-then-stop hub-height limit and a re-assessment trigger.", "evidence": "Method statement MS-WTG09-blade rev. 1" },
+        { "title": "Wind was read at the base of the tower for a tower-top decision", "risk_level": "High",
+          "description": "The descend decision used a base-of-tower anemometer, which understates the hub-height exposure — a control failure. The threshold is now referenced to a hub-height reading.", "evidence": "Pre-task survey, WF-7 anemometer placement" } ] },
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Reschedule the blade rope-access to a forecast low-wind window (eliminate the exposure where the work is not time-critical)", "tier": "Elimination", "owner": "Site Lead (role)" },
+        { "control": "Hub-height anemometer feed with an automated stop alert at the hold and stop values", "tier": "Engineering", "owner": "SCADA Lead (role)" },
+        { "control": "Publish the weather working-limits matrix in the rope-access permit; lightning-detection stand-down procedure", "tier": "Administrative", "owner": "Site Lead (role)" } ] },
+    { "type": "heading", "level": 1, "text": "Recommendations" },
+    { "type": "recommendations", "rows": [
+        { "action": "Confirm the hub-height wind hold/stop values against the WTG-09 OEM in-service rope-access limit and record the confirmed numbers", "priority": "P1", "owner": "Site Lead (role)", "due": "2026-07-04" },
+        { "action": "Confirm the lightning detection radius and all-clear time with the site lightning-warning service and close the [GAP]", "priority": "P1", "owner": "Site Lead (role)", "due": "2026-07-04" },
+        { "action": "Relocate / add a hub-height anemometer feed for the descend decision and wire the automated stop alert", "priority": "P2", "owner": "SCADA Lead (role)", "due": "2026-07-18" } ] },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory & reference basis" },
+    { "type": "bullets", "items": [
+        "Work at Height Regulations 2005 (SI 2005/735) reg 4 / 6 / 7 — weather governs whether work at height proceeds",
+        "BS 7121-1 (2016 edition) — man-riding wind ceiling 16 mph / 7 m/s [VERIFIED anchor]",
+        "NFPA 780 — lightning stand-down practice (detection radius + time user/service-confirmed)",
+        "Hub-height wind cut-off ~= 15 m/s [ASSUMED A4 — industry baseline, proposed-and-user-confirmed, not a fixed standard]",
+        "ISO 45001 cl 6.1.2 (dynamic / point-of-work risk assessment)" ] }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Warehouse Racking & MHE Safety Assessment — Midlands DC, APR pallet racking, bays A1–A48",
+    "subtitle": "EN 15635 inspection regime · SEMA RAG remedial priority · engineered MHE/pedestrian segregation",
+    "author": "HSE Logistics & Transport",
+    "date": "2026-06-23",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "Personnel and the prior struck-by incident are referred to by role label only. Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "This assessment covers the 8 m adjustable-pallet-racking (APR) installation at the Midlands DC, bays A1–A48, and the goods-in marshalling traffic layout. Controls are led by the SWL-rated configuration, the BS EN 15635 inspection regime, and engineered MHE/pedestrian segregation — not by 'inspect carefully' or hi-vis. Two SEMA Red-band frame buckles (bays A12 and A18) require immediate off-load and isolation. The >=12-monthly expert inspection is overdue and the SWL load notices for bays A25–A48 were not supplied ([GAP]). Goods-in is currently managed by hi-vis alone with no engineered segregation, which is pushed up the hierarchy to physical barriers and a one-way route." },
+    { "type": "metrics", "metrics": [
+        { "label": "Bays assessed", "value": "48" },
+        { "label": "SEMA Red findings", "value": "2", "caption": "immediate off-load" },
+        { "label": "SWL [GAP]s", "value": "24", "caption": "bays A25–A48 not supplied" } ] },
+    { "type": "heading", "level": 1, "text": "Racking installation & SWL" },
+    { "type": "table",
+      "headers": ["Run / bays", "Rack type", "SWL load notice", "Configuration verified", "Status"],
+      "rows": [
+        ["A1–A24", "APR (8 m)", "1,000 kg/pair (displayed)", "Yes — matches design drawing", "OK"],
+        ["A25–A48", "APR (8 m)", "[GAP] — not supplied", "[GAP]", "[GAP] — request SWL load notice / rack-design drawing; SWL not assumed"]
+      ],
+      "caption": "Racking configuration vs displayed SWL — an unsupplied SWL is [GAP], never assumed" },
+    { "type": "heading", "level": 1, "text": "EN 15635 inspection regime" },
+    { "type": "bullets", "items": ["PRRS appointment: Warehouse Operations Lead (role) — appointed and recorded", "Weekly visual inspection: in place, logged by the shift team leader (role)", ">=12-monthly expert inspection: OVERDUE — last documented expert inspection >14 months ago ([GAP] on the current report; high-priority finding)"] },
+    { "type": "heading", "level": 1, "text": "SEMA RAG damage findings" },
+    { "type": "findings", "rows": [
+        { "title": "Bay A12 — upright frame buckle beyond tolerance (SEMA Red)", "risk_level": "High",
+          "description": "SEMA Red — critical. Immediately off-load and isolate the A12 run; do not reload until repaired and re-inspected by the expert inspector. Not down-rated to 'monitor'.", "evidence": "Weekly visual log, week 24; tolerance reference [GAP] pending the rack-design drawing" },
+        { "title": "Bay A18 — diagonal brace impact damage beyond tolerance (SEMA Red)", "risk_level": "High",
+          "description": "SEMA Red — critical. Immediate off-load + isolate the A18 run; repair before reuse.", "evidence": "Weekly visual log, week 24" },
+        { "title": "Bay A07 — minor footplate deformation within tolerance (SEMA Amber)", "risk_level": "Medium",
+          "description": "SEMA Amber — exceeds routine tolerance: repair/replace within 4 weeks and auto-escalate to Red if not actioned. The Amber off-load nuance is confirmed by the SEMA-approved inspector for this site.", "evidence": "Weekly visual log, week 24" } ] },
+    { "type": "heading", "level": 1, "text": "MHE & pedestrian segregation" },
+    { "type": "paragraph", "text": "Goods-in marshalling is shared by counterbalance forklifts and pedestrian pickers and is currently controlled by hi-vis vests and a 'look out for forklifts' briefing only — no engineered segregation. This is flagged and pushed up the hierarchy: a physical barrier line, a one-way forklift route, and a marked + protected pedestrian walkway with a controlled crossing are required before hi-vis is treated as anything but a residual control (KB-REG-MHE-PIT / HSG136). Operator competence and pre-use truck inspection are evidenced for all four operators (role labels)." },
+    { "type": "heading", "level": 1, "text": "Hierarchy of controls" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Off-load + isolate the A12 and A18 Red-band runs; recalculate before any reconfiguration", "tier": "Elimination", "owner": "Warehouse Operations Lead (PRRS)" },
+        { "control": "Install a physical barrier line + one-way forklift route + protected pedestrian walkway/crossing in goods-in", "tier": "Engineering", "owner": "Site Engineering Manager" },
+        { "control": "Reinstate the >=12-monthly expert inspection and obtain the A25–A48 SWL load notices", "tier": "Administrative", "owner": "Warehouse Operations Lead (PRRS)" },
+        { "control": "Hi-vis + crossing discipline as a residual supplement to the engineered segregation", "tier": "PPE", "owner": "Shift Team Leader" } ] },
+    { "type": "heading", "level": 1, "text": "Recommendations" },
+    { "type": "recommendations", "rows": [
+        { "action": "Off-load + isolate bays A12 and A18 (SEMA Red)", "priority": "P1", "owner": "Warehouse Operations Lead (PRRS)", "due": "2026-06-23" },
+        { "action": "Obtain SWL load notices / rack-design drawing for bays A25–A48 ([GAP] closure)", "priority": "P1", "owner": "Warehouse Operations Lead (PRRS)", "due": "2026-06-30" },
+        { "action": "Commission the overdue >=12-monthly expert inspection", "priority": "P1", "owner": "Warehouse Operations Lead (PRRS)", "due": "2026-07-04" },
+        { "action": "Install engineered goods-in segregation (barrier + one-way route + protected walkway)", "priority": "P2", "owner": "Site Engineering Manager", "due": "2026-08-15" },
+        { "action": "Repair the A07 Amber footplate within 4 weeks before auto-escalation", "priority": "P2", "owner": "Warehouse Operations Lead (PRRS)", "due": "2026-07-21" } ] },
+    { "type": "callout", "text": "Any SEMA Red-band finding triggers an IMMEDIATE off-load + isolate of the affected run — it is never down-rated to 'monitor'. Amber repairs within 4 weeks and auto-escalates to Red. No SWL, tolerance, or inspection interval is assumed: every unsupplied value is a [GAP].", "box_type": "warning" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": ["BS EN 15635:2008 + SEMA Code of Practice (racking inspection regime + RAG action map)", "OSHA 29 CFR 1910.178 / PUWER 1998 / HSE ACOP L117 / HSG136 (MHE + engineered segregation)", "India (if in scope): Motor Transport Workers Act 1961 / Factories Act via hse-india — state detection, [GAP], no national form", "ISO 45001 §8.1.2"] }
+  ]
+}
