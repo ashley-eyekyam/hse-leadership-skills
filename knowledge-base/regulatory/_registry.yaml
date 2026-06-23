@@ -644,3 +644,184 @@
   last_reviewed: 2026-06-23
   volatile: true
   supersedes: null
+
+# --- Phase 16-01 — logistics / marine / rail / renewables regulatory fragments ---
+- id: KB-REG-MHE-PIT
+  file: mhe-pit.md
+  title: "Powered industrial trucks / MHE — OSHA 1910.178 + PUWER + HSE L117 duty map"
+  facets:
+    jurisdiction: [US, UK]
+    industry: [Transport, Logistics]
+    topics: [powered-industrial-trucks, forklift, mhe, operator-competence, pedestrian-vehicle-segregation, puwer, workplace-transport]
+    audience: [M, C]
+  summary: "OSHA 1910.178(l) operator training/evaluation + PUWER/L117/HSG136 duty→control map: pre-use inspection + engineered pedestrian-vehicle segregation (barriers/one-way/marked walkways) BEFORE 'look out for forklifts'. Grounds warehouse-racking-mhe-safety (LOG-02). Citation map, not the regulation text."
+  source: "OSHA 29 CFR 1910.178 + PUWER 1998 + HSE ACOP L117 + HSG136 (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-IN-MTW
+  file: in-mtw.md
+  title: "India — Motor Transport Workers Act 1961 + warehouse framing (deferral pointer)"
+  facets:
+    jurisdiction: [IN]
+    industry: [Transport, Logistics]
+    topics: [motor-transport-workers-act, hours-rest, factories-act, osh-code-transition, state-detection, deferral-pointer]
+    audience: [M, C]
+  summary: "India logistics deferral pointer: Motor Transport Workers Act 1961 + Factories-Act-as-warehouse + flagged OSH Code 2020 transition. State detection mandatory; defers all form/return content to hse-india; no national form minted; [GAP] per state (CONV-8). Driver-hours compliance computed by fatigue.py, not here."
+  source: "Motor Transport Workers Act 1961 + Factories Act 1948 + OSH Code 2020 transition (deferral pointer; per-state cite via hse-india)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-DROPS
+  file: drops.md
+  title: "Dropped objects — DROPS Recommended Practice + IADC + API duty map"
+  facets:
+    jurisdiction: [All]
+    industry: [O&G]
+    topics: [dropped-objects, drops, survey, reliable-securing, exclusion-zone, iadc, api-rp, offshore]
+    audience: [M, C]
+  summary: "DROPS RP 2017 + Reliable Securing + IADC Sec 16 + API RP 2D/54 survey→taxonomy→reliable-securing-hierarchy→exclusion-zone map. Grounds dropped-objects-prevention (MAR-02). DROPS Calculator consequence-band table is LICENSED → cite-only (KB-DATA-DROPS-IMPACT). Citation map, not the practice text."
+  source: "DROPS Recommended Practice (2017) + DROPS Reliable Securing + IADC HSE Guidelines Section 16 + API RP 2D/54 (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-PFEER
+  file: pfeer.md
+  title: "Offshore PFEER 1995 (SI 1995/743) — fire/explosion & emergency-response duty map"
+  facets:
+    jurisdiction: [UK]
+    industry: [O&G]
+    topics: [pfeer, muster, temporary-refuge, eer, recovery-rescue, errv, detection-firefighting, offshore]
+    audience: [M, C]
+  summary: "PFEER 1995 (SI 1995/743) + HSE L65 duty→artifact map: muster/POB accounting, temporary-refuge integrity, EER chain, detection/firefighting, reg 17 recovery & rescue + ERRV. Grounds marine-emergency-response (MAR-03). EER hierarchy = escalation-prevention before abandonment (KB-SNIP-EER-MUSTER). Citation map, not the regulation text."
+  source: "Offshore Installations (Prevention of Fire and Explosion, and Emergency Response) Regulations 1995 (SI 1995/743) + HSE L65 (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-SOLAS-LSA
+  file: solas-lsa.md
+  title: "SOLAS Chapter III + LSA Code — life-saving appliances & muster duty map"
+  facets:
+    jurisdiction: [All]
+    industry: [O&G, Marine]
+    topics: [solas, lsa-code, survival-craft, tempsc, station-bill, muster-list, opito, capacity-vs-pob]
+    audience: [M, C]
+  summary: "SOLAS Ch III + LSA Code appliance→muster→competence map: TEMPSC survival craft, capacity-vs-POB check, role-labelled station bill, drills, OPITO BOSIET/HUET competence requirement (cert detail [GAP], licensed). Grounds marine-emergency-response (MAR-03). Persons role-labelled never named. Citation map, not the convention text."
+  source: "SOLAS Chapter III (Life-Saving Appliances) + LSA Code + OPITO BOSIET/HUET competence (cite-only) (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-REG-IN-OFFSHORE
+  file: in-offshore.md
+  title: "India — offshore operations (OISD + PNG Safety Rules) deferral pointer"
+  facets:
+    jurisdiction: [IN]
+    industry: [O&G]
+    topics: [oisd, png-offshore-rules, offshore, state-detection, deferral-pointer]
+    audience: [M, C]
+  summary: "India offshore deferral pointer: OISD standards + PNG (Safety in Offshore Operations) Rules. State detection mandatory for shore-base; defers state-specific statutory content to hse-india; no national form minted; [GAP] (CONV-8). Citation map, not the rules text."
+  source: "OISD standards + Petroleum and Natural Gas (Safety in Offshore Operations) Rules (deferral pointer; per-state cite via hse-india)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-CSM-RA
+  file: csm-ra.md
+  title: "Rail CSM-RA — Reg (EU) 402/2013 (retained EU law in GB) risk-assessment map"
+  facets:
+    jurisdiction: [UK, EU]
+    industry: [Rail]
+    topics: [csm-ra, significance-test, risk-acceptance-principles, asbo, hazard-record, change-management]
+    audience: [M, C]
+  summary: "Commission Implementing Reg (EU) 402/2013 (CSM-RA), retained EU law in GB from 1 Jan 2021: significance test, 3 risk-acceptance principles (codes of practice / reference systems / explicit risk estimation), independent AsBo assessment for significant change. Grounds rail-safety-management-system (RAIL-01) + safety-authorisation (RAIL-02). Citation map, not the regulation text."
+  source: "Commission Implementing Regulation (EU) No 402/2013 (CSM-RA); retained EU law in GB from 1 Jan 2021 (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-REG-LX-TRACKWORKER
+  file: lx-trackworker.md
+  title: "Level crossings & track-worker safety — NR/L2/OHS/019 + ORR LX guidance map"
+  facets:
+    jurisdiction: [UK]
+    industry: [Rail]
+    topics: [level-crossing, track-worker, remedial-hierarchy, green-zone, ssow, coss, sentinel, lookout]
+    audience: [M, C]
+  summary: "NR/L2/OHS/019 + ORR LX strategic-risk guidance + LXRMTK remedial-hierarchy map: crossing closure→grade-separation→engineering→admin; track-worker separation(green-zone/possession)→SSOW→warning(TOWS)→lookout-only-last; COSS/Sentinel competence. Grounds level-crossing-track-worker-safety (RAIL-03). NR/L2/OHS/019 issue/date [ASSUMED A3]→SME-confirmed. Citation map, not the standard text."
+  source: "Network Rail NR/L2/OHS/019 + ORR level-crossing strategic-risk guidance + LXRMTK (citation map; issue/date SME-confirmed)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-IN-RAIL
+  file: in-rail.md
+  title: "India — rail safety (CRS / Railways Act 1989) deferral pointer"
+  facets:
+    jurisdiction: [IN]
+    industry: [Rail]
+    topics: [railways-act, commissioner-railway-safety, state-detection, deferral-pointer]
+    audience: [M, C]
+  summary: "India rail deferral pointer: Railways Act 1989 + Commissioner of Railway Safety (CRS). State detection mandatory for non-railway depot activity; defers state-specific statutory content to hse-india; no national form minted; [GAP] (CONV-8). Citation map, not the act text."
+  source: "Commissioner of Railway Safety (CRS) + Railways Act 1989 (deferral pointer; per-state cite via hse-india)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-WAH2005
+  file: wah2005.md
+  title: "Work at Height Regulations 2005 (SI 2005/735) — planning & hierarchy duty map"
+  facets:
+    jurisdiction: [UK]
+    industry: [Renewables, Con]
+    topics: [work-at-height, wah-2005, rescue-planning, avoid-prevent-mitigate, collective-before-personal, inspection]
+    audience: [M, C]
+  summary: "WAH Regs 2005 (SI 2005/735) planning→hierarchy→inspection map: reg 4 plan incl. emergencies & rescue, reg 6 avoid→prevent-collective→mitigate, reg 7 collective-before-personal, reg 8+Sch 2-6, reg 12 inspection. Grounds wind-turbine-work-at-height-rescue (REN-01) + weather-dynamic-risk-assessment (REN-03). Rescue planning mandatory (KB-SNIP-RESCUE-PLAN). Citation map, not the regulation text."
+  source: "Work at Height Regulations 2005 (SI 2005/735), under HSWA 1974 (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-REG-LONE-WORKING
+  file: lone-working.md
+  title: "Lone working — HSE INDG73 risk-assessment duty map"
+  facets:
+    jurisdiction: [UK]
+    industry: [All]
+    topics: [lone-working, risk-assessment, check-in, escalation, reliable-communication, violence, wellbeing]
+    audience: [M, C]
+  summary: "HSE INDG73 (rev 4) duty→control map: no general legal ban but explicit RA duty; reliable coverage-checked comms + scheduled check-ins + missed-check-in escalation; violence + stress/wellbeing. Grounds lone-working-assessment (REN-02). Device supplements, never replaces, the procedure (KB-SNIP-CHECKIN-ESCALATION / KB-STD-BS8484). Citation map, not the guidance text."
+  source: "HSE INDG73 (Protecting lone workers), rev 4 (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: true
+  supersedes: null
+
+- id: KB-REG-IN-RENEWABLES
+  file: in-renewables.md
+  title: "India — renewables / electrical (CEA regulations + state rules) deferral pointer"
+  facets:
+    jurisdiction: [IN]
+    industry: [Renewables]
+    topics: [cea-regulations, state-electricity-rules, establishment-registration, state-detection, deferral-pointer]
+    audience: [M, C]
+  summary: "India renewables deferral pointer: CEA regulations + state electricity rules + factory/establishment registration. State detection mandatory; defers state-specific statutory content to hse-india; no national form minted; [GAP] (CONV-8). Citation map, not the regulation text."
+  source: "CEA (Central Electricity Authority) regulations + state electricity rules + factory/establishment registration (deferral pointer; per-state cite via hse-india)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: true
+  supersedes: null

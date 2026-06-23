@@ -524,3 +524,125 @@ def test_phase15_wpv_osha3148_reg_not_minted():
     text = (KB / "regulatory" / "wpv-osha-3148.md").read_text(encoding="utf-8")
     assert "Type 2" in text, "wpv-osha-3148.md must carry the type-1–4 taxonomy"
     assert "3342" in text, "wpv-osha-3148.md must carry the Cal/OSHA 8 CCR 3342 row"
+
+
+# --- Phase 16-01: the 30 NEW logistics / marine / rail / renewables KB fragments ---
+#
+# Every Wave-2+ skill plan (16-02..16-12) depends_on 16-01 and references these IDs by
+# name via its kb-selection; this asserts each resolves in its folder's _registry.yaml
+# AND its .md file exists on disk (opening with its own ID marker), so no downstream
+# skill hits a rule-9 dead-ref / vacuous kb-selection. The id→folder mapping reuses the
+# Rule-9 PREFIX_FOLDER convention (REG→regulatory, STD→standards, DATA→data-points,
+# SNIP→prompt-snippets). The 30 = 26 genuinely-new fragments + 4 bundle clause-maps;
+# the REUSE fragments (FMCSA-HOS / OFFSHORE-SCR / ROGS / HAZ-RENEWABLES /
+# ROAD-SAFETY-INDICATORS) are NOT counted (asserted in test_p16_negative_mint.py).
+PHASE16_NEW_IDS = [
+    # 12 regulatory (KB-REG-*)
+    "KB-REG-MHE-PIT",
+    "KB-REG-IN-MTW",
+    "KB-REG-DROPS",
+    "KB-REG-PFEER",
+    "KB-REG-SOLAS-LSA",
+    "KB-REG-IN-OFFSHORE",
+    "KB-REG-CSM-RA",
+    "KB-REG-LX-TRACKWORKER",
+    "KB-REG-IN-RAIL",
+    "KB-REG-WAH2005",
+    "KB-REG-LONE-WORKING",
+    "KB-REG-IN-RENEWABLES",
+    # 3 standards (KB-STD-*)
+    "KB-STD-EN15635-SEMA",
+    "KB-STD-GWO-WAH-RESCUE",
+    "KB-STD-BS8484",
+    # 3 data-points (KB-DATA-*)
+    "KB-DATA-DROPS-IMPACT",
+    "KB-DATA-ALCRM-BANDS",
+    "KB-DATA-WEATHER-THRESHOLDS",
+    # 8 control-logic snippets + 4 bundle clause-maps (KB-SNIP-*)
+    "KB-SNIP-FATIGUE-FRMS",
+    "KB-SNIP-RACKING-MHE",
+    "KB-SNIP-DROPS-SECURING",
+    "KB-SNIP-EER-MUSTER",
+    "KB-SNIP-LX-HIERARCHY",
+    "KB-SNIP-RESCUE-PLAN",
+    "KB-SNIP-CHECKIN-ESCALATION",
+    "KB-SNIP-DYNAMIC-RA",
+    "KB-SNIP-LOGISTICS-CLAUSE-MAP",
+    "KB-SNIP-MARINE-CLAUSE-MAP",
+    "KB-SNIP-RAIL-CLAUSE-MAP",
+    "KB-SNIP-RENEWABLES-CLAUSE-MAP",
+]
+
+
+def test_phase16_new_ids_count():
+    """Exactly 30 NEW fragments (12 regulatory + 3 standards + 3 data-points +
+    12 prompt-snippets [8 control-logic + 4 clause-maps])."""
+    assert len(PHASE16_NEW_IDS) == 30
+    assert len(set(PHASE16_NEW_IDS)) == 30  # no dupes
+
+
+@pytest.mark.parametrize("kid", PHASE16_NEW_IDS)
+def test_phase16_new_id_resolves_in_registry_and_on_disk(kid):
+    """Each NEW Phase-16 id resolves in its folder's _registry.yaml (via the Rule-9
+    PREFIX_FOLDER map) AND its .md file exists on disk, opening with its own ID marker
+    comment (anti-mismatch)."""
+    prefix = kid.split("-")[1]
+    folder = PREFIX_FOLDER.get(prefix)
+    assert folder, f"id {kid} has unknown folder prefix {prefix}"
+    assert kid in _registry_ids(folder), f"{kid} not in {folder}/_registry.yaml"
+    reg = yaml.safe_load((KB / folder / "_registry.yaml").read_text(encoding="utf-8"))
+    entry = next(e for e in reg if e["id"] == kid)
+    target = KB / folder / entry["file"]
+    assert target.is_file(), f"{kid} file '{entry['file']}' missing in {folder}/"
+    assert target.read_text(encoding="utf-8").lstrip().startswith(
+        f"<!-- {kid} -->"
+    ), f"{target.name} does not open with <!-- {kid} -->"
+
+
+def test_phase16_clause_maps_carry_the_crosswalk():
+    """All 4 CONV-10 bundle clause-maps carry their bundle axis + the current-standard
+    + cite-not-reproduce currency notes (SI 2015/398 not SCR 2005; BS 7121-1 2016)."""
+    log = (KB / "prompt-snippets" / "logistics-clause-map.md").read_text(encoding="utf-8")
+    for token in ("FMCSA", "EN 15635"):
+        assert token in log, f"{token} missing from logistics-clause-map.md"
+    mar = (KB / "prompt-snippets" / "marine-clause-map.md").read_text(encoding="utf-8")
+    assert "2015/398" in mar, "marine clause-map must cite SI 2015/398 as current"
+    assert "DROPS" in mar, "marine clause-map must carry the DROPS axis"
+    rail = (KB / "prompt-snippets" / "rail-clause-map.md").read_text(encoding="utf-8")
+    for token in ("ROGS", "CSM-RA"):
+        assert token in rail, f"{token} missing from rail-clause-map.md"
+    ren = (KB / "prompt-snippets" / "renewables-clause-map.md").read_text(encoding="utf-8")
+    assert "BS 7121-1" in ren, "renewables clause-map must cite BS 7121-1"
+    # Must never cite the SUPERSEDED 2006 edition as current — the current edition is
+    # 2016. (A disclaimer that names "2006 edition" to reject it is allowed; a positive
+    # "BS 7121-1:2006" citation is not.)
+    assert "BS 7121-1:2006" not in ren and "BS 7121-1 2006" not in ren, (
+        "renewables clause-map must NOT cite the 2006 edition of BS 7121-1 as current"
+    )
+    assert "2016" in ren, "renewables clause-map must name the current BS 7121-1 (2016) edition"
+
+
+def test_phase16_offshore_uses_current_si_2015_398_not_scr2005():
+    """T-16-01-01: the marine clause-map cites SI 2015/398 as current and qualifies
+    SCR 2005 as legacy only (regulatory_citation_accuracy HARD-fail otherwise)."""
+    mar = (KB / "prompt-snippets" / "marine-clause-map.md").read_text(encoding="utf-8")
+    assert "2015/398" in mar, "current offshore safety-case regime = SI 2015/398"
+    # SCR 2005, where mentioned, must be qualified as legacy — never presented as current.
+    if "SCR 2005" in mar:
+        assert "legacy" in mar.lower(), "SCR 2005 must be qualified as legacy, not current"
+
+
+def test_phase16_assumed_anchors_flagged_gap():
+    """D-03: the four [ASSUMED] licensed/baseline anchors (A1 DROPS bands, A2 ALCRM
+    bands, A4 ≈15 m/s wind cut-off) and the NR/L2/OHS/019 issue (A3) carry an explicit
+    [GAP] / [ASSUMED] / user-confirmed flag — licensed values are never embedded."""
+    drops = (KB / "data-points" / "drops-impact.md").read_text(encoding="utf-8")
+    assert "[GAP]" in drops and "A1" in drops, "DROPS bands must be [GAP]/[ASSUMED A1]"
+    alcrm = (KB / "data-points" / "alcrm-bands.md").read_text(encoding="utf-8")
+    assert "[GAP]" in alcrm and "A2" in alcrm, "ALCRM bands must be [GAP]/[ASSUMED A2]"
+    weather = (KB / "data-points" / "weather-thresholds.md").read_text(encoding="utf-8")
+    assert "A4" in weather and "7 m/s" in weather, (
+        "weather thresholds must flag ≈15 m/s as [ASSUMED A4] and carry the verified 7 m/s anchor"
+    )
+    lx = (KB / "regulatory" / "lx-trackworker.md").read_text(encoding="utf-8")
+    assert "A3" in lx and "[GAP]" in lx, "NR/L2/OHS/019 issue/date must be [GAP]/[ASSUMED A3]"

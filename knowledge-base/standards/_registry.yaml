@@ -412,3 +412,49 @@
   last_reviewed: 2026-06-23
   volatile: false
   supersedes: null
+
+# --- Phase 16-01 — logistics / renewables standards fragments ---
+- id: KB-STD-EN15635-SEMA
+  file: en15635-sema.md
+  title: "BS EN 15635:2008 + SEMA Code of Practice — racking application & maintenance map"
+  facets:
+    jurisdiction: [All]
+    industry: [Logistics, Transport]
+    topics: [racking, en15635, sema, prrs, inspection-regime, rag-bands, swl, expert-inspection]
+    audience: [M, C]
+  summary: "BS EN 15635:2008 + SEMA Code inspection-regime + RAG-action map: PRRS role, weekly visual + ≥12-monthly expert inspection, SEMA Red/Amber/Green (Green=monitor / Amber=4-week repair+auto-escalate / Red=immediate off-load+isolate), SWL load-notices. Grounds warehouse-racking-mhe-safety (LOG-02). Site SWL/tolerance [GAP]. Structure map, not the standard text."
+  source: "BS EN 15635:2008 (Steel static storage systems) + SEMA Code of Practice (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-STD-GWO-WAH-RESCUE
+  file: gwo-wah-rescue.md
+  title: "GWO Working at Heights / First Aid / ART — wind competence & rescue map"
+  facets:
+    jurisdiction: [All]
+    industry: [Renewables]
+    topics: [gwo, working-at-heights, advanced-rescue-training, competence-refresh, climb-team, suspended-worker-recovery]
+    audience: [M, C]
+  summary: "GWO BST WAH + First Aid + ART competence-requirement + rescue-discipline map: competence refreshed every 2 years, two-person-minimum climb team + ground support, suspended-worker recovery in minutes, 'emergency services alone is NOT a rescue plan'. Grounds wind-turbine-work-at-height-rescue (REN-01). Module curriculum/cert detail LICENSED → cite requirement only, cert [GAP]. Structure map, not the module text."
+  source: "Global Wind Organisation (GWO) BST Working at Heights + First Aid + Advanced Rescue Training (cite competence requirement only)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-STD-BS8484
+  file: bs8484.md
+  title: "BS 8484:2022 — lone-worker device services map"
+  facets:
+    jurisdiction: [UK]
+    industry: [All]
+    topics: [lone-worker-device, bs8484, monitored-response-chain, alarm-receiving-centre, conformance]
+    audience: [M, C]
+  summary: "BS 8484:2022 device-service-conformance map: conformant lone-worker device + monitored response chain + conformance record. Grounds lone-working-assessment (REN-02). Device supplements, never replaces, the check-in/escalation procedure (KB-SNIP-CHECKIN-ESCALATION). Site device/service [GAP]. Structure map, not the standard text."
+  source: "BS 8484:2022 (Provision of lone worker device services) (citation map)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null

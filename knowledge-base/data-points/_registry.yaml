@@ -292,3 +292,49 @@
   last_reviewed: 2026-06-22
   volatile: false
   supersedes: null
+
+# --- Phase 16-01 — marine / rail / renewables data-point fragments (licensed → values [GAP]) ---
+- id: KB-DATA-DROPS-IMPACT
+  file: drops-impact.md
+  title: "Dropped-object impact energy — the public m·g·h method (band values [GAP])"
+  facets:
+    jurisdiction: [All]
+    industry: [O&G]
+    topics: [dropped-objects, impact-energy, mgh-method, consequence-band, drops-calculator, licensed]
+    audience: [M, C]
+  summary: "Public impact-energy method only: E ≈ m·g·h → consequence band; generic band LABELS embedded, the DROPS Calculator consequence-band threshold VALUES are LICENSED → [GAP]/user-confirmed (A1, SME-confirmed pre-LOCK). Skill records the user's band, never recomputes. Grounds dropped-objects-prevention (MAR-02). Method only, not the licensed table."
+  source: "DROPS Calculator impact-energy method (public formula m·g·h); consequence-band VALUES are the licensed DROPS Calculator table (not embedded)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: true
+  supersedes: null
+
+- id: KB-DATA-ALCRM-BANDS
+  file: alcrm-bands.md
+  title: "Level-crossing risk bands — ALCRM (record the user's band, values [GAP])"
+  facets:
+    jurisdiction: [UK]
+    industry: [Rail]
+    topics: [level-crossing, alcrm, individual-risk, collective-risk, risk-band, licensed]
+    audience: [M, C]
+  summary: "All Level Crossing Risk Model (ALCRM, RSSB/NR) framing: bands crossings by individual + collective risk to prioritise the highest-risk; generic band LABELS only, the band threshold VALUES are the LICENSED model output → [GAP]/user-supplied (A2, SME-confirmed pre-LOCK). Skill records the user's band, never recomputes. Grounds level-crossing-track-worker-safety (RAIL-03). Concept only, not the licensed model."
+  source: "All Level Crossing Risk Model (ALCRM), RSSB / Network Rail risk model; band VALUES are the licensed model output (not embedded)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: true
+  supersedes: null
+
+- id: KB-DATA-WEATHER-THRESHOLDS
+  file: weather-thresholds.md
+  title: "Weather thresholds for outdoor/at-height work — method + anchors (values user-confirmed)"
+  facets:
+    jurisdiction: [All]
+    industry: [Renewables]
+    topics: [weather, dynamic-risk-assessment, wind-cut-off, man-riding, bs7121, lightning, nfpa780, hub-height]
+    audience: [M, C]
+  summary: "Dynamic/point-of-work weather RA method (ISO 45001 6.1.2): threshold→action(hold/stop/evacuate)→re-assessment trigger at hub height. Verified anchor = BS 7121-1 (2016) man-riding ceiling 16 mph / 7 m/s; the ≈15 m/s tower-top cut-off is [ASSUMED A4] industry baseline → propose-and-user-confirms, NOT a citation; all other thresholds [GAP]/user-confirmed. Grounds weather-dynamic-risk-assessment (REN-03). Method + verified anchor only."
+  source: "ISO 45001:2018 cl 6.1.2 (dynamic RA method) + BS 7121-1:2016 (man-riding ceiling) + NFPA 780 (lightning practice) + manufacturer/CPA crane wind limits"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: true
+  supersedes: null

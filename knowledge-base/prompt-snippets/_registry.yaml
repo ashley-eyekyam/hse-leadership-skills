@@ -681,3 +681,184 @@
   last_reviewed: 2026-06-23
   volatile: false
   supersedes: null
+
+# --- Phase 16-01 — logistics / marine / rail / renewables control-logic snippets + 4 clause-maps ---
+- id: KB-SNIP-FATIGUE-FRMS
+  file: fatigue-frms.md
+  title: "Fatigue risk management — schedule-redesign-first control spine"
+  facets:
+    jurisdiction: [All]
+    industry: [Transport, Logistics]
+    topics: [fatigue, frms, schedule-redesign, hierarchy-of-controls, driver-alertness-flag]
+    audience: [M, C]
+  summary: "Schedule-redesign-first fatigue control spine for driver-fatigue-management (LOG-01): redesign roster/route first; in-cab alertness gadget / 'stay alert' briefing is NOT primary; compliance computed by fatigue.py not narrated; multi-day cycle/cross-shift claim without cumulative log → [GAP]. Rejects alertness-device-led treatment. Prompt text, not a generator."
+  source: "FMCSA HOS 49 CFR 395 + EU Reg 561/2006 + NAFMP FRMS framework (control-spine prompt)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-RACKING-MHE
+  file: racking-mhe.md
+  title: "Warehouse racking & MHE — design/inspection/segregation-first control spine"
+  facets:
+    jurisdiction: [All]
+    industry: [Logistics, Transport]
+    topics: [racking, mhe, swl-design, engineered-segregation, sema-rag, hierarchy-of-controls]
+    audience: [M, C]
+  summary: "SWL-design/inspection/segregation-first control spine for warehouse-racking-mhe-safety (LOG-02): 'inspect carefully'/hi-vis/'look out for forklifts' is NOT primary; SEMA RAG remedial priority (Green=monitor/Amber=4-week+auto-escalate/Red=immediate off-load); assumed SWL → [GAP]. Rejects PPE/signage-led treatment. Prompt text, not a generator."
+  source: "BS EN 15635:2008 + SEMA + OSHA 1910.178 / PUWER / HSE L117 / HSG136 (control-spine prompt)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-DROPS-SECURING
+  file: drops-securing.md
+  title: "Dropped objects — reliable-securing / survey / exclusion-zone-first control spine"
+  facets:
+    jurisdiction: [All]
+    industry: [O&G]
+    topics: [dropped-objects, reliable-securing, survey, exclusion-zone, hierarchy-of-controls]
+    audience: [M, C]
+  summary: "Survey/reliable-securing/exclusion-zone-first control spine for dropped-objects-prevention (MAR-02): 'hard hats for those below' is NOT primary; eliminate→reliable-securing→exclusion-zone→PPE; at-height item with no securing standard → reject; impact band with hard-coded licensed thresholds → reject. Prompt text, not a generator."
+  source: "DROPS Recommended Practice (2017) + DROPS Reliable Securing + IADC HSE Guidelines Section 16 (control-spine prompt)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-EER-MUSTER
+  file: eer-muster.md
+  title: "Offshore EER — muster→refuge→evacuation→escape→rescue control spine"
+  facets:
+    jurisdiction: [All]
+    industry: [O&G]
+    topics: [eer, muster, temporary-refuge, escalation-prevention, station-bill, hierarchy-of-controls]
+    audience: [M, C]
+  summary: "EER hierarchy spine for marine-emergency-response (MAR-03): escalation-prevention + TR integrity BEFORE abandonment; muster→TR→evacuation→escape→rescue; 'abandon and wait' as the lead control → reject; named station bill → reject (role-label/de-id); missing TR endurance/ERRV → [GAP]. Prompt text, not a generator."
+  source: "PFEER 1995 (SI 1995/743) + HSE L65 + SOLAS Ch III / LSA Code (control-spine prompt)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-LX-HIERARCHY
+  file: lx-hierarchy.md
+  title: "Level crossings & track work — closure/separation-first control spine"
+  facets:
+    jurisdiction: [UK]
+    industry: [Rail]
+    topics: [level-crossing, track-worker, closure, grade-separation, green-zone, lookout-flag, hierarchy-of-controls]
+    audience: [M, C]
+  summary: "Two control orders for level-crossing-track-worker-safety (RAIL-03): crossing closure→grade-separation→engineering→admin; track separation(green-zone/possession)→SSOW→warning→lookout-only-last; signage-only/lookout-only as lead where a higher order is reasonably practicable → reject; hard-coded ALCRM thresholds → reject; named COSS → reject. Prompt text, not a generator."
+  source: "NR/L2/OHS/019 + ORR level-crossing strategic-risk guidance + LXRMTK (control-spine prompt)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-RESCUE-PLAN
+  file: rescue-plan.md
+  title: "Work-at-height rescue — rescue-plan-mandatory control spine"
+  facets:
+    jurisdiction: [All]
+    industry: [Renewables]
+    topics: [work-at-height, rescue-plan, suspended-worker, team-owned-rescue, emergency-services-flag, hierarchy-of-controls]
+    audience: [M, C]
+  summary: "Rescue-plan-mandatory spine shared by wind-turbine-work-at-height-rescue (REN-01) + lone-working-assessment (REN-02): tested team-owned rescue before WAH, suspended-worker recovery in minutes, 'call the emergency services' is NOT a rescue plan; WAH plan with no rescue → reject (reg 4); untested capability/unstated recovery time → [GAP]. Prompt text, not a generator."
+  source: "Work at Height Regulations 2005 reg 4 (rescue planning) + GWO ART rescue competence (control-spine prompt)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-CHECKIN-ESCALATION
+  file: checkin-escalation.md
+  title: "Lone working — check-in / escalation control spine"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [lone-working, check-in, escalation, coverage-checked-comms, device-flag, hierarchy-of-controls]
+    audience: [M, C]
+  summary: "Check-in/escalation control spine for lone-working-assessment (REN-02): scheduled check-ins + missed-check-in escalation + coverage-checked comms; device/app as lead with no procedure → reject; 'no mobile signal' accepted as residual → reject (control failure); missed check-in with no responder/time → [GAP]. Prompt text, not a generator."
+  source: "HSE INDG73 (rev 4) + BS 8484:2022 (control-spine prompt)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-DYNAMIC-RA
+  file: dynamic-ra.md
+  title: "Weather dynamic RA — threshold→action→re-assessment control spine"
+  facets:
+    jurisdiction: [All]
+    industry: [Renewables]
+    topics: [weather, dynamic-risk-assessment, threshold, action, re-assessment-trigger, hub-height]
+    audience: [M, C]
+  summary: "Dynamic-RA spine for weather-dynamic-risk-assessment (REN-03): per parameter define threshold→action(hold/stop/evacuate)→mandatory re-assessment trigger, measured at hub height not base of tower; 'monitor and stop if too windy' with no numeric threshold → reject; threshold with no action/re-assessment → reject; invented threshold → [GAP]. Prompt text, not a generator."
+  source: "ISO 45001:2018 cl 6.1.2 + BS 7121-1 (man-riding) + NFPA 780 (lightning) (control-spine prompt)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-LOGISTICS-CLAUSE-MAP
+  file: logistics-clause-map.md
+  title: "hse-logistics-transport clause cross-walk — standard → artifact → owning skill (CONV-10)"
+  facets:
+    jurisdiction: [All]
+    industry: [Logistics, Transport]
+    topics: [clause-cross-walk, logistics, bundle-shared, routing, fmcsa-hos, en15635, mhe]
+    audience: [M, C]
+  summary: "Bundle-shared standard→artifact→skill cross-walk: FMCSA HOS/EU 561 + FRMS → driver-fatigue-management (LOG-01); EN 15635/SEMA + OSHA 1910.178/PUWER → warehouse-racking-mhe-safety (LOG-02). HOS computed by fatigue.py; road-safety KPIs cross-ref KB-DATA-ROAD-SAFETY-INDICATORS (LEAD-06); India via KB-REG-IN-MTW. Referenced by every logistics skill's kb-selection; single source, never duplicated."
+  source: "FMCSA HOS 49 CFR 395 + EU Reg 561/2006 + BS EN 15635:2008 / SEMA + OSHA 1910.178 / PUWER / HSE L117 + Motor Transport Workers Act 1961"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-MARINE-CLAUSE-MAP
+  file: marine-clause-map.md
+  title: "hse-marine-offshore clause cross-walk — standard → artifact → owning skill (CONV-10)"
+  facets:
+    jurisdiction: [All]
+    industry: [O&G, Marine]
+    topics: [clause-cross-walk, marine, offshore, bundle-shared, routing, safety-case, drops, pfeer, solas]
+    audience: [M, C]
+  summary: "Bundle-shared standard→artifact→skill cross-walk: SI 2015/398 Sch 6/7 → offshore-safety-case (MAR-01, assistive); DROPS RP → dropped-objects-prevention (MAR-02); PFEER + SOLAS/LSA → marine-emergency-response (MAR-03). Current regime = SI 2015/398 (SCR 2005 legacy only); MAR-01 never computes QRA / asserts barrier effective / emits 'accepted'; India via KB-REG-IN-OFFSHORE. Referenced by every marine skill's kb-selection; single source, never duplicated."
+  source: "SI 2015/398 Sch 6/7 + DROPS RP 2017 + PFEER 1995 (SI 1995/743) + SOLAS Ch III / LSA Code"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-RAIL-CLAUSE-MAP
+  file: rail-clause-map.md
+  title: "hse-rail clause cross-walk — standard → artifact → owning skill (CONV-10)"
+  facets:
+    jurisdiction: [UK]
+    industry: [Rail]
+    topics: [clause-cross-walk, rail, bundle-shared, routing, rogs, csm-ra, level-crossing, route-discipline]
+    audience: [M, C]
+  summary: "Bundle-shared standard→artifact→skill cross-walk: ROGS SMS element set → rail-safety-management-system (RAIL-01); ROGS application pack → safety-authorisation (RAIL-02, references RAIL-01's SMS never rebuilds it); CSM-RA → change risk; NR/L2/OHS/019 + ALCRM → level-crossing-track-worker-safety (RAIL-03). Route test (certificate/authorisation/Part-3); never 'accepted by ORR'; India via KB-REG-IN-RAIL. Referenced by every rail skill's kb-selection; single source, never duplicated."
+  source: "ROGS 2006 (SI 2006/599) + ORR Guide to ROGS + Reg (EU) 402/2013 CSM-RA + NR/L2/OHS/019"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
+
+- id: KB-SNIP-RENEWABLES-CLAUSE-MAP
+  file: renewables-clause-map.md
+  title: "hse-renewables clause cross-walk — standard → artifact → owning skill (CONV-10)"
+  facets:
+    jurisdiction: [All]
+    industry: [Renewables]
+    topics: [clause-cross-walk, renewables, bundle-shared, routing, wah2005, gwo, lone-working, weather-thresholds]
+    audience: [M, C]
+  summary: "Bundle-shared standard→artifact→skill cross-walk: WAH 2005 reg 4/6/7 + GWO → wind-turbine-work-at-height-rescue (REN-01); INDG73 + BS 8484 → lone-working-assessment (REN-02); ISO 45001 6.1.2 + BS 7121-1 (2016) weather → weather-dynamic-risk-assessment (REN-03). KB-SNIP-RESCUE-PLAN shared REN-01+REN-02; crane man-riding = BS 7121-1:2016 7 m/s (not 2006); renewables hazards cross-ref KB-HAZ-RENEWABLES (P11); India via KB-REG-IN-RENEWABLES. Referenced by every renewables skill's kb-selection; single source, never duplicated."
+  source: "WAH Regs 2005 (SI 2005/735) reg 4/6/7 + GWO BST + HSE INDG73 / BS 8484:2022 + ISO 45001 cl 6.1.2 / BS 7121-1 (2016)"
+  year: 2026
+  last_reviewed: 2026-06-23
+  volatile: false
+  supersedes: null
