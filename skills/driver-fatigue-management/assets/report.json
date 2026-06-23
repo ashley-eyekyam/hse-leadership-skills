@@ -1,0 +1,73 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Driver Fatigue Management — Night-Trunk Fleet, Route R-204",
+    "subtitle": "Hours-of-service compliance + advisory fatigue index (FMCSA 49 CFR 395 / EU 561/2006)",
+    "author": "HSE Logistics & Transport",
+    "date": "2026-06-23",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All drivers are referred to by role label. The driver's medical-fitness / OSA detail is held in a separate confidential occupational-health record; identifiers were pseudonymised before drafting and the re-identification key is held separately, not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Operation & duty-log description" },
+    { "type": "paragraph", "text": "Night-trunk fleet, route R-204, Midlands depot — single-shift duty log reviewed against the EU 561/2006 drivers' hours (the UK GB-domestic operation is read with EU 561). The hours-of-service compliance flags are COMPUTED by the fatigue.py engine from the supplied duty log, not narrated. The fatigue index below is a clearly-flagged ADVISORY metric, never a regulatory threshold." },
+
+    { "type": "heading", "level": 1, "text": "Hours-of-service compliance (COMPUTED — the authoritative finding)" },
+    { "type": "callout", "text": "Compliance-flags-primary: the per-rule PASS/FAIL flags below are the authoritative output, computed deterministically by fatigue.py (eu561_compliance / fmcsa_compliance) from the duty log. The fatigue index in the next section is advisory only.", "box_type": "info" },
+    { "type": "metrics", "metrics": [
+        { "label": "EU 561 daily driving", "value": "8.5 h", "caption": "limit 9 h — PASS" },
+        { "label": "Compliance", "value": "BREACH", "caption": "see failing rule" } ] },
+    { "type": "table",
+      "headers": ["Standard", "Rule", "Result"],
+      "rows": [
+        ["EU 561", "daily_driving (9-10 h)", "PASS"],
+        ["EU 561", "break_45min_after_4.5h", "FAIL"],
+        ["EU 561", "daily_rest_11h", "PASS"],
+        ["EU 561", "weekly_driving_56h", "[GAP] — weekly figure not supplied"],
+        ["EU 561", "fortnight_driving_90h", "[GAP] — fortnightly figure not supplied"] ],
+      "caption": "EU Regulation (EC) 561/2006 per-rule compliance — computed by fatigue.py (numbers are LOCKED engine constants; weekly/fortnightly need the multi-day log)" },
+    { "type": "callout", "text": "One or more hours-of-service rules are breached: the 45-min break after 4.5 h continuous driving (Art. 7) was not taken. Reschedule the shift to insert the qualifying break. The fatigue index is advisory only; the compliance flags are the authoritative finding.", "box_type": "warning" },
+
+    { "type": "heading", "level": 1, "text": "Advisory fatigue index (ADVISORY / derived — NOT a regulatory threshold)" },
+    { "type": "metrics", "metrics": [
+        { "label": "Fatigue index (advisory)", "value": 0.62 },
+        { "label": "Band (advisory)", "value": "High" } ] },
+    { "type": "callout", "text": "ADVISORY / derived metric — a transparent weighted-stressor heuristic (0.4 driving load + 0.3 time-awake + 0.3 circadian timing, peaking in the Window of Circadian Low ~02:00-06:00), NOT a regulatory threshold and NOT a validated biomathematical model. Use the EU 561 / FMCSA compliance flags above as the authoritative output.", "box_type": "info" },
+
+    { "type": "heading", "level": 1, "text": "Multi-day cycle & cross-shift rest — gaps" },
+    { "type": "bullets", "items": [
+        "[GAP] FMCSA 60/70 h cycle & 34 h restart: not assessable from a single-shift log — collect the 7-/8-day cumulative on-duty figure (the engine defaults these to compliant only because no multi-day breach is detectable, not because compliance is proven).",
+        "[GAP] EU 561 weekly (56 h) / fortnightly (90 h) driving: not supplied — request the multi-day tachograph download. Never asserted compliant from one shift." ] },
+
+    { "type": "heading", "level": 1, "text": "Hierarchy-ranked controls (roster redesign first, alertness last)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Redesign the R-204 roster: split the trunk run into a two-driver relay so the qualifying 45-min break and the 11 h daily rest are built into the schedule (FRMS)", "tier": "Elimination", "owner": "Fleet Planner (role)" },
+        { "control": "Journey-plan the route to place the rest stop before the 4.5 h continuous-driving point", "tier": "Substitution", "owner": "Transport Manager (role)" },
+        { "control": "In-cab fatigue-detection alerting as an engineered BACKSTOP on the night leg (not the headline control)", "tier": "Engineering", "owner": "Fleet Engineer (role)" },
+        { "control": "Fatigue-risk rostering rules + a short driver fatigue briefing as administrative reinforcement", "tier": "Administrative", "owner": "Transport Manager (role)" } ] },
+    { "type": "callout", "text": "A 'stay alert' briefing or an in-cab fatigue-detection gadget is NOT the primary control. A treatment that leads with driver-alertness training on a roster that forces a break breach is a FLAG pushed up the hierarchy — fatigue is led by roster / journey-plan / built-in-rest (FRMS) redesign.", "box_type": "warning" },
+
+    { "type": "heading", "level": 1, "text": "Owned/dated actions" },
+    { "type": "recommendations", "rows": [
+        { "action": "Reschedule R-204 to a two-driver relay so the 45-min break is built into the shift", "priority": "P1", "owner": "Fleet Planner (role)", "due": "2026-07-01" },
+        { "action": "Collect the 7/8-day cumulative on-duty figure and the weekly/fortnightly driving totals to close the multi-day [GAP]s", "priority": "P1", "owner": "Transport Manager (role)", "due": "2026-07-07" },
+        { "action": "Pilot in-cab fatigue detection on the night leg as a backstop", "priority": "P2", "owner": "Fleet Engineer (role)", "due": "2026-08-30" } ] },
+
+    { "type": "heading", "level": 1, "text": "Assumptions & gaps" },
+    { "type": "bullets", "items": [
+        "The duty log was supplied by the operator (ELD/tachograph) — a missing segment would be a [GAP], never an invented driving hour or rest segment.",
+        "Multi-day cycle / restart / weekly-driving figures not supplied → [GAP] (see above); never asserted compliant from a single shift.",
+        "India site (if applicable): state return owed — [GAP] (resolve the state via hse-india; no national form number minted)." ] },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off (regulatory basis)" },
+    { "type": "bullets", "items": [
+        "EU Regulation (EC) 561/2006 — drivers' hours (9-10 h daily driving / 45-min break after 4.5 h / 11 h daily rest / 56 h weekly / 90 h fortnightly); Reg (EU) 165/2014 tachograph",
+        "FMCSA Hours-of-Service — 49 CFR Part 395 (11 h driving / 14 h window / 30-min break / 60-70 h cycle / 34 h restart) where the operation is US",
+        "Fatigue Risk Management System (FRMS) principles — schedule/roster redesign first; India Motor Transport Workers Act 1961 / state rules via hse-india",
+        "Review trigger: on roster change / on ELD-exception / quarterly — whichever is first",
+        "Decision-support only — a competent person must review before use." ] }
+  ]
+}

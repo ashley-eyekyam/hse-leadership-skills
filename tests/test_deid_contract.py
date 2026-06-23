@@ -1092,3 +1092,70 @@ def test_biosafety_clean_fixture_passes():
     assert verdict["auto_fail"] is False, (
         f"biosafety clean fixture false-positived: {verdict['reasons']}"
     )
+
+
+# Phase-16 / LOG-01 driver-fatigue-management de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 16-02 (do not reorder/remove the canonical
+# contract assertions above, nor any other skill's appended section). This is the
+# logistics pack's HIGHEST occupational-health de-id tier: driver-fatigue inputs carry
+# special-category health data (PHI) — the driver's CDL / licence number, the DOT-medical
+# / fitness-for-duty certificate, an obstructive-sleep-apnoea (OSA) / sleep-disorder
+# diagnosis, and any fatigue-event / sickness-absence count. It registers the
+# driver-fatigue-management de-identification PAIR against the SAME deterministic de-id
+# grader the whole pack's non-waivable privacy gate keys off:
+#   - the seeded-leak negative (evals/files/driver-fatigue-management-leak.md) — a named
+#     driver + a CDL/phone number + an OSA / sleep-disorder DOT-medical note + an embedded
+#     re-id key + a <5 fatigue-event/sickness cell — MUST auto_fail (the gate is live),
+#     and the small-cell <5 suppression catch is asserted EXPLICITLY (the de_identification
+#     HARD-fail — a sub-5 fatigue-event cell on a named route de-anonymizes the driver's
+#     exposure and must be suppressed), and
+#   - the paired clean positive (evals/files/driver-fatigue-management-clean.md), wired
+#     into the skill's eval CASE, MUST NOT false-positive (the per-skill gate is not
+#     spuriously hard-failed; in particular the clean fixture defends against the P15
+#     _PHONE_RE false-positive on 49 CFR / ISO-date citation numbers — todo 260623-p15).
+# This append is a SERIAL / orchestrator-batched edit (D-04) — applied in order with the
+# other Wave appends; parallel executors must NOT race-write this shared file.
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _driver_fatigue_sys  # noqa: E402
+
+_DRIVER_FATIGUE_SCRIPTS = REPO / "scripts"
+if str(_DRIVER_FATIGUE_SCRIPTS) not in _driver_fatigue_sys.path:
+    _driver_fatigue_sys.path.insert(0, str(_DRIVER_FATIGUE_SCRIPTS))
+
+from graders import grade_deid as _driver_fatigue_grade_deid  # noqa: E402
+
+_DRIVER_FATIGUE_FILES = REPO / "skills" / "driver-fatigue-management" / "evals" / "files"
+_DRIVER_FATIGUE_LEAK = _DRIVER_FATIGUE_FILES / "driver-fatigue-management-leak.md"
+_DRIVER_FATIGUE_CLEAN = _DRIVER_FATIGUE_FILES / "driver-fatigue-management-clean.md"
+
+
+def test_driver_fatigue_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _driver_fatigue_grade_deid(_DRIVER_FATIGUE_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "driver-fatigue seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_driver_fatigue_small_cell_suppression_caught():
+    """HIGHEST occupational-health TIER (T-16-02-02): the sub-5 fatigue-event/sickness breakdown MUST
+    be caught as a small-cell leak — the <5 suppression rule (with secondary back-calc) is the de-id
+    HARD-fail (a <5 fatigue-event cell on a named route de-anonymizes the driver's exposure)."""
+    verdict = _driver_fatigue_grade_deid(_DRIVER_FATIGUE_LEAK.read_text(encoding="utf-8"))
+    assert verdict["conditions"]["no_small_cell"] is False, (
+        "driver-fatigue seeded-leak <5 fatigue-event cell was NOT caught — small-cell suppression gate is dead"
+    )
+    assert any("small-cell" in r for r in verdict["reasons"]), (
+        "the <5 small-cell leak is not among the auto_fail reasons"
+    )
+
+
+def test_driver_fatigue_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail; in
+    particular no _PHONE_RE false-positive on the 49 CFR citation numbers)."""
+    verdict = _driver_fatigue_grade_deid(_DRIVER_FATIGUE_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"driver-fatigue clean fixture false-positived: {verdict['reasons']}"
+    )

@@ -1,0 +1,65 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Driver Fatigue Management — <Fleet / Operation>",
+    "subtitle": "Hours-of-service compliance + advisory fatigue index (FMCSA 49 CFR 395 / EU 561/2006)",
+    "author": "HSE Logistics & Transport",
+    "date": "<YYYY-MM-DD>",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All drivers are referred to by role label. Driver medical-fitness / OSA detail is held in a separate confidential occupational-health record; identifiers were pseudonymised before drafting and the re-identification key is held separately, not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Operation & duty-log description" },
+    { "type": "paragraph", "text": "<Named fleet / operation / route / depot> reviewed against the resolved hours-of-service rule-set. The HOS compliance flags are COMPUTED by the fatigue.py engine from the supplied duty log, never narrated. The fatigue index is a clearly-flagged ADVISORY metric, never a regulatory threshold." },
+
+    { "type": "heading", "level": 1, "text": "Hours-of-service compliance (COMPUTED — the authoritative finding)" },
+    { "type": "callout", "text": "Compliance-flags-primary: the per-rule PASS/FAIL flags are the authoritative output, computed by fatigue.py (fmcsa_compliance / eu561_compliance). The fatigue index that follows is advisory only.", "box_type": "info" },
+    { "type": "metrics", "metrics": [
+        { "label": "Daily driving", "value": "<h>", "caption": "vs limit — PASS/FAIL" },
+        { "label": "Compliance", "value": "<OK | BREACH>" } ] },
+    { "type": "table",
+      "headers": ["Standard", "Rule", "Result"],
+      "rows": [
+        ["<FMCSA | EU 561>", "<rule key>", "<PASS | FAIL | [GAP]>"] ],
+      "caption": "Per-rule HOS compliance — computed by fatigue.py (numbers are LOCKED engine constants; multi-day rules need the cumulative log)" },
+    { "type": "callout", "text": "<Breach summary, if any> — the fatigue index is advisory only; the compliance flags are the authoritative finding.", "box_type": "warning" },
+
+    { "type": "heading", "level": 1, "text": "Advisory fatigue index (ADVISORY / derived — NOT a regulatory threshold)" },
+    { "type": "metrics", "metrics": [
+        { "label": "Fatigue index (advisory)", "value": 0.0 },
+        { "label": "Band (advisory)", "value": "<Low | Moderate | High | Severe>" } ] },
+    { "type": "callout", "text": "ADVISORY / derived metric — a transparent weighted-stressor heuristic (driving load + time-awake + circadian timing, peaking in the Window of Circadian Low ~02:00-06:00), NOT a regulatory threshold and NOT a validated biomathematical model. Use the compliance flags above as the authoritative output.", "box_type": "info" },
+
+    { "type": "heading", "level": 1, "text": "Multi-day cycle & cross-shift rest — gaps" },
+    { "type": "bullets", "items": [
+        "[GAP] FMCSA 60/70 h cycle & 34 h restart — not assessable from a single-shift log; collect the 7-/8-day cumulative on-duty figure (never asserted compliant from one shift).",
+        "[GAP] EU 561 weekly (56 h) / fortnightly (90 h) driving and cross-shift daily rest — request the multi-day tachograph download." ] },
+
+    { "type": "heading", "level": 1, "text": "Hierarchy-ranked controls (roster redesign first, alertness last)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Redesign the roster / journey plan and build in rest (FRMS) — the primary control", "tier": "Elimination", "owner": "<Fleet Planner (role)>" },
+        { "control": "In-cab fatigue-detection as an engineered BACKSTOP (not the headline)", "tier": "Engineering", "owner": "<Fleet Engineer (role)>" },
+        { "control": "Fatigue-risk rostering rules + driver fatigue briefing as administrative reinforcement", "tier": "Administrative", "owner": "<Transport Manager (role)>" } ] },
+    { "type": "callout", "text": "A 'stay alert' briefing or an in-cab fatigue-detection gadget is NOT the primary control. An alertness-led treatment is a FLAG pushed up the hierarchy — fatigue is led by roster / journey-plan / built-in-rest (FRMS) redesign.", "box_type": "warning" },
+
+    { "type": "heading", "level": 1, "text": "Owned/dated actions" },
+    { "type": "recommendations", "rows": [
+        { "action": "<Roster-redesign / FRMS action>", "priority": "P1", "owner": "<Fleet Planner (role)>", "due": "<YYYY-MM-DD>" },
+        { "action": "Close the multi-day [GAP]s — collect the cumulative on-duty + weekly/fortnightly figures", "priority": "P1", "owner": "<Transport Manager (role)>", "due": "<YYYY-MM-DD>" } ] },
+
+    { "type": "heading", "level": 1, "text": "Assumptions & gaps" },
+    { "type": "bullets", "items": [
+        "Duty log supplied by the operator (ELD/tachograph) — a missing segment is a [GAP], never an invented value.",
+        "Multi-day cycle / restart / weekly-driving figures not supplied → [GAP]; never asserted compliant from a single shift.",
+        "India site: state return owed → [GAP] (resolve via hse-india; no national form number minted)." ] },
+
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Review & sign-off (regulatory basis)" },
+    { "type": "bullets", "items": [
+        "FMCSA Hours-of-Service — 49 CFR Part 395; EU Regulation (EC) 561/2006 + Reg (EU) 165/2014 tachograph; FRMS principles; India MTW 1961 / state rules via hse-india",
+        "Review trigger: on roster change / on ELD-exception / quarterly",
+        "Decision-support only — a competent person must review before use." ] }
+  ]
+}
