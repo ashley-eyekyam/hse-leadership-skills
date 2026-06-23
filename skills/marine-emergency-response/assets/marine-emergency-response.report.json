@@ -1,0 +1,61 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Marine/Offshore Emergency Response (EER) Plan",
+    "subtitle": "Named installation/vessel · muster + POB accounting · TR integrity · EER hierarchy · TEMPSC vs POB · MOB · helideck",
+    "author": "HSE Marine & Offshore",
+    "date": "2026-06-23",
+    "classification": "Internal — competent-person (marine/offshore-EER SME) review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "The station bill assigns every emergency duty by role label only. Names, OPITO/BOSIET certificate numbers and contact details were pseudonymised before drafting; persons-on-board are carried as a count, never a named manifest; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "1. Scope & persons-on-board (POB)" },
+    { "type": "paragraph", "text": "This EER plan covers the named installation/vessel and its reference-shift persons-on-board (POB). It sets out the muster + POB accounting, the temporary-refuge (TR) integrity basis, the evacuation/escape/rescue (EER) hierarchy, the TEMPSC/survival-craft provision, man-overboard (MOB) recovery, and the helideck arrangements. POB is the specificity anchor: the survival-craft sufficiency and the muster strategy depend on it." },
+    { "type": "metrics", "metrics": [
+        { "label": "Persons-on-board (POB)", "value": "[from intake]", "caption": "reference shift — carried as a count" },
+        { "label": "Lead posture", "value": "Escalation prevention + TR integrity", "caption": "abandonment is the last resort" },
+        { "label": "TEMPSC capacity vs POB", "value": "checked >= POB or [GAP]", "caption": "never assumed adequate" } ] },
+    { "type": "heading", "level": 1, "text": "2. Lead posture — escalation prevention & TR integrity (not 'muster and wait')" },
+    { "type": "paragraph", "text": "The primary posture of this EER plan is to detect, control and prevent the emergency from escalating so that abandonment is the last resort, and to hold the temporary refuge for its required endurance while the response decision is made. An EER plan reduced to 'muster and wait' / abandonment-as-headline, with no escalation-prevention or TR-integrity basis, is rejected." },
+    { "type": "callout", "text": "Rejected: 'muster to the TR and wait for evacuation'. Escalation prevention (detection / isolation / active fire protection) and temporary-refuge integrity lead; controlled abandonment by TEMPSC is the last step, not the headline.", "box_type": "warning" },
+    { "type": "heading", "level": 1, "text": "3. EER hierarchy (escalation control first, abandonment last)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Escalation prevention — detection, ESD/isolation and active fire protection to keep the event from impairing the TR (LEAD)", "tier": "Engineering", "owner": "OIM (role)" },
+        { "control": "Temporary-refuge integrity — TR survives the dimensioning event for its stated endurance", "tier": "Engineering", "owner": "Technical Authority (role)" },
+        { "control": "Controlled evacuation — TEMPSC abandonment only when escalation control + TR integrity are exhausted (capacity >= POB or [GAP])", "tier": "Substitution", "owner": "TEMPSC coxswain (role)" },
+        { "control": "Escape — secondary means (escape routes, scramble nets, life rafts) as defence-in-depth", "tier": "Administrative", "owner": "Muster controller (role)" },
+        { "control": "Rescue & recovery — ERRV/standby vessel + reg-17 recovery & rescue / fast-rescue craft", "tier": "Administrative", "owner": "ERRV master (role)" } ] },
+    { "type": "heading", "level": 1, "text": "4. TEMPSC / survival-craft capacity vs POB" },
+    { "type": "table",
+      "headers": ["Provision", "Rated capacity", "POB", "Sufficiency"],
+      "rows": [
+        ["TEMPSC (total)", "[from intake]", "[from intake]", "checked >= POB, or [GAP] / shortfall recorded"],
+        ["Secondary escape / life rafts", "[from intake]", "[from intake]", "defence-in-depth"]
+      ],
+      "caption": "Survival-craft capacity is checked against POB and must be shown >= POB; a shortfall is a finding + [GAP]-closure action, never assumed adequate" },
+    { "type": "heading", "level": 1, "text": "5. Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "EER posture reduced to muster-and-wait", "risk_level": "High",
+          "description": "The proposed plan led with muster-and-wait/abandonment rather than escalation prevention and TR integrity.", "evidence": "Draft EER plan review" },
+        { "title": "TEMPSC capacity vs POB", "risk_level": "High",
+          "description": "Survival-craft capacity must be shown >= POB; any shortfall is recorded as a finding and a [GAP]-closure action.", "evidence": "SOLAS Ch III / LSA capacity-vs-POB check" },
+        { "title": "TR endurance basis", "risk_level": "Medium",
+          "description": "The temporary-refuge endurance basis is recorded; where unsupplied it is [GAP].", "evidence": "PFEER TR integrity basis" } ] },
+    { "type": "heading", "level": 1, "text": "6. Recommendations ([GAP]-closure SMART actions)" },
+    { "type": "recommendations", "rows": [
+        { "action": "Re-base the EER plan on escalation prevention + TR integrity; demonstrate TR endurance for the dimensioning event", "priority": "P1", "owner": "Technical Authority (role)", "due": "2026-09-30" },
+        { "action": "Close the TEMPSC capacity-vs-POB shortfall (additional survival-craft capacity or POB control)", "priority": "P1", "owner": "OIM (role)", "due": "2026-08-31" },
+        { "action": "Confirm ERRV / reg-17 recovery & rescue arrangement and the drill schedule (muster / lifeboat / MOB / helideck)", "priority": "P2", "owner": "ERRV master (role)", "due": "2026-09-15" } ] },
+    { "type": "callout", "text": "This EER plan is the EER element the offshore-safety-case (MAR-01) records — cross-referenced, never rebuilt here.", "box_type": "info" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": [
+        "PFEER — Offshore Installations (Prevention of Fire and Explosion, and Emergency Response) Regulations 1995 (SI 1995/743) + HSE L65: muster, TR integrity, the EER chain, reg-17 recovery & rescue / ERRV",
+        "SOLAS Chapter III + LSA Code: TEMPSC, survival-craft capacity-vs-POB, the role-labelled station bill",
+        "OPITO BOSIET/HUET competence requirement (certificate detail [GAP])",
+        "ISO 45001 cl 8.1.2 — hierarchy of controls"
+      ] }
+  ]
+}

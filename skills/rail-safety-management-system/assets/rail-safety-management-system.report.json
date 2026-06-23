@@ -1,0 +1,67 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Rail Safety Management System — for acceptance",
+    "subtitle": "ROGS/ORR element set · route resolved",
+    "author": "HSE Rail",
+    "date": "2026-06-23",
+    "classification": "Internal — for submission / competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label (accountable duty-holder, safety-critical roles, COSS). Identifiers and any Sentinel numbers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document. This SMS is submitted FOR acceptance; ORR acceptance is the Safety Authority's act and is not asserted here."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Scope & dutyholder route" },
+    { "type": "paragraph", "text": "This Safety Management System is built to the ROGS 2006 (SI 2006/599) element set for the named dutyholder. The dutyholder route is resolved first and held throughout: a mainline transport operator requires a safety certificate, an infrastructure manager a safety authorisation, and a non-mainline operation a ROGS Part 3 safety verification. It is submitted FOR acceptance — it does not assert acceptance by ORR." },
+    { "type": "metrics", "metrics": [
+        { "label": "SMS elements", "value": "9" },
+        { "label": "Open [GAP]s", "value": "[GAP]", "caption": "each closed by a SMART action" },
+        { "label": "Route", "value": "[GAP]", "caption": "certificate / authorisation / Part-3" } ] },
+    { "type": "heading", "level": 1, "text": "1. Safety policy & objectives" },
+    { "type": "paragraph", "text": "[GAP — the dutyholder's safety policy + measurable objectives]" },
+    { "type": "heading", "level": 1, "text": "2. Accountabilities & responsibilities" },
+    { "type": "table",
+      "headers": ["Role (label)", "SMS accountability", "Status"],
+      "rows": [
+        ["Accountable Duty-Holder", "Overall accountability for the SMS", "[GAP]"],
+        ["Safety-Critical Role A", "Risk-control arrangements", "[GAP]"],
+        ["Competence Manager (role)", "Competence & Sentinel", "[GAP]"]
+      ],
+      "caption": "Accountabilities — role / accountability / status (named individuals de-identified to role labels)" },
+    { "type": "heading", "level": 1, "text": "3. Risk-control arrangements" },
+    { "type": "findings", "rows": [
+        { "title": "[GAP — the operation's significant risk]", "risk_level": "[GAP]",
+          "description": "[GAP — the controlled risk and its arrangement]", "evidence": "[GAP — supplied input]" } ] },
+    { "type": "heading", "level": 2, "text": "Hierarchy of controls (every mitigation ranked, SFAIRP)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "[GAP — eliminate the hazard where reasonably practicable]", "tier": "Elimination", "owner": "[role]" },
+        { "control": "[GAP — engineering control]", "tier": "Engineering", "owner": "[role]" },
+        { "control": "[GAP — administrative control + justification if lower-order-only]", "tier": "Administrative", "owner": "[role]" } ] },
+    { "type": "heading", "level": 1, "text": "4. CSM-RA change interface" },
+    { "type": "bullets", "items": [
+        "Significance test (safety relevance / novelty / complexity / monitoring / reversibility / additionality) — Reg (EU) 402/2013 (KB-REG-CSM-RA)",
+        "Risk-acceptance principle applied: codes of practice / reference systems / explicit risk estimation [GAP]",
+        "Independent AsBo (Assessment Body) for significant changes [GAP]" ] },
+    { "type": "heading", "level": 1, "text": "5. Competence & Sentinel" },
+    { "type": "paragraph", "text": "[GAP — competence management + fitness-for-duty for safety-critical work; Sentinel where applicable; individual medical detail held in a separate confidential record]" },
+    { "type": "heading", "level": 1, "text": "6. Asset & ECM maintenance" },
+    { "type": "paragraph", "text": "[GAP — asset/infrastructure condition + Entity in Charge of Maintenance arrangements]" },
+    { "type": "heading", "level": 1, "text": "7. Emergency arrangements" },
+    { "type": "paragraph", "text": "[GAP — emergency preparedness + response coordination]" },
+    { "type": "heading", "level": 1, "text": "8. Monitoring, audit & review" },
+    { "type": "paragraph", "text": "[GAP — the assurance/audit regime + the stated review cadence]" },
+    { "type": "heading", "level": 1, "text": "9. Continuous improvement" },
+    { "type": "paragraph", "text": "[GAP — how the SMS learns (incident learning, audit findings) and improves]" },
+    { "type": "heading", "level": 1, "text": "Actions to close [GAP]s" },
+    { "type": "recommendations", "rows": [
+        { "action": "[GAP — SMART action closing each open element]", "priority": "P1", "owner": "[role]", "due": "[date]" } ] },
+    { "type": "callout", "text": "This SMS is submitted FOR acceptance. ORR is the Safety Authority; acceptance is its act and is not asserted in this document.", "box_type": "warning" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": [
+        "Railways and Other Guided Transport Systems (Safety) Regulations 2006 (SI 2006/599) — KB-REG-ROGS",
+        "Common Safety Method for Risk Evaluation and Assessment, Reg (EU) 402/2013 (retained EU law in GB) — KB-REG-CSM-RA",
+        "ISO 45001 §8.1.2 — hierarchy of controls",
+        "India: Railways Act 1989 / Commissioner of Railway Safety — KB-REG-IN-RAIL (state detection mandatory; no national form invented)" ] }
+  ]
+}

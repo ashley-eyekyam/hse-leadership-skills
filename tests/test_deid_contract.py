@@ -1159,3 +1159,216 @@ def test_driver_fatigue_clean_fixture_passes():
     assert verdict["auto_fail"] is False, (
         f"driver-fatigue clean fixture false-positived: {verdict['reasons']}"
     )
+
+
+# =============================================================================
+# Phase-16 / RAIL-01 rail-safety-management-system de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 16-03 (do not reorder/remove the canonical
+# contract assertions above, nor any Phase-14/15 section, nor the Phase-16 LOG-01
+# driver-fatigue section, nor any other skill's appended section). RAIL-01 is the
+# hse-rail keystone — a tier-1 governance SMS builder — and a rail SMS is a
+# circulated, assurance-facing document, so named safety-critical role-holders, the
+# COSS (controller of site safety), Sentinel competence-card numbers, and any
+# fitness-for-duty / occupational-health detail are PII (GDPR Art. 9 / India DPDP
+# special-category health data for the fitness note). This is the MODERATE de-id tier
+# (role-holder + Sentinel-number scrub; the small-cell suppression on street-running
+# incident counts is also asserted). It registers the rail-SMS de-identification PAIR
+# against the SAME deterministic de-id grader the whole pack's non-waivable privacy
+# gate keys off:
+#   - the seeded-leak negative (evals/files/rail-safety-management-system-leak.md) — a
+#     named accountable duty-holder + a named COSS + a Sentinel number + a phone + a
+#     fitness-for-duty / back-injury note + a <5 street-running incident cell + an
+#     embedded re-id key — MUST auto_fail (the gate is live), and
+#   - the paired clean positive (evals/files/rail-safety-management-system-clean.md),
+#     wired into the skill's eval CASE, MUST NOT false-positive (the per-skill gate is
+#     not spuriously hard-failed; in particular no _PHONE_RE false-positive on the
+#     SI 2006/599 / Reg (EU) 402/2013 citation numbers).
+# This append is a SERIAL / orchestrator-batched edit (D-04) — applied in order with
+# the other Wave-3 appends; parallel executors must NOT race-write this shared file.
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _rail_sms_sys  # noqa: E402
+
+_RAIL_SMS_SCRIPTS = REPO / "scripts"
+if str(_RAIL_SMS_SCRIPTS) not in _rail_sms_sys.path:
+    _rail_sms_sys.path.insert(0, str(_RAIL_SMS_SCRIPTS))
+
+from graders import grade_deid as _rail_sms_grade_deid  # noqa: E402
+
+_RAIL_SMS_FILES = REPO / "skills" / "rail-safety-management-system" / "evals" / "files"
+_RAIL_SMS_LEAK = _RAIL_SMS_FILES / "rail-safety-management-system-leak.md"
+_RAIL_SMS_CLEAN = _RAIL_SMS_FILES / "rail-safety-management-system-clean.md"
+
+
+def test_rail_sms_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _rail_sms_grade_deid(_RAIL_SMS_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "rail-safety-management-system seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_rail_sms_seeded_leak_small_cell_suppression_caught():
+    """MODERATE TIER (T-16-03-01): the sub-5 street-running incident breakdown MUST be caught as a
+    small-cell leak — a <5 incident cell on a named corridor de-anonymizes the involved driver."""
+    verdict = _rail_sms_grade_deid(_RAIL_SMS_LEAK.read_text(encoding="utf-8"))
+    assert verdict["conditions"]["no_small_cell"] is False, (
+        "rail-SMS seeded-leak <5 incident cell was NOT caught — small-cell suppression gate is dead"
+    )
+    assert any("small-cell" in r for r in verdict["reasons"]), (
+        "the <5 small-cell leak is not among the auto_fail reasons"
+    )
+
+
+def test_rail_sms_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail; in
+    particular no _PHONE_RE false-positive on the SI 2006/599 / Reg (EU) 402/2013 citation numbers)."""
+    verdict = _rail_sms_grade_deid(_RAIL_SMS_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"rail-safety-management-system clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# --- safety-authorisation (RAIL-02) de-id PAIR (plan 16-04; SERIAL / orchestrator-batched, D-04) ---
+
+import sys as _safety_authorisation_sys  # noqa: E402
+
+_SAFETY_AUTHORISATION_SCRIPTS = REPO / "scripts"
+if str(_SAFETY_AUTHORISATION_SCRIPTS) not in _safety_authorisation_sys.path:
+    _safety_authorisation_sys.path.insert(0, str(_SAFETY_AUTHORISATION_SCRIPTS))
+
+from graders import grade_deid as _safety_authorisation_grade_deid  # noqa: E402
+
+_SAFETY_AUTHORISATION_FILES = REPO / "skills" / "safety-authorisation" / "evals" / "files"
+_SAFETY_AUTHORISATION_LEAK = _SAFETY_AUTHORISATION_FILES / "safety-authorisation-leak.md"
+_SAFETY_AUTHORISATION_CLEAN = _SAFETY_AUTHORISATION_FILES / "safety-authorisation-clean.md"
+
+
+def test_safety_authorisation_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _safety_authorisation_grade_deid(_SAFETY_AUTHORISATION_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "safety-authorisation seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_safety_authorisation_seeded_leak_small_cell_suppression_caught():
+    """MODERATE TIER (T-16-04-01): the sub-5 track-worker incident breakdown MUST be caught as a
+    small-cell leak — a <5 incident cell on a named corridor de-anonymizes the involved track worker."""
+    verdict = _safety_authorisation_grade_deid(_SAFETY_AUTHORISATION_LEAK.read_text(encoding="utf-8"))
+    assert verdict["conditions"]["no_small_cell"] is False, (
+        "safety-authorisation seeded-leak <5 incident cell was NOT caught — small-cell suppression gate is dead"
+    )
+    assert any("small-cell" in r for r in verdict["reasons"]), (
+        "the <5 small-cell leak is not among the auto_fail reasons"
+    )
+
+
+def test_safety_authorisation_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail; in
+    particular no _PHONE_RE false-positive on the SI 2006/599 / Reg (EU) 402/2013 citation numbers)."""
+    verdict = _safety_authorisation_grade_deid(_SAFETY_AUTHORISATION_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"safety-authorisation clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# --- level-crossing-track-worker-safety (RAIL-03, plan 16-05) -------------------
+# Skill-scoped de-id PAIR registration (SERIAL / orchestrator-batched — D-04).
+# MODERATE tier: named COSS / lookout / PICOP role-holders + Sentinel numbers ->
+# role labels; a <5 near-miss cell on a named corridor de-anonymizes the involved
+# track worker (de_identification HARD-FAIL).
+import sys as _level_crossing_sys  # noqa: E402
+
+_LEVEL_CROSSING_SCRIPTS = REPO / "scripts"
+if str(_LEVEL_CROSSING_SCRIPTS) not in _level_crossing_sys.path:
+    _level_crossing_sys.path.insert(0, str(_LEVEL_CROSSING_SCRIPTS))
+
+from graders import grade_deid as _level_crossing_grade_deid  # noqa: E402
+
+_LEVEL_CROSSING_FILES = REPO / "skills" / "level-crossing-track-worker-safety" / "evals" / "files"
+_LEVEL_CROSSING_LEAK = _LEVEL_CROSSING_FILES / "level-crossing-track-worker-safety-leak.md"
+_LEVEL_CROSSING_CLEAN = _LEVEL_CROSSING_FILES / "level-crossing-track-worker-safety-clean.md"
+
+
+def test_level_crossing_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _level_crossing_grade_deid(_LEVEL_CROSSING_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "level-crossing seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_level_crossing_seeded_leak_small_cell_suppression_caught():
+    """MODERATE TIER (T-16-05-01): the sub-5 track-worker near-miss breakdown MUST be caught as a
+    small-cell leak — a <5 near-miss cell on a named corridor de-anonymizes the involved track worker."""
+    verdict = _level_crossing_grade_deid(_LEVEL_CROSSING_LEAK.read_text(encoding="utf-8"))
+    assert verdict["conditions"]["no_small_cell"] is False, (
+        "level-crossing seeded-leak <5 near-miss cell was NOT caught — small-cell suppression gate is dead"
+    )
+    assert any("small-cell" in r for r in verdict["reasons"]), (
+        "the <5 small-cell leak is not among the auto_fail reasons"
+    )
+
+
+def test_level_crossing_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail; in
+    particular no _PHONE_RE false-positive on the SI 2006/599 / NR/L2/OHS/019 / Reg (EU) 402/2013
+    references, and no name false-positive on the 'Track-Worker (On ...)' heading)."""
+    verdict = _level_crossing_grade_deid(_LEVEL_CROSSING_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"level-crossing clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# =============================================================================
+# Skill-scoped section appended by plan 16-06 (do not reorder/remove the canonical
+# contract assertions above, nor any other skill's appended section). MODERATE tier:
+# named station-bill role-holders (OIM / muster controller / TEMPSC coxswain) +
+# OPITO/BOSIET certificate numbers + a phone -> role labels in the circulated copy;
+# POB carried as a count, never a named manifest; a <5 prior-MOB/drill-injury cell on
+# a named installation de-anonymizes the involved person (de_identification HARD-FAIL).
+# This append is a SERIAL / orchestrator-batched edit (D-04) — applied in order with
+# the other Wave-3 appends; parallel executors must NOT race-write this shared file.
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _marine_emergency_sys  # noqa: E402
+
+_MARINE_EMERGENCY_SCRIPTS = REPO / "scripts"
+if str(_MARINE_EMERGENCY_SCRIPTS) not in _marine_emergency_sys.path:
+    _marine_emergency_sys.path.insert(0, str(_MARINE_EMERGENCY_SCRIPTS))
+
+from graders import grade_deid as _marine_emergency_grade_deid  # noqa: E402
+
+_MARINE_EMERGENCY_FILES = REPO / "skills" / "marine-emergency-response" / "evals" / "files"
+_MARINE_EMERGENCY_LEAK = _MARINE_EMERGENCY_FILES / "marine-emergency-response-leak.md"
+_MARINE_EMERGENCY_CLEAN = _MARINE_EMERGENCY_FILES / "marine-emergency-response-clean.md"
+
+
+def test_marine_emergency_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _marine_emergency_grade_deid(_MARINE_EMERGENCY_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "marine-emergency seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_marine_emergency_seeded_leak_small_cell_suppression_caught():
+    """MODERATE TIER (T-16-06-01): the sub-5 prior-MOB / drill-injury breakdown on a named
+    installation MUST be caught as a small-cell leak — a <5 cell de-anonymizes the involved person."""
+    verdict = _marine_emergency_grade_deid(_MARINE_EMERGENCY_LEAK.read_text(encoding="utf-8"))
+    assert verdict["conditions"]["no_small_cell"] is False, (
+        "marine-emergency seeded-leak <5 MOB/drill-injury cell was NOT caught — small-cell gate is dead"
+    )
+    assert any("small-cell" in r for r in verdict["reasons"]), (
+        "the <5 small-cell leak is not among the auto_fail reasons"
+    )
+
+
+def test_marine_emergency_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail; in
+    particular no _PHONE_RE false-positive on the SI 1995/743 / SOLAS Chapter III references, and
+    no name false-positive on the role-labelled station bill)."""
+    verdict = _marine_emergency_grade_deid(_MARINE_EMERGENCY_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"marine-emergency clean fixture false-positived: {verdict['reasons']}"
+    )

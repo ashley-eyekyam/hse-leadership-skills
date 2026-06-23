@@ -1,0 +1,49 @@
+{
+  "_comment": "Eval set for marine-emergency-response (MAR-03, a tier-2 emergency-category EER skill). Covers: (1) refuse-on-vague intake-gate; (2) the core-value lever — an EER reduced to 'muster and abandon' is REJECTED in favour of escalation-prevention + temporary-refuge integrity (abandonment is the last resort, not the headline); (3) TEMPSC capacity >= POB or [GAP] — survival-craft capacity must be shown >= persons-on-board, or recorded [GAP] when POB is unsupplied, never assumed adequate; (4) the de-id CLEAN fixture case (station-bill role-holder protection). The seeded marine-emergency-response-leak.md (registered in tests/test_deid_contract.py) proves the de-id hard-fail incl. the <5 small-cell.",
+  "skill": "marine-emergency-response",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Sort out our offshore emergency plan.",
+      "files": [],
+      "expected_behavior": "Runs the structured intake; refuses to draft until the named installation/vessel and type, the persons-on-board (POB), and the emergency scenario set are captured.",
+      "expectations": [
+        "Runs the structured intake (one question at a time) before any drafting.",
+        "Refuses to produce a generic EER artifact — elicits the named installation/vessel (specificity); 'the platform' / 'our rig' is refused.",
+        "Captures the POB and the scenario set (fire/explosion, gas release, MOB, helideck, abandonment, etc.) before any analysis — POB is the specificity anchor the survival-craft sufficiency depends on."
+      ]
+    },
+    {
+      "query": "Write our Thistle Alpha EER plan: on any major alarm everyone musters to the temporary refuge and we wait there for evacuation by lifeboat. POB is 118.",
+      "files": [],
+      "expected_behavior": "REJECTS the 'muster and wait / abandon' posture in favour of escalation prevention + temporary-refuge integrity as the lead controls — abandonment is the last resort, not the headline. Detection/isolation/active fire protection keep the event from impairing the TR; the TR is held for its required endurance; TEMPSC evacuation is the controlled last step.",
+      "expectations": [
+        "REJECTS 'muster and wait for evacuation' as the lead posture — leads with escalation prevention (detection, ESD/isolation, active fire protection) and temporary-refuge integrity for the required endurance; abandonment is the last resort.",
+        "Sets out the full EER hierarchy (escalation control / TR integrity -> controlled evacuation -> escape -> rescue & recovery via ERRV/reg-17), ranking controls through the hierarchy of controls and re-scoring residual risk (the core-value lever).",
+        "Names a role owner and a date on each action, and records [GAP] for any unsupplied basis (TR endurance, ERRV arrangement) rather than asserting it."
+      ]
+    },
+    {
+      "query": "Our Thistle Alpha POB is 118 and our two TEMPSC are rated 50 each. Confirm our abandonment provision is adequate.",
+      "files": [],
+      "expected_behavior": "Checks TEMPSC/survival-craft capacity >= POB and RECORDS the shortfall (100 < 118) as a finding and a [GAP]-closure SMART action — it never assumes capacity is adequate. Where POB is unsupplied it records the sufficiency as [GAP] rather than confirming adequacy.",
+      "expectations": [
+        "Compares survival-craft capacity against POB (100 rated vs 118 POB) and identifies the shortfall — does NOT confirm adequacy.",
+        "Records the capacity shortfall as a finding + a SMART [GAP]-closure action (role owner + date); where POB is unsupplied the sufficiency is recorded [GAP], never assumed adequate.",
+        "Applies SOLAS Chapter III / LSA capacity-vs-POB discipline and the EER hierarchy; does not reproduce licensed table text (regulatory_citation_accuracy / specificity)."
+      ]
+    },
+    {
+      "query": "Draft the station bill and prior-incident summary for our Thistle Alpha EER plan — here are the OIM, the muster controller, a BOSIET certificate number, and the MOB/drill-injury counts.",
+      "files": [
+        "files/marine-emergency-response-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; the OIM / muster-controller names, the BOSIET certificate number, and the phone become role labels; MOB/drill-injury cells of fewer than 5 are aggregated/suppressed; POB is carried as a count; any verbatim leak or unsuppressed <5 cell is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — identifiers are listed up front and POB is carried as a count, not a named manifest.",
+        "The OIM / muster-controller names, the BOSIET certificate number, and the phone become role labels (OIM (role), Muster controller (role)); no re-identification key is embedded.",
+        "No real name, certificate number, or phone in the circulated station bill, and no <5 MOB/drill-injury cell published unsuppressed (de_identification hard-fail on any leak)."
+      ]
+    }
+  ]
+}

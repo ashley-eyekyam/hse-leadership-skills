@@ -1,0 +1,82 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Marine/Offshore Emergency Response (EER) Plan — Thistle Alpha platform",
+    "subtitle": "Muster + POB accounting · TR integrity · EER hierarchy · TEMPSC vs POB · MOB · helideck",
+    "author": "HSE Marine & Offshore",
+    "date": "2026-06-23",
+    "classification": "Internal — competent-person (marine/offshore-EER SME) review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "The station bill assigns every emergency duty by role label (OIM, muster controller, TEMPSC coxswain, ERRV master). Names, OPITO/BOSIET certificate numbers and contact details were pseudonymised before drafting; persons-on-board are carried as a count (118), never a named manifest; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "1. Scope & persons-on-board (POB)" },
+    { "type": "paragraph", "text": "This EER plan covers the Thistle Alpha fixed production platform. Persons-on-board on the reference shift = 118 (carried as a count). The proposed plan reduced the response to 'muster to the temporary refuge and wait for evacuation by lifeboat' — that muster-and-wait posture is rejected below in favour of escalation prevention and TR integrity, and the supplied TEMPSC capacity is checked against POB rather than assumed adequate." },
+    { "type": "metrics", "metrics": [
+        { "label": "Persons-on-board (POB)", "value": "118 (reference shift)", "caption": "carried as a count, never a named manifest" },
+        { "label": "Lead posture", "value": "Escalation prevention + TR integrity", "caption": "muster-and-wait rejected" },
+        { "label": "TEMPSC capacity vs POB", "value": "100 rated < 118 POB — shortfall", "caption": "recorded [GAP]-closure, never assumed adequate" } ] },
+    { "type": "heading", "level": 1, "text": "2. Lead posture — escalation prevention & TR integrity (not 'muster and wait')" },
+    { "type": "paragraph", "text": "The primary posture of this EER plan is to detect, control and prevent the emergency from escalating so abandonment remains the last resort, and to hold the temporary refuge for its required endurance while the response decision is made. The 'muster to the TR and wait' plan is rejected: escalation prevention (detection, ESD/isolation, active fire protection) and demonstrated TR integrity lead the response." },
+    { "type": "callout", "text": "Rejected: 'on any major alarm everyone musters to the TR and waits for evacuation'. Escalation prevention and temporary-refuge integrity are the lead controls; controlled TEMPSC abandonment is the last step, not the headline.", "box_type": "warning" },
+    { "type": "heading", "level": 1, "text": "3. EER hierarchy (escalation control first, abandonment last)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Escalation prevention — fire & gas detection, ESD/isolation and active fire protection to keep the event from impairing the TR (LEAD control)", "tier": "Engineering", "owner": "OIM (role)" },
+        { "control": "Temporary-refuge integrity — demonstrate the TR survives the dimensioning event for its stated endurance", "tier": "Engineering", "owner": "Technical Authority (role)" },
+        { "control": "Controlled evacuation — TEMPSC abandonment only when escalation control + TR integrity are exhausted; capacity must be >= POB (shortfall recorded below)", "tier": "Substitution", "owner": "TEMPSC coxswain (role)" },
+        { "control": "Escape — secondary means (escape routes, scramble nets, life rafts) as defence-in-depth", "tier": "Administrative", "owner": "Muster controller (role)" },
+        { "control": "Rescue & recovery — ERRV/standby vessel + reg-17 recovery & rescue / fast-rescue craft", "tier": "Administrative", "owner": "ERRV master (role)" } ] },
+    { "type": "callout", "text": "No EER plan is defensible on 'muster and wait' where escalation prevention and TR integrity are reasonably practicable — and no abandonment provision is adequate until TEMPSC capacity is shown >= POB.", "box_type": "critical" },
+    { "type": "heading", "level": 1, "text": "4. TEMPSC / survival-craft capacity vs POB" },
+    { "type": "table",
+      "headers": ["Provision", "Rated capacity", "POB", "Sufficiency"],
+      "rows": [
+        ["TEMPSC (2 x 50)", "100", "118", "SHORTFALL of 18 — recorded as a finding + [GAP]-closure action"],
+        ["Secondary escape / life rafts", "[GAP] — not supplied", "118", "[GAP] — confirm secondary capacity"]
+      ],
+      "caption": "Survival-craft capacity checked against POB (SOLAS Ch III / LSA). The 100 < 118 shortfall is never assumed adequate — it is a finding and a SMART action." },
+    { "type": "heading", "level": 1, "text": "5. Station bill & accountabilities (de-identified)" },
+    { "type": "table",
+      "headers": ["Emergency duty", "Role label", "Responsibility"],
+      "rows": [
+        ["Muster command", "OIM (role)", "Accountable for the muster and the response decision"],
+        ["POB accounting", "Muster controller (role)", "Headcount / accounting at the TR muster"],
+        ["Survival-craft launch", "TEMPSC coxswain (role)", "Controlled evacuation when authorised"],
+        ["Recovery & rescue", "ERRV master (role)", "reg-17 recovery & rescue / MOB / fast-rescue craft"]
+      ],
+      "caption": "Each duty assigned by role label only — no name, certificate number, phone or re-identification key in this circulated copy" },
+    { "type": "heading", "level": 1, "text": "6. Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "EER posture reduced to muster-and-wait", "risk_level": "High",
+          "description": "The proposed plan led with muster-and-wait/abandonment rather than escalation prevention and TR integrity, leaving the response without a basis to keep the event from reaching the TR.", "evidence": "Draft EER plan + KB-SNIP-EER-MUSTER" },
+        { "title": "TEMPSC capacity shortfall vs POB", "risk_level": "High",
+          "description": "Two TEMPSC rated 50 each (100 total) against a reference POB of 118 — a shortfall of 18; abandonment provision is not shown adequate.", "evidence": "SOLAS Ch III / LSA capacity-vs-POB check" },
+        { "title": "TR endurance and secondary escape capacity not supplied", "risk_level": "Medium",
+          "description": "The temporary-refuge endurance basis and secondary survival-craft capacity were not supplied; recorded as [GAP] pending the dutyholder's data.", "evidence": "[GAP] — PFEER TR integrity basis" } ] },
+    { "type": "heading", "level": 1, "text": "7. Residual risk (5x5)" },
+    { "type": "table",
+      "headers": ["Hazard", "Lead control (hierarchy order)", "Residual (5x5)", "Owner (role)"],
+      "rows": [
+        ["Event escalates to impair the TR", "Escalation prevention + TR integrity", "8 (Medium) once demonstrated; 16 (High) until TR endurance evidenced", "Technical Authority (role)"],
+        ["Insufficient survival-craft for POB", "TEMPSC capacity >= POB", "20 (High) until the 18-person shortfall is closed", "OIM (role)"],
+        ["Person in water (MOB)", "ERRV + reg-17 recovery & rescue", "6 (Medium)", "ERRV master (role)"]
+      ],
+      "caption": "Residual risk scored after the lead controls are applied (5x5); the TEMPSC shortfall dominates until closed" },
+    { "type": "heading", "level": 1, "text": "8. Recommendations ([GAP]-closure SMART actions)" },
+    { "type": "recommendations", "rows": [
+        { "action": "Re-base the EER plan on escalation prevention + TR integrity; demonstrate TR endurance for the dimensioning event", "priority": "P1", "owner": "Technical Authority (role)", "due": "2026-09-30" },
+        { "action": "Close the TEMPSC capacity-vs-POB shortfall of 18 (additional/larger survival craft or a controlled POB reduction)", "priority": "P1", "owner": "OIM (role)", "due": "2026-08-31" },
+        { "action": "Supply and confirm the TR endurance basis and the secondary survival-craft capacity ([GAP] -> evidenced)", "priority": "P2", "owner": "Technical Authority (role)", "due": "2026-09-15" },
+        { "action": "Confirm the ERRV / reg-17 recovery & rescue arrangement and the drill schedule (muster / lifeboat / MOB / helideck)", "priority": "P2", "owner": "ERRV master (role)", "due": "2026-09-15" } ] },
+    { "type": "callout", "text": "This EER plan is the EER element the offshore-safety-case (MAR-01) records — cross-referenced, never rebuilt here.", "box_type": "info" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": [
+        "PFEER — Offshore Installations (Prevention of Fire and Explosion, and Emergency Response) Regulations 1995 (SI 1995/743) + HSE L65: muster, TR integrity, the EER chain, reg-17 recovery & rescue / ERRV",
+        "SOLAS Chapter III + LSA Code: TEMPSC, survival-craft capacity-vs-POB (100 < 118 shortfall), the role-labelled station bill",
+        "OPITO BOSIET/HUET competence requirement (certificate detail [GAP])",
+        "ISO 45001 cl 8.1.2 — hierarchy of controls"
+      ] }
+  ]
+}

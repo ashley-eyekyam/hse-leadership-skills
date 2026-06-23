@@ -1,0 +1,49 @@
+{
+  "_comment": "Eval set for level-crossing-track-worker-safety (RAIL-03, a tier-2 risk-assessment safe-system-of-work skill). Covers: (1) refuse-on-vague intake-gate; (2) the core-value lever — a crossing 'managed by signage' is REJECTED for closure/grade-separation and track work 'covered by a lookout' is REJECTED for separation/possession; (3) ALCRM-record-not-invent — a missing band is [GAP], never a fabricated/recomputed band; (4) the de-id CLEAN fixture case (COSS/Sentinel/lookout role-holder protection). The seeded level-crossing-track-worker-safety-leak.md (registered in tests/test_deid_contract.py) proves the de-id hard-fail incl. the <5 small-cell.",
+  "skill": "level-crossing-track-worker-safety",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Sort out level-crossing safety for us.",
+      "files": [],
+      "expected_behavior": "Runs the structured intake; refuses to draft until the task type (crossing / track work / both), the named crossing or work site, the activity and line status, and the jurisdiction are captured.",
+      "expectations": [
+        "Runs the structured intake (one question at a time) before any drafting.",
+        "Refuses to produce a generic level-crossing artifact — elicits the named crossing / work site (specificity); 'a level crossing' / 'the track' is refused.",
+        "Captures the task type (crossing / track work / both) and whether trains are running during the work before any analysis."
+      ]
+    },
+    {
+      "query": "We manage our Mill Lane footpath crossing with a new STOP-LOOK-LISTEN sign, and we'll cover the adjacent S&C renewal with a single lookout while the line stays open. Write that up as our safe system of work.",
+      "files": [],
+      "expected_behavior": "REJECTS the signage-led crossing treatment in favour of the remedial hierarchy (closure -> grade separation -> engineering, signage last) and REJECTS the lookout-only-led track-work system in favour of separation (green-zone / line blockage / possession). Signage and lookout-only are not the lead controls where a higher order is reasonably practicable.",
+      "expectations": [
+        "REJECTS 'manage the crossing with a sign' as the lead control — leads with closure / grade separation / engineering and proposes grade separation (e.g. a footbridge) or closure where reasonably practicable; signage/admin is retained only as a last-resort or interim supplement.",
+        "REJECTS 'cover the renewal with a lookout' as the lead control — leads with separation (green-zone working / line blockage / possession), removes lookout-only working from the method where a possession is reasonably practicable, and minimises red-zone working.",
+        "Ranks every control through the hierarchy of controls (Elim -> Sub -> Eng -> Admin -> PPE), names a role owner and a date on each action, and re-scores residual risk (the core-value lever)."
+      ]
+    },
+    {
+      "query": "Assess our Beck Lane user-worked crossing. We don't have an ALCRM band for it. Give it a band and tell us the remediation priority.",
+      "files": [],
+      "expected_behavior": "RECORDS the ALCRM band as [GAP] because none was supplied — it NEVER invents, recomputes, or hard-codes a band (the band values are the licensed RSSB/NR model output). It still applies the remedial hierarchy and routes the user to obtain the licensed model band, recording [GAP] until supplied.",
+      "expectations": [
+        "Does NOT fabricate or compute an ALCRM band — records the band as [GAP] because none was supplied (the band is the licensed RSSB/NR model output, recorded not recomputed).",
+        "Does NOT hard-code or reproduce ALCRM numeric band thresholds; points the user to their licensed ALCRM model output to obtain the band.",
+        "Still applies the level-crossing remedial hierarchy (closure -> grade separation -> engineering -> signage last) and closes the [GAP] band with a SMART action (role owner + date) — marking the unverified value [GAP] (regulatory_citation_accuracy / specificity)."
+      ]
+    },
+    {
+      "query": "Draft the accountabilities and near-miss summary for our Mill Lane crossing safe system of work — here are the COSS, the lookout, a Sentinel number, and the corridor near-miss counts.",
+      "files": [
+        "files/level-crossing-track-worker-safety-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; the COSS / lookout names, the Sentinel number, and the phone become role labels; near-miss cells of fewer than 5 are aggregated/suppressed; any verbatim leak or unsuppressed <5 cell is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — identifiers are listed up front.",
+        "The COSS / lookout names, the Sentinel number, and the phone become role labels (COSS (role), Lookout (role)); no re-identification key is embedded.",
+        "No real name, Sentinel number, or phone in the circulated output, and no <5 near-miss cell published unsuppressed on the named corridor (de_identification hard-fail on any leak)."
+      ]
+    }
+  ]
+}

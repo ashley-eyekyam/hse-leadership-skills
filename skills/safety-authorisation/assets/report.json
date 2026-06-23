@@ -1,0 +1,65 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "ROGS Safety Authorisation — North Vale Light Rail (infrastructure manager)",
+    "subtitle": "Infrastructure manager → safety authorisation · references the SMS · for submission to ORR",
+    "author": "HSE Rail",
+    "date": "2026-06-23",
+    "classification": "Internal — for submission to ORR / competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label (Accountable Duty-Holder, safety-critical roles, COSS). Identifiers and any Sentinel numbers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document. This application is assembled FOR submission to ORR; granting the authorisation is the Safety Authority's act and is not asserted here."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "1. Applicant identity & route declaration" },
+    { "type": "paragraph", "text": "Application by North Vale Light Rail, the mainline infrastructure manager for the North Vale guided-transport corridor. As an infrastructure manager, the ROGS route is a SAFETY AUTHORISATION (not a safety certificate, which a transport operator would file, and not a Part 3 verification, which a non-mainline operation would file). This application is built to the ROGS 2006 (SI 2006/599) requirements and is assembled FOR submission to ORR — it does not assert authorisation by ORR." },
+    { "type": "metrics", "metrics": [
+        { "label": "Application elements", "value": "6" },
+        { "label": "Open [GAP]s", "value": "1", "caption": "closed by a SMART action" },
+        { "label": "Route", "value": "Safety authorisation", "caption": "infrastructure manager" } ] },
+    { "type": "callout", "text": "Route resolved: an infrastructure manager files a safety AUTHORISATION. A mainline transport operator would file a safety certificate; a non-mainline operation would file a ROGS Part 3 safety verification.", "box_type": "info" },
+    { "type": "heading", "level": 1, "text": "2. SMS reference & scope" },
+    { "type": "callout", "text": "This application REFERENCES North Vale's existing rail Safety Management System (SMS ref NV-SMS v4.2, built via rail-safety-management-system, RAIL-01) as an input — it does NOT rebuild the SMS element set.", "box_type": "info" },
+    { "type": "paragraph", "text": "The application references the dutyholder's existing SMS (NV-SMS v4.2) covering the North Vale guided-transport infrastructure: track, signalling, and structures. The SMS element set (policy, accountabilities, risk-control arrangements, CSM-RA interface, competence/Sentinel, asset/ECM maintenance, emergency, monitoring/audit, continuous improvement) is held in the SMS and is cited here by reference, not reproduced. Where this application summarises a risk-control, it cites the SMS section it draws on." },
+    { "type": "heading", "level": 1, "text": "3. Risk-control summary (hierarchy of controls applied — SFAIRP)" },
+    { "type": "findings", "rows": [
+        { "title": "Track-worker exposure to running lines during maintenance", "risk_level": "High",
+          "description": "Maintenance access to the corridor exposes track workers to running-line movements where separation is not yet engineered.", "evidence": "SMS §3 risk-control arrangements (referenced)" },
+        { "title": "Signalling-asset degradation at the corridor's oldest interlocking", "risk_level": "Medium",
+          "description": "An ageing interlocking carries a degraded-mode operating risk.", "evidence": "SMS §6 asset/ECM maintenance (referenced)" } ] },
+    { "type": "hoc_table", "rows": [
+        { "control": "Plan possessions / line-blockages to separate workers from running lines where reasonably practicable", "tier": "Elimination", "owner": "Possession Planner (role)" },
+        { "control": "Train-warning / TCOD systems where full separation is impractical; interlocking renewal programme", "tier": "Engineering", "owner": "Engineering Lead (role)" },
+        { "control": "Safe-system-of-work briefings + degraded-mode operating procedure", "tier": "Administrative", "owner": "Operations Manager (role)" } ] },
+    { "type": "callout", "text": "No track-worker task is left to a lookout-only administrative control where a separation or train-warning (higher-order) control is reasonably practicable (SFAIRP). The risk-control summary draws on the SMS; it does not re-author it.", "box_type": "warning" },
+    { "type": "heading", "level": 1, "text": "4. CSM-RA change evidence" },
+    { "type": "bullets", "items": [
+        "A proposed re-signalling of the oldest interlocking is a significant change — the CSM-RA significance test applies (Reg (EU) 402/2013, KB-REG-CSM-RA).",
+        "Risk acceptance demonstrated via reference systems (a comparable re-signalled interlocking elsewhere on the network) plus explicit risk estimation for the degraded-mode transition.",
+        "An independent AsBo (Assessment Body) will assess the correct application of CSM-RA for the re-signalling change." ] },
+    { "type": "heading", "level": 1, "text": "5. Competence/Sentinel & ECM assurance" },
+    { "type": "table",
+      "headers": ["Role (label)", "Application accountability", "Status"],
+      "rows": [
+        ["Accountable Duty-Holder", "Overall accountability for the application and the authorisation", "Appointed"],
+        ["Safety Assurance Lead (role)", "Risk-control summary + monitoring/audit", "Appointed"],
+        ["Competence Manager (role)", "Competence & Sentinel assurance for safety-critical roles", "Appointed"],
+        ["Engineering Lead (role)", "Asset/ECM maintenance assurance", "Appointed"]
+      ],
+      "caption": "Accountabilities — role / accountability / status (named individuals de-identified to role labels)" },
+    { "type": "paragraph", "text": "Competence and Sentinel currency for safety-critical roles, and the Entity in Charge of Maintenance arrangements for the infrastructure, are assured via the SMS and are cited by reference. Individual fitness-for-duty / medical detail is held in a separate confidential occupational-health record, not in this application." },
+    { "type": "heading", "level": 1, "text": "6. Declaration & submission" },
+    { "type": "paragraph", "text": "The dutyholder's declaration confirms the SMS is in place and the application elements are complete; the package is assembled for submission to ORR. The current status is reported as a fact (not yet submitted) — it does not assert an ORR decision." },
+    { "type": "heading", "level": 1, "text": "Actions to close [GAP]s" },
+    { "type": "recommendations", "rows": [
+        { "action": "Complete the AsBo appointment and the explicit-risk-estimation pack for the re-signalling change before submission", "priority": "P1", "owner": "Safety Assurance Lead (role)", "due": "2026-09-30" } ] },
+    { "type": "callout", "text": "This application is assembled FOR submission to ORR. ORR is the Safety Authority; granting the authorisation is its act and is not asserted in this document.", "box_type": "warning" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": [
+        "Railways and Other Guided Transport Systems (Safety) Regulations 2006 (SI 2006/599) — infrastructure manager → safety authorisation — KB-REG-ROGS",
+        "Common Safety Method for Risk Evaluation and Assessment, Reg (EU) 402/2013 (retained EU law in GB) — KB-REG-CSM-RA",
+        "ISO 45001 §8.1.2 — hierarchy of controls",
+        "Decision-support only — a competent person (rail-SMS / ORR-aware) must review before use." ] }
+  ]
+}

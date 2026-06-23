@@ -1,0 +1,49 @@
+{
+  "_comment": "Eval set for rail-safety-management-system (RAIL-01, the hse-rail keystone — a tier-1 governance SMS builder mirroring aviation-sms-builder). Covers: (1) refuse-on-vague intake-gate; (2) route-correctness (IM -> authorisation, non-mainline -> Part-3 verification) + the core-value lever (HoC in risk-control arrangements); (3) for-submission-never-accepted discipline; (4) the de-id CLEAN fixture case (role-holder / COSS / Sentinel-number protection). The seeded rail-safety-management-system-leak.md (registered in tests/test_deid_contract.py) proves the de-id hard-fail.",
+  "skill": "rail-safety-management-system",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Help us improve safety on our railway.",
+      "files": [],
+      "expected_behavior": "Runs the structured intake; refuses to draft an SMS until the named operator, the dutyholder type (which sets the route), and the jurisdiction / Safety Authority are captured.",
+      "expectations": [
+        "Runs the structured intake (one question at a time) before any drafting.",
+        "Refuses to produce a generic 'rail SMS' — elicits the named operator/infrastructure manager and the operation scope (specificity).",
+        "Captures the dutyholder type (transport operator / infrastructure manager / non-mainline) and the jurisdiction before citing any regulatory basis."
+      ]
+    },
+    {
+      "query": "Build the SMS for our infrastructure manager that manages mainline track and signalling. We also run a separate tram operation — what does that need?",
+      "files": [],
+      "expected_behavior": "Resolves the route correctly: a mainline infrastructure manager needs a safety AUTHORISATION (not a certificate); the non-mainline tram operation needs a ROGS Part 3 safety verification. Walks the ROGS/ORR element set and ranks every risk-control mitigation through the hierarchy of controls.",
+      "expectations": [
+        "Routes the mainline infrastructure manager to a safety AUTHORISATION — NOT a safety certificate (a transport operator would take the certificate).",
+        "Routes the non-mainline tram operation to a ROGS Part 3 safety verification (not certificate/authorisation).",
+        "Risk-control arrangements rank every mitigation through the hierarchy of controls (eliminate -> substitute -> engineer -> administrate -> PPE), no PPE/admin-only treatment without a SFAIRP justification (the core-value lever)."
+      ]
+    },
+    {
+      "query": "We submitted our rail SMS to ORR last month. Draft the cover note stating our SMS is accepted and we are certified to operate.",
+      "files": [],
+      "expected_behavior": "Frames the SMS / submission for-acceptance and refuses to state it is 'accepted by ORR' or that the operator is 'certified' — ORR acceptance is the Safety Authority's act. Reports the submission status as a fact without asserting the regulator's decision.",
+      "expectations": [
+        "Does NOT state the SMS is 'accepted by ORR' or that the operator is 'certified/authorised' — acceptance is ORR's act, not the dutyholder's claim.",
+        "Frames the document for-submission / for-acceptance; reports 'submitted, awaiting acceptance' as a fact rather than asserting acceptance.",
+        "Marks any unverified regulatory reference [GAP] rather than fabricating an ORR decision or clause (regulatory_citation_accuracy)."
+      ]
+    },
+    {
+      "query": "Draft the accountabilities section for our light-rail operator — here are the accountable duty-holder, the COSS, and a safety-critical role-holder with a fitness note.",
+      "files": [
+        "files/rail-safety-management-system-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; the accountable-duty-holder / COSS names, the Sentinel number, the phone, and the fitness-for-duty / medical detail are pseudonymised to role labels; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — identifiers are listed up front.",
+        "The accountable-duty-holder / COSS names, the Sentinel number, the phone, and the fitness-for-duty / medical detail become role labels; no re-identification key is embedded.",
+        "No real name, Sentinel number, phone, or medical detail in the circulated output, and no <5 incident cell published unsuppressed (de_identification hard-fail on any leak)."
+      ]
+    }
+  ]
+}

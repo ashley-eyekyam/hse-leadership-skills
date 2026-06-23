@@ -1,0 +1,58 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Level-Crossing & Track-Worker Safe System of Work",
+    "subtitle": "Named crossing / work site · remedial + protection hierarchies · ALCRM band recorded",
+    "author": "HSE Rail",
+    "date": "2026-06-23",
+    "classification": "Internal — competent-person (rail-SME) review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All site-safety roles are referred to by role label (COSS, lookout, PICOP, engineering supervisor, crossing keeper). Names and any Sentinel competence-card numbers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document. The ALCRM band shown is RECORDED from the dutyholder's licensed model output — it is never recomputed in this artifact."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "1. Scope & ALCRM band (recorded, not recomputed)" },
+    { "type": "paragraph", "text": "This safe system of work covers a named level crossing and/or on-or-near-the-line track work. The ALCRM individual/collective risk band is RECORDED from the dutyholder's licensed RSSB/Network Rail model output to prioritise the crossing for remediation; where no band was supplied it is shown as [GAP] and the remedial hierarchy still applies. The band is never invented or recomputed." },
+    { "type": "metrics", "metrics": [
+        { "label": "ALCRM band (recorded)", "value": "[GAP]", "caption": "from the licensed model output — never recomputed" },
+        { "label": "Lead crossing control", "value": "[GAP]", "caption": "closure / grade separation / engineering before signage" },
+        { "label": "Lead track-work control", "value": "[GAP]", "caption": "separation before lookout" } ] },
+    { "type": "heading", "level": 1, "text": "2. Level-crossing remedial hierarchy (closure first, signage last)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Close the crossing where reasonably practicable (eliminate the conflict)", "tier": "Elimination", "owner": "Asset / Route Owner (role)" },
+        { "control": "Grade separation (bridge / underpass) where closure is not reasonably practicable", "tier": "Substitution", "owner": "Engineering Lead (role)" },
+        { "control": "Engineering protection — barriers / obstacle detection / MSL / full-barrier", "tier": "Engineering", "owner": "Engineering Lead (role)" },
+        { "control": "Sighting / signage / administrative — LAST, only where a higher order is not reasonably practicable", "tier": "Administrative", "owner": "Crossing Keeper (role)" } ] },
+    { "type": "callout", "text": "A crossing whose lead control is new signage while closure, grade separation, or engineering is reasonably practicable is rejected — lead with the higher order.", "box_type": "warning" },
+    { "type": "heading", "level": 1, "text": "3. Track-worker protection hierarchy (separation first, lookout last)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Separation — green-zone working / line blockage / possession (no trains running)", "tier": "Elimination", "owner": "PICOP (role)" },
+        { "control": "Safe systems of work — planned, authorised system for the task", "tier": "Substitution", "owner": "COSS (role)" },
+        { "control": "Warning — TOWS / other warning systems where separation is impractical", "tier": "Engineering", "owner": "Engineering Supervisor (role)" },
+        { "control": "Lookout-only (red zone) — LAST resort, where no higher protection is reasonably practicable; minimised", "tier": "Administrative", "owner": "Lookout (role)" } ] },
+    { "type": "callout", "text": "A track task whose lead control is a lookout alone while separation (green-zone / line blockage / possession) is reasonably practicable is rejected — keep people and trains apart.", "box_type": "warning" },
+    { "type": "heading", "level": 1, "text": "4. Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "[GAP] — populated from the named crossing / work site", "risk_level": "[GAP]",
+          "description": "Each finding is specific to the named site, ranked through the two hierarchies, and traced to evidence.", "evidence": "[GAP]" } ] },
+    { "type": "heading", "level": 1, "text": "5. Residual risk (5x5)" },
+    { "type": "table",
+      "headers": ["Hazard", "Lead control (hierarchy order)", "Residual (5x5)", "Owner (role)"],
+      "rows": [
+        ["[GAP]", "[GAP]", "[GAP]", "[GAP]"]
+      ],
+      "caption": "Residual risk scored after the lead controls are applied" },
+    { "type": "heading", "level": 1, "text": "6. Recommendations ([GAP]-closure SMART actions)" },
+    { "type": "recommendations", "rows": [
+        { "action": "[GAP] — each open gap (ALCRM band, NR/L2/OHS/019 issue/date, site specifics) closed by a SMART action with a role owner and a date", "priority": "[GAP]", "owner": "[role]", "due": "[GAP]" } ] },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": [
+        "Network Rail NR/L2/OHS/019 — Safety of People Working On or Near the Line (cited by reference; issue/date [ASSUMED A3] / SME-confirmed)",
+        "ORR level-crossing strategic-risk guidance + LXRMTK (Level Crossing Risk Management Toolkit)",
+        "ALCRM (All Level Crossing Risk Model) — band RECORDED, never recomputed (RSSB / Network Rail)",
+        "ROGS SI 2006/599 + CSM-RA Reg (EU) 402/2013 where a significant change applies",
+        "ISO 45001 cl 8.1.2"
+      ] }
+  ]
+}

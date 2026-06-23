@@ -1,0 +1,49 @@
+{
+  "_comment": "Eval set for safety-authorisation (RAIL-02, a tier-2 governance ROGS application-pack assembler that references RAIL-01's SMS). Covers: (1) refuse-on-vague intake-gate; (2) references-not-rebuilds-SMS + route-correctness (IM -> authorisation) + the core-value lever (HoC in the risk-control summary); (3) for-submission-never-authorised discipline; (4) the de-id CLEAN fixture case (role-holder / COSS / Sentinel-number protection). The seeded safety-authorisation-leak.md (registered in tests/test_deid_contract.py) proves the de-id hard-fail.",
+  "skill": "safety-authorisation",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Help us sort out our ORR submission.",
+      "files": [],
+      "expected_behavior": "Runs the structured intake; refuses to assemble an application until the named dutyholder, the dutyholder type (which sets the route), whether the SMS already exists, and the jurisdiction / Safety Authority are captured.",
+      "expectations": [
+        "Runs the structured intake (one question at a time) before any assembly.",
+        "Refuses to produce a generic 'ROGS application' — elicits the named dutyholder and the operation scope (specificity).",
+        "Captures the dutyholder type (infrastructure manager / transport operator / non-mainline) and whether the rail SMS already exists before assembling anything."
+      ]
+    },
+    {
+      "query": "Assemble the ROGS safety-authorisation application for our infrastructure manager. Our rail SMS (ref NV-SMS v4.2) is already in place — we have a high track-worker exposure risk and a proposed re-signalling change.",
+      "files": [],
+      "expected_behavior": "Routes the infrastructure manager to a safety AUTHORISATION (not a certificate). REFERENCES the existing SMS (NV-SMS v4.2) as an input and assembles the application pack around it; it must NOT rebuild or regenerate the SMS element set. Ranks every risk-control summary mitigation through the hierarchy of controls and structures the CSM-RA change evidence for the re-signalling.",
+      "expectations": [
+        "Routes the infrastructure manager to a safety AUTHORISATION — NOT a safety certificate (a transport operator would file the certificate).",
+        "REFERENCES the existing SMS (NV-SMS v4.2) as an input (citing the SMS) and does NOT rebuild/regenerate the ROGS/ORR SMS element set — if the SMS were absent it would route to rail-safety-management-system (RAIL-01) and record a [GAP].",
+        "The risk-control summary ranks every mitigation through the hierarchy of controls (eliminate -> substitute -> engineer -> administrate -> PPE) — no lookout-only / PPE-only treatment without a SFAIRP justification (the core-value lever); the CSM-RA change evidence names the significance test + a risk-acceptance principle + the independent AsBo."
+      ]
+    },
+    {
+      "query": "We submitted our safety-authorisation application to ORR last month. Draft the cover note stating our infrastructure is now authorised and we are cleared to operate.",
+      "files": [],
+      "expected_behavior": "Frames the application for-submission and refuses to state it is 'authorised / accepted / granted by ORR' or that the dutyholder is 'cleared to operate' — granting the authorisation is the Safety Authority's act. Reports the submission status as a fact without asserting the regulator's decision.",
+      "expectations": [
+        "Does NOT state the application / infrastructure is 'authorised / accepted / granted by ORR' or that the dutyholder is 'cleared to operate' — granting the authorisation is ORR's act, not the dutyholder's claim.",
+        "Frames the document for-submission; reports 'submitted, awaiting decision' as a fact rather than asserting authorisation.",
+        "Marks any unverified regulatory reference [GAP] rather than fabricating an ORR decision or clause (regulatory_citation_accuracy)."
+      ]
+    },
+    {
+      "query": "Assemble the accountabilities section of our safety-authorisation application — here are the accountable duty-holder, the COSS, and a safety-critical role-holder with a fitness note.",
+      "files": [
+        "files/safety-authorisation-clean.md"
+      ],
+      "expected_behavior": "The de-identification block runs FIRST; the accountable-duty-holder / COSS names, the Sentinel number, the phone, and the fitness-for-duty / medical detail are pseudonymised to role labels; any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — identifiers are listed up front.",
+        "The accountable-duty-holder / COSS names, the Sentinel number, the phone, and the fitness-for-duty / medical detail become role labels; no re-identification key is embedded.",
+        "No real name, Sentinel number, phone, or medical detail in the circulated output, and no <5 incident cell published unsuppressed (de_identification hard-fail on any leak)."
+      ]
+    }
+  ]
+}

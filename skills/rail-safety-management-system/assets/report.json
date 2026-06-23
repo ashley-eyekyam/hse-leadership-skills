@@ -1,0 +1,72 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Rail Safety Management System — Midland Metro Light Rail (non-mainline)",
+    "subtitle": "ROGS Part 3 verification route · ROGS/ORR element set · for acceptance",
+    "author": "HSE Rail",
+    "date": "2026-06-23",
+    "classification": "Internal — for submission / competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label (Accountable Duty-Holder, safety-critical roles, COSS). Identifiers and any Sentinel numbers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document. This SMS is submitted FOR acceptance; ORR acceptance is the Safety Authority's act and is not asserted here."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Scope & dutyholder route" },
+    { "type": "paragraph", "text": "Safety Management System for Midland Metro, a light-rail (tram) passenger operation. The dutyholder is a NON-MAINLINE operation, so the ROGS route is a Part 3 safety verification (not a mainline safety certificate or authorisation). This SMS is built to the ROGS 2006 (SI 2006/599) element set and is submitted FOR acceptance — it does not assert acceptance by ORR." },
+    { "type": "metrics", "metrics": [
+        { "label": "SMS elements", "value": "9" },
+        { "label": "Open [GAP]s", "value": "2", "caption": "each closed by a SMART action" },
+        { "label": "Route", "value": "Part 3 verification", "caption": "non-mainline (tram)" } ] },
+    { "type": "callout", "text": "Route resolved: a non-mainline (tram/metro/heritage) operation takes a ROGS Part 3 safety verification — NOT a mainline safety certificate (transport operator) or safety authorisation (infrastructure manager).", "box_type": "info" },
+    { "type": "heading", "level": 1, "text": "1. Safety policy & objectives" },
+    { "type": "paragraph", "text": "The operation's safety policy commits to operating the light-rail system so far as is reasonably practicable, with measurable objectives: zero tram-stop overruns, a year-on-year reduction in pedestrian/road-interface conflicts, and a competence-currency rate of 100% for safety-critical roles." },
+    { "type": "heading", "level": 1, "text": "2. Accountabilities & responsibilities" },
+    { "type": "table",
+      "headers": ["Role (label)", "SMS accountability", "Status"],
+      "rows": [
+        ["Accountable Duty-Holder", "Overall accountability for the SMS and the Part 3 verification", "Appointed"],
+        ["Safety Assurance Lead (role)", "Risk-control arrangements + monitoring/audit", "Appointed"],
+        ["Competence Manager (role)", "Competence & fitness-for-duty for safety-critical roles", "Appointed"]
+      ],
+      "caption": "Accountabilities — role / accountability / status (named individuals de-identified to role labels)" },
+    { "type": "heading", "level": 1, "text": "3. Risk-control arrangements" },
+    { "type": "findings", "rows": [
+        { "title": "Tram / road-pedestrian interface conflict at street-running sections", "risk_level": "High",
+          "description": "Shared street-running corridors create a struck-pedestrian / road-vehicle collision risk at crossings and stops.", "evidence": "Operation risk profile (supplied)" },
+        { "title": "Tram-stop overrun on the descending gradient approach", "risk_level": "Medium",
+          "description": "A wet-rail braking margin on the gradient approach to two stops.", "evidence": "Braking assessment (supplied)" } ] },
+    { "type": "heading", "level": 2, "text": "Hierarchy of controls (every mitigation ranked, SFAIRP)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Segregate the highest-conflict corridor from road traffic where reasonably practicable (dedicated alignment)", "tier": "Elimination", "owner": "Infrastructure Lead (role)" },
+        { "control": "Sanding / enhanced rail-conditioning + automatic-braking enforcement on the gradient approach", "tier": "Engineering", "owner": "Engineering Lead (role)" },
+        { "control": "Approach speed restriction + driver wet-rail procedure on the affected stops", "tier": "Administrative", "owner": "Operations Manager (role)" } ] },
+    { "type": "callout", "text": "No street-running conflict is left to a 'drivers take care' administrative control alone where a segregation or braking-enforcement (higher-order) control is reasonably practicable (SFAIRP).", "box_type": "warning" },
+    { "type": "heading", "level": 1, "text": "4. CSM-RA change interface" },
+    { "type": "bullets", "items": [
+        "A proposed extension to a new street-running section is a significant change — the CSM-RA significance test applies (Reg (EU) 402/2013, KB-REG-CSM-RA).",
+        "Risk acceptance demonstrated via reference systems (the existing comparable street-running corridor) plus explicit risk estimation for the new pedestrian interface.",
+        "An independent AsBo (Assessment Body) will assess the correct application of CSM-RA for the extension." ] },
+    { "type": "heading", "level": 1, "text": "5. Competence & Sentinel" },
+    { "type": "paragraph", "text": "Tram drivers and safety-critical roles hold current competence; fitness-for-duty is managed via the confidential occupational-health pathway (individual medical detail held in a separate confidential record, not in this SMS). Sentinel does not apply to this non-mainline operation; an equivalent tram-driver competence register is maintained." },
+    { "type": "heading", "level": 1, "text": "6. Asset & ECM maintenance" },
+    { "type": "paragraph", "text": "Vehicle and infrastructure condition are managed under a planned maintenance regime; the Entity in Charge of Maintenance arrangements for the tram fleet are documented and the maintenance records are auditable." },
+    { "type": "heading", "level": 1, "text": "7. Emergency arrangements" },
+    { "type": "paragraph", "text": "Emergency preparedness covers evacuation at street-running stops, overhead-line isolation, and coordination with the local emergency services; exercise records are retained." },
+    { "type": "heading", "level": 1, "text": "8. Monitoring, audit & review" },
+    { "type": "paragraph", "text": "The SMS is monitored via near-miss reporting, a rolling internal audit programme, and a management review. The stated review cadence is annual or on significant change, whichever is first." },
+    { "type": "heading", "level": 1, "text": "9. Continuous improvement" },
+    { "type": "paragraph", "text": "Incident learning and audit findings feed a continuous-improvement log; corrective actions are tracked to closure with role owners and due dates." },
+    { "type": "heading", "level": 1, "text": "Actions to close [GAP]s" },
+    { "type": "recommendations", "rows": [
+        { "action": "Complete the segregation feasibility study for the highest-conflict street-running corridor", "priority": "P1", "owner": "Infrastructure Lead (role)", "due": "2026-09-30" },
+        { "action": "Commission the wet-rail braking-enforcement upgrade on the two gradient-approach stops", "priority": "P2", "owner": "Engineering Lead (role)", "due": "2026-11-30" } ] },
+    { "type": "callout", "text": "This SMS is submitted FOR acceptance. ORR is the Safety Authority; acceptance is its act and is not asserted in this document.", "box_type": "warning" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": [
+        "Railways and Other Guided Transport Systems (Safety) Regulations 2006 (SI 2006/599) — non-mainline Part 3 safety verification — KB-REG-ROGS",
+        "Common Safety Method for Risk Evaluation and Assessment, Reg (EU) 402/2013 (retained EU law in GB) — KB-REG-CSM-RA",
+        "ISO 45001 §8.1.2 — hierarchy of controls",
+        "Decision-support only — a competent person (rail-SMS / ORR-aware) must review before use." ] }
+  ]
+}

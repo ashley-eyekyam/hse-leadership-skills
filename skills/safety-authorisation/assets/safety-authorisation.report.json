@@ -1,0 +1,59 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "ROGS Safety Authorisation — application pack (for submission)",
+    "subtitle": "Route resolved · references the SMS · ROGS/ORR application elements",
+    "author": "HSE Rail",
+    "date": "2026-06-23",
+    "classification": "Internal — for submission to ORR / competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label (accountable duty-holder, safety-critical roles, COSS). Identifiers and any Sentinel numbers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document. This application is assembled FOR submission to ORR; granting the authorisation is the Safety Authority's act and is not asserted here."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "1. Applicant identity & route declaration" },
+    { "type": "paragraph", "text": "This application pack is assembled to the ROGS 2006 (SI 2006/599) requirements for the named dutyholder. The dutyholder route is resolved first and held throughout: an infrastructure manager applies for a safety authorisation, a mainline transport operator for a safety certificate, and a non-mainline operation for a ROGS Part 3 safety verification. It is assembled FOR submission to ORR — it does not assert authorisation by ORR." },
+    { "type": "metrics", "metrics": [
+        { "label": "Application elements", "value": "6" },
+        { "label": "Open [GAP]s", "value": "[GAP]", "caption": "each closed by a SMART action" },
+        { "label": "Route", "value": "[GAP]", "caption": "authorisation / certificate / Part-3" } ] },
+    { "type": "heading", "level": 1, "text": "2. SMS reference & scope" },
+    { "type": "callout", "text": "This application REFERENCES the dutyholder's existing rail Safety Management System (built via rail-safety-management-system, RAIL-01) as an input — it does NOT rebuild the SMS element set. If the SMS does not exist, build it via RAIL-01 first.", "box_type": "info" },
+    { "type": "paragraph", "text": "[GAP — the reference/version of the existing SMS and the operation scope this application covers; referenced, not reproduced]" },
+    { "type": "heading", "level": 1, "text": "3. Risk-control summary (hierarchy of controls applied — SFAIRP)" },
+    { "type": "findings", "rows": [
+        { "title": "[GAP — the operation's significant risk, drawn from the SMS]", "risk_level": "[GAP]",
+          "description": "[GAP — the controlled risk and its arrangement, summarised from the SMS]", "evidence": "[GAP — SMS reference]" } ] },
+    { "type": "hoc_table", "rows": [
+        { "control": "[GAP — eliminate the hazard where reasonably practicable]", "tier": "Elimination", "owner": "[role]" },
+        { "control": "[GAP — engineering control]", "tier": "Engineering", "owner": "[role]" },
+        { "control": "[GAP — administrative control + justification if lower-order-only]", "tier": "Administrative", "owner": "[role]" } ] },
+    { "type": "heading", "level": 1, "text": "4. CSM-RA change evidence" },
+    { "type": "bullets", "items": [
+        "Significance test (safety relevance / novelty / complexity / monitoring / reversibility / additionality) — Reg (EU) 402/2013 (KB-REG-CSM-RA)",
+        "Risk-acceptance principle applied: codes of practice / reference systems / explicit risk estimation [GAP]",
+        "Independent AsBo (Assessment Body) for significant changes [GAP]" ] },
+    { "type": "heading", "level": 1, "text": "5. Competence/Sentinel & ECM assurance" },
+    { "type": "table",
+      "headers": ["Role (label)", "Application accountability", "Status"],
+      "rows": [
+        ["Accountable Duty-Holder", "Overall accountability for the application", "[GAP]"],
+        ["Safety-Critical Role A", "Risk-control summary", "[GAP]"],
+        ["Competence Manager (role)", "Competence & Sentinel assurance", "[GAP]"]
+      ],
+      "caption": "Accountabilities — role / accountability / status (named individuals de-identified to role labels)" },
+    { "type": "heading", "level": 1, "text": "6. Declaration & submission" },
+    { "type": "paragraph", "text": "[GAP — the dutyholder declaration and the submission package for ORR]" },
+    { "type": "heading", "level": 1, "text": "Actions to close [GAP]s" },
+    { "type": "recommendations", "rows": [
+        { "action": "[GAP — SMART action closing each open application element]", "priority": "P1", "owner": "[role]", "due": "[date]" } ] },
+    { "type": "callout", "text": "This application is assembled FOR submission to ORR. ORR is the Safety Authority; granting the authorisation is its act and is not asserted in this document.", "box_type": "warning" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": [
+        "Railways and Other Guided Transport Systems (Safety) Regulations 2006 (SI 2006/599) — KB-REG-ROGS",
+        "Common Safety Method for Risk Evaluation and Assessment, Reg (EU) 402/2013 (retained EU law in GB) — KB-REG-CSM-RA",
+        "ISO 45001 §8.1.2 — hierarchy of controls",
+        "India: Railways Act 1989 / Commissioner of Railway Safety — KB-REG-IN-RAIL (state detection mandatory; no national form invented)" ] }
+  ]
+}

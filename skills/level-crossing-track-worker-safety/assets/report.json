@@ -1,0 +1,70 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Level-Crossing & Track-Worker Safe System of Work — Mill Lane footpath crossing & adjacent S&C renewal",
+    "subtitle": "Footpath crossing + on-line track work · remedial + protection hierarchies · ALCRM band recorded",
+    "author": "HSE Rail",
+    "date": "2026-06-23",
+    "classification": "Internal — competent-person (rail-SME) review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All site-safety roles are referred to by role label (COSS, lookout, PICOP, engineering supervisor, crossing keeper). Names and any Sentinel competence-card numbers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document. The ALCRM band shown is RECORDED from the dutyholder's licensed model output — it is never recomputed in this artifact."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "1. Scope & ALCRM band (recorded, not recomputed)" },
+    { "type": "paragraph", "text": "This safe system of work covers the Mill Lane footpath level crossing and the adjacent switches-and-crossings (S&C) renewal on the Down Main between 12m 40ch and 12m 55ch. The dutyholder supplied an ALCRM band for the crossing; it is recorded below to prioritise remediation and is not recomputed. The crossing is today 'managed by' a new STOP, LOOK, LISTEN sign and decision-aid — that signage-led treatment is rejected below in favour of the higher-order remedial options. The renewal was proposed as a red-zone task covered by a single lookout — that lookout-only-led system is rejected below in favour of separation." },
+    { "type": "metrics", "metrics": [
+        { "label": "ALCRM band (recorded)", "value": "C2 (individual / collective, as supplied)", "caption": "from the dutyholder's licensed model output — never recomputed" },
+        { "label": "Lead crossing control", "value": "Grade separation (footbridge)", "caption": "signage-led treatment rejected" },
+        { "label": "Lead track-work control", "value": "Possession (green zone)", "caption": "lookout-only system rejected" } ] },
+    { "type": "heading", "level": 1, "text": "2. Level-crossing remedial hierarchy (closure first, signage last)" },
+    { "type": "paragraph", "text": "The existing treatment leads with a new sign and a passive decision-aid. This is rejected: closure and grade separation were not demonstrated to be not reasonably practicable. The remedial hierarchy is applied in order — closure is constrained by a recorded public right of way (a closure order is the long-lead option, actioned below), so grade separation (a footbridge) becomes the lead control, with signage retained only as a supplementary measure during construction." },
+    { "type": "hoc_table", "rows": [
+        { "control": "Close the crossing / divert the right of way (long-lead closure order pursued in parallel)", "tier": "Elimination", "owner": "Asset / Route Owner (role)" },
+        { "control": "Grade separation — install a footbridge so pedestrians do not cross at rail level (LEAD control)", "tier": "Substitution", "owner": "Engineering Lead (role)" },
+        { "control": "Engineering — obstacle detection / MSL interim protection until the footbridge is in service", "tier": "Engineering", "owner": "Engineering Lead (role)" },
+        { "control": "Sighting / signage — retained only as a supplementary interim measure, never the lead control", "tier": "Administrative", "owner": "Crossing Keeper (role)" } ] },
+    { "type": "callout", "text": "Rejected: 'manage the Mill Lane crossing with a new sign'. Signage is not the lead control where grade separation (a footbridge) is reasonably practicable — it is retained only as an interim supplement.", "box_type": "warning" },
+    { "type": "heading", "level": 1, "text": "3. Track-worker protection hierarchy (separation first, lookout last)" },
+    { "type": "paragraph", "text": "The S&C renewal was proposed as a red-zone task with a single lookout while trains continued on the Down Main. This lookout-only-led system is rejected: a planned line blockage / possession (green-zone working) is reasonably practicable for a renewal of this scale and is made the lead control. Lookout working is removed from the method of work; TOWS is retained only as a defence-in-depth backstop on the adjacent open line." },
+    { "type": "hoc_table", "rows": [
+        { "control": "Take a planned possession of the Down Main for the renewal — green-zone working, no trains on the line of work (LEAD control)", "tier": "Elimination", "owner": "PICOP (role)" },
+        { "control": "Authorised safe system of work for the possession — work package, limits, COSS briefing", "tier": "Substitution", "owner": "COSS (role)" },
+        { "control": "TOWS on the adjacent open line as a defence-in-depth backstop", "tier": "Engineering", "owner": "Engineering Supervisor (role)" },
+        { "control": "Lookout-only working — REMOVED from the method of work for this task (red-zone minimised)", "tier": "Administrative", "owner": "Lookout (role)" } ] },
+    { "type": "callout", "text": "Rejected: 'cover the S&C renewal with a lookout'. Where a planned possession (green-zone working) is reasonably practicable, lookout-only working is not the lead control — keep workers and trains apart.", "box_type": "warning" },
+    { "type": "heading", "level": 1, "text": "4. Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "Crossing risk led by signage rather than the remedial hierarchy", "risk_level": "High",
+          "description": "The Mill Lane footpath crossing was being treated with a new sign while grade separation (a footbridge) is reasonably practicable; the signage-led treatment leaves pedestrians crossing at rail level.", "evidence": "Site survey + recorded ALCRM band C2 + right-of-way record" },
+        { "title": "Renewal proposed as lookout-only red-zone working", "risk_level": "High",
+          "description": "The S&C renewal was planned with a single lookout on an open line; a planned possession is reasonably practicable and removes the train-strike exposure.", "evidence": "Draft method of work + possession-planning review" },
+        { "title": "NR/L2/OHS/019 issue/date not confirmed in the inputs", "risk_level": "Low",
+          "description": "The standard is cited by reference; its current issue/date is recorded as [ASSUMED A3] pending rail-SME confirmation before LOCK.", "evidence": "[GAP] — SME confirmation" } ] },
+    { "type": "heading", "level": 1, "text": "5. Residual risk (5x5)" },
+    { "type": "table",
+      "headers": ["Hazard", "Lead control (hierarchy order)", "Residual (5x5)", "Owner (role)"],
+      "rows": [
+        ["Pedestrian struck on the crossing", "Grade separation — footbridge", "6 (Medium) once in service; interim 12 (High) until then", "Engineering Lead (role)"],
+        ["Track worker struck by train during renewal", "Possession — green-zone working", "4 (Low)", "PICOP (role)"],
+        ["Interim period before footbridge in service", "Obstacle detection / MSL + supplementary signage", "9 (Medium)", "Engineering Lead (role)"]
+      ],
+      "caption": "Residual risk scored after the lead controls are applied (5x5)" },
+    { "type": "heading", "level": 1, "text": "6. Recommendations ([GAP]-closure SMART actions)" },
+    { "type": "recommendations", "rows": [
+        { "action": "Submit a footbridge feasibility & design for the Mill Lane crossing (grade separation as the lead control)", "priority": "P1", "owner": "Engineering Lead (role)", "due": "2026-09-30" },
+        { "action": "Pursue the right-of-way closure/diversion order in parallel as the elimination option", "priority": "P2", "owner": "Asset / Route Owner (role)", "due": "2026-12-15" },
+        { "action": "Replan the S&C renewal as a possession (green-zone); remove lookout-only working from the method of work", "priority": "P1", "owner": "PICOP (role)", "due": "2026-08-15" },
+        { "action": "Confirm the current NR/L2/OHS/019 issue/date with the rail-SME and update the citation ([ASSUMED A3] -> confirmed)", "priority": "P3", "owner": "Safety Lead (role)", "due": "2026-08-01" } ] },
+    { "type": "callout", "text": "No possession may proceed on lookout-only working, and no crossing may be 'treated' with signage alone, where a higher-order control (possession / grade separation) is reasonably practicable.", "box_type": "warning" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": [
+        "Network Rail NR/L2/OHS/019 — Safety of People Working On or Near the Line (cited by reference; issue/date [ASSUMED A3] / SME-confirmed)",
+        "ORR level-crossing strategic-risk guidance + LXRMTK (Level Crossing Risk Management Toolkit)",
+        "ALCRM (All Level Crossing Risk Model) — band C2 RECORDED from the licensed model output, never recomputed (RSSB / Network Rail)",
+        "ROGS SI 2006/599 + CSM-RA Reg (EU) 402/2013 (a footbridge/closure is a significant change)",
+        "ISO 45001 cl 8.1.2"
+      ] }
+  ]
+}
