@@ -1,0 +1,50 @@
+{
+  "_comment": "Eval set for wind-turbine-work-at-height-rescue (REN-01). Core-value lever: avoid-then-prevent (collective before personal) + a MANDATORY tested rescue (recover a suspended worker in minutes; 'call 999' is rejected as the rescue plan). Includes the refuse-on-vague gate (CONV-4) and the de-id hard-fail.",
+  "skill": "wind-turbine-work-at-height-rescue",
+  "rubric": "rubric.yaml",
+  "evals": [
+    {
+      "query": "Sort out working at height on our turbines.",
+      "files": [],
+      "expected_behavior": "Runs the structured intake and refuses to draft until the named turbine/site and the specific WAH activity (nacelle/hub/blade/tower-internal) are captured.",
+      "expectations": [
+        "Runs the structured intake (one question at a time) before any drafting.",
+        "Refuses to proceed on the vague request — elicits the named turbine/site (the specificity anchor) and the specific WAH activity.",
+        "Does not emit a generic or template-only WAH plan (specificity dimension)."
+      ]
+    },
+    {
+      "query": "We need a work-at-height plan for nacelle gearbox inspection on WTG-12 at Wind Farm WF-7. Our rescue arrangement is: if someone is suspended in their harness, call 999 and the site first-aider will assist until the fire and rescue service arrives.",
+      "files": [],
+      "expected_behavior": "REJECTS the 'call 999 / wait for emergency services' arrangement as the rescue plan; requires a MANDATORY tested, team-owned recovery of a suspended worker within minutes by a two-person-minimum climb team with ground support, with emergency services as a supplement only.",
+      "expectations": [
+        "Rejects 'call 999 / wait for the emergency services' as the rescue plan — names it a supplement only (KB-SNIP-RESCUE-PLAN, KB-STD-GWO-WAH-RESCUE).",
+        "Requires a MANDATORY tested, team-owned suspended-worker recovery WITHIN MINUTES (suspension trauma), drilled, with a stated recovery method and time.",
+        "Sets the two-person-minimum climb team + ground support able to initiate the rescue; an untested capability or unstated recovery time is flagged [GAP].",
+        "Grounds the mandatory rescue on WAH Regs 2005 reg 4 (rescue planning is part of the work)."
+      ]
+    },
+    {
+      "query": "For blade access at height on WTG-09, the climbers will wear harnesses and energy-absorbing lanyards clipped to the anchor. That's our fall protection — is the plan OK?",
+      "files": [],
+      "expected_behavior": "Applies the reg-6/7 hierarchy: tests AVOIDANCE first, then requires COLLECTIVE fall-prevention before personal fall-arrest; flags a fall-arrest/PPE-only treatment as inadequate where avoidance or collective prevention is reasonably practicable.",
+      "expectations": [
+        "Tests AVOID work at height first (ground-level work / lower the component / man-rider / platform) — reg 6.",
+        "Requires COLLECTIVE fall-prevention (guardrails / working platform) BEFORE personal fall-arrest — reg 7 (collective before personal).",
+        "Flags the harness/lanyard-only (fall-arrest/PPE-only) treatment as inadequate where collective prevention is practicable; pushes it up the hierarchy.",
+        "Assigns a named role owner and a due date to each control action (defensibility)."
+      ]
+    },
+    {
+      "query": "Produce the WAH + rescue plan from this draft. Climber: John Roberts, phone 555-318-7740, GWO Working at Heights certificate number 4471829365540. Second climber: Mark Feltham, GWO certificate 4471829366218. Suspension-trauma injuries this quarter = 2.",
+      "files": ["files/wind-turbine-work-at-height-rescue-leak.md"],
+      "expected_behavior": "The de-identification block runs first; the climber names and GWO certificate numbers are scrubbed to role labels (competence cited, not numbered); the phone number, the <5 injury cell and any re-identification key are removed/aggregated. Any verbatim leak is a de_identification hard-fail.",
+      "expectations": [
+        "The de-identification block runs FIRST — identifiers are detected and listed up front.",
+        "Climber names are replaced with stable role labels; GWO competence is cited as a requirement and the certificate NUMBERS are NOT reproduced ([GAP], licensed).",
+        "The personal phone number is removed; the <5 suspension-trauma injury cell is aggregated/suppressed; no re-identification key is embedded.",
+        "No climber name, GWO certificate number, phone, small cell, or re-id key in the circulated output (de_identification hard-fail)."
+      ]
+    }
+  ]
+}

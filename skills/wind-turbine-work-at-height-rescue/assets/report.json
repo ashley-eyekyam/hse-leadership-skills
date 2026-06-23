@@ -1,0 +1,60 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Wind Turbine Work at Height + Rescue Plan",
+    "subtitle": "WTG-12, Wind Farm WF-7 — nacelle gearbox inspection",
+    "author": "HSE Renewables",
+    "date": "2026-06-23",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label and GWO competence is cited as a requirement (certificate numbers are not reproduced). Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "This plan governs nacelle gearbox-inspection work at height on WTG-12 at Wind Farm WF-7. The component cannot be brought to ground, so work at height is unavoidable; control therefore leads with collective fall-prevention (the nacelle working platform and roof guardrail) before personal fall-arrest, per WAH Regs 2005 reg 6/7. A tested, team-owned rescue recovers a worker suspended in a harness within 10 minutes by a two-person-minimum climb team with ground support. Calling 999 is a parallel supplement, not the rescue plan." },
+    { "type": "metrics", "metrics": [
+        { "label": "Climb team", "value": "2+", "caption": "two-person minimum + ground support" },
+        { "label": "Target rescue time", "value": "10 min", "caption": "team-owned recovery" },
+        { "label": "GWO competence", "value": "Current", "caption": "WAH / First Aid / ART, 2-yr refresh" } ] },
+    { "type": "heading", "level": 1, "text": "Control order (reg 6 / 7)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "AVOID work at height — gearbox borescope inspection tested for ground-level/remote option; component cannot be lowered, so at-height work is unavoidable (avoidance test recorded)", "tier": "Elimination", "owner": "WAH Planner (role)" },
+        { "control": "PREVENT a fall — nacelle internal working platform + roof-hatch guardrail (collective) used before any personal fall-arrest", "tier": "Engineering", "owner": "Site WAH Supervisor (role)" },
+        { "control": "MITIGATE / ARREST — harness + energy-absorbing lanyard on the rated nacelle anchor for the roof-hatch transition only", "tier": "PPE", "owner": "Climb Lead (role)" } ] },
+    { "type": "heading", "level": 1, "text": "Mandatory tested rescue plan" },
+    { "type": "table",
+      "headers": ["Element", "Arrangement", "Recovery time", "Owner"],
+      "rows": [
+        ["Suspended-worker recovery", "Team-owned descent/haul kit (rescue device + ground anchor) per GWO ART method, drilled quarterly", "10 min", "Rescue Lead (role)"],
+        ["Manning", "Two-person-minimum climb team + one ground-support person able to initiate the rescue", "Immediate", "Climb Lead (role)"],
+        ["Emergency services", "999 called in parallel by Ground Support — SUPPLEMENT only, NOT the rescue plan", "External", "Ground Support (role)"]
+      ],
+      "caption": "Rescue plan — tested, team-owned, recovery within 10 minutes; 999 is a supplement only" },
+    { "type": "callout", "text": "A WAH plan with no tested rescue is rejected (reg 4). 'Call the emergency services and wait' is NOT a rescue plan — suspension trauma can be fatal within minutes.", "box_type": "warning" },
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "Original method statement named '999 / site first-aider' as the rescue arrangement", "risk_level": "High",
+          "description": "The prior method statement relied on the emergency services and a ground-based first-aider with no team-owned at-height recovery capability — rejected; replaced with a tested team-owned 10-minute recovery.", "evidence": "Method statement MS-WTG12-rev1" },
+        { "title": "Roof-hatch transition had no collective protection", "risk_level": "Medium",
+          "description": "The roof-hatch transition relied on personal fall-arrest only; a temporary guardrail is now specified as collective prevention before the harness limb.", "evidence": "Pre-climb survey" } ] },
+    { "type": "heading", "level": 1, "text": "Weather hold / stop thresholds (owned by REN-03)" },
+    { "type": "bullets", "items": [
+        "Hub-height wind cut-off ~= 15 m/s [ASSUMED — confirm with weather-dynamic-risk-assessment (REN-03); proposed-and-user-confirmed, not a citation]",
+        "Lightning stand-down per NFPA 780 practice / the site lightning-warning service [GAP — detection radius + time site-confirmed]",
+        "No personnel-carrier lift used for this task, so the BS 7121-1 (2016) 7 m/s man-riding ceiling does not apply" ] },
+    { "type": "heading", "level": 1, "text": "GWO competence (cited, not reproduced)" },
+    { "type": "paragraph", "text": "Both climbers and the Rescue Lead hold current GWO Working at Heights, First Aid and Advanced Rescue Training competence, refreshed every 2 years. Certificate numbers are a licensed competence-scheme identifier and are NOT reproduced here ([GAP]); competence is verified against a separate access-controlled training record before the climb." },
+    { "type": "heading", "level": 1, "text": "Recommendations" },
+    { "type": "recommendations", "rows": [
+        { "action": "Drill the team-owned suspended-worker rescue on WTG-12 access and record the measured recovery time", "priority": "P1", "owner": "Rescue Lead (role)", "due": "2026-07-04" },
+        { "action": "Add the temporary roof-hatch guardrail to the equipment list and the pre-climb checklist", "priority": "P2", "owner": "Site WAH Supervisor (role)", "due": "2026-07-11" },
+        { "action": "Confirm the hub-height wind hold value with REN-03 and the turbine OEM in-service limit", "priority": "P2", "owner": "Site Lead (role)", "due": "2026-07-11" } ] },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": [
+        "Work at Height Regulations 2005 (SI 2005/735) reg 4 / 6 / 7 / 12",
+        "GWO Working at Heights / First Aid / Advanced Rescue Training (competence requirement)",
+        "ISO 45001 cl 6.1.2 (hazard identification & risk assessment)" ] }
+  ]
+}

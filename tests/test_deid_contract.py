@@ -1372,3 +1372,124 @@ def test_marine_emergency_clean_fixture_passes():
     assert verdict["auto_fail"] is False, (
         f"marine-emergency clean fixture false-positived: {verdict['reasons']}"
     )
+
+
+# =============================================================================
+# Phase-16 / REN-02 lone-working-assessment de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 16-07 (do not reorder/remove the canonical
+# contract assertions above, nor any other skill's appended section). MODERATE tier:
+# a lone-working assessment circulates with the lone worker's personal contact number,
+# shift pattern and precise work/home location -> role labels in the distributed copy
+# (these together re-identify a single person AND are a personal-safety risk: they reveal
+# where and when an individual works alone); a <5 lone-working-incident cell on a named
+# site de-anonymizes the involved worker (de_identification HARD-FAIL).
+# This append is a SERIAL / orchestrator-batched edit (D-04) — applied in order with
+# the other Wave-3 appends; parallel executors must NOT race-write this shared file.
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _lone_working_sys  # noqa: E402
+
+_LONE_WORKING_SCRIPTS = REPO / "scripts"
+if str(_LONE_WORKING_SCRIPTS) not in _lone_working_sys.path:
+    _lone_working_sys.path.insert(0, str(_LONE_WORKING_SCRIPTS))
+
+from graders import grade_deid as _lone_working_grade_deid  # noqa: E402
+
+_LONE_WORKING_FILES = REPO / "skills" / "lone-working-assessment" / "evals" / "files"
+_LONE_WORKING_LEAK = _LONE_WORKING_FILES / "lone-working-assessment-leak.md"
+_LONE_WORKING_CLEAN = _LONE_WORKING_FILES / "lone-working-assessment-clean.md"
+
+
+def test_lone_working_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
+    verdict = _lone_working_grade_deid(_LONE_WORKING_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "lone-working seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_lone_working_seeded_leak_small_cell_suppression_caught():
+    """MODERATE TIER (T-16-07-01): the sub-5 solo-collapse / lost-contact lone-working-incident
+    breakdown on a named site MUST be caught as a small-cell leak — a <5 cell de-anonymizes the
+    individual lone worker involved."""
+    verdict = _lone_working_grade_deid(_LONE_WORKING_LEAK.read_text(encoding="utf-8"))
+    assert verdict["conditions"]["no_small_cell"] is False, (
+        "lone-working seeded-leak <5 incident cell was NOT caught — small-cell gate is dead"
+    )
+    assert any("small-cell" in r for r in verdict["reasons"]), (
+        "the <5 small-cell leak is not among the auto_fail reasons"
+    )
+
+
+def test_lone_working_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail; in
+    particular no _PHONE_RE false-positive on the INDG73 / BS 8484:2022 references, and no name
+    false-positive on the role-labelled lone worker / responder)."""
+    verdict = _lone_working_grade_deid(_LONE_WORKING_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"lone-working clean fixture false-positived: {verdict['reasons']}"
+    )
+
+
+# =============================================================================
+# Phase-16 / REN-01 wind-turbine-work-at-height-rescue de-id fixture-PAIR registration.
+#
+# Skill-scoped section appended by plan 16-08 (do not reorder/remove the canonical
+# contract assertions above, nor any other skill's appended section). MODERATE tier:
+# a turbine WAH + rescue plan circulates with the climbers'/rescuers' NAMES and their
+# GWO CERTIFICATE NUMBERS -> role labels in the distributed copy (the names re-identify
+# named individuals AND the GWO certificate number is a licensed competence-scheme
+# identifier that must be CITED, never reproduced); a <5 fall/suspension/rescue-incident
+# cell on a named site de-anonymizes the involved worker (de_identification HARD-FAIL).
+# The clean fixture is authored DEFENSIVELY: GWO competence is CITED (no certificate
+# number digit-run -> no _PHONE_RE false-positive) and all personnel are role-labelled.
+# This append is a SERIAL / orchestrator-batched edit (D-04) — applied in order with
+# the other Wave-3 appends; parallel executors must NOT race-write this shared file.
+# Pure deterministic Python: no network, no model, no key.
+# =============================================================================
+
+import sys as _wind_turbine_sys  # noqa: E402
+
+_WIND_TURBINE_SCRIPTS = REPO / "scripts"
+if str(_WIND_TURBINE_SCRIPTS) not in _wind_turbine_sys.path:
+    _wind_turbine_sys.path.insert(0, str(_WIND_TURBINE_SCRIPTS))
+
+from graders import grade_deid as _wind_turbine_grade_deid  # noqa: E402
+
+_WIND_TURBINE_FILES = REPO / "skills" / "wind-turbine-work-at-height-rescue" / "evals" / "files"
+_WIND_TURBINE_LEAK = _WIND_TURBINE_FILES / "wind-turbine-work-at-height-rescue-leak.md"
+_WIND_TURBINE_CLEAN = _WIND_TURBINE_FILES / "wind-turbine-work-at-height-rescue-clean.md"
+
+
+def test_wind_turbine_seeded_leak_fixture_is_caught():
+    """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live):
+    a reproduced climber NAME + GWO CERTIFICATE NUMBER + personal phone + <5 incident cell +
+    re-identification key."""
+    verdict = _wind_turbine_grade_deid(_WIND_TURBINE_LEAK.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is True, "wind-turbine seeded-leak fixture did NOT hard-fail"
+    assert verdict["reasons"], "auto_fail with no reason is not a real catch"
+
+
+def test_wind_turbine_seeded_leak_small_cell_suppression_caught():
+    """MODERATE TIER (T-16-08-01): the sub-5 suspension-trauma / fall-rescue incident cell on a
+    named turbine/site MUST be caught as a small-cell leak — a <5 cell de-anonymizes the
+    individual worker involved."""
+    verdict = _wind_turbine_grade_deid(_WIND_TURBINE_LEAK.read_text(encoding="utf-8"))
+    assert verdict["conditions"]["no_small_cell"] is False, (
+        "wind-turbine seeded-leak <5 incident cell was NOT caught — small-cell gate is dead"
+    )
+    assert any("small-cell" in r for r in verdict["reasons"]), (
+        "the <5 small-cell leak is not among the auto_fail reasons"
+    )
+
+
+def test_wind_turbine_clean_fixture_passes():
+    """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail; in
+    particular no _PHONE_RE false-positive on the cited GWO competence requirement — the clean
+    fixture carries NO certificate-number digit-run — and no name false-positive on the
+    role-labelled climbers / rescuers)."""
+    verdict = _wind_turbine_grade_deid(_WIND_TURBINE_CLEAN.read_text(encoding="utf-8"))
+    assert verdict["auto_fail"] is False, (
+        f"wind-turbine clean fixture false-positived: {verdict['reasons']}"
+    )

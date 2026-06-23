@@ -1,0 +1,56 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Wind Turbine Work at Height + Rescue Plan",
+    "subtitle": "{turbine} / {site} — {WAH activity}",
+    "author": "HSE Renewables",
+    "date": "{date}",
+    "classification": "Internal — competent-person review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "All personnel are referred to by role label and GWO competence is cited as a requirement (certificate numbers are not reproduced). Identifiers were pseudonymised before drafting; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Executive summary" },
+    { "type": "paragraph", "text": "This plan governs work at height on {turbine} at {site} for {WAH activity}. Control is led by the Work at Height Regulations 2005 reg-6 hierarchy (avoid -> prevent, collective before personal -> mitigate/arrest), and a MANDATORY tested rescue plan recovers a suspended worker within minutes by the team's own two-person-minimum capability. 'Call 999 / wait for emergency services' is NOT the rescue plan." },
+    { "type": "metrics", "metrics": [
+        { "label": "Climb team", "value": "2+", "caption": "two-person minimum + ground support" },
+        { "label": "Target rescue time", "value": "{N} min", "caption": "team-owned recovery" },
+        { "label": "GWO competence", "value": "Current", "caption": "WAH / First Aid / ART, 2-yr refresh" } ] },
+    { "type": "heading", "level": 1, "text": "Control order (reg 6 / 7)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "AVOID work at height — {avoidance option e.g. lower the component / ground-level work / man-rider}", "tier": "Elimination", "owner": "{WAH Planner role}" },
+        { "control": "PREVENT a fall — collective protection first ({guardrail / working platform})", "tier": "Engineering", "owner": "{Site WAH Supervisor role}" },
+        { "control": "MITIGATE / ARREST — personal fall-arrest on a rated anchor (only where avoidance + collective not practicable)", "tier": "PPE", "owner": "{Climb Lead role}" } ] },
+    { "type": "heading", "level": 1, "text": "Mandatory tested rescue plan" },
+    { "type": "table",
+      "headers": ["Element", "Arrangement", "Recovery time", "Owner"],
+      "rows": [
+        ["Suspended-worker recovery", "Team-owned descent/haul kit + GWO ART method", "{N} min", "Rescue Lead (role)"],
+        ["Manning", "Two-person-minimum climb team + ground support", "Immediate", "Climb Lead (role)"],
+        ["Emergency services", "Supplement only — called in parallel, NOT the rescue plan", "External", "Site Lead (role)"]
+      ],
+      "caption": "Rescue plan — tested, team-owned, recovery within minutes; 999 is a supplement only" },
+    { "type": "callout", "text": "A WAH plan with no tested rescue is rejected (reg 4). 'Call the emergency services and wait' is NOT a rescue plan — suspension trauma can be fatal within minutes.", "box_type": "warning" },
+    { "type": "heading", "level": 1, "text": "Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "{finding title}", "risk_level": "{High/Medium/Low}",
+          "description": "{description traced to evidence}", "evidence": "{method statement / permit ref}" } ] },
+    { "type": "heading", "level": 1, "text": "Weather hold / stop thresholds (owned by REN-03)" },
+    { "type": "bullets", "items": [
+        "Hub-height wind cut-off ~= 15 m/s [ASSUMED — confirm with weather-dynamic-risk-assessment (REN-03); proposed-and-user-confirmed, not a citation]",
+        "Lightning stand-down per NFPA 780 practice / a lightning-warning service [GAP — site-confirmed]",
+        "BS 7121-1 (2016) man-riding ceiling 7 m/s [VERIFIED] where a personnel-carrier lift is used" ] },
+    { "type": "heading", "level": 1, "text": "GWO competence (cited, not reproduced)" },
+    { "type": "paragraph", "text": "The climb team holds current GWO Working at Heights / First Aid / Advanced Rescue Training competence, refreshed every 2 years. Certificate numbers are a licensed competence-scheme identifier and are NOT reproduced here ([GAP]); competence is held in a separate access-controlled training record." },
+    { "type": "heading", "level": 1, "text": "Recommendations" },
+    { "type": "recommendations", "rows": [
+        { "action": "{SMART action closing a [GAP]}", "priority": "P1", "owner": "{role}", "due": "{ISO date}" } ] },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": [
+        "Work at Height Regulations 2005 (SI 2005/735) reg 4 / 6 / 7 / 12",
+        "GWO Working at Heights / First Aid / Advanced Rescue Training (competence requirement)",
+        "ISO 45001 cl 6.1.2 (hazard identification & risk assessment)" ] }
+  ]
+}

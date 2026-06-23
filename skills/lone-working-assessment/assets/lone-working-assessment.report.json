@@ -1,0 +1,63 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "Lone Working Risk Assessment — <role>, <site>",
+    "subtitle": "<solitary activity> · eliminate-the-solitary-exposure-first · check-in + missed-check-in escalation · coverage-checked comms",
+    "author": "HSE Renewables",
+    "date": "<date>",
+    "classification": "Internal — competent-person (lone-working / renewables-field SME) review required",
+    "brand": "brand.yaml",
+    "house_template": "house-standard",
+    "deid_notice": "The lone worker is referred to by role label; the check-in / escalation responder by role. Personal contact numbers, the shift pattern and the precise work/home location were pseudonymised before drafting and are held in a separate access-controlled operational record; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "1. Scope & solitary activity" },
+    { "type": "paragraph", "text": "Scope: the specific solitary activity performed by the named role at the named site. The proposed control is recorded and tested against the eliminate-the-solitary-exposure-first + coverage-checked-comms + check-in/escalation discipline." },
+    { "type": "metrics", "metrics": [
+        { "label": "Lead control", "value": "Eliminate the solitary exposure", "caption": "device-led treatment rejected" },
+        { "label": "Comms coverage at the work location", "value": "[GAP] until confirmed", "caption": "no signal treated as a control failure" },
+        { "label": "Missed-check-in escalation", "value": "<responder (role)>, <time>", "caption": "named responder + response time" } ] },
+    { "type": "heading", "level": 1, "text": "2. Routing gate (work at height / electrical routed, not assessed solo)" },
+    { "type": "paragraph", "text": "Lone work at height routes to wind-turbine-work-at-height-rescue (REN-01)'s two-person, tested-rescue baseline — a solo climb is not acceptable and 'call 999' is never the rescue plan. Lone electrical work routes to the cross-listed utilities skills (arc-flash-assessment / live-working-risk-assessment). Those pointers are recorded, never rebuilt here." },
+    { "type": "callout", "text": "A lone-worker device supplements — never replaces — the procedure, and 'no mobile signal' is a control failure, not an accepted residual risk.", "box_type": "warning" },
+    { "type": "heading", "level": 1, "text": "3. Control order (eliminate the solitary exposure first)" },
+    { "type": "hoc_table", "rows": [
+        { "control": "Eliminate the solitary exposure — pair up / re-schedule so the worker is no longer alone (LEAD control)", "tier": "Elimination", "owner": "<role>" },
+        { "control": "Substitute / engineer — remote monitoring; a coverage-checked communication path at the work location", "tier": "Substitution", "owner": "<role>" },
+        { "control": "Administrative — scheduled check-in + a defined missed-check-in escalation path (responder / method / response time)", "tier": "Administrative", "owner": "<role>" },
+        { "control": "Device (residual supplement only) — a BS 8484:2022-conformant device + monitored response chain, on top of the procedure, never instead of it", "tier": "Administrative", "owner": "<role>" } ] },
+    { "type": "callout", "text": "No lone-working assessment is defensible where the solitary exposure can be eliminated and is not, or where a device is treated as the control instead of a coverage-checked check-in + escalation procedure.", "box_type": "critical" },
+    { "type": "heading", "level": 1, "text": "4. Communication & check-in / escalation" },
+    { "type": "table",
+      "headers": ["Element", "Requirement", "Status"],
+      "rows": [
+        ["Communication coverage", "Coverage-checked at the work location", "[GAP] until confirmed; no-signal is a control failure"],
+        ["Scheduled check-in", "Defined interval", "<interval>"],
+        ["Missed-check-in escalation", "Named responder + method + response time", "<responder / method / time>"],
+        ["Lone-worker device", "BS 8484:2022 conformance", "[GAP] until supplied; residual supplement only"]
+      ],
+      "caption": "The communication + check-in + escalation arrangement (INDG73 / BS 8484)" },
+    { "type": "heading", "level": 1, "text": "5. Key findings" },
+    { "type": "findings", "rows": [
+        { "title": "<finding>", "risk_level": "High", "description": "<description>", "evidence": "<evidence>" } ] },
+    { "type": "heading", "level": 1, "text": "6. Residual risk (5x5)" },
+    { "type": "table",
+      "headers": ["Hazard", "Lead control (hierarchy order)", "Residual (5x5)", "Owner (role)"],
+      "rows": [
+        ["<hazard>", "<lead control>", "<score> (<band>)", "<role>"]
+      ],
+      "caption": "Residual risk scored after the lead controls are applied (5x5)" },
+    { "type": "heading", "level": 1, "text": "7. Recommendations ([GAP]-closure SMART actions)" },
+    { "type": "recommendations", "rows": [
+        { "action": "<action>", "priority": "P1", "owner": "<role>", "due": "<date>" } ] },
+    { "type": "callout", "text": "Lone work at height routes to wind-turbine-work-at-height-rescue (REN-01); lone electrical work routes to the cross-listed utilities skills — neither is assessed solo here.", "box_type": "info" },
+    { "type": "divider" },
+    { "type": "heading", "level": 1, "text": "Regulatory basis" },
+    { "type": "bullets", "items": [
+        "HSE INDG73 (Protecting lone workers, rev 4): risk-assessment duty, reliable coverage-checked communication, scheduled check-ins + a missed-check-in escalation procedure, violence + stress/wellbeing",
+        "BS 8484:2022 (Provision of lone worker device services): a device supplements, never replaces, the procedure",
+        "Work at Height Regulations 2005 reg 4 (lone WAH routes to REN-01's two-person / tested-rescue baseline)",
+        "ISO 45001 cl 6.1.2 — hazard ID & risk assessment; hierarchy of controls"
+      ] }
+  ]
+}
