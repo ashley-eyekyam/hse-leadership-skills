@@ -22,3 +22,11 @@ desktop.ini
 
 # Runtime-generated logo composite (render_docx white-card); regenerated on demand
 assets/report-engine/assets/*-white-bg.png
+
+# Regenerable Tier-B adapter render outputs (regenerate with: adapters/build.py --all)
+# Removed from VCS to stay under the Cowork marketplace 5000-files-per-plugin cap.
+# Adapter SOURCE tooling (build.py, validate_adapters.py, platforms.yaml, tests/) is RETAINED.
+adapters/chatgpt/
+adapters/gemini/
+adapters/copilot/
+adapters/generic/

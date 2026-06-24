@@ -70,13 +70,16 @@ jobs:
       - uses: actions/checkout@v4
 
       - id: guard
-        name: Check adapter validator exists
+        name: Check adapter validator and committed bundle exist
         run: |
-          if [ -f "adapters/validate_adapters.py" ]; then
+          if [ -f "adapters/validate_adapters.py" ] && [ -d "adapters/generic" ]; then
             echo "present=true" >> "$GITHUB_OUTPUT"
-          else
+          elif [ ! -f "adapters/validate_adapters.py" ]; then
             echo "present=false" >> "$GITHUB_OUTPUT"
             echo "::notice::adapters/validate_adapters.py not yet present. Skipping bundle-diff."
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Committed adapter bundles are not in VCS (regenerable via adapters/build.py --all). Skipping bundle-diff."
           fi
 
       - name: Set up Python
@@ -100,13 +103,16 @@ jobs:
       - uses: actions/checkout@v4
 
       - id: guard
-        name: Check adapter validator exists
+        name: Check adapter validator and committed bundle exist
         run: |
-          if [ -f "adapters/validate_adapters.py" ]; then
+          if [ -f "adapters/validate_adapters.py" ] && [ -d "adapters/generic" ]; then
             echo "present=true" >> "$GITHUB_OUTPUT"
-          else
+          elif [ ! -f "adapters/validate_adapters.py" ]; then
             echo "present=false" >> "$GITHUB_OUTPUT"
             echo "::notice::adapters/validate_adapters.py not yet present. Skipping four-non-negotiables."
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Committed adapter bundles are not in VCS (regenerable via adapters/build.py --all). Skipping four-non-negotiables."
           fi
 
       - name: Set up Python
