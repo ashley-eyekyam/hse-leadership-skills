@@ -118,6 +118,14 @@ python3 scripts/run_evals.py --all                       # …or every skill in 
 Each run prints a `passed/total` line per skill and the grader id; a non-zero exit
 under `--ci` means a hard-fail or a below-gate score.
 
+> **Rubric-fit carve-out (routing skills).** The shared rubric is written for
+> *hazard-treatment* deliverables. For a *routing* skill (`using-hse-skills`), the
+> `hierarchy_of_controls` model-graded dimension (and the post-control residual-risk
+> concept) is **N/A** — it recommends + hands off de-identified context, it does not
+> treat a hazard. This is documented (not a rubric edit) in
+> [`skills/using-hse-skills/references/rubric-fit.md`](../skills/using-hse-skills/references/rubric-fit.md);
+> `evals/rubric.yaml` stays byte-canonical (D-02).
+
 ### How the eval grader runs — and why you run evals locally
 
 `run_evals.py` grades each case in **two layers**:
