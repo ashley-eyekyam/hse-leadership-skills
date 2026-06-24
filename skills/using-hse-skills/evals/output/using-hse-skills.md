@@ -3,6 +3,16 @@
 > CANDIDATE golden output for the recommendation-accuracy eval. Role-based owners only,
 > no personal names (golden-output authoring convention). The owner LOCKs this in Phase 17.
 
+## HOW THIS WORKS — read me first
+
+You have confirmed the job context below. We will run **STEP 1 right here in this chat**,
+because the first skill does the heavy lifting and fills this chat with detail. For each later
+step, open a **fresh chat** and paste the **Context Capsule** so the new chat knows the site,
+crew, and jurisdiction without re-asking — then attach the previous step's output where the
+step notes. That keeps each chat fast and focused. Every output you carry forward is already
+de-identified by the skill that produced it, so attach the skill's emitted output, not raw
+notes, and the chain stays clean.
+
 ## Captured facts (echoed back, de-identified)
 
 De-identification ran FIRST, before this run sheet was written. The pasted handoff note
@@ -20,6 +30,10 @@ held in a SEPARATE access-controlled artifact and is NOT reproduced here.
 Routing for: re-roofing fall-from-height at [SITE-1], own workers + [CONTRACTOR], UK,
 construction, deliverables = RA + JSA + permit + toolbox talk — confirmed.
 
+*You confirmed this context as-is. If anything were wrong, you could edit it or re-scope, and
+the recommended chain would re-run on the change (showing what it refined and why) before any
+skill ran.*
+
 ## Recommended chain (ordered, with rationale)
 
 | # | Skill | Bundle | WHY |
@@ -29,61 +43,74 @@ construction, deliverables = RA + JSA + permit + toolbox talk — confirmed.
 | 3 | permit-to-work | hse-core | Authorises the work-at-height task with the controls from Steps 1–2 as permit conditions. |
 | 4 | toolbox-talk | hse-core | Briefs and signs off the night crew on the specific hazards and controls before they start. |
 
-## Run sheet (copy-paste — portable across fresh chats or this session)
+## Context Capsule  (paste this at the top of each fresh chat for Steps 2+)
 
-SEQUENCE MAP:  risk-assessment → job-safety-analysis → permit-to-work → toolbox-talk
+> Job: strip-and-re-roof Block C at [SITE-1], fall-from-height from the eaves.
+> Jurisdiction: UK · Industry: construction · Exposed: own workers + [CONTRACTOR].
+> Lead: [ROLE: site manager]. Goal: risk assessment → safe-work method → permit → toolbox talk.
+> SEQUENCE MAP:  risk-assessment → job-safety-analysis → permit-to-work → toolbox-talk
+> (Role labels only — the re-identification key is held separately, not in this capsule.)
 
-── STEP 1 — risk-assessment ──────────────────────────────────
+## Run sheet (asymmetric — Step 1 in place, Steps 2+ in fresh chats)
+
+▶ **STEP 1 runs in THIS chat — no copy-paste.** Steps 2–4 each go to a fresh chat with the
+Context Capsule above pasted at the top.
+
+── STEP 1 — risk-assessment  (runs here, in place) ───────────
 WHY:        Establishes the hazard/control baseline for the re-roofing task at height.
-RUN:        /risk-assessment   (or: "use the risk-assessment skill")
-THEN PASTE: [shared context: strip-and-re-roof Block C at [SITE-1], fall-from-height,
-            own workers + [CONTRACTOR], UK, construction; lead = [ROLE: site manager]]
-            + delta: full task steps (access → strip → load-out → re-lay → edge-protect),
-            5×5 matrix, baseline assessment.
-CARRY-IN:   (none — first step)
-DEPENDENCY: Independent.
+RUN:        /risk-assessment   (or: "use the risk-assessment skill") — in THIS chat.
+DELTA:      full task steps (access → strip → load-out → re-lay → edge-protect), 5×5 matrix,
+            baseline assessment.
+DEPENDENCY: Independent — the first step.
 FEEDS →:    Step 2 (the agreed control set + residual risks).
 
-── STEP 2 — job-safety-analysis ──────────────────────────────
-WHY:        Breaks the control set into a step-by-step safe-work method for the crew.
+── STEP 2 — job-safety-analysis  (fresh chat) ────────────────
+WHY:        Turns the agreed controls into a step-by-step safe-work method.
 RUN:        /job-safety-analysis
-THEN PASTE: [same shared context: re-roofing Block C at [SITE-1], own workers +
-            [CONTRACTOR], UK, construction; lead = [ROLE: site manager]]
-            + delta: the agreed control set from Step 1.
-CARRY-IN:   ⚠ attach the risk-assessment OUTPUT from Step 1 — the control set + residual risks.
+REFERENCE:  Paste the Context Capsule above first — the skill's intake confirms it and asks
+            only the JSA-specific details, so you do not re-enter the site or crew.
+ATTACH:     the risk-assessment OUTPUT from Step 1 — the control set + residual risks (it is
+            already de-identified by the risk-assessment skill). The JSA is built from these.
+DELTA:      the agreed control set; the task broken into method steps.
 DEPENDENCY: Dependent — run after Step 1.
-FEEDS →:    Step 3 (the safe-work method steps + control owners).
+FEEDS →:    Step 3 (the method steps + control owners).
 
-── STEP 3 — permit-to-work ───────────────────────────────────
+── STEP 3 — permit-to-work  (fresh chat) ─────────────────────
 WHY:        Authorises the work-at-height task with the Step 1–2 controls as conditions.
 RUN:        /permit-to-work
-THEN PASTE: [same shared context: re-roofing Block C at [SITE-1], own workers +
-            [CONTRACTOR], UK, construction; lead = [ROLE: site manager]]
-            + delta: working-at-height permit type, validity window.
-CARRY-IN:   ⚠ attach the job-safety-analysis OUTPUT from Step 2 — the method steps + control
-            owners — and the risk-assessment residual risks from Step 1.
+REFERENCE:  Paste the Context Capsule above first — no need to re-enter the shared context.
+ATTACH:     the job-safety-analysis OUTPUT from Step 2 — the method steps + control owners —
+            and the risk-assessment residual risks from Step 1 (both already de-identified).
+DELTA:      the working-at-height permit type and the validity window.
 DEPENDENCY: Dependent — run after Steps 1 and 2.
 FEEDS →:    Step 4 (the permitted controls + sign-on conditions).
 
-── STEP 4 — toolbox-talk ─────────────────────────────────────
+── STEP 4 — toolbox-talk  (fresh chat) ───────────────────────
 WHY:        Briefs and signs off the night crew on the specific hazards and controls.
 RUN:        /toolbox-talk
-THEN PASTE: [same shared context: re-roofing Block C at [SITE-1], own workers +
-            [CONTRACTOR], UK, construction; lead = [ROLE: site manager]]
-            + delta: tonight's crew, the top three controls to brief.
-CARRY-IN:   ⚠ attach the permit-to-work OUTPUT from Step 3 — the permitted controls +
-            sign-on conditions the crew must acknowledge.
+REFERENCE:  Paste the Context Capsule above first — the crew, site, and chain are carried by it.
+ATTACH:     the permit-to-work OUTPUT from Step 3 — the permitted controls + sign-on conditions
+            the crew must acknowledge (already de-identified by the permit-to-work skill).
+DELTA:      tonight's crew and the top three controls to brief.
 DEPENDENCY: Dependent — run after Step 3.
 FEEDS →:    (none — final step; the crew signs and starts work).
 
+      ↳ Can't carry the capsule between chats? Ask to **expand any step to standalone** and the
+        router inlines the full shared context into that one step so it self-runs without the
+        capsule. The default lean form above keeps each chat short and the de-id surface small.
+
 ## How to run it
 
-- **On a host with the Skill tool:** say "go" and the router launches Step 1's skill seeded
-  with that block; after each step's output returns, it offers the next step.
-- **Off-platform / fresh chat:** copy a step block into a new chat and run the named skill;
-  for Steps 2–4, attach the prior step's output as the CARRY-IN instructs.
+- **Step 1, here:** on a host with the Skill tool, say "go" and the router launches the
+  risk-assessment skill in this chat seeded with the confirmed facts. Off-platform, paste the
+  printed Step-1 block into this same chat and run the named skill — Step 1 is never a
+  fresh-chat block.
+- **Steps 2–4, fresh chat each:** open a new chat, paste the Context Capsule at the top, run
+  the named skill, and attach the prior step's already-de-identified output as the step's
+  ATTACH line notes. A fresh chat per step stays fast and focused.
 
-Each target skill's own intake will echo these facts back and ask only the deep, per-artifact
-details this router deferred (scoring, baseline, evidence, obligations, competency, cadence).
+Each target skill's own intake echoes the capsule facts back and asks only the deep,
+per-artifact details this router deferred (scoring, baseline, evidence, obligations,
+competency, cadence).
 
 *Built by Eyekyam · HSE Leadership, operationalised · eyekyam.com*

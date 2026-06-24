@@ -3,28 +3,28 @@ HSE Skills Roadmap — run sheet (de-identified handoff)
 De-identification pass complete BEFORE this run sheet was written. Identifiers detected
 and listed up front: one worker name, one home address, one phone number, one health
 condition. All were pseudonymized to role labels; the re-identification key is held in a
-SEPARATE access-controlled artifact and is NOT reproduced in this run sheet.
+SEPARATE access-controlled artifact and is NOT reproduced in this run sheet — neither in the
+Context Capsule nor in any continuation prompt.
 
-SEQUENCE MAP:  risk-assessment → job-safety-analysis → permit-to-work → toolbox-talk
+CONTEXT CAPSULE  (paste this at the top of each fresh chat for Steps 2+)
+  Job: strip-and-re-roof at [SITE-1], fall-from-height from the eaves.
+  Jurisdiction: UK · Industry: construction · Exposed: own workers + [CONTRACTOR].
+  Lead: [ROLE: site manager].
+  SEQUENCE MAP:  risk-assessment → job-safety-analysis → permit-to-work → toolbox-talk
+  (Role labels only — the re-identification key is held separately, not in this capsule.)
 
-── STEP 1 — risk-assessment ──────────────────────────────────
-WHY:        Establishes the hazard/control baseline for the re-roofing task at height.
-RUN:        /risk-assessment
-THEN PASTE: [shared context: strip-and-re-roof at [SITE-1], fall-from-height, own
-            workers + [CONTRACTOR], UK, construction; lead = [ROLE: site manager]]
-            + delta: full task steps, 5×5 matrix.
-CARRY-IN:   (none — first step)
-DEPENDENCY: Independent.
-FEEDS →:    Step 2 (the control set + residual risks).
+▶ STEP 1 — risk-assessment runs in THIS chat (no copy-paste). Steps 2+ → fresh chat each.
 
-── STEP 2 — job-safety-analysis ──────────────────────────────
-WHY:        Breaks the control set into a step-by-step safe-work method for the crew.
+── STEP 2 — job-safety-analysis  (fresh chat) ────────────────
+WHY:        Turns the agreed controls into a step-by-step safe-work method.
 RUN:        /job-safety-analysis
-THEN PASTE: [same shared context: re-roofing at [SITE-1], own workers + [CONTRACTOR],
-            UK, construction; lead = [ROLE: site manager]] + delta: the agreed control set.
-CARRY-IN:   ⚠ attach the risk-assessment OUTPUT from Step 1 — the control set + residual risks.
+REFERENCE:  Paste the Context Capsule above first — the skill's intake confirms it and asks
+            only the JSA-specific details, so you do not re-enter the site or crew.
+ATTACH:     the risk-assessment OUTPUT from Step 1 — the control set + residual risks
+            (already de-identified by the risk-assessment skill).
+DELTA:      the agreed control set; the task broken into method steps.
 DEPENDENCY: Dependent — run after Step 1.
-FEEDS →:    Step 3.
+FEEDS →:    Step 3 (the method steps + control owners).
 
 ## Aggregated incident context (small cells suppressed)
 
@@ -36,6 +36,6 @@ Total recordable injuries on this site type this period: 12.
 
 No injury or illness cell of fewer than 5 individuals is published.
 
-This run sheet uses role labels only ([SITE-1], [ROLE: site manager], [CONTRACTOR]); it
-contains no leaked name, government ID, address, phone, email, or DOB, and embeds no
-re-identification key or name-to-label mapping.
+This run sheet uses role labels only ([SITE-1], [ROLE: site manager], [CONTRACTOR]); the
+Context Capsule and every continuation prompt contain no leaked name, government ID, address,
+phone, email, or DOB, and embed no re-identification key or name-to-label mapping.

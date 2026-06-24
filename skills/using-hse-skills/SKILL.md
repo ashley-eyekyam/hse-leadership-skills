@@ -129,24 +129,42 @@ De-identifier (orchestration block, above) over the captured facts: pseudonymize
 role labels (`[SITE-1]`, `[ROLE: site manager]`, `[CONTRACTOR]`) per `references/deid-checklist.md`.
 The run-sheet/handoff blocks are the de-id surface — a leak here is a non-waivable HARD-fail.
 
-**Step 4 — Emit the run sheet (LOCKED format).** Produce a portable, copy-paste **run sheet**:
-- a top **`SEQUENCE MAP`** line (`skill1 → skill2 → skill3 …`);
-- a **self-contained per-step block** for each skill that **repeats the full pseudonymized
-  shared context** + that step's deltas (so a single step pasted into a clean chat runs
-  standalone), with the markers: **`WHY`** (one-line rationale), **`RUN`** (`/skill-name` or
-  "use the X skill"), **`THEN PASTE`** (shared context + deltas), **`CARRY-IN`**,
-  **`DEPENDENCY`** (Independent = any order / Dependent — run after Step N), **`FEEDS →`** the
-  next step;
-- **step 2+ `CARRY-IN` must explicitly instruct the user to ATTACH the prior skill's OUTPUT**
-  it depends on (e.g. "⚠ attach the risk-assessment OUTPUT from Step 1 — the control set +
-  residual risks"), not just the original elicited context.
+**Step 4a — Confirm-or-refine gate (the accuracy lever).** Before any handover, present ONE
+choice on the echoed context + draft chain: **accept** it as-is / **edit** the context /
+**re-scope**. On an **edit**, fold the change into the captured facts (no new question — reuse
+Step-0's facts), **re-run Step 2's match** so the chain refines, and show a one-line iteration
+trail (e.g. "refined to add `permit-to-work` because the edit named confined-space entry").
+Loop until the user accepts. This adds no elicitation facet — it re-drives the match on the
+facts already captured.
 
-**Step 5 — Chaining layer (graceful degradation).** On a host with the Skill tool: show the
-run sheet, then for the first step ask "launch `<skill>` with these facts? [go / edit facts]"
-and invoke the chosen Skill seeded with that step's block; repeat per step. Off-platform (no
-Skill tool): print the run sheet and tell the user "now run `<skill>`". Both paths rely on
-each target skill's existing §2.7 "echo back facts" intake to confirm the pasted facts and ask
-only the deferred facets — **edit no other skill**.
+**Step 4b — Run Step 1 IN PLACE (asymmetric).** Step 1 is special — it is **not** a
+copy-paste-to-fresh-chat block. On a Skill-tool host, invoke Step 1's skill seeded with the
+confirmed facts in THIS same chat. Off-platform (no Skill tool), print a complete,
+copy-pasteable Step-1 block to paste **here** (ROUTE-04 portability). Steps 2+ are the
+fresh-chat set; Step 1 is run where the user already is.
+
+**Step 4c — Emit the asymmetric run sheet for Steps 2+.** Lead with ONE de-identified
+**Context Capsule** (the Step-0 facts + the agreed `SEQUENCE MAP`), then a lean **continuation
+prompt** per later step with the markers **`WHY`** (one-line rationale) / **`RUN`**
+(`/skill-name` or "use the X skill") / **`REFERENCE`** (points back to the Context Capsule
+above — do NOT repeat the shared context) / **`ATTACH`** (the specific prior skill OUTPUT to
+carry forward, e.g. the control set + residual risks — already de-identified by that skill) /
+**`DELTA`** (only this step's new detail) / **`DEPENDENCY`** (Independent / Dependent — run
+after Step N) / **`FEEDS →`** the next step. Add a short opt-in **"expand to standalone"** note
+for a user who cannot carry the capsule (it inlines the full context for one step). The Context
+Capsule and every continuation prompt are the de-id surface — role labels only (`[SITE-1]`,
+`[ROLE: site manager]`, `[CONTRACTOR]`), no re-id key; a leak here is a non-waivable HARD-fail.
+
+**Step 5 — Teach the user how to run it (educative).** Explain, don't just list: **Step 1 runs
+here** because the first skill does the heavy lifting and fills this chat; **Steps 2+ go to a
+fresh chat each** because a fresh chat stays fast and focused; the **Context Capsule** is the
+one block to paste at the top of each fresh chat so it knows the site, crew, and jurisdiction
+without re-asking; and the de-id reassurance — **the OUTPUT you attach is already de-identified
+by the skill that produced it**, so attach the skill's emitted output (not raw notes) and the
+chain stays clean. Each target skill's own §2.7 "echo back facts" intake then confirms the
+pasted capsule and asks only the deferred facets — **edit no other skill**. The full method
+(capsule composition, the continuation-prompt must/must-not list, the attached-output rule, the
+iteration-trail convention) lives in `references/METHODOLOGY.md`.
 
 **On request only:** also render the run sheet as a branded "HSE Skills Roadmap" document via
 the shared report engine (Output format below) — composed from the existing report-model block
