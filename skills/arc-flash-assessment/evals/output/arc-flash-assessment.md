@@ -6,7 +6,7 @@
      FLAGGED and PUSHED UP the hierarchy (de-energize and establish an ESWC first), and the
      convenience justification is REJECTED. The incident energy (7.51 cal/cm²), the arc-flash
      boundary (1332 mm = distance to 1.2 cal/cm²), and the PPE category (CAT 2) are COMPUTED by the
-     arcflash.py IEEE 1584-2018 engine, never narrated. The 130.5(H) label content is authored. The
+     arcflash.py IEEE 1584-2018 engine. The 130.5(H) label content is authored. The
      prior arc-flash burn incident is de-identified to role level. NOT owner-LOCKED — the owner
      reviews + locks in P17. -->
 

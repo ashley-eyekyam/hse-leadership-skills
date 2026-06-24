@@ -21,9 +21,9 @@ transition.
 ## 2. Management & arrangements
 | Duty-holder (named appointment) | CDM responsibility | Arrangement |
 |---|---|---|
-| Principal Contractor — A. Mercer | Reg 12/13 — plan, manage & monitor | Daily coordination; CPP reviewed on any change of method/sequence |
-| CDM Construction Manager — R. Okafor | Site management & arrangements | Induction before first access; weekly H&S walk |
-| Site Manager — P. Nair | Supervision & emergency arrangements | First-aiders rostered; muster at Gate 2; at-height rescue plan |
+| Principal Contractor | Reg 12/13 — plan, manage & monitor | Daily coordination; CPP reviewed on any change of method/sequence |
+| CDM Construction Manager | Site management & arrangements | Induction before first access; weekly H&S walk |
+| Site Manager | Supervision & emergency arrangements | First-aiders rostered; muster at Gate 2; at-height rescue plan |
 
 - **Induction** mandatory before first access, refreshed on phase change.
 - **Consultation** via the weekly contractor coordination meeting + the worker H&S rep.

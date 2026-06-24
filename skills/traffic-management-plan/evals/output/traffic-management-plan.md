@@ -30,7 +30,7 @@ separated** (CDM 2015 Schedule 3) — this is not a generic "site roads" plan.
 | Operatives / pedestrians | South gate → barriered walkway → work areas / welfare | **Kept off the vehicle area by design** |
 | Public (footway) | Adjacent to the north hoarding | **Protected by hoarding + covered way (not a banksman)** |
 
-## 3. Vehicle-pedestrian segregation (by design — the core value)
+## 3. Vehicle-pedestrian segregation
 
 > **Segregation-by-design LEADS, NOT a banksman.** The site's proposed **"operatives wear hi-vis
 > and a banksman waves the HGVs in"** pedestrian control is **rejected as a PPE/admin-led

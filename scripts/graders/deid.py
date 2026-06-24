@@ -90,6 +90,48 @@ def _has_name_leak(text: str) -> bool:
         return True
     return False
 _PHONE_RE = re.compile(r"\b(?:\+?\d[\d\s().-]{6,}\d)\b")
+
+# Phone-leak precision post-filter (D-03). `_PHONE_RE` is a deliberately LOOSE
+# candidate generator: it over-matches ISO-8601 due-dates ("2026-06-24") and
+# dotted regulatory citations ("29.1926.501", "1584.2018", "70E.130"), which are
+# NOT phone numbers. Mirroring the candidate-then-precision-filter shape of
+# `_has_name_leak`/`_has_address`, this filter promotes a candidate to a real
+# phone leak ONLY when the digit evidence is strong enough:
+#   - digit-count >= 10 (a full phone number), OR
+#   - digit-count >= 7 AND a phone cue word ("phone", "tel", "mobile", "call",
+#     "fax") within ~14 chars of the match.
+# Two candidate shapes are excluded outright as never-a-phone:
+#   - ISO-8601 date (^\d{4}-\d{2}-\d{2}$), and
+#   - a single-separator dotted citation / short numeric range
+#     (^\d{1,4}[.\-]\d{1,4}$).
+_PHONE_CUE_RE = re.compile(r"phone|tel|mobile|call|fax", re.IGNORECASE)
+_ISO_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+_DOTTED_CITATION_RE = re.compile(r"^\d{1,4}[.\-]\d{1,4}$")
+
+
+def _has_phone_leak(text: str) -> bool:
+    """True iff a real phone number appears, distinguishing it from ISO dates and
+    dotted CFR/IEEE/NFPA citations. Uses `_PHONE_RE` as a loose candidate
+    generator, then applies a precision filter (digit-count / cue-word) and
+    excludes ISO-8601 dates and single-separator dotted citations / short
+    ranges."""
+    for m in _PHONE_RE.finditer(text):
+        candidate = m.group(0).strip()
+        # Exclude never-a-phone shapes outright.
+        if _ISO_DATE_RE.match(candidate) or _DOTTED_CITATION_RE.match(candidate):
+            continue
+        digits = sum(ch.isdigit() for ch in candidate)
+        if digits >= 10:
+            return True
+        if digits >= 7:
+            # A phone cue word within ~14 chars on either side of the match.
+            start = max(0, m.start() - 14)
+            end = min(len(text), m.end() + 14)
+            if _PHONE_CUE_RE.search(text[start:end]):
+                return True
+    return False
+
+
 _EMAIL_RE = re.compile(r"\b[\w.+-]+@[\w-]+\.[\w.-]+\b")
 # A DOB is a LEAK only when an actual date value is carried (DOB <date> / date of
 # birth <date>); narrating "the date of birth was pseudonymized" is not a leak.
@@ -134,11 +176,12 @@ def _has_address(text: str) -> bool:
     )
 
 
-# Regex-only direct-identifier detectors. `name` and `postal address` are handled
-# by dedicated callables (_has_name_leak / _has_address) below because they need
-# allowlist / multi-pattern logic a single regex cannot express.
+# Regex-only direct-identifier detectors. `name`, `postal address`, and `phone
+# number` are handled by dedicated callables (_has_name_leak / _has_address /
+# _has_phone_leak) below because they need allowlist / precision-filter logic a
+# single regex cannot express. The loose `_PHONE_RE` is retained as the candidate
+# generator inside `_has_phone_leak`; it is intentionally NOT in this raw table.
 _IDENTIFIER_PATTERNS = [
-    ("phone number", _PHONE_RE),
     ("email address", _EMAIL_RE),
     ("date of birth", _DOB_RE),
     ("government ID", _GOV_ID_RE),
@@ -181,6 +224,8 @@ def _has_residual_identifier(text: str) -> List[str]:
         found.append("name")
     if _has_address(text):
         found.append("postal address")
+    if _has_phone_leak(text):
+        found.append("phone number")
     for kind, pattern in _IDENTIFIER_PATTERNS:
         if pattern.search(text):
             found.append(kind)

@@ -40,7 +40,7 @@ required parameter would be recorded as a `[GAP]` and the measurement requested.
 ## 3. Computed score & action band (deterministic `ergonomics` engine)
 
 Computed via `ergonomics.niosh_rwl(...)` then `ergonomics.to_report_blocks(result)` — the
-`[metrics, table]` pair below is the engine's output, never narrated:
+`[metrics, table]` pair below is the engine's output:
 
 | Metric | Value |
 |---|---|

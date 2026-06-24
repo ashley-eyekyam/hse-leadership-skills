@@ -29,6 +29,8 @@ metadata:
   - All
   status: stable
   plugin: hse-utilities-power
+  bundled_in:
+  - hse-renewables
   hse_reviewed_by: ''
   hse_reviewed_date: ''
 ---

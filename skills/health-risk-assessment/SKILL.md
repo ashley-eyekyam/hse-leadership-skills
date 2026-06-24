@@ -26,6 +26,8 @@ metadata:
   - All
   status: stable
   plugin: hse-operations
+  bundled_in:
+  - hse-manufacturing
   hse_reviewed_by: ''
   hse_reviewed_date: ''
 ---

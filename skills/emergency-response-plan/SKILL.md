@@ -27,6 +27,9 @@ metadata:
   - All
   status: stable
   plugin: hse-operations
+  bundled_in:
+  - hse-marine-offshore
+  - hse-utilities-power
   hse_reviewed_by: ''
   hse_reviewed_date: ''
 ---

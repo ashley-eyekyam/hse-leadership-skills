@@ -28,6 +28,8 @@ metadata:
   - All
   status: stable
   plugin: hse-core
+  bundled_in:
+  - hse-construction
   hse_reviewed_by: ''
   hse_reviewed_date: ''
 ---
