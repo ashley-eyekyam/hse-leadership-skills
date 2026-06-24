@@ -46,7 +46,7 @@ These five behaviours are baked into **every** skill in the pack. The full treat
 
 ## The packs
 
-The 94 skills are organised into **16 consultant bundles**. The catalog total is 94 skills; the `hse-all` "install everything" bundle carries 92 of them (it omits the `using-hse-skills` router, which ships in `hse-core`, and the `hse-skill-forge` authoring tool, which ships in `hse-systems`). Pick a pack to see its full cards.
+The 94 skills are organised into **16 consultant bundles**. The catalog total is 94 skills; the `hse-all` "install everything" bundle carries 93 of them (it includes the `using-hse-skills` router — which also ships in `hse-core` — so newcomers get the navigator, and omits only the `hse-skill-forge` authoring tool, which ships in `hse-systems`). Pick a pack to see its full cards.
 
 **Core and the two cross-sector consultant packs**
 

@@ -91,18 +91,19 @@ def test_hse_all_auto_includes_new_skill(tmp_path):
 
 
 def test_real_repo_hse_all_membership():
-    """Live repo: hse-all lists exactly 92 consultant skills (the settled v1.2
-    catalog: 94 skill folders minus the router `using-hse-skills` and the
-    contributor forge `hse-skill-forge`, both non-consumer / EXCLUDE_FROM_INDEX
-    skills) and excludes the forge. The six policy-sensitive health skills stay
-    in the catalog and in hse-all (D-11)."""
+    """Live repo: hse-all lists exactly 93 skills — the 92 consultant skills PLUS
+    the catalog router `using-hse-skills` (owner override 2026-06-24, supersedes
+    T-17-17: a newcomer installing the one-line pack needs the navigator). The
+    catalog is 94 skill folders; hse-all omits only the contributor forge
+    `hse-skill-forge` (EXCLUDE_FROM_META_SKILLS). The six policy-sensitive health
+    skills stay in the catalog and in hse-all (D-11)."""
     repo = SCRIPTS.parent
     by_name = _by_name(gen_marketplace.build_manifest(repo))
 
     assert "hse-all" in by_name, "the synthesized hse-all plugin must exist in the live manifest"
-    assert len(by_name["hse-all"]) == 92, "hse-all must carry all 92 consultant skills"
+    assert len(by_name["hse-all"]) == 93, "hse-all carries the 92 consultant skills + the using-hse-skills router (owner override of T-17-17)"
     assert "hse-skill-forge" not in by_name["hse-all"], "the forge must not leak into hse-all"
-    assert "using-hse-skills" not in by_name["hse-all"], "the router must not leak into hse-all (T-17-17)"
+    assert "using-hse-skills" in by_name["hse-all"], "the router now ships in hse-all so a newcomer installing the one-line pack gets the catalog navigator (owner override of T-17-17)"
     # The six policy-sensitive health skills remain shipped in hse-all (D-11).
     for s in (
         "lab-biosafety-assessment", "workplace-violence-prevention",
@@ -110,14 +111,14 @@ def test_real_repo_hse_all_membership():
         "patient-handling-assessment", "health-risk-assessment",
     ):
         assert s in by_name["hse-all"], f"{s} must stay in the catalog (D-11)"
-    # hse-all is exactly the union of the non-hse-systems bundles, minus the two
-    # non-consumer skills named in EXCLUDE_FROM_INDEX (router + forge).
+    # hse-all is exactly the union of the non-hse-systems bundles, minus only the
+    # contributor forge named in EXCLUDE_FROM_META_SKILLS (the router now stays in).
     expected = sorted({
         s
         for name, skills in by_name.items()
         if name not in gen_marketplace.EXCLUDE_FROM_META and name != "hse-all"
         for s in skills
-        if s not in gen_marketplace.EXCLUDE_FROM_INDEX
+        if s not in gen_marketplace.EXCLUDE_FROM_META_SKILLS
     })
     assert by_name["hse-all"] == expected
 

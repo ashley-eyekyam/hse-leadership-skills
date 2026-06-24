@@ -46,6 +46,18 @@ EXCLUDE_FROM_META = {"hse-systems"}
 # EXCLUDE_FROM_META and the extract_skill_cards.py forge exclusion.
 EXCLUDE_FROM_INDEX = {"using-hse-skills", "hse-skill-forge"}
 
+# Skills kept OUT of the synthesized `hse-all` meta-plugin (owner override
+# 2026-06-24, supersedes T-17-17). DELIBERATELY NOT EXCLUDE_FROM_INDEX: the catalog
+# router `using-hse-skills` is now INCLUDED in hse-all — a user new to the plugin
+# who installs the one-line "install everything" pack needs the catalog navigator
+# that routes them to the right skill (precisely the router's job). Only the
+# contributor forge `hse-skill-forge` stays out of hse-all; it is ALSO already
+# excluded via its EXCLUDE_FROM_META bundle (hse-systems), so this set is
+# belt-and-suspenders for any future bundle the forge might land in. Keeping this
+# separate from EXCLUDE_FROM_INDEX lets the router ship in hse-all while still
+# being absent from the ROUTABLE index (you do not route TO the navigator).
+EXCLUDE_FROM_META_SKILLS = {"hse-skill-forge"}
+
 # Every plugin entry shares one marketplace-root source (the whole repo is git-cloned
 # when a user runs `/plugin marketplace add owner/repo`). `source` is a REQUIRED field
 # in the Claude Code marketplace schema — omitting it makes Claude Code fail to classify
@@ -141,21 +153,24 @@ def build_manifest(repo: Path = REPO) -> Dict[str, Any]:
     # adding a future consultant skill auto-folds it in with zero frontmatter
     # edits. The vocab registers the NAME only (so lint rule 6 accepts it).
     #
-    # P17 (QUAL-04): also drop the non-consumer skills named in EXCLUDE_FROM_INDEX
-    # — the router (`using-hse-skills`) and the contributor forge (`hse-skill-forge`).
-    # The router carries `metadata.plugin: hse-core` so it ships INSIDE the hse-core
-    # bundle, but it is a meta/routing skill, not a consultant artifact, so it must
-    # NOT appear in the "install everything" consumer pack (T-17-17). EXCLUDE_FROM_INDEX
-    # is exactly that {router, forge} set; reusing it keeps BOTH named exclusion
-    # constants byte-unchanged while excluding the router from hse-all symmetrically
-    # with the index. (The forge is already out via its EXCLUDE_FROM_META bundle; this
-    # also covers any future bundle the forge might land in.)
+    # Owner override (2026-06-24, supersedes the P17/QUAL-04 T-17-17 exclusion): the
+    # catalog router `using-hse-skills` is now INCLUDED in hse-all. A user new to the
+    # plugin who installs the one-line "install everything" pack needs the catalog
+    # navigator that routes them to the right skill — that is precisely the router's
+    # job, so it belongs in the pack a newcomer reaches for first. The router carries
+    # `metadata.plugin: hse-core`, so it is already in the hse-core bundle and folds
+    # into the union below. ONLY the contributor forge is dropped at the skill level,
+    # via EXCLUDE_FROM_META_SKILLS (it is also already out via its EXCLUDE_FROM_META
+    # bundle hse-systems; the skill-level set is belt-and-suspenders for any future
+    # bundle it might land in). EXCLUDE_FROM_INDEX stays unchanged and still governs
+    # the ROUTABLE index (build_skill_index) — you do not route TO the navigator,
+    # even though it now ships inside hse-all.
     meta_all = sorted({
         skill
         for plugin, skills in bundles.items()
         if plugin not in EXCLUDE_FROM_META
         for skill in skills
-        if skill not in EXCLUDE_FROM_INDEX
+        if skill not in EXCLUDE_FROM_META_SKILLS
     })
     if meta_all:
         bundles["hse-all"] = meta_all

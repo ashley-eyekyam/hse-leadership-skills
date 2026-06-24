@@ -47,7 +47,7 @@ Every skill is one portable `SKILL.md`, rendered into each host's format by the 
 /plugin install hse-all@hse-leadership-skills
 ```
 
-Those two lines install **92 consultant skills** — the whole `hse-all` toolbox. (The full catalog is **94 skills**: `hse-all` deliberately omits two — the `using-hse-skills` guided router and the `hse-skill-forge` authoring skill, both of which you install separately. The router ships in `hse-core`; the forge ships in the `hse-systems` bundle — install it with `/plugin install hse-systems@hse-leadership-skills`.)
+Those two lines install the whole `hse-all` toolbox — **93 skills**: the **92 consultant skills** plus the `using-hse-skills` guided router, so even a first-time user lands on the navigator that points them to the right skill. (The full catalog is **94 skills**: `hse-all` now includes the router and omits only the `hse-skill-forge` authoring skill, which ships in the `hse-systems` bundle — install it with `/plugin install hse-systems@hse-leadership-skills`. The router also ships in `hse-core`.)
 
 ### Or install just what you need
 
@@ -140,7 +140,7 @@ The router lives in the `hse-core` bundle, so installing the core pack (or `hse-
 
 📖 **Every one of the 94 skills is documented individually in the [Wiki manual](../../wiki).** The tables below are the summary; the Wiki is the full per-skill reference.
 
-The catalog is **94 skills**: **11 universal core skills** (including the `using-hse-skills` guided router), **15 sector and cross-sector packs** (the five original sector packs plus ten new v1.2 bundles — all presented as equal peers), and the `hse-skill-forge` contribution on-ramp. (`hse-all` installs 92 of the 94 — it omits the router and the forge, which install separately.) Every fact below is drawn from each skill's own `metadata`/`description` — nothing here is hand-classified. Don't know which skill you need? Run the [`using-hse-skills`](skills/using-hse-skills/) router above and it picks for you. Looking for one skill in depth? Open the [full manual](../../wiki) for a per-skill card — what it produces, when to use it, what to have ready.
+The catalog is **94 skills**: **11 universal core skills** (including the `using-hse-skills` guided router), **15 sector and cross-sector packs** (the five original sector packs plus ten new v1.2 bundles — all presented as equal peers), and the `hse-skill-forge` contribution on-ramp. (`hse-all` installs 93 of the 94 — it now includes the `using-hse-skills` router so newcomers get the navigator, and omits only the `hse-skill-forge` authoring skill, which installs separately.) Every fact below is drawn from each skill's own `metadata`/`description` — nothing here is hand-classified. Don't know which skill you need? Run the [`using-hse-skills`](skills/using-hse-skills/) router above and it picks for you. Looking for one skill in depth? Open the [full manual](../../wiki) for a per-skill card — what it produces, when to use it, what to have ready.
 
 **Audience legend:** **M** = manager · **E** = executive · **F** = frontline · **C** = consultant. **Tier 1** = stable core.
 
