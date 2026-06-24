@@ -1,6 +1,8 @@
 # HSE Leadership Skills — Skill Manual
 
-Welcome to the **complete reference to every skill in the pack**. This Wiki is the full per-skill manual: all 48 consultant skills, classified by the install pack they ship in, each with a consistent "skill card" that tells you — at a glance — what it produces, who it's for, when to use it (and when not), what to have ready, and what you get back.
+Welcome to the **complete reference to every skill in the pack**. This Wiki is the full per-skill manual: all 94 consultant skills, classified by the install pack they ship in, each with a consistent "skill card" that tells you — at a glance — what it produces, who it's for, when to use it (and when not), what to have ready, and what you get back.
+
+> 🧭 **New here? Don't read the catalog — let the router pick.** Run **/using-hse-skills**, describe your task in plain words, and it points you to the right skill and hands over your details. See **[Start Here — Guided Mode](Start-Here-Guided-Mode)** for the 30-second walkthrough.
 
 This is the **reference catalog**. It does not restate one-time setup or the deep flagship walkthroughs — for those, see [Getting Started](../docs/USER_MANUAL.md). For chaining several skills into a real end-to-end task, see [End-to-end journeys](../docs/USER_JOURNEYS.md).
 
@@ -44,16 +46,38 @@ These five behaviours are baked into **every** skill in the pack. The full treat
 
 ## The packs
 
-The 48 skills are organised by the bundle you install. Pick a pack to see its full cards:
+The 94 skills are organised into **16 consultant bundles**. The catalog total is 94 skills; the `hse-all` "install everything" bundle carries 92 of them (it omits the `using-hse-skills` router, which ships in `hse-core`, and the `hse-skill-forge` authoring tool, which ships in `hse-systems`). Pick a pack to see its full cards.
+
+**Core and the two cross-sector consultant packs**
 
 | Pack | What it covers |
 |---|---|
-| [Core](Core) | The 10 universal core skills — risk assessment, JSA, toolbox talk, incident investigation, audits, CAPA, SOPs, RAMS, board reports, incident rates. |
+| [Core](Core) | The 11 universal core skills — the `using-hse-skills` guided router plus risk assessment, JSA, toolbox talk, incident investigation, audits, CAPA, SOPs, RAMS, board reports, incident rates. |
+| [Operations](Operations) | 11 operations / management-system skills — ISO 45001 gap analysis, ISO 22301 business continuity, legal & compliance register, regulatory returns, contractor prequalification, emergency-response & induction packs, training-needs / psychosocial / occupational-health assessments. |
+| [Leadership](Leadership) | 6 leadership & culture skills — ISO 45001 cl. 5.2 policy, leading/lagging KPI framework, safety-culture assessment, behaviour-based-safety design, leadership/gemba walks, annual ESG OH&S disclosure. |
+
+**The original five sector packs**
+
+| Pack | What it covers |
+|---|---|
 | [Process Safety](Process-Safety) | 12 process-safety & barrier tools — PHA (HAZID/HAZOP/What-If/LOPA/bow-tie), PSM, PtW, MOC, mechanical integrity, COMAH, PESO. |
-| [Chemicals](Chemicals) | 7 chemicals & MAH skills — GHS/SDS, exposure register, transport safety, tank-farm bunding, dispersion & dust-explosion scenarios, India MSIHC/MAH. |
+| [Chemicals](Chemicals) | 12 chemicals & MAH skills — GHS/SDS, exposure register, transport safety, tank-farm bunding, dispersion & dust-explosion scenarios, India MSIHC/MAH, plus shared PHA tools. |
 | [India Compliance](India-Compliance) | 5 legacy-first India skills — state-form finder, Factories Act returns, accident notice, BOCW, OSH Code pack. |
 | [Aviation](Aviation) | 8 aviation SMS skills — SMS builder, hazard register, SPI/SPT, change safety, FDM/FOQA, just-culture, confidential reporting, SRB minutes. |
-| [Mining](Mining) | 6 mining skills — DGMS statutory pack, ICMM critical controls, PHMP, ventilation/strata/blasting plan, mine-rescue ERP, mine incident investigation. |
+| [Mining](Mining) | 7 mining skills — DGMS statutory pack, ICMM critical controls, PHMP, ventilation/strata/blasting plan, mine-rescue ERP, mine incident investigation, plus the shared bow-tie. |
+
+**The eight new v1.2 sector packs**
+
+| Pack | What it covers |
+|---|---|
+| [Construction](Construction) | 9 construction skills — CDM-2015 PCI / CPP / H&S file, lift plans, traffic-management, permits-to-work, India BOCW, plus the shared risk assessment & toolbox talk. |
+| [Manufacturing](Manufacturing) | 7 manufacturing skills — machine-guarding, ergonomics (RULA/REBA/NIOSH), noise & hearing-conservation, chemical-exposure register, occupational-health assessment, PPE matrix, permits-to-work. |
+| [Utilities & Power](Utilities-Power) | 4 electrical-safety skills — arc-flash assessment, HV/LV switching programs, live-working assessment, emergency-response plan. |
+| [Healthcare](Healthcare) | 6 healthcare HSE skills — infection-control plan, lab biosafety, patient-handling, sharps/needlestick, workplace-violence prevention, psychosocial assessment. |
+| [Logistics & Transport](Logistics-Transport) | 3 transport & warehousing skills — ADR/DOT/IMDG transport classification, driver-fatigue management, warehouse racking + MHE safety. |
+| [Marine & Offshore](Marine-Offshore) | 5 marine & offshore skills — offshore safety case, marine emergency-response, DROPS dropped-objects, permits-to-work, emergency-response plan. |
+| [Rail](Rail) | 4 rail-safety skills — ROGS rail SMS, ORR safety-authorisation pack, level-crossing & track-worker safety, management-of-change. |
+| [Renewables](Renewables) | 5 renewables skills — wind-turbine WAH & rescue, weather-dynamic point-of-work assessment, arc-flash & live-working assessment, lone-working assessment. |
 
 ---
 
@@ -97,4 +121,4 @@ A quick router across the packs. Find the row that matches your need, then open 
 
 ## Extending the pack
 
-Want to build a new skill or change an existing one? Use **`hse-skill-forge`**, the contributor build tool that scaffolds born-conformant skills (it ships in the separate `hse-systems` bundle, not as one of the 48 consultant skills — that's why it has no card here). Then follow [`CONTRIBUTING.md`](../CONTRIBUTING.md) — and remember to update the matching `docs/wiki/<Pack>.md` card so this manual never drifts from the skills it describes.
+Want to build a new skill or change an existing one? Use **`hse-skill-forge`**, the contributor build tool that scaffolds born-conformant skills (it ships in the separate `hse-systems` bundle, not as one of the 94 consultant skills — that's why it has no card here). Then follow [`CONTRIBUTING.md`](../CONTRIBUTING.md) — and remember to update the matching `docs/wiki/<Pack>.md` card so this manual never drifts from the skills it describes.

@@ -1,6 +1,6 @@
 # Core
 
-`hse-core` is the everyday HSE toolbox — the ten skills that cover the artifacts a safety manager, supervisor, or consultant produces most weeks: risk assessments, JSAs, toolbox talks, audits, SOPs, RAMS, incident investigations, CAPAs, incident-rate maths, and the board paper. It is the pack to install first; every other sector pack composes on top of it. Install it with:
+`hse-core` is the everyday HSE toolbox — the eleven skills that cover the artifacts a safety manager, supervisor, or consultant produces most weeks: the `using-hse-skills` guided router, plus risk assessments, JSAs, toolbox talks, audits, SOPs, RAMS, incident investigations, CAPAs, incident-rate maths, and the board paper. It is the pack to install first; every other sector pack composes on top of it. Install it with:
 
 ```
 /plugin install hse-core@hse-leadership-skills
@@ -11,6 +11,16 @@ Audience tags (`M` / `E` / `F` / `C`) and the five universal rules are explained
 ---
 
 **Audience legend:** **M** = manager · **E** = executive · **F** = frontline · **C** = consultant.
+
+### using-hse-skills
+- **Produces:** The guided entry point to the whole pack — it routes you to the right skill when you are unsure which to use, eliciting your intent and then handing your captured context straight into the recommended skill so you never retype it.
+- **For:** M, E, F, C · **Grounded in:** the pack's own skill catalog (a meta / routing skill, not a domain artifact) · **Packs:** hse-core
+- **Use when:** You are not sure which skill you need — "not sure which assessment is needed", "where to start with HSE for a site", "what's needed for a new contractor job", "give me an overview of the toolbox", or any multi-step HSE task spanning several deliverables.
+- **Don't use for:** A task where you already know the artifact you want — open that skill's card directly. The router is the easy door in, not a required step.
+- **Have ready:** Nothing but a plain-language description of what you are trying to do; it asks the few disambiguating questions itself (before/after the event, one task or a whole activity, jurisdiction).
+- **Trigger:** "I'm not sure which skill I need", "where do I start", "help me pick an HSE skill".
+- **You get:** A best-fit skill recommendation with a one-line reason, the disambiguating answers you gave captured as context, and a hand-over into the recommended skill so your details follow you in — see [Start Here — Guided Mode](Start-Here-Guided-Mode) for the walkthrough.
+- **Pairs well with:** every skill in the pack — it is the front door to all of them.
 
 ### board-safety-report
 - **Produces:** An executive, board-level HSE narrative report — leading & lagging indicators turned into "what changed, why it matters, what leadership must decide".

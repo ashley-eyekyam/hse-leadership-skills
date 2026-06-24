@@ -12,8 +12,8 @@
 [![Agent Skills standard](https://img.shields.io/badge/standard-Agent_Skills-6f42c1.svg)](https://agentskills.io)
 [![Validate](https://github.com/ashley-eyekyam/hse-leadership-skills/actions/workflows/validate-skills.yml/badge.svg)](https://github.com/ashley-eyekyam/hse-leadership-skills/actions/workflows/validate-skills.yml)
 [![Eval](https://github.com/ashley-eyekyam/hse-leadership-skills/actions/workflows/eval.yml/badge.svg)](https://github.com/ashley-eyekyam/hse-leadership-skills/actions/workflows/eval.yml)
-[![Version](https://img.shields.io/badge/release-v1.1.0-success.svg)](https://github.com/ashley-eyekyam/hse-leadership-skills/releases)
-[![Skills](https://img.shields.io/badge/skills-48-informational.svg)](#whats-in-the-box-the-catalog)
+[![Version](https://img.shields.io/badge/release-v1.2.0-success.svg)](https://github.com/ashley-eyekyam/hse-leadership-skills/releases)
+[![Skills](https://img.shields.io/badge/skills-94-informational.svg)](#whats-in-the-box-the-catalog)
 [![Platforms](https://img.shields.io/badge/runs_on-Claude_·_ChatGPT_·_Gemini_·_Copilot-0aa.svg)](#install-in-30-seconds)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 
@@ -47,7 +47,7 @@ Every skill is one portable `SKILL.md`, rendered into each host's format by the 
 /plugin install hse-all@hse-leadership-skills
 ```
 
-Those two lines install all 48 consultant skills. (The `hse-skill-forge` authoring skill lives in the separate `hse-systems` bundle — install it with `/plugin install hse-systems@hse-leadership-skills`.)
+Those two lines install **92 consultant skills** — the whole `hse-all` toolbox. (The full catalog is **94 skills**: `hse-all` deliberately omits two — the `using-hse-skills` guided router and the `hse-skill-forge` authoring skill, both of which you install separately. The router ships in `hse-core`; the forge ships in the `hse-systems` bundle — install it with `/plugin install hse-systems@hse-leadership-skills`.)
 
 ### Or install just what you need
 
@@ -56,12 +56,24 @@ Those two lines install all 48 consultant skills. (The `hse-skill-forge` authori
 
 ```text
 /plugin marketplace add ashley-eyekyam/hse-leadership-skills
-/plugin install hse-core@hse-leadership-skills        # the 10 universal core skills
-/plugin install hse-process@hse-leadership-skills     # process-safety pack
-/plugin install hse-chemicals@hse-leadership-skills   # chemicals pack
-/plugin install hse-india@hse-leadership-skills        # India regional pack
-/plugin install hse-aviation@hse-leadership-skills    # aviation SMS pack
-/plugin install hse-mining@hse-leadership-skills      # mining pack
+/plugin install hse-core@hse-leadership-skills              # the 11 universal core skills (incl. the guided router)
+/plugin install hse-process@hse-leadership-skills           # process-safety pack
+/plugin install hse-chemicals@hse-leadership-skills         # chemicals pack
+/plugin install hse-india@hse-leadership-skills             # India regional pack
+/plugin install hse-aviation@hse-leadership-skills          # aviation SMS pack
+/plugin install hse-mining@hse-leadership-skills            # mining pack
+# cross-sector consultant packs
+/plugin install hse-operations@hse-leadership-skills        # operations / management-system pack
+/plugin install hse-leadership@hse-leadership-skills        # leadership & culture pack
+# new v1.2 sector packs
+/plugin install hse-construction@hse-leadership-skills      # construction pack
+/plugin install hse-manufacturing@hse-leadership-skills     # manufacturing pack
+/plugin install hse-utilities-power@hse-leadership-skills   # power & utilities pack
+/plugin install hse-healthcare@hse-leadership-skills        # healthcare pack
+/plugin install hse-logistics-transport@hse-leadership-skills  # logistics & transport pack
+/plugin install hse-marine-offshore@hse-leadership-skills   # marine & offshore pack
+/plugin install hse-rail@hse-leadership-skills              # rail pack
+/plugin install hse-renewables@hse-leadership-skills        # renewables pack
 ```
 
 </details>
@@ -116,18 +128,29 @@ For local testing and the full setup walkthrough, see [`docs/USER_MANUAL.md`](do
 
 ---
 
+## 🧭 New here? Start with the guided router
+
+> 🧭 New here? Just run **/using-hse-skills** — describe your task in plain words, answer a few quick questions, and it points you to the right skill — and hands over your details so you don't retype them. No HSE-software expertise needed.
+
+The router lives in the `hse-core` bundle, so installing the core pack (or `hse-all`) gives it to you. It is the easiest way in: you do not need to know which of the 94 skills you want — describe the job, and the router walks you to it and carries your context across.
+
+---
+
 ## What's in the box (the catalog)
 
-📖 **Every one of the 48 skills is documented individually in the [Wiki manual](../../wiki).** The tables below are the summary; the Wiki is the full per-skill reference.
+📖 **Every one of the 94 skills is documented individually in the [Wiki manual](../../wiki).** The tables below are the summary; the Wiki is the full per-skill reference.
 
-Forty-eight consultant skills across **ten universal core skills** and **five sector packs** (presented as equal peers — India is one of five), plus the `hse-skill-forge` contribution on-ramp. Every fact below is drawn from each skill's own `metadata`/`description` — nothing here is hand-classified. Looking for one skill in depth? Open the [full manual](../../wiki) for a per-skill card — what it produces, when to use it, what to have ready.
+The catalog is **94 skills**: **11 universal core skills** (including the `using-hse-skills` guided router), **15 sector and cross-sector packs** (the five original sector packs plus ten new v1.2 bundles — all presented as equal peers), and the `hse-skill-forge` contribution on-ramp. (`hse-all` installs 92 of the 94 — it omits the router and the forge, which install separately.) Every fact below is drawn from each skill's own `metadata`/`description` — nothing here is hand-classified. Don't know which skill you need? Run the [`using-hse-skills`](skills/using-hse-skills/) router above and it picks for you. Looking for one skill in depth? Open the [full manual](../../wiki) for a per-skill card — what it produces, when to use it, what to have ready.
 
 **Audience legend:** **M** = manager · **E** = executive · **F** = frontline · **C** = consultant. **Tier 1** = stable core.
 
 ### Core skills — bundle `hse-core`
 
+The 11 universal skills every install should start with. The first row is the guided router; the rest are the everyday artifact skills.
+
 | Skill | What it does | Audience | Jurisdiction | Tier |
 |---|---|---|---|---|
+| [`using-hse-skills`](skills/using-hse-skills/) | The guided router — describe your task in plain words and it points you to the right skill, handing over your captured context | M, E, F, C | All | 1 |
 | [`risk-assessment`](skills/risk-assessment/) | Site/task-specific risk assessment, hierarchy-of-controls-driven (the flagship) | M, C, F | All | 1 |
 | [`job-safety-analysis`](skills/job-safety-analysis/) | Step-by-step JSA/JHA for physical task work, per-step hazards + controls | M, F, C | All | 1 |
 | [`toolbox-talk`](skills/toolbox-talk/) | A < 2-minute, specific frontline safety briefing + sign-off sheet | F, M | All | 1 |
@@ -139,7 +162,18 @@ Forty-eight consultant skills across **ten universal core skills** and **five se
 | [`board-safety-report`](skills/board-safety-report/) | Board/executive safety narrative with a HiPo/SIF lens — insight, not data | E | All | 1 |
 | [`incident-rate-calculator`](skills/incident-rate-calculator/) | Deterministic TRIR/LTIFR/DART rates (script-backed, single-threaded) | M, E | All | 1 |
 
+### Cross-sector consultant packs — equal-peer bundles
+
+These two packs cut across industries — the management-system, leadership, and operations work that any sector needs. Install with `/plugin install <pack>@hse-leadership-skills`.
+
+| Pack | What it adds | Focus |
+|---|---|---|
+| [`hse-operations`](skills/hse-operations/) | Operational management-system delivery: ISO 45001 gap analysis, ISO 22301 business-continuity, legal/compliance register, regulatory returns, contractor prequalification, emergency-response & induction packs, training-needs & psychosocial & occupational-health risk assessment | All sectors |
+| [`hse-leadership`](skills/hse-leadership/) | Leadership & culture: ISO 45001 clause-5.2 policy, balanced leading/lagging KPI framework, safety-culture assessment, behaviour-based-safety program design, leadership safety/gemba walks, and the annual ESG OH&S (GRI 403/SASB/ESRS) disclosure | All sectors |
+
 ### Sector packs — equal-peer bundles
+
+The original five domain packs plus the eight new v1.2 sector bundles — each adds the specialist artifacts for one industry. Install with `/plugin install <pack>@hse-leadership-skills`.
 
 | Pack | What it adds | Focus |
 |---|---|---|
@@ -148,6 +182,14 @@ Forty-eight consultant skills across **ten universal core skills** and **five se
 | [`hse-india`](skills/hse-india/) | Cross-sector regional: the legacy-first state-form engine, BOCW/PESO/OSH-Code transition, DPDP-aware de-id | All (IN) |
 | [`hse-aviation`](skills/hse-aviation/) | ICAO Annex 19 SMS, SMS-manual builder, SPI/SPT, just-culture, Safety Review Board minutes, FDM/FOQA | Aviation |
 | [`hse-mining`](skills/hse-mining/) | Mines Act/DGMS notices & returns, ventilation/strata/blasting, mine-rescue ERP, ICMM critical-control | Mining |
+| [`hse-construction`](skills/hse-construction/) | CDM 2015 construction-phase plans, pre-construction information & health-and-safety file, lift plans (LOLER/BS 7121), traffic-management plans, permits-to-work, RAMS-grade risk assessments and toolbox talks, India BOCW | Construction |
+| [`hse-manufacturing`](skills/hse-manufacturing/) | Machine-guarding (ISO 12100/14120, OSHA 1910 Subpart O), ergonomics (RULA/REBA/NIOSH), noise exposure & hearing-conservation, chemical-exposure register, occupational-health risk assessment, PPE matrix, permits-to-work | Manufacturing |
+| [`hse-utilities-power`](skills/hse-utilities-power/) | Electrical safety: arc-flash assessment, HV/LV switching programs, live-working (energized-work) risk assessment, and scenario-keyed emergency-response plans | Power & Utilities |
+| [`hse-healthcare`](skills/hse-healthcare/) | Healthcare HSE: transmission-based infection-control plans, laboratory biosafety (RG/BSL), patient-handling (TILE/SPHM), sharps/needlestick exposure control, workplace-violence prevention, and psychosocial risk assessment | Healthcare |
+| [`hse-logistics-transport`](skills/hse-logistics-transport/) | Transport & warehousing: ADR/DOT/IMDG chemical-transport classification, driver-fatigue management (FRMS), and warehouse racking + MHE/pedestrian-segregation safety | Logistics / Transport |
+| [`hse-marine-offshore`](skills/hse-marine-offshore/) | Marine & offshore: offshore safety cases (SI 2015/398), marine emergency-response (muster/POB/TEMPSC), DROPS dropped-objects prevention, permits-to-work, and scenario-keyed emergency-response plans | Marine / Offshore |
+| [`hse-rail`](skills/hse-rail/) | Rail safety: ROGS rail Safety Management System, ORR safety-authorisation packs, level-crossing & track-worker safe systems of work, and management-of-change | Rail |
+| [`hse-renewables`](skills/hse-renewables/) | Renewables: wind-turbine work-at-height & rescue, weather-dynamic point-of-work risk assessment, arc-flash & live-working assessment, and lone-working assessment (INDG73/BS 8484) | Renewables / Wind |
 
 ### Contribute a skill — `hse-skill-forge`
 
@@ -202,6 +244,8 @@ The same five-step discipline runs inside every skill in the pack — it is the 
 7. **It understands HSE workflows.** HIRA, JSA, toolbox talk, incident RCA, audit, SOP each have a distinct method.
 8. **It produces professional deliverables.** A structured `report.json` renders to branded PDF and DOCX.
 9. **It is open source and extensible.** Authors use `hse-skill-forge` and the authoring guide to add new workflows — born with the same intake and sign-off discipline.
+
+Not sure which of these to reach for? Describe the job in plain words and run **/using-hse-skills** — or let the router above pick for you.
 
 ---
 
@@ -271,7 +315,7 @@ For questions, custom skills, or training, contact [ashley@eyekyam.com](mailto:a
 
 ## Roadmap & community
 
-**v1.0** is the toolbox — the 48 consultant skills, the five sector packs, and the cross-platform adapters shipped here. **v2.0 ("HSE GStack")**, a process-driven workflow plugin, is explicitly deferred and out of scope for this milestone.
+**The toolbox** is what shipped here — the **94 skills** (including the guided `using-hse-skills` router), the 15 sector and cross-sector packs, and the cross-platform adapters. **v2.0 ("HSE GStack")**, a process-driven workflow plugin, is explicitly deferred and out of scope for this milestone.
 
 - 📖 **[Full skill manual (Wiki)](../../wiki)** — every skill, by pack, with when-to-use and what-you-get.
 - **Contribute in 5 minutes** with [`hse-skill-forge`](skills/hse-skill-forge/) — it scaffolds a born-conformant skill (intake, de-id, hierarchy-of-controls, and SME sign-off discipline included) so you can focus on the HSE content.
