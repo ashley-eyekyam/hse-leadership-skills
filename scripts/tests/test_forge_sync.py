@@ -120,11 +120,13 @@ def test_sync_idempotent_after_heal(skill):
 #
 # The per-skill `test_sync_idempotent_after_heal` proves a single drifted skill
 # heals to a no-op. GATE-03 wants the REPO-WIDE guarantee on the real tree: after
-# the Phase-10 block promotion + --sync landed, re-stamping ALL 48 in-scope skills
+# the Phase-10 block promotion + --sync landed, re-stamping ALL in-scope skills
 # introduces ZERO drift, and a second --sync reports "already clean" for every dir
-# with byte-identical SKILL.md. The 48 in-scope dirs = `skills/*` MINUS
+# with byte-identical SKILL.md. The in-scope dirs = `skills/*` MINUS
 # `hse-skill-forge` (Rules 11/12-exempt) and any `examples/` path (frozen, D-08) —
-# the same enumeration the cutover --sync uses.
+# the same enumeration the cutover --sync uses. Settled count = 93 after the
+# Phase 11–16 catalog build + the Phase-16.1 router (94 skill folders − the forge);
+# the six policy-sensitive health skills stay in the catalog (D-11).
 
 def _in_scope_skill_dirs():
     dirs = sorted(
@@ -136,7 +138,7 @@ def _in_scope_skill_dirs():
 
 def test_sync_idempotent_repo_wide():
     dirs = _in_scope_skill_dirs()
-    assert len(dirs) == 48, f"expected 48 in-scope skills, found {len(dirs)}"
+    assert len(dirs) == 93, f"expected 93 in-scope skills, found {len(dirs)}"
 
     # Snapshot every SKILL.md, run --sync over the whole set (re-stamp), then assert
     # NO drift was introduced (the block is already in place from the cutover).

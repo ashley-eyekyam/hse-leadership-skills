@@ -91,20 +91,33 @@ def test_hse_all_auto_includes_new_skill(tmp_path):
 
 
 def test_real_repo_hse_all_membership():
-    """Live repo: hse-all lists exactly 48 skills (10 core + 38 sector) and
-    excludes hse-skill-forge."""
+    """Live repo: hse-all lists exactly 92 consultant skills (the settled v1.2
+    catalog: 94 skill folders minus the router `using-hse-skills` and the
+    contributor forge `hse-skill-forge`, both non-consumer / EXCLUDE_FROM_INDEX
+    skills) and excludes the forge. The six policy-sensitive health skills stay
+    in the catalog and in hse-all (D-11)."""
     repo = SCRIPTS.parent
     by_name = _by_name(gen_marketplace.build_manifest(repo))
 
     assert "hse-all" in by_name, "the synthesized hse-all plugin must exist in the live manifest"
-    assert len(by_name["hse-all"]) == 48, "hse-all must carry all 48 consultant skills"
+    assert len(by_name["hse-all"]) == 92, "hse-all must carry all 92 consultant skills"
     assert "hse-skill-forge" not in by_name["hse-all"], "the forge must not leak into hse-all"
-    # hse-all is exactly the union of the non-hse-systems bundles.
+    assert "using-hse-skills" not in by_name["hse-all"], "the router must not leak into hse-all (T-17-17)"
+    # The six policy-sensitive health skills remain shipped in hse-all (D-11).
+    for s in (
+        "lab-biosafety-assessment", "workplace-violence-prevention",
+        "sharps-needlestick-management", "infection-control-plan",
+        "patient-handling-assessment", "health-risk-assessment",
+    ):
+        assert s in by_name["hse-all"], f"{s} must stay in the catalog (D-11)"
+    # hse-all is exactly the union of the non-hse-systems bundles, minus the two
+    # non-consumer skills named in EXCLUDE_FROM_INDEX (router + forge).
     expected = sorted({
         s
         for name, skills in by_name.items()
         if name not in gen_marketplace.EXCLUDE_FROM_META and name != "hse-all"
         for s in skills
+        if s not in gen_marketplace.EXCLUDE_FROM_INDEX
     })
     assert by_name["hse-all"] == expected
 

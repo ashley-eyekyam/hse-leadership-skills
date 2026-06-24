@@ -12,6 +12,7 @@
       "description": "Install everything — the full HSE Leadership Skills toolbox (all consultant skills across hse-core plus the five sector packs).",
       "name": "hse-all",
       "skills": [
+        "./skills/arc-flash-assessment",
         "./skills/aviation-change-safety-assessment",
         "./skills/aviation-confidential-reporting",
         "./skills/aviation-fdm-foqa-analysis",
@@ -20,18 +21,31 @@
         "./skills/aviation-sms-builder",
         "./skills/aviation-spi-spt-framework",
         "./skills/aviation-srb-minutes",
+        "./skills/bbs-program-designer",
         "./skills/board-safety-report",
         "./skills/bocw-compliance",
         "./skills/bowtie-builder",
+        "./skills/business-continuity-plan",
         "./skills/capa-manager",
         "./skills/chemical-exposure-register",
         "./skills/chemical-transport-safety",
         "./skills/comah-safety-report-assistant",
+        "./skills/construction-phase-plan",
+        "./skills/contractor-prequalification",
         "./skills/dgms-statutory-pack",
+        "./skills/driver-fatigue-management",
+        "./skills/dropped-objects-prevention",
+        "./skills/electrical-permit-switching-program",
+        "./skills/emergency-response-plan",
+        "./skills/ergonomics-assessment",
         "./skills/factories-act-returns",
         "./skills/ghs-classification-sds-author",
         "./skills/hazid-facilitator",
         "./skills/hazop-facilitator",
+        "./skills/health-risk-assessment",
+        "./skills/health-safety-file",
+        "./skills/hse-annual-esg-report",
+        "./skills/hse-policy-generator",
         "./skills/icmm-critical-control-management",
         "./skills/incident-investigation",
         "./skills/incident-rate-calculator",
@@ -39,27 +53,57 @@
         "./skills/india-msihc-mah-pack",
         "./skills/india-osh-code-pack",
         "./skills/india-state-form-finder",
+        "./skills/induction-pack",
+        "./skills/infection-control-plan",
+        "./skills/iso45001-gap-analysis",
         "./skills/job-safety-analysis",
+        "./skills/lab-biosafety-assessment",
+        "./skills/leading-lagging-kpi-framework",
+        "./skills/legal-compliance-register",
+        "./skills/level-crossing-track-worker-safety",
+        "./skills/lift-plan",
+        "./skills/live-working-risk-assessment",
+        "./skills/lone-working-assessment",
         "./skills/lopa-worksheet",
+        "./skills/machine-guarding-assessment",
         "./skills/management-of-change",
+        "./skills/marine-emergency-response",
         "./skills/mechanical-integrity",
         "./skills/mine-incident-investigation",
         "./skills/mine-rescue-erp",
         "./skills/mine-ventilation-strata-blasting-plan",
+        "./skills/noise-exposure-health-surveillance",
+        "./skills/offshore-safety-case",
+        "./skills/patient-handling-assessment",
         "./skills/permit-to-work",
         "./skills/peso-licensing-assistant",
+        "./skills/ppe-matrix",
+        "./skills/pre-construction-information",
         "./skills/principal-hazard-management-plan",
         "./skills/process-safety-kpi",
         "./skills/psm-program-manager",
+        "./skills/psychosocial-risk-assessment",
+        "./skills/rail-safety-management-system",
         "./skills/rams-builder",
         "./skills/reactive-dust-explosion-assessment",
+        "./skills/regulatory-returns",
         "./skills/risk-assessment",
         "./skills/safety-audit",
+        "./skills/safety-authorisation",
+        "./skills/safety-culture-assessment",
+        "./skills/safety-walk-gemba",
+        "./skills/sharps-needlestick-management",
         "./skills/sop-writer",
         "./skills/tank-farm-bunding-controls",
         "./skills/toolbox-talk",
         "./skills/toxic-release-dispersion-scenario",
-        "./skills/whatif-facilitator"
+        "./skills/traffic-management-plan",
+        "./skills/training-needs-analysis",
+        "./skills/warehouse-racking-mhe-safety",
+        "./skills/weather-dynamic-risk-assessment",
+        "./skills/whatif-facilitator",
+        "./skills/wind-turbine-work-at-height-rescue",
+        "./skills/workplace-violence-prevention"
       ],
       "source": "./",
       "strict": false
@@ -101,6 +145,23 @@
       "strict": false
     },
     {
+      "description": "HSE Leadership Skills bundle: hse-construction.",
+      "name": "hse-construction",
+      "skills": [
+        "./skills/bocw-compliance",
+        "./skills/construction-phase-plan",
+        "./skills/health-safety-file",
+        "./skills/lift-plan",
+        "./skills/permit-to-work",
+        "./skills/pre-construction-information",
+        "./skills/risk-assessment",
+        "./skills/toolbox-talk",
+        "./skills/traffic-management-plan"
+      ],
+      "source": "./",
+      "strict": false
+    },
+    {
       "description": "Core HSE skills — risk assessments, JSAs, toolbox talks, incident investigations, safety audits, CAPAs, SOPs, RAMS, board reports, and incident-rate calculators.",
       "name": "hse-core",
       "skills": [
@@ -113,7 +174,22 @@
         "./skills/risk-assessment",
         "./skills/safety-audit",
         "./skills/sop-writer",
-        "./skills/toolbox-talk"
+        "./skills/toolbox-talk",
+        "./skills/using-hse-skills"
+      ],
+      "source": "./",
+      "strict": false
+    },
+    {
+      "description": "HSE Leadership Skills bundle: hse-healthcare.",
+      "name": "hse-healthcare",
+      "skills": [
+        "./skills/infection-control-plan",
+        "./skills/lab-biosafety-assessment",
+        "./skills/patient-handling-assessment",
+        "./skills/psychosocial-risk-assessment",
+        "./skills/sharps-needlestick-management",
+        "./skills/workplace-violence-prevention"
       ],
       "source": "./",
       "strict": false
@@ -132,6 +208,59 @@
       "strict": false
     },
     {
+      "description": "HSE Leadership Skills bundle: hse-leadership.",
+      "name": "hse-leadership",
+      "skills": [
+        "./skills/bbs-program-designer",
+        "./skills/hse-annual-esg-report",
+        "./skills/hse-policy-generator",
+        "./skills/leading-lagging-kpi-framework",
+        "./skills/safety-culture-assessment",
+        "./skills/safety-walk-gemba"
+      ],
+      "source": "./",
+      "strict": false
+    },
+    {
+      "description": "HSE Leadership Skills bundle: hse-logistics-transport.",
+      "name": "hse-logistics-transport",
+      "skills": [
+        "./skills/chemical-transport-safety",
+        "./skills/driver-fatigue-management",
+        "./skills/warehouse-racking-mhe-safety"
+      ],
+      "source": "./",
+      "strict": false
+    },
+    {
+      "description": "HSE Leadership Skills bundle: hse-manufacturing.",
+      "name": "hse-manufacturing",
+      "skills": [
+        "./skills/chemical-exposure-register",
+        "./skills/ergonomics-assessment",
+        "./skills/health-risk-assessment",
+        "./skills/machine-guarding-assessment",
+        "./skills/noise-exposure-health-surveillance",
+        "./skills/permit-to-work",
+        "./skills/ppe-matrix"
+      ],
+      "source": "./",
+      "strict": false
+    },
+    {
+      "description": "HSE Leadership Skills bundle: hse-marine-offshore.",
+      "name": "hse-marine-offshore",
+      "skills": [
+        "./skills/dropped-objects-prevention",
+        "./skills/emergency-response-plan",
+        "./skills/marine-emergency-response",
+        "./skills/offshore-safety-case",
+        "./skills/permit-to-work"
+      ],
+      "source": "./",
+      "strict": false
+    },
+    {
       "description": "Mining pack — DGMS statutory pack, ICMM critical-control management, principal-hazard management plans, mine incident investigation, mine rescue ERP, and ventilation/strata/blasting plans.",
       "name": "hse-mining",
       "skills": [
@@ -142,6 +271,25 @@
         "./skills/mine-rescue-erp",
         "./skills/mine-ventilation-strata-blasting-plan",
         "./skills/principal-hazard-management-plan"
+      ],
+      "source": "./",
+      "strict": false
+    },
+    {
+      "description": "HSE Leadership Skills bundle: hse-operations.",
+      "name": "hse-operations",
+      "skills": [
+        "./skills/business-continuity-plan",
+        "./skills/construction-phase-plan",
+        "./skills/contractor-prequalification",
+        "./skills/emergency-response-plan",
+        "./skills/health-risk-assessment",
+        "./skills/induction-pack",
+        "./skills/iso45001-gap-analysis",
+        "./skills/legal-compliance-register",
+        "./skills/psychosocial-risk-assessment",
+        "./skills/regulatory-returns",
+        "./skills/training-needs-analysis"
       ],
       "source": "./",
       "strict": false
@@ -167,10 +315,47 @@
       "strict": false
     },
     {
+      "description": "HSE Leadership Skills bundle: hse-rail.",
+      "name": "hse-rail",
+      "skills": [
+        "./skills/level-crossing-track-worker-safety",
+        "./skills/management-of-change",
+        "./skills/rail-safety-management-system",
+        "./skills/safety-authorisation"
+      ],
+      "source": "./",
+      "strict": false
+    },
+    {
+      "description": "HSE Leadership Skills bundle: hse-renewables.",
+      "name": "hse-renewables",
+      "skills": [
+        "./skills/arc-flash-assessment",
+        "./skills/live-working-risk-assessment",
+        "./skills/lone-working-assessment",
+        "./skills/weather-dynamic-risk-assessment",
+        "./skills/wind-turbine-work-at-height-rescue"
+      ],
+      "source": "./",
+      "strict": false
+    },
+    {
       "description": "Build-time tooling — hse-skill-forge, the scaffolder that authors born-conformant HSE skills (for contributors, not a consultant artifact bundle).",
       "name": "hse-systems",
       "skills": [
         "./skills/hse-skill-forge"
+      ],
+      "source": "./",
+      "strict": false
+    },
+    {
+      "description": "HSE Leadership Skills bundle: hse-utilities-power.",
+      "name": "hse-utilities-power",
+      "skills": [
+        "./skills/arc-flash-assessment",
+        "./skills/electrical-permit-switching-program",
+        "./skills/emergency-response-plan",
+        "./skills/live-working-risk-assessment"
       ],
       "source": "./",
       "strict": false

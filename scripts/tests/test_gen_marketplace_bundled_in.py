@@ -74,9 +74,30 @@ def test_no_bundled_in_leaves_single_bundle(tmp_path):
 
 
 def test_real_repo_check_stays_clean():
-    """The live repo carries no bundled_in yet → the generated manifest is identical
-    to disk (gen_marketplace --check semantics stay green at Wave-0)."""
+    """The live repo now carries the SEAM-01 cross-bundle `bundled_in` seams (Phase 17
+    Wave 1): the generated manifest must still be byte-identical to the committed
+    `.claude-plugin/marketplace.json` after the Wave-3 regen — `gen_marketplace.py
+    --check` stays green across the settled v1.2 catalog."""
     repo = SCRIPTS.parent
     generated = gen_marketplace._serialize(gen_marketplace.build_manifest(repo))
     on_disk = (repo / ".claude-plugin" / "marketplace.json").read_text(encoding="utf-8")
-    assert generated == on_disk, "Wave-0 baseline manifest drifted unexpectedly"
+    assert generated == on_disk, "marketplace.json drifted; run `gen_marketplace.py --write`"
+
+
+def test_real_repo_bundled_in_seams_present():
+    """At least one SEAM-01 facilitator is listed in a bundle it does NOT own via
+    `bundled_in` — proving the cross-bundle membership flows through the manifest
+    (D-06) in the settled catalog."""
+    repo = SCRIPTS.parent
+    manifest = gen_marketplace.build_manifest(repo)
+    by_name = {p["name"]: [s.rsplit("/", 1)[-1] for s in p["skills"]] for p in manifest["plugins"]}
+    # A skill appearing in more than one (non-hse-all) bundle can only get there via
+    # bundled_in — the owning `metadata.plugin` lists it in exactly one bundle.
+    membership = {}
+    for bundle, skills in by_name.items():
+        if bundle == "hse-all":
+            continue
+        for s in skills:
+            membership.setdefault(s, set()).add(bundle)
+    multi = {s for s, b in membership.items() if len(b) > 1}
+    assert multi, "expected at least one cross-bundle (bundled_in) skill in the settled catalog"
