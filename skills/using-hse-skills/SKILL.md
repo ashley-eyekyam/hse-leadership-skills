@@ -30,13 +30,24 @@ metadata:
   hse_reviewed_date: ''
 ---
 
-# Using Hse Skills
+# Using HSE Skills — the catalog router (front door)
 
-A consultant-grade HSE skill that produces a specific, defensible using hse skills for a named task, site, or asset. It forces the single lever that separates a defensible artifact from copy-paste paperwork: task/site specificity plus the full hierarchy of controls — never a vague, PPE-only treatment.
+This is the catalog's **front door**, not an HSE deliverable. It elicits the user's intent,
+requirement, and success-criteria, then reads the generated catalog index and recommends
+**one skill or an ordered chain of skills** — each with a one-line rationale — and hands the
+de-identified context over so the user enters the shared facts **once**. It produces **no**
+risk assessment, toolbox talk, or any other HSE artifact itself: a clear single-skill request
+goes straight to that skill; this router is for meta, ambiguous, or multi-step HSE intent.
 
 ## When to use this skill
 
-Use this skill when the user needs a using hse skills for a concrete task, site, or asset. List the trigger scenarios that reinforce the `description` so the host routes here rather than to a generic answer. If the request is vague, the Workflow intake below forces the specifics before any drafting.
+Use this skill when the user is **unsure which HSE skill they need**, or when their goal
+spans **several deliverables** — "not sure which assessment I need", "where do I start with
+HSE for this site", "what do I need for a new contractor job", "give me an overview of the
+toolbox", or a single task that clearly needs a chain (e.g. re-roofing → risk assessment,
+JSA, permit, toolbox talk). The Workflow intake forces the shared facts before any
+recommendation. A request that already names its own artifact ("write a toolbox talk for
+tonight's shift") should go straight to that skill — this router does **not** hijack it.
 
 <!-- hse:block:deid:start -->
 ## Data Protection & De-identification (MANDATORY — apply before drafting)
@@ -92,21 +103,58 @@ to every control recommendation. For any benchmark/figure, look up the ID in the
 
 ## Workflow
 
-Open with a **structured multi-step intake** — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE question at a time, branch on the answers, and echo the captured facts back before any analysis. Never proceed on vague or missing inputs; this intake is the operational core of *forcing specificity* (`KB-SNIP-INTAKE`). (Intake is a Workflow convention, not a sixth block.)
+**Step 0 — Structured intake (run `references/intake.md`).** Open with the multi-step
+intake — MCQ where the answer space is enumerable, free-text where it is open. Ask ONE
+question at a time, branch on the answers (the **mandatory India→state** branch included),
+and **echo the captured facts back before any recommendation**. Never proceed on vague or
+missing inputs — Q-SUBJECT is the specificity anchor (`KB-SNIP-INTAKE`). The router elicits
+only the **shared, carry-over facts** (the 3 universal facets + jurisdiction/industry/
+exposure); the deep per-artifact facets are deferred to the chosen skill (no double-intake).
+(Intake is a Workflow convention, not a sixth block.)
 
-<!-- TODO: author this skill's intake question set -->
+**Step 1 — Read the index.** Read `references/skill-index.yaml` — the committed,
+generated catalog index (one row per routable skill: full `description`, `bundles`,
+`category`, `triggers`). Do NOT hand-list skills from memory; the index is the single
+non-drifting roster.
 
-For this skill, the structured intake captures, one question at a time, the
-specific facts the domain method needs before any drafting begins. Author the
-question set here as a numbered list (MCQ where the answer space is enumerable,
-free-text where it is open); branch on the answers and echo the captured facts
-back before analysis. The runtime intake pattern is `KB-SNIP-INTAKE`.
+**Step 2 — Match intent → an ordered chain (with a WHY per skill).** Reason over each row's
+`description` + `triggers` + `category` + `bundles` against the elicited intent and
+success-criteria. Assemble an **ordered set** (not a single forced pick — a multi-deliverable
+goal becomes a chain), and write a **one-line `WHY`** per recommended skill tying it to the
+elicited intent / success-criteria (ROUTE-03). If the request clearly names a single artifact,
+recommend that one skill and point straight at it — do not over-elicit (D-06).
 
-1. **TODO** — first intake question (the specific task / activity / subject).
-2. **TODO** — second intake question (the named site / asset / scope).
-3. **TODO** — remaining domain questions; never proceed on vague or missing inputs.
+**Step 3 — De-identify the captured facts FIRST.** Before writing any handoff block, run the
+De-identifier (orchestration block, above) over the captured facts: pseudonymize to stable
+role labels (`[SITE-1]`, `[ROLE: site manager]`, `[CONTRACTOR]`) per `references/deid-checklist.md`.
+The run-sheet/handoff blocks are the de-id surface — a leak here is a non-waivable HARD-fail.
 
-Then: analyse / apply the domain method → validate the draft against `references/QUALITY_CHECKLIST.md` → produce the output via the Output format section below. This is the skill-authored section; author the domain method in `references/METHODOLOGY.md`.
+**Step 4 — Emit the run sheet (LOCKED format).** Produce a portable, copy-paste **run sheet**:
+- a top **`SEQUENCE MAP`** line (`skill1 → skill2 → skill3 …`);
+- a **self-contained per-step block** for each skill that **repeats the full pseudonymized
+  shared context** + that step's deltas (so a single step pasted into a clean chat runs
+  standalone), with the markers: **`WHY`** (one-line rationale), **`RUN`** (`/skill-name` or
+  "use the X skill"), **`THEN PASTE`** (shared context + deltas), **`CARRY-IN`**,
+  **`DEPENDENCY`** (Independent = any order / Dependent — run after Step N), **`FEEDS →`** the
+  next step;
+- **step 2+ `CARRY-IN` must explicitly instruct the user to ATTACH the prior skill's OUTPUT**
+  it depends on (e.g. "⚠ attach the risk-assessment OUTPUT from Step 1 — the control set +
+  residual risks"), not just the original elicited context.
+
+**Step 5 — Chaining layer (graceful degradation).** On a host with the Skill tool: show the
+run sheet, then for the first step ask "launch `<skill>` with these facts? [go / edit facts]"
+and invoke the chosen Skill seeded with that step's block; repeat per step. Off-platform (no
+Skill tool): print the run sheet and tell the user "now run `<skill>`". Both paths rely on
+each target skill's existing §2.7 "echo back facts" intake to confirm the pasted facts and ask
+only the deferred facets — **edit no other skill**.
+
+**On request only:** also render the run sheet as a branded "HSE Skills Roadmap" document via
+the shared report engine (Output format below) — composed from the existing report-model block
+types; never forced when the user just wants to chain straight in.
+
+Validate the recommendation against `references/QUALITY_CHECKLIST.md` before presenting. The
+router cites only existing KB ids (`KB-SNIP-INTAKE`, `KB-SNIP-HOC`, `KB-STD-ISO45001`) and
+mints none; the routing method detail lives in `references/METHODOLOGY.md`.
 
 <!-- hse:block:orchestration:start -->
 ## Agentic Execution (Orchestration Block)

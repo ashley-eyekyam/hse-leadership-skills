@@ -1,0 +1,74 @@
+{
+  "schema": "hse-report-model/v1",
+  "meta": {
+    "title": "HSE Skills Roadmap — Re-roofing Block C",
+    "subtitle": "Recommended skill chain + de-identified run sheet (catalog router)",
+    "author": "using-hse-skills (catalog router)",
+    "classification": "Internal — decision-support; competent-person review required",
+    "brand": "brand.yaml",
+    "deid_notice": "All personnel are referred to by role label ([SITE-1], [ROLE: site manager], [CONTRACTOR]). The captured handoff facts were pseudonymized before this roadmap was written; the re-identification key is held separately and is not part of this document."
+  },
+  "sections": [
+    { "type": "heading", "level": 1, "text": "Recommended skill chain" },
+    { "type": "paragraph", "text": "Routing for: re-roofing fall-from-height at [SITE-1], own workers + [CONTRACTOR], UK, construction. Goal: make the job safe end to end — risk assessment, safe-work method, permit, and a toolbox talk the crew can sign. This router produces no HSE artifact itself; it recommends the ordered chain below and hands the de-identified context over." },
+    { "type": "callout", "text": "SEQUENCE MAP:  risk-assessment → job-safety-analysis → permit-to-work → toolbox-talk", "box_type": "info" },
+    { "type": "table",
+      "headers": ["#", "Skill", "Bundle", "Why"],
+      "rows": [
+        [1, "risk-assessment", "hse-core", "Establishes the hazard/control baseline for fall-from-height before any method or permit."],
+        [2, "job-safety-analysis", "hse-core", "Breaks the agreed control set into a step-by-step safe-work method for the crew."],
+        [3, "permit-to-work", "hse-core", "Authorises the work-at-height task with the Step 1–2 controls as permit conditions."],
+        [4, "toolbox-talk", "hse-core", "Briefs and signs off the night crew on the specific hazards and controls before they start."]
+      ],
+      "caption": "Ordered recommendation with per-skill rationale (ROUTE-03)" },
+    { "type": "divider" },
+
+    { "type": "heading", "level": 2, "text": "Step 1 — risk-assessment" },
+    { "type": "bullets", "items": [
+      "WHY: Establishes the hazard/control baseline for the re-roofing task at height.",
+      "RUN: /risk-assessment (or: use the risk-assessment skill).",
+      "THEN PASTE: shared context — strip-and-re-roof Block C at [SITE-1], fall-from-height, own workers + [CONTRACTOR], UK, construction; lead = [ROLE: site manager] — plus full task steps and the 5×5 matrix.",
+      "CARRY-IN: none — first step.",
+      "DEPENDENCY: Independent.",
+      "FEEDS →: Step 2 (the agreed control set + residual risks)."
+    ] },
+
+    { "type": "heading", "level": 2, "text": "Step 2 — job-safety-analysis" },
+    { "type": "bullets", "items": [
+      "WHY: Breaks the control set into a step-by-step safe-work method for the crew.",
+      "RUN: /job-safety-analysis.",
+      "THEN PASTE: same shared context (re-roofing Block C at [SITE-1], own workers + [CONTRACTOR], UK, construction; lead = [ROLE: site manager]) plus the agreed control set from Step 1.",
+      "DEPENDENCY: Dependent — run after Step 1.",
+      "FEEDS →: Step 3 (the safe-work method steps + control owners)."
+    ] },
+    { "type": "callout", "text": "CARRY-IN — Step 2: ⚠ attach the risk-assessment OUTPUT from Step 1 — the control set + residual risks.", "box_type": "warning" },
+
+    { "type": "heading", "level": 2, "text": "Step 3 — permit-to-work" },
+    { "type": "bullets", "items": [
+      "WHY: Authorises the work-at-height task with the Step 1–2 controls as conditions.",
+      "RUN: /permit-to-work.",
+      "THEN PASTE: same shared context plus the working-at-height permit type and validity window.",
+      "DEPENDENCY: Dependent — run after Steps 1 and 2.",
+      "FEEDS →: Step 4 (the permitted controls + sign-on conditions)."
+    ] },
+    { "type": "callout", "text": "CARRY-IN — Step 3: ⚠ attach the job-safety-analysis OUTPUT from Step 2 — the method steps + control owners — and the risk-assessment residual risks from Step 1.", "box_type": "warning" },
+
+    { "type": "heading", "level": 2, "text": "Step 4 — toolbox-talk" },
+    { "type": "bullets", "items": [
+      "WHY: Briefs and signs off the night crew on the specific hazards and controls.",
+      "RUN: /toolbox-talk.",
+      "THEN PASTE: same shared context plus tonight's crew and the top three controls to brief.",
+      "DEPENDENCY: Dependent — run after Step 3.",
+      "FEEDS →: none — final step; the crew signs and starts work."
+    ] },
+    { "type": "callout", "text": "CARRY-IN — Step 4: ⚠ attach the permit-to-work OUTPUT from Step 3 — the permitted controls + sign-on conditions the crew must acknowledge.", "box_type": "warning" },
+    { "type": "divider" },
+
+    { "type": "heading", "level": 2, "text": "How to run it" },
+    { "type": "bullets", "items": [
+      "On a host with the Skill tool: say \"go\" and the router launches Step 1's skill seeded with that block; after each output returns, it offers the next step.",
+      "Off-platform / fresh chat: copy a step block into a new chat and run the named skill; for Steps 2–4, attach the prior step's output as the CARRY-IN instructs.",
+      "Each target skill's own intake echoes these facts back and asks only the deep, per-artifact details this router deferred (scoring, baseline, evidence, obligations, competency, cadence)."
+    ] }
+  ]
+}

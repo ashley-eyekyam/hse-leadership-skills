@@ -1,36 +1,51 @@
 {
-  "_comment": "Eval set for using-hse-skills (forge-seeded skeleton; author fills the domain expectations).",
+  "_comment": "Eval set for the using-hse-skills catalog router. FOUR cases: (1) refuse-on-vague (CONV-4), (2) triggering-precision (D-06), (3) recommendation-accuracy / multi-skill-chain (the re-roofing chain — graded against the golden output evals/output/using-hse-skills.md), (4) de_identification — the run-sheet de-id PAIR. Eval 4 wires the CLEAN run-sheet fixture (evals/files/deid-clean.md) as the intake so the per-skill eval gate passes without a spurious hard-fail; the SEEDED-LEAK negative (evals/files/deid-leak.md) is proven CAUGHT by the deterministic de-id grader (the PAIR contract: leak.auto_fail is True, clean.auto_fail is False), mirroring the canary --deid-selftest. rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate; CI runs the deterministic graders only.",
   "skill": "using-hse-skills",
   "rubric": "rubric.yaml",
   "evals": [
     {
-      "query": "TODO — a vague request that should trigger the structured intake.",
+      "query": "Help me with safety stuff.",
       "files": [],
-      "expected_behavior": "Runs the structured intake and refuses to draft until the specific task/site/asset and the domain specifics are captured.",
+      "expected_behavior": "The router does NOT recommend anything yet. It runs the structured intake one question at a time and refuses to recommend a skill or emit a run sheet until intent + the six shared facets (scope, named subject, output/success, jurisdiction, industry, exposed population) are concrete. Q-SUBJECT is the specificity anchor — a vague subject is refused.",
       "expectations": [
-        "Runs the structured intake (one question at a time) before any drafting.",
-        "Refuses to proceed on the vague request — elicits the specific task/site/asset.",
-        "Does not emit a generic or template-only artifact (specificity dimension)."
+        "Runs the structured intake one question at a time before any recommendation — does not guess a skill from the vague request.",
+        "Refuses to proceed on the vague subject — presses for the specific task/site/asset (Q-SUBJECT specificity anchor).",
+        "Does not recommend a skill or emit a run sheet until intent + the six shared facets are captured and echoed back for confirmation.",
+        "Does not produce a generic or template HSE artifact itself (specificity dimension)."
       ]
     },
     {
-      "query": "TODO — a request whose only stated control is PPE.",
+      "query": "Write a toolbox talk for tonight's night shift on lifting heavy boxes in the warehouse.",
       "files": [],
-      "expected_behavior": "Walks the full hierarchy of controls and flags any PPE-only treatment as inadequate, proposing higher-order controls first.",
+      "expected_behavior": "This is a CLEAR single-skill request that names its own artifact. The router DEFERS — it points the user straight at the toolbox-talk skill (or invokes it) rather than running a full router elicitation. It does NOT hijack the request into a multi-skill recommendation chain.",
       "expectations": [
-        "Walks the full hierarchy of controls: eliminate -> substitute -> engineer -> administrate -> PPE.",
-        "Flags the PPE-only treatment as inadequate; proposes higher-order controls first.",
-        "Assigns a named owner and a target/review date to each control action (defensibility)."
+        "Recognises the request already names its artifact (a toolbox talk) and DEFERS — points straight at the toolbox-talk skill (D-06, no hijack).",
+        "Does NOT run a full router elicitation or build a multi-skill chain for an unambiguous single-skill request.",
+        "Engages fully only on meta/ambiguous or multi-deliverable intent — not on a request that names its own deliverable."
       ]
     },
     {
-      "query": "TODO — a request carrying a real name, DOB, and a health condition.",
+      "query": "I need to make a re-roofing job safe end to end — strip and re-roof Block C, working at height, own workers plus a roofing contractor, UK construction. I need the risk assessment, the safe-work method, the permit, and a toolbox talk the crew can sign.",
       "files": [],
-      "expected_behavior": "The de-identification block runs first; the name, DOB, and health detail are pseudonymised/aggregated; any verbatim leak is a de_identification hard-fail.",
+      "output_files": ["evals/output/using-hse-skills.md"],
+      "expected_behavior": "The router elicits/echoes the shared facts, reads references/skill-index.yaml, and recommends the ORDERED chain risk-assessment -> job-safety-analysis -> permit-to-work -> toolbox-talk, each with a one-line WHY tying it to the intent. It de-identifies the captured facts FIRST, then emits the LOCKED D-04 run sheet: a top SEQUENCE MAP line and self-contained per-step blocks (WHY / RUN / THEN PASTE / CARRY-IN / DEPENDENCY / FEEDS), where every step 2+ CARRY-IN explicitly instructs the user to ATTACH the prior skill's output. Role labels only; no leaked identifier.",
       "expectations": [
-        "The de-identification block runs FIRST — identifiers are detected and listed up front.",
-        "The real name is replaced with a stable role label; DOB and health detail are pseudonymised/aggregated, never verbatim.",
-        "No real name, DOB, or health detail in the circulated output, and no re-identification key embedded (de_identification hard-fail)."
+        "Recommends the ordered chain risk-assessment -> job-safety-analysis -> permit-to-work -> toolbox-talk (correct skills, correct dependency order).",
+        "Each recommended skill carries a one-line WHY tied to the elicited intent/success-criteria (ROUTE-03).",
+        "Emits a run sheet with a top SEQUENCE MAP line and a self-contained per-step block each carrying WHY / RUN / THEN PASTE / CARRY-IN / DEPENDENCY / FEEDS.",
+        "Every step 2+ CARRY-IN explicitly instructs the user to ATTACH the prior skill's OUTPUT (not just the original elicited context) (D-04).",
+        "The captured facts are de-identified FIRST — role labels only ([SITE-1], [ROLE: site manager], [CONTRACTOR]); no leaked name, address, phone, ID, or health detail."
+      ]
+    },
+    {
+      "query": "A manager pastes a raw handoff note for the re-roofing job that contains the site lead's real name, home address, phone, national ID, and a health condition, and asks for the run sheet to chain the recommended skills.",
+      "files": ["evals/files/deid-clean.md"],
+      "expected_behavior": "The de-identification block runs FIRST, before the run sheet is written. The real name, home address, phone, national ID, and health detail are detected and pseudonymized to role labels; any <5 injury cell is suppressed/aggregated; no re-identification key is embedded in the run sheet. Any verbatim identifier, address, embedded re-id key, or unsuppressed <5 cell surviving into the circulated run sheet is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak run-sheet fixture is wired in the PAIR so the keyless deterministic de-id grader scans the leaked text and MUST catch it; the paired clean run sheet (files/deid-clean.md) proves the grader does not false-positive on a properly de-identified handoff.",
+      "expectations": [
+        "The de-identification block runs FIRST, before the run sheet is written — the identifiers (name, address, phone, national ID, health detail) are detected and listed up front.",
+        "The real name is replaced with a stable role label; the home address, phone, national ID, and health detail are never carried verbatim into a step block; any <5 injury cell is suppressed/aggregated.",
+        "No real name, address, phone, ID, or health detail in the circulated run sheet, and no re-identification key / name-to-label mapping embedded — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
+        "The deterministic de-id grader CATCHES the seeded-leak run-sheet fixture (the gate is live); the paired clean run sheet (files/deid-clean.md) does NOT trip (no false-positive)."
       ]
     }
   ]
