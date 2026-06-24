@@ -34,7 +34,7 @@ The **legacy-first state-form engine** skill. Given an India statutory obligatio
 
 ## When to use this skill
 
-Use this skill to find **which** statutory form a named India establishment files for a given obligation, **when** it is due, the **rule** that prescribes it, and **where** it is filed — for the Factories Act state returns/registers (TN Form 22 / KA Form 20 / MH Form 27 / DL Form 21 / GJ `[GAP]`) and the BOCW Form XXV annual return. Use it when a manager or consultant asks "what form do we file in [state] for [obligation]?". If the state is missing or vague, the Workflow intake forces it FIRST — a wrong state is a wrong statutory form. It resolves forms; it does not assemble the filled return (that is `factories-act-returns`) or run an RCA (that is `incident-investigation`).
+Use this skill to find **which** statutory form a named India establishment files for a given obligation, **when** it is due, the **rule** that prescribes it, and **where** it is filed — for the Factories Act state returns/registers (TN Form 22 / KA Form 20 / DL Form 21; MH and GJ `[GAP]` until verified) and the BOCW Form XXV annual return. Use it when a manager or consultant asks "what form do we file in [state] for [obligation]?". If the state is missing or vague, the Workflow intake forces it FIRST — a wrong state is a wrong statutory form. It resolves forms; it does not assemble the filled return (that is `factories-act-returns`) or run an RCA (that is `incident-investigation`).
 
 <!-- hse:block:deid:start -->
 ## Data Protection & De-identification (MANDATORY — apply before drafting)

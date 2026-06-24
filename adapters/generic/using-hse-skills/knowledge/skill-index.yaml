@@ -509,7 +509,7 @@ skills:
   category: compliance
   description: Assemble an India Factories Act state statutory return or register
     for a DETECTED state — the annual / half-yearly return + statutory registers (TN
-    Form 22 / KA Form 20 / MH Form 27 / DL Form 21; GJ [GAP] until verified) — legacy-first,
+    Form 22 / KA Form 20 / DL Form 21; MH and GJ [GAP] until verified) — legacy-first,
     with the OSH-Code transition note appended. Use it to produce the filled state
     return for a named establishment in a given state, with the prescribed form id,
     citing rule, due date and filing portal. State detection is MANDATORY; an unseeded
@@ -520,8 +520,7 @@ skills:
   triggers:
   - Assemble an India Factories Act state statutory return
   - register for a DETECTED state — the annual / half-yearly return + statutory registers
-    (TN Form 22 / KA Form 20 / MH Form 27 / DL Form 21; GJ [GAP] until verified) —
-    legacy-first
+    (TN Form 22 / KA Form 20 / DL Form 21; MH and GJ [GAP] until verified) — legacy-first
   - with the OSH-Code transition note appended
 - bundles:
   - hse-chemicals
@@ -710,10 +709,10 @@ skills:
   category: compliance
   description: Produce an India statutory accident / dangerous-occurrence NOTIFICATION
     for a DETECTED state — the legacy accident form + deadline (e.g. MH Form 24 within
-    24h + Form 24A; TN Form 18 + Form 26 register; the DGMS-prescribed 24h notice
-    for mines) — legacy-first, with the OSH-Code transition note appended. Use it
-    to assemble the filled state notification form/register itself after an incident;
-    it does NOT re-run the investigation/RCA (point back to incident-investigation
+    24h + Form 24A; TN and DL accident-notice forms [GAP] until verified; the DGMS-prescribed
+    24h notice for mines) — legacy-first, with the OSH-Code transition note appended.
+    Use it to assemble the filled state notification form/register itself after an
+    incident; it does NOT re-run the investigation/RCA (point back to incident-investigation
     for that). State detection is MANDATORY; the form resolves from the KB engine
     row or DGMS layer or is [GAP]-flagged, never invented; no hard-coded national
     form. Decision-support only; a competent person must review the output before

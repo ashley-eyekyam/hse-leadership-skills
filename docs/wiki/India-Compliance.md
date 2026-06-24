@@ -50,7 +50,7 @@ The **India compliance pack** (`hse-india`) is a **legacy-first**, **state-detec
 
 ### india-state-form-finder
 - **Produces:** the resolved **legacy state form + citing rule + due date + filing portal** for an India statutory obligation `(law, state, obligation)` — the legacy-first state-form engine.
-- **For:** M, C · **Grounded in:** state Factory / BOCW Rules via `KB-REG-IN-STATEFORMS` (TN Form 22 / KA Form 20 / MH Form 27 / DL Form 21 / GJ `[GAP]`; BOCW Form XXV) with portals via `KB-REG-IN-PORTALS`; India, legacy-first, state-detection mandatory · **Packs:** hse-india
+- **For:** M, C · **Grounded in:** state Factory / BOCW Rules via `KB-REG-IN-STATEFORMS` (TN Form 22 / KA Form 20 / DL Form 21; MH and GJ `[GAP]` until verified; BOCW Form XXV) with portals via `KB-REG-IN-PORTALS`; India, legacy-first, state-detection mandatory · **Packs:** hse-india
 - **Use when:** a manager or consultant asks "what form do we file in [state] for [obligation]?" — you need to know *which* form applies, *when* it is due, the *rule* that prescribes it, and *where* it is filed.
 - **Don't use for:** assembling the filled return — use [factories-act-returns](#factories-act-returns); running an RCA — use [incident-investigation](Core#incident-investigation); the OSH-Code transition mapping — use [india-osh-code-pack](#india-osh-code-pack).
 - **Have ready:** whether you want to *identify* or *assemble* (scope); the **state** (a blocking gate, asked first, infer-from-address-then-confirm — a wrong state is a wrong statutory form; an unseeded state yields `[GAP]` and a refusal to invent a national form); the establishment type (a mine routes to DGMS); the obligation; and the filing year / half.
