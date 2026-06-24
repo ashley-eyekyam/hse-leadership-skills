@@ -1,0 +1,25 @@
+{
+  "capabilities": [],
+  "description": "Produces a consultant-grade arc-flash risk assessment for named electrical equipment, driven by the de-energize-first hierarchy. Use this skill whenever a user asks to perform an arc-flash assessment or hazard analysis, run an incident-energy study, calculate the arc-flash boundary, determine the PPE category, or produce arc-flash labels for electrical equipment. It computes incident energy and the boundary with the IEEE 1584-2018 method (the cal/cm² value is COMPUTED, never narrated), records whether the task can be done de-energized first (an electrically safe work condition per NFPA 70E Article 120), justifies any energized work against OSHA 1910.333(a)(2) or EAWR reg 14 (convenience is refused), ranks controls up the hierarchy (de-energize first, arc-rated PPE last), and emits a branded report with NFPA 70E 130.5(H) label content. It refuses a PPE-led treatment with no de-energization decision. Grounded in NFPA 70E (2024) and IEEE 1584-2018. Decision-support only; a competent person must review.",
+  "instructions": "See instructions.md (the full instruction field).",
+  "knowledge_sources": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/company-card.yaml",
+    "knowledge/deenergize-first.md",
+    "knowledge/deid-checklist.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/in-electrical.md",
+    "knowledge/intake.md",
+    "knowledge/iso-45001.md",
+    "knowledge/nfpa-70e.md",
+    "knowledge/sme-review.md",
+    "knowledge/subagent-archetypes.md",
+    "knowledge/utilities-clause-map.md"
+  ],
+  "name": "arc-flash-assessment",
+  "schema": "1.7"
+}

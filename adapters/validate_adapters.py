@@ -473,6 +473,13 @@ def main(argv: Optional[List[str]] = None) -> int:
     for skill in skills:
         skill_dir = repo / "skills" / skill
         for platform in targets:
+            # Documented known-overflow exclusion (owner decision 2026-06-24, vendor
+            # 8000 cap, D-07 no-truncation): this (skill, platform) bundle is emitted
+            # on gemini/generic only and intentionally NOT built on the overflowing
+            # 8000-cap host, so there is no bundle to validate here. Mirrors the same
+            # build.KNOWN_OVERFLOW_SKIP map the build loop honors (single source).
+            if platform in build.KNOWN_OVERFLOW_SKIP.get(skill, ()):
+                continue
             bundle_dir = adapters_root / platform / skill
             rep = validate_bundle(bundle_dir, skill_dir, platform, platforms_cfg, repo)
             if args.non_negotiables:

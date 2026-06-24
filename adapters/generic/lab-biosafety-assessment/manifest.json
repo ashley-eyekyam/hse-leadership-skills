@@ -1,0 +1,25 @@
+{
+  "description": "Produces a consultant-grade laboratory biosafety risk assessment for a named lab and procedure, determining the agent risk group (RG1-RG4) and biosafety level (BSL-1-BSL-4) with engineering containment before PPE. Use this skill whenever a user asks to assess laboratory biosafety, classify a biological agent's risk group, select a biosafety level or biosafety-cabinet class, or write or review a biosafety assessment for a clinical, research, or diagnostic lab handling an infectious agent, recombinant material, or human blood/OPIM. It classifies the risk group first, then selects the BSL with primary containment (cabinet class, airflow, decontamination) before PPE; a respirator-and-gloves plan with no containment is flagged, and an unknown risk group emits [GAP] rather than being invented. Specimen-source-patient and worker health data are scrubbed to role labels before drafting. Grounded in CDC/NIH BMBL 6th ed and WHO Laboratory Biosafety Manual. Decision-support only; a Biological Safety Officer must review.",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/biosafety-bmbl-who.md",
+    "knowledge/biosafety-ra.md",
+    "knowledge/company-card.yaml",
+    "knowledge/deid-checklist.md",
+    "knowledge/healthcare-clause-map.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/in-bmw2016.md",
+    "knowledge/intake.md",
+    "knowledge/iso-45001.md",
+    "knowledge/osha-bbp.md",
+    "knowledge/sme-review.md",
+    "knowledge/subagent-archetypes.md"
+  ],
+  "name": "lab-biosafety-assessment",
+  "notes": "Markdown-report degradation; run the intake conversationally.",
+  "system_prompt_file": "system-prompt.md"
+}

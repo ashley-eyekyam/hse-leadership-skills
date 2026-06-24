@@ -1,0 +1,29 @@
+{
+  "code_interpreter": false,
+  "description": "Produces a consultant-grade safety-culture assessment for a named organisation, site, or business unit — designing a survey, mapping results to a maturity model (DuPont Bradley / Hudson Hearts-and-Minds / Westrum) or the Schein three-levels diagnostic lens, triangulating at least two data sources, and emitting a defensible advancement roadmap. Use this skill whenever a user asks to assess, diagnose, benchmark, or measure safety culture or safety climate, run a culture-maturity assessment, design a culture survey, or place an organisation on a Bradley/Hudson/Westrum ladder or against Schein's three levels of culture. It refuses to produce a maturity rating from a single survey (requiring a model, a named population, and >=2 triangulated data sources), suppresses any sub-5 respondent cohort to protect confidentiality, drives a systemic advancement roadmap with named owners and dates, and emits a branded report. Decision-support only; a competent person must review the output.",
+  "instructions_file": "instructions.md",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/company-card.yaml",
+    "knowledge/culture-maturity.md",
+    "knowledge/culture-models.md",
+    "knowledge/deid-checklist.md",
+    "knowledge/eu-osh.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/in-factories-act.md",
+    "knowledge/intake-interview.md",
+    "knowledge/intake.md",
+    "knowledge/iso-45001.md",
+    "knowledge/leadership-clause-map.md",
+    "knowledge/leading-indicators.md",
+    "knowledge/sme-review.md",
+    "knowledge/subagent-archetypes.md",
+    "knowledge/uk-hswa.md",
+    "knowledge/us-osha.md"
+  ],
+  "name": "safety-culture-assessment"
+}

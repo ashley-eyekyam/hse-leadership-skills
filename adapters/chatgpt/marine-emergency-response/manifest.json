@@ -1,0 +1,27 @@
+{
+  "code_interpreter": true,
+  "conversation_starters": [
+    "TODO: author the enumerable scope options"
+  ],
+  "description": "Produce a consultant-grade marine/offshore emergency-response (EER) plan for a named installation or vessel: muster + persons-on-board (POB) accounting, temporary-refuge integrity, the evacuation/escape/rescue hierarchy, TEMPSC/survival-craft, man-overboard (MOB) recovery, and helideck. Use this skill to build an offshore EER plan, a muster/station bill, a TEMPSC/lifeboat plan, an ERRV/standby-vessel or MOB/helideck response, or a temporary-refuge/PFEER plan for a platform, rig, FPSO, or support vessel. It builds scenario-keyed responses (muster -> temporary refuge -> evacuation -> escape -> rescue), leads with escalation prevention and TR integrity rather than 'muster and wait'/abandonment, checks TEMPSC capacity against POB (or records [GAP]), and de-identifies the station bill to role labels. It is the EER element the sibling offshore-safety-case (MAR-01) records -- cross-referenced, not rebuilt. Grounded in PFEER 1995 and SOLAS Chapter III. Decision-support only; review by a competent person required.",
+  "instructions_file": "instructions.md",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/company-card.yaml",
+    "knowledge/deid-checklist.md",
+    "knowledge/eer-muster.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/in-offshore.md",
+    "knowledge/intake.md",
+    "knowledge/marine-clause-map.md",
+    "knowledge/pfeer.md",
+    "knowledge/sme-review.md",
+    "knowledge/solas-lsa.md",
+    "knowledge/subagent-archetypes.md"
+  ],
+  "name": "marine-emergency-response"
+}

@@ -1,0 +1,25 @@
+{
+  "code_interpreter": true,
+  "conversation_starters": [],
+  "description": "Produces a consultant-grade moving-and-handling-of-people (patient handling) risk assessment for a named care task — a TILE/SPHM assessment with a mobility-and-equipment matrix and a move-toward-zero-manual-lift control plan. Use this skill whenever a user asks to assess patient handling, manual handling of people, moving and handling, or a hoist / transfer / repositioning / bariatric handling risk assessment on a ward, in a care home, in community care, or in an ambulance. It avoids hazardous manual handling first (substitute a hoist for a lift), assesses the residual with the MHOR Schedule 1 TILE filter (Task, Individual, Load, Environment), ranks controls up the hierarchy (eliminate the manual lift -> mechanical aids -> safe systems -> technique/PPE last), and refuses a manual lift where a mechanical aid is available. The patient is de-identified to mobility / dependency / weight band. Grounded in ANA SPHM (2021), NIOSH, ISO/TR 12296, and UK MHOR 1992. Decision-support only; a competent person must review.",
+  "instructions_file": "instructions.md",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/company-card.yaml",
+    "knowledge/deid-checklist.md",
+    "knowledge/healthcare-clause-map.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/intake.md",
+    "knowledge/iso-45001.md",
+    "knowledge/sme-review.md",
+    "knowledge/sphm.md",
+    "knowledge/subagent-archetypes.md",
+    "knowledge/tile-people.md",
+    "knowledge/uk-mhor.md"
+  ],
+  "name": "patient-handling-assessment"
+}

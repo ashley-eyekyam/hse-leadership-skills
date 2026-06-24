@@ -1,0 +1,27 @@
+{
+  "code_interpreter": false,
+  "description": "Produces a consultant-grade live-working (energized-work) risk assessment and statutory justification for a named task on or near energized conductors, driven by the de-energize-first default and the EAWR reg-14 / OSHA 1910.333(a)(2) three-part live-working test. Use this skill when a user asks to assess live or energized electrical work, justify working live, build an energized electrical work permit, or set the approach boundaries near live conductors. It applies the de-energize-first default (an ESWC, NFPA 70E Article 120 first), forces the statutory test (unreasonable to be dead + reasonable to work live + suitable precautions), states the approach distances (NFPA 70E 130.4), keeps arc-rated PPE last, and cross-references the arc-flash incident energy from arc-flash-assessment without recomputing it. It refuses a convenience justification and emits a branded NFPA 70E Annex J energized-work permit. Grounded in NFPA 70E, OSHA 1910.333, EAWR 1989 reg 14. Decision-support only; a competent person must review.",
+  "instructions_file": "instructions.md",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/company-card.yaml",
+    "knowledge/deenergize-first.md",
+    "knowledge/deid-checklist.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/in-electrical.md",
+    "knowledge/intake.md",
+    "knowledge/iso-45001.md",
+    "knowledge/live-work-justification.md",
+    "knowledge/nfpa-70e.md",
+    "knowledge/osha-1910-269.md",
+    "knowledge/sme-review.md",
+    "knowledge/subagent-archetypes.md",
+    "knowledge/uk-eawr.md",
+    "knowledge/utilities-clause-map.md"
+  ],
+  "name": "live-working-risk-assessment"
+}

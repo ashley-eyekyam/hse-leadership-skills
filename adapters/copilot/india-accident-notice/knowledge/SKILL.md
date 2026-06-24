@@ -2,7 +2,7 @@
 name: india-accident-notice
 description: Produce an India statutory accident / dangerous-occurrence NOTIFICATION
   for a DETECTED state — the legacy accident form + deadline (e.g. MH Form 24 within
-  24h + Form 24A; TN Form 18 + Form 26 register; the DGMS-prescribed 24h notice for
+  24h + Form 24A; TN and DL accident-notice forms [GAP] until verified; the DGMS-prescribed 24h notice for
   mines) — legacy-first, with the OSH-Code transition note appended. Use it to assemble
   the filled state notification form/register itself after an incident; it does NOT
   re-run the investigation/RCA (point back to incident-investigation for that). State
@@ -30,7 +30,7 @@ metadata:
 
 # India Accident Notice
 
-A consultant-grade, India-facing skill that assembles a **statutory accident / dangerous-occurrence notification** for a **detected state** — the legacy accident form + deadline + register entry — legacy-first, with the OSH-Code transition note appended. It resolves the notice from `KB-REG-IN-STATEFORMS` (e.g. **MH Form 24 within 24h + Form 24A** dangerous occurrence; **TN Form 18 + Form 26** register; **DL Form 23/27**) and, for a mine, cross-references the **Mines/DGMS** layer (`KB-REG-IN-MINES-ACT` / `KB-REG-IN-DGMS` — the 24h notice + Form J register). **State detection is MANDATORY** (CT-8); an unseeded state or unverified form is `[GAP]`-flagged, never invented; **no hard-coded national form**. It does **not** re-run the investigation/RCA — it produces the **filled notification itself** and points back to `incident-investigation` for the analysis.
+A consultant-grade, India-facing skill that assembles a **statutory accident / dangerous-occurrence notification** for a **detected state** — the legacy accident form + deadline + register entry — legacy-first, with the OSH-Code transition note appended. It resolves the notice from `KB-REG-IN-STATEFORMS` (e.g. **MH Form 24 within 24h + Form 24A** dangerous occurrence; **TN `[GAP]`** and **DL `[GAP]`** accident-notice forms — carried forward as a literal `[GAP]` until verified, never invented; GATE-06) and, for a mine, cross-references the **Mines/DGMS** layer (`KB-REG-IN-MINES-ACT` / `KB-REG-IN-DGMS` — the 24h notice + Form J register). **State detection is MANDATORY** (CT-8); an unseeded state or unverified form is `[GAP]`-flagged, never invented; **no hard-coded national form**. It does **not** re-run the investigation/RCA — it produces the **filled notification itself** and points back to `incident-investigation` for the analysis.
 
 ## When to use this skill
 

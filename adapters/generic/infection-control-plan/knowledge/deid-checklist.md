@@ -1,0 +1,102 @@
+# De-identification Checklist — Infection Control Plan (CANONICAL healthcare PHI extension)
+
+> The deep reference the mandatory `hse:block:deid` block points to. Apply it BEFORE
+> drafting any output. A de-identification leak is an eval **hard-fail** (A8) and
+> **cannot be waived**.
+>
+> **This is the catalog's HIGHEST-PHI tier.** Healthcare infection data is
+> **special-category health data (PHI)** (GDPR Art. 9 / India DPDP / OSHA
+> 1910.1030(f) confidentiality / US HIPAA-aligned). The reinforced `<5` small-cell
+> suppression + secondary-suppression rules below, the **patient infection /
+> colonisation-status** rule, the **outbreak / cluster confidentiality** rule, and
+> the **re-identification-key separation** instruction are **stricter than, and
+> additional to,** the standard de-id block — and they are enforced as a
+> `de_identification` **hard-fail** in the eval suite. **This is the canonical
+> healthcare PHI extension** (replicated, CONV-7, from the HC-01
+> sharps-needlestick-management checklist) into the other `hse-healthcare` skills.
+
+This checklist reinforces — it does not replace — the canonical A5 de-id discipline.
+The byte-identical `hse:block:deid` block in `SKILL.md` is the contract; this file is
+the special-category PHI reinforcement that the De-identifier subagent applies FIRST.
+The PHI rules live ONLY here, in the SKILL.md De-identification field, and in the
+Workflow de-id step — **never** in the `hse:block:deid` block (anti-drift, Rule-1).
+
+## 1. Treat ALL infection / surveillance inputs as special-category health data (PHI)
+
+Every infection-control input — a patient's infection or colonisation status, a
+diagnosis or organism, an outbreak / cluster line, a case count, and any staff
+exposure record — is **special-category health data**. Handle every one of them under
+the strictest tier from the first read, before any analysis.
+
+## 2. DETECT & FLAG every identifier up front
+
+List, before drafting: patient names, staff names, contact details, home/site
+addresses, payroll/employee IDs, MRN / hospital / NHS / Aadhaar / SSN numbers, exact
+dates (admission, onset), ward/bed, job title / shift fine-grained enough to identify,
+photos, and **any disclosed health detail** (infection / colonisation status,
+organism, diagnosis, medication). If unsure whether something is identifying in a small
+unit, treat it as identifying.
+
+## 3. PATIENT infection / colonisation status — never attributed to a named person
+
+A **patient's infection or colonisation status** (e.g. MRSA-colonised, TB-positive,
+influenza-confirmed) is the most sensitive datum in an IPC plan. It is **never**
+attributed to a named patient in a circulated plan. The plan references the patient
+**by role / bed-cohort only**, and any status that must be recorded is held in a
+**separate confidential clinical record** — not in the plan.
+
+## 4. OUTBREAK / cluster detail — confidential, aggregated, role-labelled
+
+An outbreak or cluster is reported **de-identified and aggregated** — never as a line
+list of named patients. The unit is referenced at ward / cohort level; individual cases
+are **role labels** at most. **No outbreak is ever reported on a named ward in a way
+that re-identifies a patient** (see §5 — a small cluster on a named ward is the classic
+re-identification vector).
+
+## 5. SMALL-CELL SUPPRESSION — the `<5` rule (HARD), with secondary back-calc guard
+
+- **Suppress any case / cluster category — by ward, organism, unit, or period — with
+  fewer than 5 individuals.** A category of 4 or fewer is **not** published — aggregate
+  up to a category of ≥5 or report the parent category only. **A 3-case outbreak on a
+  named ward de-anonymizes the patients** and is suppressed.
+- **Secondary suppression** — when one cell is suppressed, suppress (or aggregate) a
+  second cell so the suppressed value **cannot be back-calculated** from row/column
+  totals (e.g. publishing a total and all-but-one category re-derives the suppressed
+  `<5` cell — this is the small-cell back-calculation, and it is a leak).
+- The surveillance in the **circulated** artifact is **structural / aggregated**, never
+  line-level identified. A sub-5 cell published unsuppressed is a `de_identification`
+  **hard-fail**.
+
+## 6. RE-IDENTIFICATION KEY — held separately, never emitted as a file (documented-procedure model)
+
+Produce (a) the de-identified plan and (b) a SEPARATE re-identification key. **Never
+embed the key or any name↔label mapping in the document.** The skill emits **NO key
+file** (no `*-key.md` / `*-key.json`): the re-identification key is an **instruction to
+the competent person** (maintain the mapping separately, access-controlled, apart from
+the plan), recorded in METHODOLOGY / QUALITY_CHECKLIST — not a co-located artifact. The
+de-identified banner is the existing report `meta.deid_notice` header (no new report
+field is added).
+
+## 7. WARN BEFORE WIDE DISTRIBUTION
+
+Management summaries, board packs, and any widely shared artifact default to fully
+aggregated, role-level findings. Warn the user before any finer-grained breakdown, any
+patient/staff detail, or any infection status enters a widely shared copy.
+
+## 8. MINIMIZE & LIMIT PURPOSE
+
+Use only the data the plan needs. Keep raw infection / surveillance / clinical data out
+of external services where you can. Where a genuine legal question arises (a consent
+question, a suspected breach, a cross-border transfer), stop and defer to a competent
+person.
+
+## Observable pass conditions (what the grader checks)
+
+1. Identifiers listed before the draft (the de-id pass ran first).
+2. No residual direct identifier in the output (name, phone, email, address, gov/payroll
+   ID, MRN, DOB-with-value, infection status tied to a person).
+3. No re-identification key / name↔label mapping embedded in the output (no key file).
+4. **No case / cluster cell of fewer than 5 published** (the `<5` small-cell rule, with
+   the secondary back-calculation guard — a 3-case cluster on a named ward is a leak).
+
+Any single failing condition is a non-waivable `de_identification` hard-fail.

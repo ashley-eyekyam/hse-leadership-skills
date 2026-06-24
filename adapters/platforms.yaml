@@ -6,19 +6,37 @@
 #
 # D-10 (build invariant, NOT a fork): char_limit values MUST be verified against
 # each vendor's CURRENT published limit at build time — do NOT hard-code from memory.
-# The values below are the cited current constants as of this build:
+# The values below are the cited current constants, currency-re-verified 2026-06-24
+# (P17 / 17-RESEARCH "Adapter instruction-character cap verification"). VALUES UNCHANGED
+# — this is a date re-stamp, not a value change:
 #   - chatgpt  8000  — CITED: OpenAI Custom GPT Instructions field cap (REAL hard limit).
+#                      Re-verified 2026-06-24 against OpenAI Developer Community threads
+#                      community.openai.com/t/801867 + /t/1006936 (the builder surface
+#                      refuses to save above 8,000; vendor help-center publishes no single
+#                      canonical number, so community + builder behavior is the authority).
 #   - copilot  8000  — CITED: learn.microsoft.com declarative-agent instructions;
 #                      manifest string props capped at 4000 (manifest_string_limit)
-#                      (REAL vendor-enforced hard limit).
+#                      (REAL vendor-enforced hard limit). Re-verified 2026-06-24 against
+#                      learn.microsoft.com/en-us/microsoft-365/copilot/extensibility/
+#                      declarative-agent-instructions (ms.date 2026-05-11): 8,000-char
+#                      instructions cap + 4,000-char default string-property cap; the page
+#                      explicitly warns NOT to offload instructions to knowledge to bypass
+#                      the 8,000 limit (XPIA risk) — build.py keeps full instructions in the
+#                      instruction field, only a pointer in the manifest string.
 #   - generic  9000  — OWNER-RESOLVED 2026-06-17 (D-10): no single vendor cap; the
 #                      conservative 6000 sat BELOW the four-non-negotiables irreducible
 #                      core floor (heaviest 8516). Owner directed "raise to fit the
 #                      outputs fully"; 9000 clears the heaviest core with headroom.
+#                      Re-confirmed 2026-06-24 as a no-vendor owner build constant (policy,
+#                      not a vendor number).
 #   - gemini   9000  — OWNER-RESOLVED 2026-06-17 (D-10): Google publishes NO hard cap
 #                      for the Gem instruction field. The conservative 4000 failed ALL
 #                      49 skills (floor 4689–8516). Owner directed "raise to fit the
 #                      outputs fully"; 9000 clears the heaviest irreducible core (8516).
+#                      Re-confirmed 2026-06-24 (support.google.com/gemini/answer/15235603
+#                      + Gemini Apps Community thread 322389047): still no published
+#                      instruction char cap; 9000 stays a defensible owner build constant
+#                      (MEDIUM confidence — confirmed ABSENCE of a vendor cap, not a number).
 #
 # keep_markers: false  — strip-everywhere R2 default (Decision 1 / D-10). The
 # hse:block:* markers are stripped from every emitted instruction surface and

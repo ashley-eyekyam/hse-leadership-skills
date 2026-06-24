@@ -1,0 +1,27 @@
+{
+  "code_interpreter": false,
+  "description": "Produces an occupational-noise exposure assessment and a hearing-conservation / audiometric-surveillance plan for a named area or similar-exposure group (SEG): compares measured or estimated noise to the cited action and limit values, maps exposure zones, ranks noise-reduction controls up the hierarchy (source → engineering → administrative → hearing protection LAST), and sets an audiometry schedule (baseline / annual / standard-threshold-shift triggers). Use this skill to assess noise exposure, build a hearing-conservation program, set up audiometric surveillance, compare a TWA / L_EX,8h to the 85/90 dBA (OSHA) or 80/85/87 dB(A) (UK) action and limit values, or plan noise reduction for an area or task. It transcribes measured levels (no dosimetry computed), cites each action level / limit with authority and year, refuses a schedule on a vague basis, and treats standard-threshold-shift audiometry as special-category health data reported by SEG/role. Decision-support only; a competent person must review it.",
+  "instructions_file": "instructions.md",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/company-card.yaml",
+    "knowledge/deid-checklist.md",
+    "knowledge/eu-osh.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/in-factories-act.md",
+    "knowledge/intake.md",
+    "knowledge/iso-45001.md",
+    "knowledge/iso1999-9612.md",
+    "knowledge/manufacturing-clause-map.md",
+    "knowledge/noise-control-hierarchy.md",
+    "knowledge/osha-1910-95.md",
+    "knowledge/sme-review.md",
+    "knowledge/subagent-archetypes.md",
+    "knowledge/uk-hswa.md"
+  ],
+  "name": "noise-exposure-health-surveillance"
+}

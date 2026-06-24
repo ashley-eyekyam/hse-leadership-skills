@@ -1,0 +1,27 @@
+{
+  "description": "Routes a user to the right HSE skill(s) when they are unsure which to use. Use this skill whenever the request is meta or ambiguous — 'not sure which assessment is needed', 'where to start with HSE for a site', 'what is needed for a new contractor job', 'an overview of the toolbox', or any multi-step HSE task spanning several deliverables. It elicits intent, requirement and success-criteria, then recommends one or an ordered chain of repo skills and hands the context over. It does NOT itself produce a risk assessment, toolbox talk, or any HSE artifact — a clear single-skill request (e.g. 'do a risk assessment for re-roofing') should go straight to that skill, not here.",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/company-card.yaml",
+    "knowledge/deid-checklist.md",
+    "knowledge/eu-osh.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/in-factories-act.md",
+    "knowledge/intake-interview.md",
+    "knowledge/intake.md",
+    "knowledge/iso-45001.md",
+    "knowledge/rubric-fit.md",
+    "knowledge/skill-index.yaml",
+    "knowledge/sme-review.md",
+    "knowledge/subagent-archetypes.md",
+    "knowledge/uk-hswa.md",
+    "knowledge/us-osha.md"
+  ],
+  "name": "using-hse-skills",
+  "notes": "Markdown-report degradation; run the intake conversationally.",
+  "system_prompt_file": "system-prompt.md"
+}

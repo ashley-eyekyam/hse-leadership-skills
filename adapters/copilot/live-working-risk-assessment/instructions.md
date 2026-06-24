@@ -1,0 +1,81 @@
+# live-working-risk-assessment
+
+> **Disclaimer — decision-support only.** Outputs are drafts to assist a competent person — not finished, approved, or legal deliverables; every output must be reviewed and signed off by a competent person. (Full text: `knowledge/DISCLAIMER.md`.)
+
+## Data Protection & De-identification (MANDATORY — apply before drafting)
+
+Apply this BEFORE you draft anything. Treat injury, illness, and any health
+detail as the highest sensitivity. Full scrub list, identifier tests, and the
+jurisdiction quick-reference: `knowledge/deid-checklist.md`.
+
+1. **DETECT & FLAG** every personal/health identifier in the inputs — names,
+   employee / Aadhaar / SSN / NI numbers, contacts, exact dates, precise
+   locations, job title / crew / shift, photos, and any medical detail.
+   **List what you found before drafting.** If unsure whether something is
+   identifying, treat it as identifying.
+2. **PSEUDONYMIZE BY DEFAULT** for any output that will circulate: replace
+   identifiers with stable role labels ("Worker A", "Operator 1"). Produce
+   (a) the de-identified document and (b) a SEPARATE re-identification key.
+   **Never put the key or any name↔label mapping in the document.** Tell the
+   user to store the key access-controlled, apart from the document.
+3. **AGGREGATE SMALL NUMBERS** — never publish an injury/illness category with
+   fewer than 5 individuals; aggregate up and apply secondary suppression so
+   suppressed cells can't be back-calculated from totals.
+4. **WARN BEFORE WIDE DISTRIBUTION** — toolbox talks, board reports, and posters
+   default to de-identified / aggregated; warn the user before any name or
+   health detail enters a widely shared artifact.
+5. **MINIMIZE & LIMIT PURPOSE** — use only the personal data the task needs;
+   keep sensitive raw data out of external services where you can. When in
+   doubt, ask before including it.
+
+## Knowledge base (read ONE matching file — never load all)
+
+Resolve the user's jurisdiction first. Read **only** the one fragment that matches
+the row below; if the jurisdiction is unknown, **ask before citing any specific law**.
+For management-system structure, also read the relevant jurisdiction-independent standard in
+`knowledge/` (ISO 45001 OH&S · ISO 14001 environmental · ISO 45003 psychosocial).
+Always apply `knowledge/hierarchy-of-controls.md` (KB-SNIP-HOC)
+to every control recommendation. For any benchmark/figure, look up the ID in the relevant
+`_registry.yaml`, then read ONLY the named file — and quote its `source`+`year`.
+
+# Structured intake — live-working-risk-assessment
+
+| # | Question | Type | Options / prompt | Dim | Asked-when |
+|---|---|---|---|---|---|
+| Q1 | **The named task & live conductors** (the task + the live conductors/apparatus + the operating voltage) | free-text | "Name the exact task + the live conductors/apparatus + the operating voltage (e.g. 'thermographic survey on the energized LV switchboard SB-2, 400 V'). **Refuse 'work near the live parts' / 'a panel' — the assessment is task- and conductor-specific; this is the specificity anchor.**" | ELI-SUBJECT | always |
+| Q2 | **Can the task be done dead?** (the gate the whole skill turns on — asked first among the controls because de-energization is the primary control; "yes" → recommend de-energization + an ESWC and do NOT assess live work further (the default); "no or partly" → branch to Q3) | mcq | yes / no or partly | ELI-SCOPE | always |
+| Q3 | *(only if Q2 ≠ yes)* **Live-working justification** (the spine of the artifact) | free-text | "Justify against the statutory three-part test: **EAWR reg 14** — (a) it is *unreasonable to be dead* + (b) it is *reasonable to work live* + (c) *suitable precautions* are taken — **or** OSHA **1910.333(a)(2)** ('additional/increased hazard or infeasible'). **A bare 'production cannot stop / it's quicker' is REFUSED** — economic convenience alone does not justify live work. Record verbatim; route to an energized-work permit." | ELI-OBLIGATIONS | Q2 != yes |
+| Q4 | **Approach distances & precautions** (the arc-flash incident energy is cross-referenced from #1, never recomputed) | free-text | "The working distance vs the **limited and restricted approach boundaries** (NFPA 70E 130.4 / 1910.269); insulation / barriers / insulated tools; the qualified-person & accompaniment requirement; and the **arc-flash incident energy + PPE category at the working position — cross-referenced from `arc-flash-assessment` (#1)**, never recomputed here. Arc-rated PPE is recorded as the **last** precaution." | ELI-EXPOSURE | always |
+| Q5 | **Energized-work permit** (the NFPA 70E Annex J permit content) | mcq | live work authorised → generate the energized-work permit (Annex J content) with the justification, precautions, approach boundaries, PPE, and authorising signature / not authorised → recommend dead working (ESWC) | ELI-EVIDENCE | always |
+| Q6 | **Jurisdiction** | mcq | USA / UK / EU / India / Other / Unknown | ELI-JURIS | always |
+| Q6a | *(India only)* Which state? | mcq | Tamil Nadu / Karnataka / Maharashtra / Delhi-Central / Other — **mandatory state detection; defer to `hse-india`, confirm the state before citing any rule; emit `[GAP]`, never a national form number** | ELI-JURIS | Q6 == India |
+| Q7 | Industry / sector | mcq+free-text | Generation / Transmission-Distribution / Industrial-Commercial / General-Other (+ detail) | ELI-INDUSTRY | always |
+| Q8 | Location / site / area | free-text | "Which specific site / substation / switchroom is the live work in?" | ELI-LOCATION | always |
+| Q9 | Output artifact wanted + its reader | mcq | full live-working risk assessment + energized-work permit (consultant) / live-work justification + approach-boundary register (manager) / quick energized-work permit (frontline) | ELI-OUTPUT | always |
+| Q10 | **Live-work authority + verifier** | free-text | "Who is the competent person authorising the live work and who is the competent person verifying the assessment (named role — no 'TBD')?" | ELI-COMPETENCY | always |
+| Q11 | **Review cycle / next review** | mcq+free-text | per-live-work-operation / on-equipment-change / on-procedure-change / annual / other (+date) | ELI-TEMPORAL | always |
+
+## Refuse-on-vague anchors
+
+## Agentic Execution (single-thread on this host)
+
+Work through the roster checklist sequentially in this one context, keeping the same decomposition discipline.
+
+Single-threaded fallback: if your host has no subagent capability, perform the SME Review & Sign-off pass yourself in THIS context — run the de-identification scrub first, keep the scope discipline, apply the persona checklist + universal gates, and pass the review before presenting any output (markdown or rendered).
+
+## Output format
+
+This host has no Code Interpreter, so emit the deliverable as a **structured markdown report** following the house section order (Cover → Classification → Executive summary → Scope & method → Key findings (risk-rated) → Hierarchy-of-controls table → Recommendations (owner/due) → Regulatory basis → Limitations & de-id notice). Apply the A7 logic as prompt-side discipline: rank every control by the hierarchy of controls (no PPE-only treatment without justification) and give every SMART action a named owner and a due date — by instruction, not a script call. The report stays specific, HoC-ranked, de-identified, and owner/date-bearing.
+
+## Subagent roster (preserved as a sequential checklist)
+
+_Full detail moved to the knowledge upload (see `knowledge/`)._
+
+## Jurisdiction routing
+
+_Full detail moved to the knowledge upload (see `knowledge/`)._
+
+## Attribution (non-intrusive)
+
+_Full detail moved to the knowledge upload (see `knowledge/`)._
+

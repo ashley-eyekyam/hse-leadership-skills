@@ -596,6 +596,17 @@ def test_lift_plan_clean_fixture_passes():
 # Pure deterministic Python: no network, no model, no key.
 # =============================================================================
 
+# IN-01 (14-REVIEW / P17 17-07): wire this section's OWN de-id grater alias rather than
+# reusing the CON-04 `_lift_grade_deid` import — keeps the file's "each appended section is
+# self-contained" pattern intact (no NameError risk if the lift section is ever reordered).
+import sys as _tmp_sys  # noqa: E402
+
+_TMP_SCRIPTS = REPO / "scripts"
+if str(_TMP_SCRIPTS) not in _tmp_sys.path:
+    _tmp_sys.path.insert(0, str(_TMP_SCRIPTS))
+
+from graders import grade_deid as _tmp_grade_deid  # noqa: E402
+
 _TMP_FILES = REPO / "skills" / "traffic-management-plan" / "evals" / "files"
 _TMP_LEAK = _TMP_FILES / "traffic-leak.md"
 _TMP_CLEAN = _TMP_FILES / "traffic-clean.md"
@@ -603,14 +614,14 @@ _TMP_CLEAN = _TMP_FILES / "traffic-clean.md"
 
 def test_traffic_management_plan_seeded_leak_fixture_is_caught():
     """The seeded-leak negative MUST trip the deterministic de-id auto-fail (gate is live)."""
-    verdict = _lift_grade_deid(_TMP_LEAK.read_text(encoding="utf-8"))
+    verdict = _tmp_grade_deid(_TMP_LEAK.read_text(encoding="utf-8"))
     assert verdict["auto_fail"] is True, "traffic-management-plan seeded-leak fixture did NOT hard-fail"
     assert verdict["reasons"], "auto_fail with no reason is not a real catch"
 
 
 def test_traffic_management_plan_clean_fixture_passes():
     """The paired clean positive must NOT false-positive (no spurious per-skill hard-fail)."""
-    verdict = _lift_grade_deid(_TMP_CLEAN.read_text(encoding="utf-8"))
+    verdict = _tmp_grade_deid(_TMP_CLEAN.read_text(encoding="utf-8"))
     assert verdict["auto_fail"] is False, (
         f"traffic-management-plan clean fixture false-positived: {verdict['reasons']}"
     )

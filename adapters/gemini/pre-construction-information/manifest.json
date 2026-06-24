@@ -1,0 +1,27 @@
+{
+  "code_interpreter": false,
+  "description": "Produces a Pre-Construction Information (PCI) pack for a named construction project under CDM 2015 — the pre-tender hazard and information set the client must provide to every designer and contractor. Use this skill whenever a user asks to compile, write, or review pre-construction information, a PCI pack, CDM pre-tender information, or the client's health-and-safety information for a project. It assembles the project, site, and existing-structure hazard information (asbestos, buried services, ground conditions, adjacent occupancies, existing H&S file content), states what is known versus a documented information gap, and emits a branded report that feeds the construction phase plan. Grounded in CDM 2015 Regulation 4. Decision-support only; a competent person must review the output.",
+  "instructions_file": "instructions.md",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/cdm-2015.md",
+    "knowledge/company-card.yaml",
+    "knowledge/construction-clause-map.md",
+    "knowledge/deid-checklist.md",
+    "knowledge/eu-osh.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/in-factories-act.md",
+    "knowledge/in-state-forms.md",
+    "knowledge/intake.md",
+    "knowledge/iso-45001.md",
+    "knowledge/osha-1926.md",
+    "knowledge/pci-checklist.md",
+    "knowledge/sme-review.md",
+    "knowledge/subagent-archetypes.md"
+  ],
+  "name": "pre-construction-information"
+}

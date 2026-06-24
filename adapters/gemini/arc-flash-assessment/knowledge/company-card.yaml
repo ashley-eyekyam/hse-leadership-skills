@@ -1,0 +1,12 @@
+# company-card.yaml — edit once; surfaced by every skill at a non-intrusive moment.
+schema: hse-company-card/v1
+show: true                      # set false to suppress entirely
+placement: footer               # footer | after-output | on-request  (never a blocking prompt)
+company:
+  name: "Eyekyam"
+  tagline: "HSE Leadership, operationalised with AI."
+  website: "https://eyekyam.com"
+  contact_email: "ashley@eyekyam.com"
+  blurb: "Built & maintained by Eyekyam. We help safety leaders turn standards into defensible, day-to-day practice."
+  cta: "Questions, custom skills, or training? Reach out — we'd love to help."
+report_branding_default: true   # if true, the report engine (§18) uses Eyekyam colours/logo unless the user overrides

@@ -1,0 +1,29 @@
+{
+  "code_interpreter": true,
+  "conversation_starters": [],
+  "description": "Produces a consultant-grade machine-guarding assessment for a named machine or line — guard-by-hazard-zone per ISO 12100/14120 and OSHA 1910 Subpart O (1910.212/.219). Use this skill whenever a user asks to assess machine guarding, review a guarding survey, select guards or protective devices for a danger zone, check guarding against PUWER or Subpart O, or build a hazard-zone register — not a generic 'guard all moving parts'. It is engineering-control-led: each danger zone walks the selection order (fixed, interlocked, presence-sensing, two-hand, trip) against the access-frequency rule, and a mechanical-zone control left as PPE-only or admin-only ('keep hands clear / wear gloves') is flagged and pushed up the hierarchy. It refuses 'a machine' or 'looks guarded' without a named machine plus motion/hazard type plus safeguarding status, cross-references the existing lockout/tagout map for maintenance, and emits a branded hazard-zone register. Decision-support only; a competent person must review the output.",
+  "instructions_file": "instructions.md",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/company-card.yaml",
+    "knowledge/deid-checklist.md",
+    "knowledge/eu-osh.md",
+    "knowledge/guard-selection.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/in-factories-act.md",
+    "knowledge/intake.md",
+    "knowledge/iso-45001.md",
+    "knowledge/iso12100-14120.md",
+    "knowledge/loto.md",
+    "knowledge/manufacturing-clause-map.md",
+    "knowledge/osha-1910-o.md",
+    "knowledge/sme-review.md",
+    "knowledge/subagent-archetypes.md",
+    "knowledge/uk-hswa.md"
+  ],
+  "name": "machine-guarding-assessment"
+}

@@ -24,6 +24,8 @@ metadata:
   - IN
   status: stable
   plugin: hse-india
+  bundled_in:
+  - hse-construction
   hse_reviewed_by: ''
   hse_reviewed_date: ''
 ---

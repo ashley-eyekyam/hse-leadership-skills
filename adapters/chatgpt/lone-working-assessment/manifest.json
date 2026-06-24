@@ -1,0 +1,29 @@
+{
+  "code_interpreter": true,
+  "conversation_starters": [],
+  "description": "Produce a consultant-grade lone-working risk assessment for a named role/site and the specific solitary activity, grounded in HSE INDG73 (rev 4) and BS 8484:2022. Use this skill to assess lone or solo working, build a lone-working risk assessment, set up scheduled check-ins and a missed-check-in escalation path, specify a coverage-checked communication plan, or evaluate a lone-worker device/app for renewables and field work. It leads with ELIMINATING the solitary exposure first (pair up, re-schedule, remote monitoring), then a reliable scheduled check-in with a defined missed-check-in escalation path; a BS 8484 device SUPPLEMENTS but never replaces the procedure, and 'no mobile signal' is a control failure, not an accepted risk. It routes lone work at height to wind-turbine-work-at-height-rescue (REN-01) and lone electrical work to the cross-listed utilities skills, and de-identifies lone-worker contact / shift / location to role labels. Decision-support only; competent-person review required.",
+  "instructions_file": "instructions.md",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/bs8484.md",
+    "knowledge/checkin-escalation.md",
+    "knowledge/company-card.yaml",
+    "knowledge/deid-checklist.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/in-renewables.md",
+    "knowledge/intake-interview.md",
+    "knowledge/intake.md",
+    "knowledge/iso-45001.md",
+    "knowledge/lone-working.md",
+    "knowledge/renewables-clause-map.md",
+    "knowledge/renewables.md",
+    "knowledge/rescue-plan.md",
+    "knowledge/sme-review.md",
+    "knowledge/subagent-archetypes.md"
+  ],
+  "name": "lone-working-assessment"
+}

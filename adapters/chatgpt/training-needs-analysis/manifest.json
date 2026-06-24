@@ -1,0 +1,29 @@
+{
+  "code_interpreter": true,
+  "conversation_starters": [],
+  "description": "Produces a consultant-grade, role-by-competence Training Needs Analysis (TNA) for a named site, function, or project. Use this skill whenever a user asks to identify training gaps, build a competence or training matrix, map roles to required competencies, plan a training programme, track certification expiry, or run a TNA grounded in ISO 45001 clause 7.2 (competence). It builds a role×competence matrix, scores current-vs-required competence from evidence, flags single-points-of-failure and expiring certifications, and emits a prioritised, costed training plan with named owners and due dates as a branded report. Decision-support only; a competent person must review the output.",
+  "instructions_file": "instructions.md",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/company-card.yaml",
+    "knowledge/competence-levels.md",
+    "knowledge/deid-checklist.md",
+    "knowledge/eu-osh.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/in-factories-act.md",
+    "knowledge/intake-interview.md",
+    "knowledge/intake.md",
+    "knowledge/iso-45001.md",
+    "knowledge/ops-clause-map.md",
+    "knowledge/sme-review.md",
+    "knowledge/subagent-archetypes.md",
+    "knowledge/tna-method.md",
+    "knowledge/uk-hswa.md",
+    "knowledge/us-osha.md"
+  ],
+  "name": "training-needs-analysis"
+}

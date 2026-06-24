@@ -1,0 +1,24 @@
+{
+  "description": "Build a ROGS goal-based rail Safety Management System (SMS) to the ROGS/ORR element set (policy, accountabilities, risk-control arrangements, CSM-RA change interface, competence/Sentinel, asset/ECM maintenance, emergency, monitoring/audit, continuous improvement) for a named transport operator or infrastructure manager. Use this skill to build or review a rail SMS or structure a ROGS safety-certificate / safety-authorisation submission. Grounds elements in KB-REG-ROGS and the change interface in KB-REG-CSM-RA, resolves the route first (mainline operator -> safety certificate; infrastructure manager -> safety authorisation; non-mainline -> Part 3 verification), names the accountable duty-holder and safety-critical roles, ranks every mitigation through the hierarchy of controls, and de-identifies role-holder names / COSS / Sentinel numbers to role labels. The SMS is for-acceptance: it never claims it is 'accepted by ORR'. Decision-support only; a competent rail-SMS / ORR-aware person must review the output.",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/company-card.yaml",
+    "knowledge/csm-ra.md",
+    "knowledge/deid-checklist.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/in-rail.md",
+    "knowledge/intake-interview.md",
+    "knowledge/intake.md",
+    "knowledge/rail-clause-map.md",
+    "knowledge/sme-review.md",
+    "knowledge/subagent-archetypes.md",
+    "knowledge/uk-rogs.md"
+  ],
+  "name": "rail-safety-management-system",
+  "notes": "Markdown-report degradation; run the intake conversationally.",
+  "system_prompt_file": "system-prompt.md"
+}

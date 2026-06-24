@@ -24,6 +24,8 @@ metadata:
   - All
   status: stable
   plugin: hse-chemicals
+  bundled_in:
+  - hse-logistics-transport
   hse_reviewed_by: ''
   hse_reviewed_date: ''
 ---

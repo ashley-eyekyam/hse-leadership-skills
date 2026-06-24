@@ -1,0 +1,30 @@
+{
+  "code_interpreter": false,
+  "description": "Produces a multi-jurisdiction HSE legal and other-requirements compliance register for a named organisation or site. Use this skill whenever a user asks to build a legal register, compliance obligations register, applicable-legislation list, or to evaluate compliance against ISO 45001 clause 6.1.3. It identifies applicable legal and other requirements for the user's jurisdiction(s) and activities, maps each obligation to its applicability and the evidence of compliance, flags gaps with owners and review dates, and emits a branded register. For India, it defers to the hse-india engine for state-specific obligations and never hard-codes national form numbers; state detection is mandatory. Decision-support only; a competent person must review the output.",
+  "instructions_file": "instructions.md",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/company-card.yaml",
+    "knowledge/deid-checklist.md",
+    "knowledge/eu-osh.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/in-factories-act.md",
+    "knowledge/in-osh-code.md",
+    "knowledge/in-state-forms.md",
+    "knowledge/intake-interview.md",
+    "knowledge/intake.md",
+    "knowledge/iso-45001.md",
+    "knowledge/legal-register-method.md",
+    "knowledge/obligation-families.md",
+    "knowledge/ops-clause-map.md",
+    "knowledge/sme-review.md",
+    "knowledge/subagent-archetypes.md",
+    "knowledge/uk-hswa.md",
+    "knowledge/us-osha.md"
+  ],
+  "name": "legal-compliance-register"
+}

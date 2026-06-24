@@ -1,0 +1,26 @@
+{
+  "capabilities": [],
+  "description": "Produces a consultant-grade, transmission-based infection prevention and control (IPC) plan for a named healthcare service or unit, driven by the engineering-and-administrative-controls-before-PPE hierarchy. Use this skill when a user asks to build or review an infection control plan, write an isolation / transmission-based precautions plan, select contact / droplet / airborne precautions for a ward or care home, decide device reprocessing by Spaulding classification, or plan de-identified outbreak / HAI surveillance. It forces Standard Precautions for every patient and the route-correct precautions, leads with engineering controls (ventilation, negative-pressure isolation rooms) and administrative controls (cohorting, screening) BEFORE PPE, applies the Spaulding reprocessing decision, and refuses a PPE-only plan (an airborne agent on a respirator alone, no isolation room). Grounded in the CDC isolation guideline + WHO IPC core components + Spaulding. Decision-support only; a competent person must review.",
+  "instructions": "See instructions.md (the full instruction field).",
+  "knowledge_sources": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/company-card.yaml",
+    "knowledge/deid-checklist.md",
+    "knowledge/healthcare-clause-map.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/in-bmw2016.md",
+    "knowledge/intake.md",
+    "knowledge/ipc-cdc-who.md",
+    "knowledge/ipc-precautions.md",
+    "knowledge/iso-45001.md",
+    "knowledge/osha-bbp.md",
+    "knowledge/sme-review.md",
+    "knowledge/subagent-archetypes.md"
+  ],
+  "name": "infection-control-plan",
+  "schema": "1.7"
+}

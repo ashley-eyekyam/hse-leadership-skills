@@ -31,12 +31,16 @@ PATH_RE = re.compile(r"(\.\./)+knowledge-base/[A-Za-z0-9_./-]+\.md")
 ID_RE = re.compile(r"KB-[A-Z0-9]+-[A-Z0-9-]+")
 
 # Map an id prefix to the folder whose _registry.yaml must carry it (§3.3).
+# WR-03 (14-REVIEW / P17 17-07): include the HAZ → hazard-library mapping so a fixture
+# citing a KB-HAZ-* id resolves to its folder instead of erroring "unknown folder prefix"
+# — mirrors the sibling test_kb_registry.FOLDER_ID_PREFIX which already carries it.
 PREFIX_FOLDER = {
     "REG": "regulatory",
     "STD": "standards",
     "SNIP": "prompt-snippets",
     "DATA": "data-points",
     "RES": "research",
+    "HAZ": "hazard-library",
 }
 
 
@@ -61,13 +65,44 @@ def _registry_ids(folder: str) -> set:
     return {e["id"] for e in yaml.safe_load(reg.read_text(encoding="utf-8"))}
 
 
+def _all_kb_folders() -> tuple:
+    """Every KB folder that carries a _registry.yaml, discovered from disk (not a
+    hardcoded subset). WR-02 (14-REVIEW / P17 17-07): the never-minted absence
+    assertions must scan ALL registries (incl. research/ + hazard-library/) so a
+    re-mint into a folder the old hardcoded list omitted can no longer slip through —
+    mirrors the registry-level twin in test_kb_registry which iterates the same glob."""
+    return tuple(sorted(p.parent.name for p in KB.glob("*/_registry.yaml")))
+
+
 def test_dryrun():
     skill_text = SKILL.read_text(encoding="utf-8")
     rows = _kb_selection_rows(skill_text)
 
-    # rule 2 — presence: the rows subsection exists and is non-empty (has table rows).
-    assert "| India |" in rows or "India" in rows, "kb-selection rows subsection empty/missing"
-    assert rows.count("|") > 4, "kb-selection rows subsection has no resolvable rows"
+    # rule 2 — presence: the rows subsection exists and carries real markdown DATA rows.
+    # WR-04 (14-REVIEW / P17 17-07): the old `"India" in rows` + `rows.count("|") > 4` check
+    # passed on a header-only table plus the bare word "India" in prose. Assert instead that
+    # there are >=2 genuine DATA rows — pipe table rows that are neither the header nor the
+    # `|---|` separator and that carry actual cell content — so an empty / header-only /
+    # garbage kb-selection table hard-fails as intended.
+    def _is_data_row(ln: str) -> bool:
+        s = ln.strip()
+        if not s.startswith("|"):
+            return False
+        cells = [c.strip() for c in s.strip("|").split("|")]
+        # separator row (|---|---|) — all cells are dashes/colons only
+        if all(set(c) <= set("-: ") and c for c in cells):
+            return False
+        # at least one non-empty cell of real content (not just whitespace)
+        return any(c for c in cells)
+
+    pipe_rows = [ln for ln in rows.splitlines() if ln.strip().startswith("|")]
+    data_rows = [ln for ln in pipe_rows if _is_data_row(ln)]
+    # drop the single header row (first data-shaped pipe row) from the count of real rows
+    real_data_rows = max(0, len(data_rows) - 1)
+    assert real_data_rows >= 2, (
+        "kb-selection rows subsection has fewer than 2 markdown data rows "
+        f"(found {real_data_rows}) — empty/header-only/garbage table"
+    )
 
     manifest_text = SKILL_KB.read_text(encoding="utf-8")
 
@@ -230,7 +265,7 @@ def test_esg_reuses_gri403_no_disclosures_minted():
     KB-DP-ESG-DISCLOSURES id is never minted as a fragment or registry entry."""
     assert "KB-STD-ESG-GRI403" in _registry_ids("standards")
     assert not (KB / "data-points" / "esg-disclosures.md").is_file()
-    for folder in ("data-points", "prompt-snippets", "standards"):
+    for folder in _all_kb_folders():
         assert "KB-DP-ESG-DISCLOSURES" not in _registry_ids(folder), (
             f"KB-DP-ESG-DISCLOSURES must NOT be minted (found in {folder}/)"
         )
@@ -359,7 +394,7 @@ def test_phase14_ergonomics_scores_fragment_not_authored():
     """D-02: KB-DATA-ERGONOMICS-SCORES is NEVER minted — the ergonomics.py engine is the
     single scores source (a KB copy is a drift surface). Asserted absent from EVERY
     registry and not on disk under either the CONV-1 or legacy id."""
-    for folder in ("data-points", "standards", "prompt-snippets", "regulatory"):
+    for folder in _all_kb_folders():
         assert "KB-DATA-ERGONOMICS-SCORES" not in _registry_ids(folder), (
             f"KB-DATA-ERGONOMICS-SCORES must NOT be minted (found in {folder}/)"
         )
@@ -372,7 +407,7 @@ def test_phase14_ergonomics_scores_fragment_not_authored():
 def test_phase14_loto_isolation_snippet_not_authored():
     """RESEARCH reconciliation (D-03 OBE): KB-SNIP-LOTO-ISOLATION is NEVER authored —
     MFG-01 reuses the shipped KB-REG-LOTO. Asserted absent + KB-REG-LOTO resolves."""
-    for folder in ("prompt-snippets", "regulatory", "standards", "data-points"):
+    for folder in _all_kb_folders():
         assert "KB-SNIP-LOTO-ISOLATION" not in _registry_ids(folder), (
             f"KB-SNIP-LOTO-ISOLATION must NOT be authored (found in {folder}/)"
         )
@@ -486,7 +521,7 @@ def test_phase15_arcflash_ieee1584_datapoint_not_authored():
     """D-02: KB-DP-ARCFLASH-IEEE1584 is NEVER minted — the arcflash.py engine is the
     single source of truth for the arc-flash bands (a KB copy is a drift surface).
     Asserted absent from EVERY registry and not on disk under either id form."""
-    for folder in ("data-points", "standards", "prompt-snippets", "regulatory"):
+    for folder in _all_kb_folders():
         assert "KB-DP-ARCFLASH-IEEE1584" not in _registry_ids(folder), (
             f"KB-DP-ARCFLASH-IEEE1584 must NOT be minted (found in {folder}/)"
         )

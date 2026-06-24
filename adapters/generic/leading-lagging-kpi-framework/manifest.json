@@ -1,0 +1,29 @@
+{
+  "description": "Designs and normalises a balanced leading/lagging HSE KPI framework for a named organisation, function, or site against ISO 45001:2018 clause 9.1 — never a lagging-only set. Each indicator is fully defined (formula, source, frequency, owner, target); a lagging-only request is flagged for balance and a gameable metric (raw incident count as a target) with no safeguard is flagged for defensibility. Carries a road-safety leading-indicator branch (ISO 39001:2012) when the scope is road/transport/fleet. It DESIGNS the indicator set — distinct from incident-rate-calculator (which computes given rates) and process-safety-kpi (API RP 754 tiers), which it references as exemplars, not replacements. Lagging rates are computed by the incident_rates engine to standard definitions, never invented. Decision-support only; a competent person must review the output.",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/company-card.yaml",
+    "knowledge/deid-checklist.md",
+    "knowledge/eu-osh.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/in-factories-act.md",
+    "knowledge/intake-interview.md",
+    "knowledge/intake.md",
+    "knowledge/iso-45001.md",
+    "knowledge/kpi-design.md",
+    "knowledge/leadership-clause-map.md",
+    "knowledge/leading-indicators.md",
+    "knowledge/road-safety-indicators.md",
+    "knowledge/sme-review.md",
+    "knowledge/subagent-archetypes.md",
+    "knowledge/uk-hswa.md",
+    "knowledge/us-osha.md"
+  ],
+  "name": "leading-lagging-kpi-framework",
+  "notes": "Markdown-report degradation; run the intake conversationally.",
+  "system_prompt_file": "system-prompt.md"
+}

@@ -1,0 +1,29 @@
+{
+  "code_interpreter": false,
+  "description": "Determines and prepares mandatory HSE regulatory returns for a named organisation across jurisdictions — OSHA recordkeeping (Forms 300/300A/301) and electronic submission, UK RIDDOR reports, and EU equivalents. Use this skill whenever a user asks which incidents are recordable or reportable, how to complete OSHA 300/300A/301, whether something is RIDDOR-reportable, what the reporting deadlines are, or to prepare a periodic statutory return. It applies the jurisdiction's recordability/reportability tests, identifies the correct form and deadline, and prepares a de-identified return with the evidence trail. For India, it defers entirely to the hse-india skills (state forms, accident notices) and never hard-codes national form numbers; state detection is mandatory. Decision-support only; a competent person must review the output.",
+  "instructions_file": "instructions.md",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/company-card.yaml",
+    "knowledge/deid-checklist.md",
+    "knowledge/eu-osh.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/in-factories-act.md",
+    "knowledge/in-portals.md",
+    "knowledge/in-state-forms.md",
+    "knowledge/intake-interview.md",
+    "knowledge/intake.md",
+    "knowledge/ops-clause-map.md",
+    "knowledge/recordability-tests.md",
+    "knowledge/returns-method.md",
+    "knowledge/sme-review.md",
+    "knowledge/subagent-archetypes.md",
+    "knowledge/uk-hswa.md",
+    "knowledge/us-osha.md"
+  ],
+  "name": "regulatory-returns"
+}

@@ -2,7 +2,7 @@
 name: factories-act-returns
 description: Assemble an India Factories Act state statutory return or register for
   a DETECTED state — the annual / half-yearly return + statutory registers (TN Form
-  22 / KA Form 20 / MH Form 27 / DL Form 21; GJ [GAP] until verified) — legacy-first,
+  22 / KA Form 20 / DL Form 21; MH and GJ [GAP] until verified) — legacy-first,
   with the OSH-Code transition note appended. Use it to produce the filled state return
   for a named establishment in a given state, with the prescribed form id, citing
   rule, due date and filing portal. State detection is MANDATORY; an unseeded state
@@ -30,7 +30,7 @@ metadata:
 
 # Factories Act Returns
 
-A consultant-grade, India-facing skill that assembles a **Factories Act state statutory return / register** for a **detected state** — the annual / half-yearly return + statutory registers — legacy-first, with the OSH-Code transition note appended. It resolves the prescribed form from `KB-REG-IN-STATEFORMS`: **TN Form 22 / KA Form 20 / MH Form 27 / DL Form 21**, and **GJ `[GAP]`** (the Gujarat annual-return form value is a literal `[GAP]` until verified — the citation grader is row-blind, so a fabricated value would pass the automated gate; D-02/CT-1). **State detection is MANDATORY** (CT-8): an unseeded state yields `[GAP]` and a **refusal to invent a national form number** (KB-02). The OSH-Code direction of change is noted (legacy-first).
+A consultant-grade, India-facing skill that assembles a **Factories Act state statutory return / register** for a **detected state** — the annual / half-yearly return + statutory registers — legacy-first, with the OSH-Code transition note appended. It resolves the prescribed form from `KB-REG-IN-STATEFORMS`: **TN Form 22 / KA Form 20 / DL Form 21**, and **MH `[GAP]` / GJ `[GAP]`** (the Maharashtra and Gujarat annual-return form values are a literal `[GAP]` until verified — `KB-REG-IN-STATEFORMS` seeds MH only for accident-notice, with no seeded MH annual-return row, and the citation grader is row-blind, so a fabricated value would pass the automated gate; GATE-06 / D-02/CT-1). **State detection is MANDATORY** (CT-8): an unseeded state yields `[GAP]` and a **refusal to invent a national form number** (KB-02). The OSH-Code direction of change is noted (legacy-first).
 
 ## When to use this skill
 

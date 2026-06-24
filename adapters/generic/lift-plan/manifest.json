@@ -1,0 +1,28 @@
+{
+  "description": "Creates consultant-grade, site- and lift-specific lifting plans grounded in LOLER 1998 Reg 8 and BS 7121. Use this skill whenever a user asks to plan, build, or review a lifting plan, a crane lift plan, or a lifting operation, to classify a lift as basic / standard / complex per BS 7121, to confirm a crane's SWL at radius and utilisation against the manufacturer's rated-capacity chart, to set exclusion zones near overhead power lines / structures / the public, to sequence a lift method with appointed-person / operator / slinger roles, or to set contingency and abort criteria. Reads SWL-at-radius and utilisation from the rated-capacity chart (transcribed, checked) — never computed. Refuses to plan without a confirmed load weight (incl. rigging), an equipment SWL at the working radius, and at least an appointed person. Enforces the hierarchy of controls (eliminate the lift / reduce the load / engineer an exclusion before PPE) and re-scores residual risk. Decision-support only; competent-person review required.",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/cdm-2015.md",
+    "knowledge/company-card.yaml",
+    "knowledge/construction-clause-map.md",
+    "knowledge/deid-checklist.md",
+    "knowledge/eu-osh.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/in-factories-act.md",
+    "knowledge/in-state-forms.md",
+    "knowledge/intake.md",
+    "knowledge/iso-45001.md",
+    "knowledge/lift-categories.md",
+    "knowledge/loler-bs7121.md",
+    "knowledge/osha-1926.md",
+    "knowledge/sme-review.md",
+    "knowledge/subagent-archetypes.md"
+  ],
+  "name": "lift-plan",
+  "notes": "Markdown-report degradation; run the intake conversationally.",
+  "system_prompt_file": "system-prompt.md"
+}

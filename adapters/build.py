@@ -433,6 +433,34 @@ def load_platforms(path: Path = PLATFORMS_FILE) -> dict:
 
 PLATFORMS = ["chatgpt", "gemini", "copilot", "generic"]
 
+# --- documented per-(skill, platform) known-overflow exclusion (owner decision) ---
+#
+# OWNER DECISION 2026-06-24 (P17 / 17-07): three skills carry an irreducible
+# four-non-negotiables core that genuinely exceeds the REAL 8,000-char vendor
+# instruction cap on ChatGPT / Copilot even AFTER char_fit() spills every movable
+# section. The 8,000 cap is a hard vendor limit (cannot be raised); D-07 forbids
+# leaning the source body or truncating the irreducible core (that would drop a
+# non-negotiable — de-id / DISCLAIMER / hierarchy-of-controls / §2.7 intake). The
+# owner-approved handling is therefore a DOCUMENTED per-(skill, platform)
+# known-overflow exclusion: these specific (skill, platform) bundles are emitted on
+# gemini/generic (9,000 cap) ONLY and intentionally SKIPPED on the overflowing
+# 8,000-cap host(s). The source SKILL.md is untouched; the irreducible core is
+# never truncated; build --all --check stays exit 0.
+#
+# The set was MEASURED, not guessed — `build.py --all --check` (pre-exclusion, P17)
+# enumerated exactly these IrreducibleOverflow (skill, platform) pairs and no others:
+#   - weather-dynamic-risk-assessment   overflows chatgpt (8399) AND copilot (8510)
+#   - wind-turbine-work-at-height-rescue overflows chatgpt (8882) AND copilot (8993)
+#   - lone-working-assessment           overflows copilot (8002) only (chatgpt fits)
+# gemini/generic (9,000) clear all three irreducible cores with headroom, so each
+# skill still ships a complete adapter on those hosts. Re-derive by re-running
+# `python3 adapters/build.py --all --check` after removing this map.
+KNOWN_OVERFLOW_SKIP: Dict[str, List[str]] = {
+    "weather-dynamic-risk-assessment": ["chatgpt", "copilot"],
+    "wind-turbine-work-at-height-rescue": ["chatgpt", "copilot"],
+    "lone-working-assessment": ["copilot"],
+}
+
 # The A4 house-standard section order (C §3.4) the markdown-report degradation
 # follows on every non-Code-Interpreter host (Gemini/Copilot/generic).
 HOUSE_SECTION_ORDER = [
@@ -947,6 +975,13 @@ def main(argv: Optional[List[str]] = None) -> int:
                 problems.append(f"{skill}: load failed — {e}")
                 continue
             for platform in targets:
+                # Documented known-overflow exclusion (owner decision 2026-06-24, vendor
+                # 8000 cap, D-07 no-truncation): this (skill, platform) bundle is emitted
+                # on gemini/generic only; skip the overflowing 8000-cap host so the
+                # irreducible four-non-negotiables core is never truncated and --check
+                # stays exit 0 without a source-body change. See KNOWN_OVERFLOW_SKIP.
+                if platform in KNOWN_OVERFLOW_SKIP.get(skill, ()):
+                    continue
                 bundle_dir = out_root / platform / skill
                 try:
                     emit(adapted, platform, bundle_dir, platforms_cfg)

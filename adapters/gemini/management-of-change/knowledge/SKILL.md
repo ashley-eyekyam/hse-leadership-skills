@@ -22,6 +22,8 @@ metadata:
   - All
   status: stable
   plugin: hse-process
+  bundled_in:
+  - hse-rail
   hse_reviewed_by: ''
   hse_reviewed_date: ''
 ---

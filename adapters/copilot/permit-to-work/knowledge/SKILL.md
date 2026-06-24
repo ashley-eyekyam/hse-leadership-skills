@@ -24,6 +24,10 @@ metadata:
   - All
   status: stable
   plugin: hse-process
+  bundled_in:
+  - hse-construction
+  - hse-manufacturing
+  - hse-marine-offshore
   hse_reviewed_by: ''
   hse_reviewed_date: ''
 ---

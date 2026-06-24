@@ -1,0 +1,27 @@
+{
+  "capabilities": [],
+  "description": "Produces a clause-by-clause ISO 45001 gap analysis and certification-readiness assessment for a named organisation or site. Use this skill whenever a user asks to assess ISO 45001 readiness, run a gap analysis against ISO 45001, check management-system conformance, prepare for a certification or surveillance audit, or score maturity against the standard's clauses. It scores each clause's conformance from evidence on a 5-level maturity scale, prioritises gaps by risk and certification-blocking severity, and produces a costed remediation roadmap with named owners and dates — emitted as a branded report. Equally adaptable to ISO 14001 / ISO 45003 via the standard selector. Decision-support only; a competent person must review the output.",
+  "instructions": "See instructions.md (the full instruction field).",
+  "knowledge_sources": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/company-card.yaml",
+    "knowledge/deid-checklist.md",
+    "knowledge/gap-prioritisation.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/intake-interview.md",
+    "knowledge/intake.md",
+    "knowledge/iso-14001.md",
+    "knowledge/iso-45001.md",
+    "knowledge/iso-45003.md",
+    "knowledge/iso45001-maturity.md",
+    "knowledge/ops-clause-map.md",
+    "knowledge/sme-review.md",
+    "knowledge/subagent-archetypes.md"
+  ],
+  "name": "iso45001-gap-analysis",
+  "schema": "1.7"
+}

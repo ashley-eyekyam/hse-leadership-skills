@@ -1,0 +1,27 @@
+{
+  "code_interpreter": false,
+  "description": "Produce a consultant-grade wind-turbine work-at-height + rescue plan for a named turbine/site and the specific WAH activity (nacelle/hub/blade/tower). Use this skill to plan work at height on a wind turbine, build a turbine WAH risk assessment, specify a mandatory tested rescue plan for a suspended worker, or set the two-person-minimum climb-team baseline. Control leads with the Work at Height Regulations 2005 reg-6 hierarchy (avoid work at height -> prevent a fall, collective before personal -> mitigate/arrest), and a tested rescue plan is mandatory before work begins: a suspended worker is recovered within minutes by the team's own two-person-minimum capability -- 'call 999' is NEVER the rescue plan. It cites GWO competence as a requirement (cite-only; licensed module/cert detail is [GAP]), names the weather thresholds weather-dynamic-risk-assessment (REN-03) owns, and de-identifies worker names + GWO certificate numbers to role labels. Decision-support only; competent-person review required.",
+  "instructions_file": "instructions.md",
+  "knowledge_files": [
+    "knowledge/DISCLAIMER.md",
+    "knowledge/METHODOLOGY.md",
+    "knowledge/QUALITY_CHECKLIST.md",
+    "knowledge/SKILL.md",
+    "knowledge/_skill-kb.md",
+    "knowledge/company-card.yaml",
+    "knowledge/deid-checklist.md",
+    "knowledge/gwo-wah-rescue.md",
+    "knowledge/hierarchy-of-controls.md",
+    "knowledge/in-renewables.md",
+    "knowledge/intake-interview.md",
+    "knowledge/intake.md",
+    "knowledge/renewables-clause-map.md",
+    "knowledge/renewables.md",
+    "knowledge/rescue-plan.md",
+    "knowledge/sme-review.md",
+    "knowledge/subagent-archetypes.md",
+    "knowledge/wah2005.md",
+    "knowledge/weather-thresholds.md"
+  ],
+  "name": "wind-turbine-work-at-height-rescue"
+}

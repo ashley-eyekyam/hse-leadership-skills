@@ -1,10 +1,21 @@
 """test_build_all.py — the §5 acceptance #8 integration test (Task 2).
 
-`build.py --all --check` emits + self-validates all 49 skills × 4 platforms and
-exits 0; the three exemplars (roster + A7-dependency variance) each produce a
+`build.py --all --check` emits + self-validates the full v1.2 catalog (94 skills ×
+4 platforms, minus the documented per-(skill, platform) known-overflow exclusions)
+and exits 0; the three exemplars (roster + A7-dependency variance) each produce a
 passing bundle on all four platforms; and NO committed bundle directory carries a
 heavy `assets/` payload (the D-09 share-don't-duplicate contract, tree-wide).
 Deterministic — no network, no model.
+
+P17 (17-07): the catalog expanded from 49 → 94 skills. Three skills carry an
+irreducible four-non-negotiables core that genuinely exceeds the REAL 8,000-char
+ChatGPT/Copilot vendor cap even after char_fit() spills every movable section;
+D-07 forbids leaning the source body or truncating the core, so those specific
+(skill, platform) bundles are emitted on gemini/generic (9,000) only and skipped
+on the overflowing 8,000-cap host (build.KNOWN_OVERFLOW_SKIP — owner decision
+2026-06-24). The expected per-platform bundle count is therefore 94 minus the
+skips for that platform; the settled tree carries 92 chatgpt + 94 gemini + 91
+copilot + 94 generic = 371 bundles.
 """
 
 from pathlib import Path
@@ -17,7 +28,8 @@ ADAPTERS = REPO / "adapters"
 
 
 def test_build_all_check_exits_zero():
-    # The G3 everything-at-once gate: all 49 × 4 emit + self-validate clean.
+    # The G3 everything-at-once gate: the full 94-skill catalog (minus the documented
+    # known-overflow skips) emits + self-validates clean and exits 0.
     assert build.main(["--all", "--check"]) == 0
 
 
@@ -31,18 +43,68 @@ def test_four_non_negotiables_job_green():
     assert va.main(["--all", "--non-negotiables"]) == 0
 
 
-def test_committed_tree_has_all_49_on_4_platforms():
-    skill_names = sorted(p.parent.name for p in (REPO / "skills").rglob("SKILL.md"))
-    assert len(skill_names) == 49, f"expected 49 skills, found {len(skill_names)}"
+def test_committed_tree_has_full_catalog_on_4_platforms():
+    # P17: the v1.2 catalog is 94 skills. Every skill ships an adapter on every
+    # platform EXCEPT the documented per-(skill, platform) known-overflow skips
+    # (build.KNOWN_OVERFLOW_SKIP — owner decision 2026-06-24, real 8000 vendor cap,
+    # D-07 no-truncation): those bundles ship on gemini/generic only.
+    skill_names = sorted(p.parent.name for p in (REPO / "skills").glob("*/SKILL.md"))
+    assert len(skill_names) == 94, f"expected 94 skills, found {len(skill_names)}"
     for platform in build.PLATFORMS:
         for skill in skill_names:
             bundle = ADAPTERS / platform / skill
+            if platform in build.KNOWN_OVERFLOW_SKIP.get(skill, ()):
+                # Intentionally skipped on the overflowing 8000-cap host; assert it is
+                # ABSENT (so a future accidental rebuild here is caught) but present on
+                # the non-overflowing hosts.
+                assert not bundle.exists(), (
+                    f"{platform}/{skill}: bundle present but is in KNOWN_OVERFLOW_SKIP "
+                    f"(should be emitted on gemini/generic only)"
+                )
+                continue
             assert bundle.is_dir(), f"missing committed bundle {platform}/{skill}"
             instr = bundle / build._INSTRUCTION_FILE[platform]
             assert instr.is_file(), f"{platform}/{skill}: missing {instr.name}"
             assert (bundle / "manifest.json").is_file()
             assert (bundle / "INSTALL.md").is_file()
             assert (bundle / "knowledge").is_dir()
+
+
+def test_known_overflow_skips_ship_on_gemini_and_generic():
+    # Each known-overflow skill must STILL ship a complete adapter on the 9000-cap
+    # hosts (gemini + generic) — the exclusion drops only the overflowing 8000 host,
+    # never the skill itself (D-07: source intact, core never truncated).
+    for skill in build.KNOWN_OVERFLOW_SKIP:
+        for platform in ("gemini", "generic"):
+            bundle = ADAPTERS / platform / skill
+            assert bundle.is_dir(), (
+                f"{platform}/{skill}: known-overflow skill missing its 9000-cap bundle"
+            )
+            assert (bundle / build._INSTRUCTION_FILE[platform]).is_file()
+
+
+def test_known_overflow_set_is_genuinely_irreducible():
+    # Guard against a stale skip map: each documented (skill, platform) skip must
+    # STILL genuinely raise IrreducibleOverflow at its real cap (so the map is never
+    # masking a skill that has since been leaned under the cap). Re-derive deterministically.
+    platforms_cfg = build.load_platforms()
+    for skill, skip_platforms in build.KNOWN_OVERFLOW_SKIP.items():
+        skill_dir = REPO / "skills" / skill
+        adapted = build.load_skill(skill_dir, REPO)
+        for platform in skip_platforms:
+            limit = platforms_cfg["platforms"][platform]["char_limit"]
+            try:
+                build.emit(adapted, platform, ADAPTERS / "_overflow_probe" / platform / skill, platforms_cfg)
+            except build.IrreducibleOverflow:
+                continue  # expected — genuinely over the cap
+            else:
+                raise AssertionError(
+                    f"{platform}/{skill}: in KNOWN_OVERFLOW_SKIP but no longer overflows "
+                    f"char_limit {limit} — remove it from the skip map (it now fits)"
+                )
+    # cleanup the throwaway probe tree
+    import shutil
+    shutil.rmtree(ADAPTERS / "_overflow_probe", ignore_errors=True)
 
 
 def test_no_committed_heavy_assets_tree_wide():
