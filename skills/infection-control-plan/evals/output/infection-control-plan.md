@@ -1,14 +1,3 @@
-<!-- CANDIDATE golden output for infection-control-plan (HC-02). Generated from eval case 1's
-     scenario (Respiratory Unit, Ward 4B; airborne TB + droplet ILI + contact MDRO). It demonstrates
-     the core lever: engineering/administrative controls before PPE + the hierarchy. The unit
-     manager's proposed control -- "give the staff N95 respirators and tell them to keep the door
-     shut" -- is a PPE-led treatment of an airborne agent with no airborne-infection isolation room or
-     ventilation provision; it is FLAGGED and PUSHED UP the hierarchy (an AIIR / negative pressure is
-     the engineering control, PPE the residual barrier). PHI is the highest tier: patients are
-     referenced by role / cohort only, no infection status is attributed to a named person, and the
-     surveillance is de-identified / aggregated with <5 clusters suppressed. NOT owner-LOCKED -- the
-     owner reviews + locks in P17. -->
-
 # Infection Control Plan — Respiratory Unit, Ward 4B
 
 *Decision-support only. A competent person (infection-prevention & control professional) must review

@@ -1,5 +1,3 @@
-<!-- CANDIDATE golden output (D-09) — generated from eval case 1's scenario. NOT owner-locked. -->
-
 # Legal & Other-Requirements Compliance Register — Northgate Manufacturing, Plant 2
 
 *Decision-support only — a competent person must review this register before reliance. Built per ISO 45001 clause 6.1.3 (determination of legal & other requirements) and evaluated per clause 9.1.2 (evaluation of compliance).*

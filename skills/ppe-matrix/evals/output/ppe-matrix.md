@@ -1,12 +1,3 @@
-<!-- CANDIDATE golden output for ppe-matrix (MFG-04). Generated from eval case 1's scenario
-     (line-3 fettling cell, fettler + grinder roles, Plant 3). It demonstrates the controls-first
-     gate: PPE is specified ONLY for the residual hazard surviving the higher-order controls
-     (eye/face, noise, dust), and the hand/arm hazard — which had NO higher-order control
-     recorded — is returned as a CONTROLS-FIRST FLAG with the PPE row WITHHELD (not invented).
-     The EN/ANSI conformity standards are cited with a [year] placeholder (the conformity-year is
-     the user's to confirm against the in-force edition). NOT owner-LOCKED — the owner reviews +
-     locks in P17. -->
-
 # PPE Matrix — Line-3 Fettling Cell (fettler + grinder roles, Plant 3)
 
 *Decision-support only. A competent person must review and sign off this PPE hazard assessment.

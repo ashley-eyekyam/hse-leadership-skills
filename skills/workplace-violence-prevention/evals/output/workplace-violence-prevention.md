@@ -1,14 +1,3 @@
-<!-- CANDIDATE golden output for workplace-violence-prevention (HC-04). Generated from eval case 1's
-     scenario (emergency department, evening/overnight reception & triage). It demonstrates the core
-     lever: environmental-and-administrative-before-reactive + the hierarchy. The security manager's
-     proposed control -- "issue the triage nurses personal alarms and run a self-defence training
-     day" -- is a reactive-led treatment of an exposure that could be designed out; it is FLAGGED and
-     PUSHED UP the hierarchy (record the worksite analysis + design out the exposure with controlled
-     access, sightlines, duress alarms, and staffing first). PHI is the highest tier: any victim,
-     assailant, or known-risk patient is referenced by role only, behavioural-health flags are held
-     separately, and the WPV incident log is de-identified / aggregated with <5 categories suppressed.
-     NOT owner-LOCKED -- the owner reviews + locks in P17. -->
-
 # Workplace-Violence Prevention Program — Emergency Department
 
 *Decision-support only. A competent person (healthcare-security / WPV / occupational-health

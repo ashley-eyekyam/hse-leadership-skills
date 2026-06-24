@@ -1,9 +1,3 @@
-<!-- CANDIDATE golden output for noise-exposure-health-surveillance (MFG-03 / 14-03). Generated
-     from eval case 1's scenario (press-shop + maintenance SEG noise + audiometry). Exposure
-     values are TRANSCRIBED measured/estimated inputs (92 dB(A) measured; 87 dB(A) estimated) —
-     NO dosimetry is computed by the skill (D-08a). Audiometric data is reported by SEG with <5
-     suppression. NOT owner-LOCKED — the owner reviews + locks in P17. -->
-
 # Noise Exposure Assessment & Hearing-Conservation Plan — Plant 3 (Press shop · Maintenance)
 
 *Decision-support only. A competent person (occupational hygienist / audiometric technician / OH

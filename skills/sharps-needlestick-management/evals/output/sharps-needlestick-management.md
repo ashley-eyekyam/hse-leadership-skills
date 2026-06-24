@@ -1,13 +1,3 @@
-<!-- CANDIDATE golden output for sharps-needlestick-management (HC-01). Generated from eval case 1's
-     scenario (phlebotomy round, Day-Ward 4B). It demonstrates the core lever: engineering-first +
-     the hierarchy. The ward manager's proposed control -- "tell staff to take care and wear gloves,
-     and recap the needle before binning it" -- is a behaviour-led / PPE-led treatment of sharps that
-     could be eliminated or engineered out; it is FLAGGED and PUSHED UP the hierarchy (eliminate the
-     sharp + fit safety-engineered devices first), and the recapping instruction is REJECTED. PHi is
-     the highest tier: the source patient is referenced by role only with consent, the injured
-     worker's PEP record is held separately, and the Sharps Injury Log is de-identified / aggregated
-     with <5 categories suppressed. NOT owner-LOCKED -- the owner reviews + locks in P17. -->
-
 # Sharps & Needlestick Management — Phlebotomy Round, Day-Ward 4B
 
 *Decision-support only. A competent person (occupational-health / infection-control professional)

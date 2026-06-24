@@ -1,13 +1,3 @@
-<!-- CANDIDATE golden output for patient-handling-assessment (HC-03). Generated from eval case 1's
-     scenario (bed-to-chair transfer, rehab ward, fully-dependent patient, ceiling hoist available). It
-     demonstrates the core lever: avoid-the-manual-lift-first + the hierarchy. The ward manager's
-     proposed control -- "two staff lift + good technique + back belts" -- is a manual lift recommended
-     where a ceiling hoist is available, plus a technique/PPE-led treatment; it is FLAGGED and PUSHED UP
-     the hierarchy (avoid the manual lift + use the hoist first). PHI is the highest tier: the patient is
-     assessed by de-identified mobility/dependency/weight band only, the handler is role-labelled with no
-     back-condition record, and handling-injury data is aggregated with <5 categories suppressed. NOT
-     owner-LOCKED -- the owner reviews + locks in P17. -->
-
 # Patient Handling (Moving & Handling of People) Assessment — Bed-to-Chair Transfer, Rehab Ward
 
 *Decision-support only. A competent person (moving-and-handling / ergonomics specialist) must review

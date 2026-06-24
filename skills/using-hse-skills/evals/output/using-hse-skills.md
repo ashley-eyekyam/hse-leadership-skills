@@ -1,8 +1,5 @@
 # HSE Skills Roadmap — re-roofing job (recommendation + run sheet)
 
-> CANDIDATE golden output for the recommendation-accuracy eval. Role-based owners only,
-> no personal names (golden-output authoring convention). The owner LOCKs this in Phase 17.
-
 ## HOW THIS WORKS — read me first
 
 You have confirmed the job context below. This run sheet has been **saved as a durable

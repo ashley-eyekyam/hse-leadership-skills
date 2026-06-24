@@ -1,15 +1,3 @@
-<!-- CANDIDATE golden output for live-working-risk-assessment (UTIL-03). Generated from eval case 1's
-     scenario (thermographic survey on the energized LV switchboard SB-2, 400 V, Substation 2). It
-     demonstrates the core lever: de-energize-first + live-working justification discipline. The
-     crew's proposal — "just do it live, it's quicker, production can't stop, and we'll wear the
-     arc-flash suit" — is a convenience justification led by arc-rated PPE; it is REJECTED on the
-     convenience grounds and FLAGGED as PPE-led, then PUSHED UP the hierarchy (de-energize -> engineer
-     -> approach control + permit -> arc-rated PPE LAST). The EAWR reg 14 three-part statutory test is
-     applied and a VALID justification recorded (an in-service survey is unreasonable to perform dead).
-     The arc-flash incident energy is CROSS-REFERENCED from arc-flash-assessment (UTIL-01), never
-     re-derived. An energized-work permit (Annex J) is issued. The prior contact incident is
-     de-identified to role level. NOT owner-LOCKED — the owner reviews + locks in P17. -->
-
 # Live-Working Risk Assessment — Thermographic Survey, Energized LV Switchboard SB-2 (Substation 2)
 
 *Decision-support only. A competent person must review this assessment and a competent authority must

@@ -1,11 +1,5 @@
 # Lift Plan — 12.8 t AHU to the level-6 plant deck (LOLER Reg 8 / BS 7121)
 
-> **CANDIDATE golden output (not owner-LOCKED).** Generated for the CON-04 lift-plan primary
-> eval scenario (evals.json case 1). The owner reviews and LOCKS this in Phase 17 (CONV-5);
-> it is not self-locked here.
-> **Decision-support only — a competent person must review this plan before any lifting
-> operation proceeds. This is not competent-person approval.**
-
 De-identification pass complete BEFORE drafting. Identifiers detected and listed up front: one
 crane-operator name, a medical-fitness note, lifting-incident injury counts — the
 incident-derived name and the medical-fitness detail were scrubbed to role labels / removed, the

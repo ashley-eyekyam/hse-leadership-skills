@@ -107,6 +107,20 @@ _PHONE_RE = re.compile(r"\b(?:\+?\d[\d\s().-]{6,}\d)\b")
 _PHONE_CUE_RE = re.compile(r"phone|tel|mobile|call|fax", re.IGNORECASE)
 _ISO_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 _DOTTED_CITATION_RE = re.compile(r"^\d{1,4}[.\-]\d{1,4}$")
+# A parenthesised 4-digit year ("(2008)", "(2016)") is a standard/citation edition
+# marker, never part of a phone number. A regulatory/standard citation CUE just
+# before the candidate ("CFR", "OSHA", "BS", "ISO", "IEEE", "NFPA", "EN", "§", ...)
+# likewise marks the digits as a citation, not a phone. These catch the MULTI-token
+# citation spans the loose `_PHONE_RE` joins across spaces/parens/newlines (e.g.
+# "29 CFR 1910.95 (2008)", "BS 7121-1 (2016) 7", "1910.269\n  (269(d)") which the
+# single-token `_DOTTED_CITATION_RE` cannot — the digit total there falsely reaches
+# >=10 (D-03, completing the CFR/IEEE/NFPA false-positive fix).
+_YEAR_PAREN_RE = re.compile(r"\((?:19|20)\d{2}\)")
+_CITATION_CUE_RE = re.compile(
+    r"CFR|OSHA|NFPA|IEEE|ANSI|\bISO\b|\bBS\b|\bEN\b|\bAPI\b|§|"
+    r"\breg(?:ulation)?\b|\bclause\b|\bpart\b|\bstandard\b|\bsection\b",
+    re.IGNORECASE,
+)
 
 
 def _has_phone_leak(text: str) -> bool:
@@ -119,6 +133,15 @@ def _has_phone_leak(text: str) -> bool:
         candidate = m.group(0).strip()
         # Exclude never-a-phone shapes outright.
         if _ISO_DATE_RE.match(candidate) or _DOTTED_CITATION_RE.match(candidate):
+            continue
+        # A phone number never spans a line break, never embeds a parenthesised
+        # edition year, and is not introduced by a regulatory-citation cue — these
+        # mark a multi-token CFR/standard citation the loose candidate regex joined.
+        if "\n" in m.group(0):
+            continue
+        if _YEAR_PAREN_RE.search(candidate):
+            continue
+        if _CITATION_CUE_RE.search(text[max(0, m.start() - 20):m.start()]):
             continue
         digits = sum(ch.isdigit() for ch in candidate)
         if digits >= 10:

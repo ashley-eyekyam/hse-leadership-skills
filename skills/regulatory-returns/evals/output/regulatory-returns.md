@@ -1,8 +1,5 @@
 # Regulatory Return — OSHA 300 Recordability Determination (Despatch-Bay Laceration, CY2025)
 
-> **CANDIDATE golden output (D-09).** Representative consultant-grade output for the
-> case-1 eval scenario; the owner reviews and LOCKS it. Not yet locked.
-
 **Jurisdiction:** United States — OSHA **29 CFR 1904** recordkeeping.
 **Return type:** OSHA Form **300** log (recordability determination) + Form **301**.
 **Reporting period:** calendar year **2025**.

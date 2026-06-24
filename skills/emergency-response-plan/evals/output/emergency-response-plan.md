@@ -1,6 +1,3 @@
-<!-- CANDIDATE golden output (D-09 / CONV-5). Generated in Phase 12 from eval case 1's
-     scenario. Status: candidate, pending owner review + competent-person sign-off. -->
-
 # Emergency Response Plan — Plant 4 Solvent-Storage Warehouse
 
 *Scenario-keyed ERP grounded in ISO 45001 clause 8.2 (emergency preparedness & response).

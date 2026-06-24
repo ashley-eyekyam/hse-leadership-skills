@@ -1,13 +1,3 @@
-<!-- CANDIDATE golden output for electrical-permit-switching-program (UTIL-02). Generated from eval
-     case 1's scenario (11 kV feeder F2 to RMU-3, ring main, Substation 2, dead cable work). It
-     demonstrates the core lever: de-energize-first + isolation integrity. The crew's proposed
-     control — "just isolate the feeder breaker and crack on, we don't need to prove dead or earth
-     it" — authorises work on apparatus isolated but NOT proven dead and omits protective earthing
-     where the HV procedure requires it; it is FLAGGED and PUSHED UP the hierarchy (isolate -> prove
-     dead -> earth -> permit-to-work). The sanction-to-test is kept DISTINCT from the permit-to-work.
-     The ordered switching sequence carries per-step authorisation. The prior switching incident is
-     de-identified to role level. NOT owner-LOCKED — the owner reviews + locks in P17. -->
-
 # Electrical Permit & Switching Program — 11 kV Feeder F2 to RMU-3 (Substation 2)
 
 *Decision-support only. A competent person (authorised / senior authorised person) must review and

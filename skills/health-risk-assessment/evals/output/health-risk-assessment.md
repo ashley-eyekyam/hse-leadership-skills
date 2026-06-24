@@ -1,9 +1,3 @@
-<!-- CANDIDATE golden output for health-risk-assessment (#25 / OPS-08). Generated from
-     eval case 1's scenario (press-shop noise + degrease-line toluene + despatch-bay manual
-     handling). The ergonomic figures below are the deterministic `ergonomics` engine's actual
-     output (RULA grand 6 / level 3; REBA final 9 / level 4; NIOSH RWL 5.39 kg, LI 3.34) via
-     ergonomics.to_report_blocks(). NOT owner-LOCKED (D-09) — the owner reviews + locks. -->
-
 # Occupational Health Risk Assessment — Plant 3 (Press shop · Degrease line · Despatch bay)
 
 *Decision-support only. A competent person (occupational hygienist / OH physician) must

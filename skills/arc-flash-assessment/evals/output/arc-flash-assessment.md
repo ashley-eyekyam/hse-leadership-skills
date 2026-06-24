@@ -1,15 +1,3 @@
-<!-- CANDIDATE golden output for arc-flash-assessment (UTIL-01). Generated from eval case 1's
-     scenario (MCC-2, 480 V motor control centre, Substation 2). It demonstrates the core lever:
-     de-energize-first + the hierarchy. The crew's proposed control — "issue a CAT 2 arc-flash suit
-     and crack on live, production can't stop" — is a PPE-led treatment of a task that could be
-     de-energized AND an energized-work request justified only by economic convenience; it is
-     FLAGGED and PUSHED UP the hierarchy (de-energize and establish an ESWC first), and the
-     convenience justification is REJECTED. The incident energy (7.51 cal/cm²), the arc-flash
-     boundary (1332 mm = distance to 1.2 cal/cm²), and the PPE category (CAT 2) are COMPUTED by the
-     arcflash.py IEEE 1584-2018 engine. The 130.5(H) label content is authored. The
-     prior arc-flash burn incident is de-identified to role level. NOT owner-LOCKED — the owner
-     reviews + locks in P17. -->
-
 # Arc-Flash Assessment — MCC-2 480 V Motor Control Centre (Substation 2)
 
 *Decision-support only. A competent person (qualified electrical engineer) must review and sign off

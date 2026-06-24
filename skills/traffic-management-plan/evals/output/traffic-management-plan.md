@@ -1,11 +1,5 @@
 # Traffic Management Plan — Meadowbank Road site (CDM 2015 Reg 27 / Schedule 3)
 
-> **CANDIDATE golden output (not owner-LOCKED).** Generated for the CON-05
-> traffic-management-plan primary eval scenario (evals.json case 1). The owner reviews and LOCKS
-> this in Phase 17 (CONV-5); it is not self-locked here.
-> **Decision-support only — a competent person must review this plan before it is implemented on
-> site. This is not competent-person approval.**
-
 De-identification pass complete BEFORE drafting. This is a **site / route-level** plan and carries
 **no named individual**: the source inputs named an HGV delivery driver, a fitness-for-duty note,
 and vehicle-incident injury counts — the incident-derived name and the fitness detail were scrubbed

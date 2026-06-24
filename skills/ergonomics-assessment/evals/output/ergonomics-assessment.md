@@ -1,11 +1,3 @@
-<!-- CANDIDATE golden output for ergonomics-assessment (MFG-02). Generated from eval case 1's
-     scenario (despatch-bay carton lift, line-2 packer SEG, NIOSH method). The NIOSH figures
-     below are the deterministic `ergonomics` engine's ACTUAL output for the captured inputs
-     (load 16 kg, H 30, V 40, D 110, A 30, 4 lifts/min, 2 h, fair coupling) via
-     ergonomics.niosh_rwl() -> RWL 8.62 kg, LI 1.86, multipliers HM 0.83 / VM 0.90 / DM 0.86 /
-     AM 0.90 / FM 0.72 / CM 0.90 -> ergonomics.to_report_blocks(). NOT owner-LOCKED — the owner
-     reviews + locks in P17. -->
-
 # Ergonomics Assessment — Despatch-Bay Carton Lift (line-2 packer SEG, Plant 3)
 
 *Decision-support only. A competent person (ergonomist / occupational-health professional) must

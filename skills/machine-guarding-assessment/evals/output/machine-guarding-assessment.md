@@ -1,14 +1,3 @@
-<!-- CANDIDATE golden output for machine-guarding-assessment (MFG-01). Generated from eval case 1's
-     scenario (PL-3 250-ton power press, blanking line, Plant 3). It demonstrates the core lever:
-     the engineering-control-led guard gate. The point-of-operation control proposed by the line —
-     "operators trained to keep hands clear / wear gloves" — is a PPE/admin-only treatment of a
-     mechanical hazard zone; it is FLAGGED and PUSHED UP the hierarchy (restored presence-sensing
-     interlock + fixed perimeter), never accepted as the headline control. Each danger zone gets a
-     specific guard selected in order against the access-frequency rule, cited to its ISO 14120 /
-     OSHA Subpart O basis. The defeated interlock is an immediate high-priority finding. The
-     maintenance interaction cross-references KB-REG-LOTO. The prior amputation incident is
-     de-identified to role level. NOT owner-LOCKED — the owner reviews + locks in P17. -->
-
 # Machine-Guarding Assessment — PL-3 Power Press (blanking line, Plant 3)
 
 *Decision-support only. A competent person must review and sign off this machine-guarding

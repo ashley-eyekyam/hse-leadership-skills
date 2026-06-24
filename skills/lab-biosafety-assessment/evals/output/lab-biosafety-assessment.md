@@ -1,16 +1,3 @@
-<!-- CANDIDATE golden output for lab-biosafety-assessment (HC-05). Generated from eval case 1's
-     scenario (diagnostic mycobacteriology lab, primary TB culture with aerosol-generating
-     manipulation). It demonstrates the core lever: classify the agent's risk group FIRST, then
-     select the BSL with engineering containment BEFORE PPE, and emit [GAP] rather than invent a
-     classification. The submitted control -- "issue N95 respirators and gloves and work on the open
-     bench" -- substitutes PPE for the biosafety cabinet + BSL-3 facility the risk group and procedure
-     require; it is FLAGGED and PUSHED UP the hierarchy. A second unlisted environmental isolate is
-     left as [GAP] (risk group not established), never invented. PHI is the highest tier: the
-     specimen-source patient is referenced by role only with clinical/serostatus detail held
-     separately, the worker is role-labelled with the serological-surveillance record held
-     confidentially, and lab-incident data is aggregated with <5 categories suppressed. NOT
-     owner-LOCKED -- the owner reviews + locks in P17. -->
-
 # Laboratory Biosafety Risk Assessment — Primary Mycobacterial Culture, Diagnostic Mycobacteriology Laboratory
 
 *Decision-support only. A competent person (a Biological Safety Officer) must review and sign off this
