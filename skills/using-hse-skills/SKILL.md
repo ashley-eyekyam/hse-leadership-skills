@@ -137,23 +137,38 @@ trail (e.g. "refined to add `permit-to-work` because the edit named confined-spa
 Loop until the user accepts. This adds no elicitation facet — it re-drives the match on the
 facts already captured.
 
-**Step 4b — Run Step 1 IN PLACE (asymmetric).** Step 1 is special — it is **not** a
-copy-paste-to-fresh-chat block. On a Skill-tool host, invoke Step 1's skill seeded with the
-confirmed facts in THIS same chat. Off-platform (no Skill tool), print a complete,
-copy-pasteable Step-1 block to paste **here** (ROUTE-04 portability). Steps 2+ are the
-fresh-chat set; Step 1 is run where the user already is.
-
-**Step 4c — Emit the asymmetric run sheet for Steps 2+.** Lead with ONE de-identified
-**Context Capsule** (the Step-0 facts + the agreed `SEQUENCE MAP`), then a lean **continuation
-prompt** per later step with the markers **`WHY`** (one-line rationale) / **`RUN`**
-(`/skill-name` or "use the X skill") / **`REFERENCE`** (points back to the Context Capsule
-above — do NOT repeat the shared context) / **`ATTACH`** (the specific prior skill OUTPUT to
-carry forward, e.g. the control set + residual risks — already de-identified by that skill) /
-**`DELTA`** (only this step's new detail) / **`DEPENDENCY`** (Independent / Dependent — run
-after Step N) / **`FEEDS →`** the next step. Add a short opt-in **"expand to standalone"** note
-for a user who cannot carry the capsule (it inlines the full context for one step). The Context
-Capsule and every continuation prompt are the de-id surface — role labels only (`[SITE-1]`,
+**Step 4b — Emit + PERSIST + PRESENT the run sheet (the durable Steps-2+ plan).** De-id has
+already run (Step 3). Compose the **complete standalone plan**: ONE de-identified **Context
+Capsule** (the Step-0 facts + the agreed `SEQUENCE MAP`), the ordered **chain table**, a
+**Step-1 record** (what Step 1 is / that it runs in place), then a lean **continuation prompt**
+per later step with the markers **`WHY`** (one-line rationale) / **`RUN`** (`/skill-name` or
+"use the X skill") / **`REFERENCE`** (points back to the Context Capsule above — do NOT repeat
+the shared context) / **`ATTACH`** (the specific prior skill OUTPUT to carry forward, e.g. the
+control set + residual risks — already de-identified by that skill) / **`DELTA`** (only this
+step's new detail) / **`DEPENDENCY`** (Independent / Dependent — run after Step N) /
+**`FEEDS →`** the next step. Add a short opt-in **"expand to standalone"** note for a user who
+cannot carry the capsule. The content shape is UNCHANGED from before — what changes is that you
+now **persist and present** it, with ONE portable rule: on a host with file-write, **write the
+run sheet to a durable de-identified `.md` file** with a role-label filename slug (e.g.
+`hse-run-sheet-<subject-slug>.md` — never a real name/site) and **surface the path**; on a
+chat-only host, present the SAME run sheet as ONE clearly-delimited, copy-pasteable fenced
+markdown **save-block** ("save this as your Steps-2+ run sheet"). Tell the user this saved file
+is their durable Steps-2+ plan — it survives Step 1 flooding the chat. The persisted file and
+every continuation prompt are the de-id surface — role labels only (`[SITE-1]`,
 `[ROLE: site manager]`, `[CONTRACTOR]`), no re-id key; a leak here is a non-waivable HARD-fail.
+
+**Step 4c — Clearance gate (Step 1 fires only on "go").** Present the saved run sheet and ask
+ONE go/no-go: *"Here is your saved run sheet — review it. Say 'go' (or 'proceed' / 'run step 1')
+to start Step 1 here, or 'edit' to change the context/chain first."* Step 1 is invoked **only on
+explicit clearance**. An **edit** loops back to **Step 4a** (re-drive the Step-2 match and
+**re-persist**). This gate applies on **EVERY host — the Skill-tool host included** — so Step 1
+**never auto-fires**.
+
+**Step 4d — Run Step 1 IN PLACE (asymmetric), now GATED on clearance.** ONLY after clearance:
+Step 1 is **not** a copy-paste-to-fresh-chat block. On a Skill-tool host, invoke Step 1's skill
+seeded with the confirmed facts in THIS same chat. Off-platform (no Skill tool), print a
+complete, copy-pasteable Step-1 block to paste **here** (ROUTE-04 portability). Steps 2+ are the
+fresh-chat set; Step 1 is run where the user already is.
 
 **Step 5 — Teach the user how to run it (educative).** Explain, don't just list: **Step 1 runs
 here** because the first skill does the heavy lifting and fills this chat; **Steps 2+ go to a
@@ -161,10 +176,12 @@ fresh chat each** because a fresh chat stays fast and focused; the **Context Cap
 one block to paste at the top of each fresh chat so it knows the site, crew, and jurisdiction
 without re-asking; and the de-id reassurance — **the OUTPUT you attach is already de-identified
 by the skill that produced it**, so attach the skill's emitted output (not raw notes) and the
-chain stays clean. Each target skill's own §2.7 "echo back facts" intake then confirms the
-pasted capsule and asks only the deferred facets — **edit no other skill**. The full method
-(capsule composition, the continuation-prompt must/must-not list, the attached-output rule, the
-iteration-trail convention) lives in `references/METHODOLOGY.md`.
+chain stays clean. Add: **the saved run sheet is your durable Steps-2+ plan — keep it open in a
+separate tab**; we held off Step 1 until you'd saved it, because Step 1 fills this chat. Each
+target skill's own §2.7 "echo back facts" intake then confirms the pasted capsule and asks only
+the deferred facets — **edit no other skill**. The full method (capsule composition, the
+continuation-prompt must/must-not list, the attached-output rule, the iteration-trail
+convention, and the persist-then-clear rule) lives in `references/METHODOLOGY.md`.
 
 **On request only:** also render the run sheet as a branded "HSE Skills Roadmap" document via
 the shared report engine (Output format below) — composed from the existing report-model block

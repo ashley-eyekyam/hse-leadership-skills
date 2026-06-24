@@ -5,13 +5,15 @@
 
 ## HOW THIS WORKS — read me first
 
-You have confirmed the job context below. We will run **STEP 1 right here in this chat**,
-because the first skill does the heavy lifting and fills this chat with detail. For each later
-step, open a **fresh chat** and paste the **Context Capsule** so the new chat knows the site,
-crew, and jurisdiction without re-asking — then attach the previous step's output where the
-step notes. That keeps each chat fast and focused. Every output you carry forward is already
-de-identified by the skill that produced it, so attach the skill's emitted output, not raw
-notes, and the chain stays clean.
+You have confirmed the job context below. This run sheet has been **saved as a durable
+markdown file** so you can keep it open while you work — it is your Steps-2+ plan, and it
+survives Step 1 filling this chat. We will run **STEP 1 right here in this chat** — but only
+once you have the saved run sheet and say **go**, because the first skill does the heavy lifting
+and fills this chat with detail. For each later step, open a **fresh chat** and paste the
+**Context Capsule** so the new chat knows the site, crew, and jurisdiction without re-asking —
+then attach the previous step's output where the step notes. That keeps each chat fast and
+focused. Every output you carry forward is already de-identified by the skill that produced it,
+so attach the skill's emitted output, not raw notes, and the chain stays clean.
 
 ## Captured facts (echoed back, de-identified)
 
@@ -51,10 +53,23 @@ skill ran.*
 > SEQUENCE MAP:  risk-assessment → job-safety-analysis → permit-to-work → toolbox-talk
 > (Role labels only — the re-identification key is held separately, not in this capsule.)
 
+## Saved run sheet — review this before Step 1 runs
+
+**Saved to:** `hse-run-sheet-re-roofing.md` — this complete run sheet (the Context Capsule, the
+ordered chain, the Step-1 record, and every Steps-2+ continuation prompt below) has been written
+as a durable markdown file. Keep it open in a separate tab; it is your Steps-2+ plan and it
+survives Step 1 filling this chat. *(On a chat-only host with no file-write tool, the same run
+sheet is presented as one clearly-delimited copy-paste save-block — "save this as your Steps-2+
+run sheet" — instead of a written file.)*
+
+**Clearance:** review this saved run sheet, then say **'go'** (or 'proceed' / 'run step 1') to
+run Step 1 here, or **'edit'** to change the context or chain first. Step 1 does not start until
+you clear it — on every host.
+
 ## Run sheet (asymmetric — Step 1 in place, Steps 2+ in fresh chats)
 
-▶ **STEP 1 runs in THIS chat — no copy-paste.** Steps 2–4 each go to a fresh chat with the
-Context Capsule above pasted at the top.
+▶ **STEP 1 runs in THIS chat — no copy-paste, and only on your clearance.** Steps 2–4 each go to
+a fresh chat with the Context Capsule above pasted at the top.
 
 ── STEP 1 — risk-assessment  (runs here, in place) ───────────
 WHY:        Establishes the hazard/control baseline for the re-roofing task at height.
@@ -101,10 +116,11 @@ FEEDS →:    (none — final step; the crew signs and starts work).
 
 ## How to run it
 
-- **Step 1, here:** on a host with the Skill tool, say "go" and the router launches the
-  risk-assessment skill in this chat seeded with the confirmed facts. Off-platform, paste the
-  printed Step-1 block into this same chat and run the named skill — Step 1 is never a
-  fresh-chat block.
+- **Step 1, here (only on your clearance):** once you have the saved run sheet, on a host with
+  the Skill tool, say "go" and the router launches the risk-assessment skill in this chat seeded
+  with the confirmed facts. Off-platform, paste the printed Step-1 block into this same chat and
+  run the named skill — Step 1 is never a fresh-chat block, and it never auto-fires before you
+  clear it.
 - **Steps 2–4, fresh chat each:** open a new chat, paste the Context Capsule at the top, run
   the named skill, and attach the prior step's already-de-identified output as the step's
   ATTACH line notes. A fresh chat per step stays fast and focused.

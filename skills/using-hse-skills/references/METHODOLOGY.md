@@ -3,8 +3,9 @@
 This file houses the method detail the SKILL.md Workflow points to, so the body stays lean.
 It covers: how the Context Capsule is composed, what a continuation prompt must and must not
 contain, why an attached prior output is already de-identified, the Step-4a iteration-trail
-convention, the Step-1-in-place vs Steps-2+-fresh-chat asymmetry, and the opt-in
-expand-to-standalone fallback. The router produces no HSE artifact; its deliverable is an
+convention, the Step-1-in-place vs Steps-2+-fresh-chat asymmetry, the opt-in
+expand-to-standalone fallback, and the persist-then-clear rule (persist the run sheet, then gate
+Step 1 on clearance). The router produces no HSE artifact; its deliverable is an
 intuitive, educative, de-identified run sheet that chains the recommended skills.
 
 ## Context Capsule composition
@@ -82,3 +83,55 @@ For a user who cannot carry the capsule between chats, the run sheet offers a sh
 step self-runs without the capsule. This preserves the old standalone-single-step behaviour as
 an opt-in fallback rather than the default — the default is the lean capsule + continuation
 prompts, which is the more intuitive, lower-token, smaller-de-id-surface path.
+
+## Persist-then-clear (persist the run sheet, then gate Step 1)
+
+The run sheet is the router's PRIMARY deliverable, but Step 1 floods the triggering chat — so
+the durable Steps-2+ plan must be in the user's hands BEFORE Step 1 runs, and Step 1 must wait
+for the user's go-ahead. This is the agent Plan-Mode shape: write the plan, present it, require
+explicit approval, only then execute. The Workflow order is therefore 4a confirm-or-refine →
+4b emit + persist + present → 4c clearance gate → 4d run Step 1 in place (gated).
+
+**Portable persist (write-file vs present-save-block, by host capability).** "Persist" means
+"produce a durable, user-held markdown artifact"; the mechanism degrades gracefully and never
+assumes a filesystem (ROUTE-04):
+
+- **File-capable host (has a file-write tool):** write the run sheet to a `.md` file and
+  **surface its path** to the user (e.g. "Saved to: `hse-run-sheet-<subject-slug>.md`"). Surface
+  the path means tell the user the exact filename/location so they can re-open it after Step 1
+  has filled the chat.
+- **Chat-only host (no file-write tool):** present the SAME run sheet as ONE clearly-delimited,
+  copy-pasteable fenced markdown **save-block**, with an explicit instruction ("save this as your
+  Steps-2+ run sheet"). The copy-paste block IS the portable degradation of persistence — the
+  same plain-text-the-user-carries story as the Context Capsule itself.
+
+The branded "HSE Skills Roadmap" docx/pdf (D-07) stays the OPT-IN render layer on top of this
+plain-markdown default; chat-only hosts must not depend on the report engine.
+
+**De-identified filename convention (role-label slug only).** The persisted filename is a
+role-label / subject slug ONLY — e.g. `hse-run-sheet-re-roofing.md` — and NEVER a verbatim name,
+home address, government ID, or precise site identifier. The filename is itself a circulated
+surface, so it carries no identifier.
+
+**What the persisted file MUST contain (the complete standalone plan).** The saved file is
+self-sufficient — it is the WHOLE plan, not "only from step two": the ONE Context Capsule + the
+ordered chain table + a Step-1 record (what Step 1 is / that it runs in place) + ALL Steps-2+
+continuation prompts (with the opt-in expand-to-standalone note). A user who re-opens the saved
+file after Step 1 has scrolled away has everything needed to resume each later step.
+
+**What counts as clearance.** The clearance gate (Step 4c) asks ONE go/no-go on the presented
+run sheet. Accepted clearances are **"go"**, **"proceed"**, or **"run step 1"**. An **"edit"**
+routes back to Step 4a — re-drive the Step-2 match on the (possibly amended) facts and
+**re-persist** the run sheet before re-presenting it. The gate is a Workflow control-flow step,
+not a new elicitation facet (no ELI-* question is added — it asks for a go/no-go decision on a
+presented artifact, not for a new fact).
+
+**The persisted file is a de-id surface.** The written `.md` (or the chat-only save-block) is in
+scope of the non-waivable de-id HARD-fail gate exactly as the inline capsule + continuation
+prompts are: it carries role labels only, no verbatim identifier, no re-identification key, and
+no name-to-label mapping. De-id runs FIRST (Workflow Step 3) — before the file is written — so
+you can never present a file you have not scrubbed.
+
+**Step 1 NEVER auto-fires.** On EVERY host, including a Skill-tool host, the clearance gate
+precedes the Step-1 side effect; Step 1 is invoked only on the user's explicit clearance. This
+overrides the earlier micro-behaviour where Step 1 auto-invoked in place on a Skill-tool host.

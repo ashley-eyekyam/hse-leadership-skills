@@ -11,6 +11,7 @@
   "sections": [
     { "type": "heading", "level": 1, "text": "How this works — read me first" },
     { "type": "paragraph", "text": "Routing for: re-roofing fall-from-height at [SITE-1], own workers + [CONTRACTOR], UK, construction. Goal: make the job safe end to end — risk assessment, safe-work method, permit, and a toolbox talk the crew can sign. This router produces no HSE artifact itself; it recommends the ordered chain below and hands the de-identified context over. Run Step 1 in the chat where this roadmap was produced; for each later step, open a fresh chat, paste the Context Capsule, and attach the prior step's already-de-identified output. A fresh chat per step keeps each one fast and focused." },
+    { "type": "callout", "text": "This rendered roadmap is your durable Steps-2+ plan — save it and keep it to hand. Run Step 1 only when you are ready; the later steps are here so the plan survives Step 1 filling the chat.", "box_type": "tip" },
     { "type": "callout", "text": "SEQUENCE MAP:  risk-assessment → job-safety-analysis → permit-to-work → toolbox-talk", "box_type": "info" },
     { "type": "table",
       "headers": ["#", "Skill", "Bundle", "Why"],

@@ -1,6 +1,8 @@
-HSE Skills Roadmap — run sheet (de-identified handoff)
+HSE Skills Roadmap — saved run sheet file (de-identified handoff)
 
-De-identification pass complete BEFORE this run sheet was written. Identifiers detected
+This is the persisted run-sheet file (the durable de-identified markdown the router saves before
+Step 1) — a de-id surface in its own right; it carries role labels only and no re-identification
+key. De-identification pass complete BEFORE this run sheet was written. Identifiers detected
 and listed up front: one worker name, one home address, one phone number, one health
 condition. All were pseudonymized to role labels; the re-identification key is held in a
 SEPARATE access-controlled artifact and is NOT reproduced in this run sheet — neither in the
