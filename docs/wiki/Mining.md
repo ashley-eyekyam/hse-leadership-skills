@@ -68,5 +68,5 @@ The **Mining pack** (`hse-mining`) gives mine safety teams, statutory mine manag
 - **You get:** A branded DOCX + PDF PHMP: the HIRA-structured hazard analysis risk-rated on the org matrix, the hierarchy-ranked control suite (PPE/admin-only treatment of a principal hazard flagged), critical controls linked to the ICMM CCM with performance + verification carried over, and monitoring with owner + due date (gaps recorded as `[GAP]`, never fabricated). Assistive — it structures the multidisciplinary workshop; the mine team owns the engineering judgement.
 - **Pairs well with:** `icmm-critical-control-management` (the critical-control linkage) and `mine-ventilation-strata-blasting-plan` (the concrete plan documents under the PHMP).
 
-### bowtie-builder → see [Process Safety](Process-Safety#bowtie-builder)
-Barrier (bow-tie) analysis for a major-accident hazard. Full card on the Process Safety page.
+### bowtie-builder -> see [Process Safety](Process-Safety#bowtie-builder)
+Supports mining critical-control and principal-hazard analysis where bow-tie barrier logic is the right method. Full card on the Process Safety page.

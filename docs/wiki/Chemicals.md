@@ -80,17 +80,17 @@ The five shared PHA / barrier tools (bow-tie, HAZID, HAZOP, LOPA, What-If) belon
 
 ---
 
-### bowtie-builder → see [Process Safety](Process-Safety#bowtie-builder)
-Barrier (bow-tie) analysis for a major-accident hazard — top event, threats and preventive barriers, consequences and mitigative barriers. Full card on the Process Safety page.
+### bowtie-builder -> see [Process Safety](Process-Safety#bowtie-builder)
+Structures major-accident barrier analysis for chemical hazards where bow-tie thinking is needed. Full card on the Process Safety page.
 
-### hazid-facilitator → see [Process Safety](Process-Safety#hazid-facilitator)
-Structures a broad early-stage HAZID workshop, including external and environmental hazards, and records the team's hazard register. Full card on the Process Safety page.
+### hazid-facilitator -> see [Process Safety](Process-Safety#hazid-facilitator)
+Facilitates structured hazard identification for chemical processes before deeper PHA methods are selected. Full card on the Process Safety page.
 
-### hazop-facilitator → see [Process Safety](Process-Safety#hazop-facilitator)
-Structures a node-based HAZOP workshop (IEC 61882) with the guideword × parameter deviation worksheet and risk-ranked recommendations. Full card on the Process Safety page.
+### hazop-facilitator -> see [Process Safety](Process-Safety#hazop-facilitator)
+Facilitates guideword-based HAZOP review for chemical and process nodes. Full card on the Process Safety page.
 
-### lopa-worksheet → see [Process Safety](Process-Safety#lopa-worksheet)
-Structures a single-scenario Layer of Protection Analysis (IEC 61511) — initiating event, independent protection layers, and the residual-risk gap. Full card on the Process Safety page.
+### lopa-worksheet -> see [Process Safety](Process-Safety#lopa-worksheet)
+Structures LOPA/SIL gap worksheets for chemical major-accident scenarios. Full card on the Process Safety page.
 
-### whatif-facilitator → see [Process Safety](Process-Safety#whatif-facilitator)
-Structures a disciplined What-If question-set workshop and records the team's responses, safeguards and actions. Full card on the Process Safety page.
+### whatif-facilitator -> see [Process Safety](Process-Safety#whatif-facilitator)
+Structures What-If workshops for chemical operations where a lighter PHA method fits. Full card on the Process Safety page.
