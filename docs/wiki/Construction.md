@@ -12,56 +12,64 @@ Audience tags (`M` / `E` / `F` / `C`) and the five universal rules are explained
 
 **Audience legend:** **M** = manager · **E** = executive · **F** = frontline · **C** = consultant.
 
-### bocw-compliance
-- **Produces:** Assess India BOCW (Building & Other Construction Workers) statutory compliance for a named construction establishment: establishment registration, the 1% welfare cess, the Form XXV annual return (by 15 Feb), Safety Officer / Safety Committee thresholds, and accident notification — grounded in KB-REG-IN-BOCW with MANDATORY state detection.
-- **For:** M, C · **Packs:** hse-construction, hse-india · **Version:** 1.0 · **Jurisdiction:** IN
-- **Trigger:** "Assess India BOCW (Building & Other Construction Workers) statutory compliance for a named construction establishment: establishment registration"; "the 1% welfare cess"; "the Form XXV annual return (by 15 Feb)"
-- **Summary:** Assess India BOCW (Building & Other Construction Workers) statutory compliance for a named construction establishment: establishment registration, the 1% welfare cess, the Form XXV annual return (by 15 Feb), Safety Officer / Safety Committee thresholds, and accident notification — grounded in KB-REG-IN-BOCW with MANDATORY state detection. Use it to produce a BOCW compliance gap-list for a site in a given state, resolve which Welfare Board return is filed and when, and flag the OSH-Code (BOCW subsumed) transition. State detection is mandatory; state-specific values resolve from the KB row or are [GAP]-flagged, never invented; no hard-coded national form. Decision-support only; a competent person must review the output.
+### bocw-compliance -> see [India Compliance](India-Compliance#bocw-compliance)
+Assesses India BOCW statutory compliance for construction establishments, so it appears here for India construction projects. Full card on the India Compliance page.
 
 ### construction-phase-plan
-- **Produces:** Produces a consultant-grade, risk-proportionate CDM 2015 Construction Phase Plan (CPP) for a named construction project.
-- **For:** M, C, F · **Packs:** hse-construction, hse-operations · **Version:** 1.0 · **Jurisdiction:** All
-- **Trigger:** "review a Construction Phase Plan"; "a CPP"
-- **Summary:** Produces a consultant-grade, risk-proportionate CDM 2015 Construction Phase Plan (CPP) for a named construction project. Use this skill whenever a user asks to build, write, or review a Construction Phase Plan, a CPP, a CDM 2015 Regulation 12 plan, or the principal contractor's pre-start plan. Forces project specificity (refuses 'a building site' — needs the named project, at least one significant activity, and the contractor configuration), sets out management & arrangements, site rules, and significant risks & controls by activity ranked by the hierarchy of controls (work at height leads with collective protection, never PPE), states the F10 / Reg 12 notification duty for a notifiable project, and cross-references the wider CDM document chain (Pre-Construction Information and the Health & Safety File). Grounded in CDM 2015 Reg 12 + HSE L153 in the UK, or 29 CFR 1926 Subpart C in the USA; India BOCW defers to hse-india with state detection. Decision-support only; a competent person must review the output.
+- **Produces:** Risk-proportionate CDM 2015 Construction Phase Plan (CPP) for a named project.
+- **For:** M, C, F · **Grounded in:** CDM 2015 Regulation 12 + HSE L153; 29 CFR 1926 Subpart C for USA equivalents; India BOCW via `hse-india` with mandatory state detection · **Packs:** hse-construction, hse-operations.
+- **Use when:** A principal contractor, sole contractor, manager, or consultant needs to build, write, or review the pre-start CPP for a specific construction project.
+- **Don't use for:** Pre-tender client information or completion handover records; use [pre-construction-information](#pre-construction-information) for PCI and [health-safety-file](#health-safety-file) for the H&S File.
+- **Have ready:** Named project and programme, contractor configuration, notifiability/F10 status, at least one significant activity, PCI status, jurisdiction, existing arrangements, duty-holders, and review triggers.
+- **Trigger:** "a user asks to build", "review a Construction Phase Plan", "a CPP".
+- **You get:** Project description and programme, management arrangements, site rules, significant risks and hierarchy-ranked controls by activity, notification status, assumptions and `[GAP]` items, SMART actions, and a one-line PCI -> CPP -> H&S File CDM document-chain cross-reference.
+- **Pairs well with:** [pre-construction-information](#pre-construction-information), [health-safety-file](#health-safety-file), [risk-assessment](Core#risk-assessment), [traffic-management-plan](#traffic-management-plan), [permit-to-work](Process-Safety#permit-to-work).
 
 ### health-safety-file
-- **Produces:** Produces a CDM 2015 Health and Safety File for a named completed (or near-complete) construction project — the as-built residual-risk record handed to the client for future construction, maintenance, cleaning, refurbishment, and demolition.
-- **For:** M, C · **Packs:** hse-construction · **Version:** 1.0 · **Jurisdiction:** All
-- **Trigger:** "review a health and safety file"; "an H&S file"
-- **Summary:** Produces a CDM 2015 Health and Safety File for a named completed (or near-complete) construction project — the as-built residual-risk record handed to the client for future construction, maintenance, cleaning, refurbishment, and demolition. Use this skill whenever a user asks to compile, write, or review a health and safety file, an H&S file, a CDM completion file, or the residual-risk handover information for a structure. It captures the as-built information, the residual and unusual hazards a future worker could not reasonably anticipate, the location of services and hazardous materials, and the cleaning/maintenance safety arrangements — emitting a branded report. Grounded in CDM 2015 Regulation 12(5)–(9). Decision-support only; a competent person must review the output.
+- **Produces:** CDM 2015 Health and Safety File for a named completed or near-complete structure.
+- **For:** M, C · **Grounded in:** CDM 2015 Regulation 12(5)-(9), HSE L153 Appendix 4, and the PCI -> CPP -> H&S File clause map · **Packs:** hse-construction.
+- **Use when:** The project is at handover, completion, update, or package-addition stage and the client needs the as-built residual-risk record for future maintenance, cleaning, refurbishment, or demolition.
+- **Don't use for:** Pre-tender hazard information or a pre-start construction plan; use [pre-construction-information](#pre-construction-information) for PCI and [construction-phase-plan](#construction-phase-plan) for the CPP.
+- **Have ready:** Named structure and use, file purpose, located residual or unusual hazards or a "none beyond the obvious" justification, as-built/services records, hazardous-materials information, future-work scope, jurisdiction, handover duty-holders, and open-item owners.
+- **Trigger:** "a user asks to compile", "review a health and safety file", "an H&S file".
+- **You get:** As-built and services record, located residual/unusual hazards, hazardous materials left in situ, maintenance/cleaning/refurbishment/demolition safety arrangements, information gaps, revision-control notes, handover duties, and SMART close-out actions.
+- **Pairs well with:** [pre-construction-information](#pre-construction-information), [construction-phase-plan](#construction-phase-plan), [risk-assessment](Core#risk-assessment).
 
 ### lift-plan
-- **Produces:** Creates consultant-grade, site- and lift-specific lifting plans grounded in LOLER 1998 Reg 8 and BS 7121.
-- **For:** M, C, F · **Packs:** hse-construction · **Version:** 1.0 · **Jurisdiction:** All
-- **Trigger:** "review a lifting plan"; "a crane lift plan"
-- **Summary:** Creates consultant-grade, site- and lift-specific lifting plans grounded in LOLER 1998 Reg 8 and BS 7121. Use this skill whenever a user asks to plan, build, or review a lifting plan, a crane lift plan, or a lifting operation, to classify a lift as basic / standard / complex per BS 7121, to confirm a crane's SWL at radius and utilisation against the manufacturer's rated-capacity chart, to set exclusion zones near overhead power lines / structures / the public, to sequence a lift method with appointed-person / operator / slinger roles, or to set contingency and abort criteria. Reads SWL-at-radius and utilisation from the rated-capacity chart (transcribed, checked) — never computed. Refuses to plan without a confirmed load weight (incl. rigging), an equipment SWL at the working radius, and at least an appointed person. Enforces the hierarchy of controls (eliminate the lift / reduce the load / engineer an exclusion before PPE) and re-scores residual risk. Decision-support only; competent-person review required.
+- **Produces:** Site- and lift-specific lifting plan with BS 7121 classification, method, exclusion zones, roles, contingency, and abort criteria.
+- **For:** M, C, F · **Grounded in:** LOLER 1998 Regulation 8 and Regulation 9, BS 7121, ISO 45001 clause 6.1.2, manufacturer rated-capacity chart inputs, and 29 CFR 1926 Subpart CC where applicable · **Packs:** hse-construction.
+- **Use when:** A team needs to plan, build, classify, or review a real lifting operation, crane lift plan, appointed-person plan, tandem/blind lift, or lift near structures, power lines, public areas, or constrained ground.
+- **Don't use for:** Generic task HIRA or construction project-wide planning; use [risk-assessment](Core#risk-assessment) for a general HIRA and [construction-phase-plan](#construction-phase-plan) for the project CPP.
+- **Have ready:** Lift category, confirmed load weight including rigging, dimensions/CoG/lifting points, crane configuration, SWL at working radius and utilisation transcribed from the rated-capacity chart, site/proximity hazards, named appointed person for standard/complex lifts, operator/slinger competence, evidence certificates, wind limit, lift window, and re-plan triggers.
+- **Trigger:** "a user asks to plan", "review a lifting plan", "a crane lift plan".
+- **You get:** Basic/standard/complex lift classification, load and rigging confirmation, SWL-at-radius chart record, ground/proximity controls, exclusion and segregation zones, initial/residual risk scoring, sequenced lift method, named roles, weather limits, contingency and abort criteria, and hold-points where the lift cannot proceed without competent-person review.
+- **Pairs well with:** [construction-phase-plan](#construction-phase-plan), [traffic-management-plan](#traffic-management-plan), [permit-to-work](Process-Safety#permit-to-work), [risk-assessment](Core#risk-assessment).
 
-### permit-to-work
-- **Produces:** Produces a permit-to-work package for a named high-risk task (hot work, confined-space entry, line breaking, excavation, working at height) with a dedicated SIMOPS (simultaneous operations) coordination section: it detects concurrent operations in the intake and routes them to permit and coordination controls, applies the hierarchy of controls to every isolation and safeguard, and tracks the permit conditions and actions to closure.
-- **For:** M, C · **Packs:** hse-construction, hse-manufacturing, hse-marine-offshore, hse-process · **Version:** 1.0 · **Jurisdiction:** All
-- **Trigger:** "Produces a permit-to-work package for a named high-risk task (hot work"; "confined-space entry"; "line breaking"
-- **Summary:** Produces a permit-to-work package for a named high-risk task (hot work, confined-space entry, line breaking, excavation, working at height) with a dedicated SIMOPS (simultaneous operations) coordination section: it detects concurrent operations in the intake and routes them to permit and coordination controls, applies the hierarchy of controls to every isolation and safeguard, and tracks the permit conditions and actions to closure. SIMOPS is handled as a permit/coordination control within this skill, never as a separate workflow. Decision-support only; a competent person must review the output.
+### permit-to-work -> see [Process Safety](Process-Safety#permit-to-work)
+Controls high-risk construction work such as hot work, confined-space entry, excavation, and work at height. Full card on the Process Safety page.
 
 ### pre-construction-information
-- **Produces:** Produces a Pre-Construction Information (PCI) pack for a named construction project under CDM 2015 — the pre-tender hazard and information set the client must provide to every designer and contractor.
-- **For:** M, C · **Packs:** hse-construction · **Version:** 1.0 · **Jurisdiction:** All
-- **Trigger:** "review pre-construction information"; "a PCI pack"
-- **Summary:** Produces a Pre-Construction Information (PCI) pack for a named construction project under CDM 2015 — the pre-tender hazard and information set the client must provide to every designer and contractor. Use this skill whenever a user asks to compile, write, or review pre-construction information, a PCI pack, CDM pre-tender information, or the client's health-and-safety information for a project. It assembles the project, site, and existing-structure hazard information (asbestos, buried services, ground conditions, adjacent occupancies, existing H&S file content), states what is known versus a documented information gap, and emits a branded report that feeds the construction phase plan. Grounded in CDM 2015 Regulation 4. Decision-support only; a competent person must review the output.
+- **Produces:** Pre-Construction Information (PCI) pack for a named construction project before construction starts.
+- **For:** M, C · **Grounded in:** CDM 2015 Regulation 4, HSE L153 Appendix 1, and the PCI -> CPP -> H&S File clause map · **Packs:** hse-construction.
+- **Use when:** The client or consultant needs to compile, write, or review the pre-tender hazard and information set for designers and contractors.
+- **Don't use for:** The contractor's construction-phase arrangements or completion handover file; use [construction-phase-plan](#construction-phase-plan) for CPP and [health-safety-file](#health-safety-file) for the H&S File.
+- **Have ready:** Named project and client, existing-structure information sources, asbestos/hazardous materials status, as-built and services drawings, ground/structural information, site surroundings, known significant hazards, project stage, jurisdiction, and owners/due dates for information gaps.
+- **Trigger:** "a user asks to compile", "review pre-construction information", "a PCI pack".
+- **You get:** Project and client brief, existing-structure hazard information, site and surroundings, known significant hazards, information-gaps register, owner/due-date actions, Reg 4 duty/timing notes, and a PCI -> CPP -> H&S File cross-reference.
+- **Pairs well with:** [construction-phase-plan](#construction-phase-plan), [health-safety-file](#health-safety-file), [risk-assessment](Core#risk-assessment).
 
-### risk-assessment
-- **Produces:** Creates consultant-grade, task- and site-specific risk assessments (HIRA / HIRARC).
-- **For:** M, C, F · **Packs:** hse-construction, hse-core · **Version:** 1.0 · **Jurisdiction:** All
-- **Trigger:** "assess risk"; "review a risk assessment"; "perform a hazard identification and risk assessment"
-- **Summary:** Creates consultant-grade, task- and site-specific risk assessments (HIRA / HIRARC). Use this skill whenever a user asks to assess risk, build or review a risk assessment, perform a hazard identification and risk assessment, score likelihood and severity on a risk matrix, select or rank controls by the hierarchy of controls, or produce a HIRA, HIRARC, or risk register for a specific task, activity, site, or asset. Optionally assesses environmental aspects and impacts (ISO 14001 clause 6.1.2) when the user asks for an environmental risk or aspects/impacts assessment. Grounds the assessment in ISO 45001 clause 6.1.2 (and ISO 14001 6.1.2 for environmental scope), enforces the hierarchy of controls (no PPE-only treatments without justification), re-scores residual risk after controls, and assigns SMART corrective actions with named owners and due dates — emitting a branded report. Decision-support only; a competent person must review the output.
+### risk-assessment -> see [Core](Core#risk-assessment)
+Provides the core HIRA workflow used before construction tasks and method statements. Full card on the Core page.
 
-### toolbox-talk
-- **Produces:** Produces a short, ready-to-deliver toolbox talk (a pre-task safety briefing / tailgate / pre-start / take-5 / safety moment) plus a sign-off / attendance sheet for a specific crew, task, and site.
-- **For:** F, M · **Packs:** hse-construction, hse-core · **Version:** 1.0 · **Jurisdiction:** All
-- **Trigger:** "Produces a short"; "ready-to-deliver toolbox talk (a pre-task safety briefing / tailgate / pre-start / take-5 / safety moment) plus a sign-off / attendance sheet for a specific crew"; "and site"
-- **Summary:** Produces a short, ready-to-deliver toolbox talk (a pre-task safety briefing / tailgate / pre-start / take-5 / safety moment) plus a sign-off / attendance sheet for a specific crew, task, and site. It runs a quick structured intake, grounds the talk in the named task's real hazards and the hierarchy of controls, references a recent relevant incident or near-miss (de-identified, or a clearly-labelled typical example — never a fabricated local event), and gives the supervisor discussion prompts and key takeaways the crew can act on today. Use it for daily / shift safety briefings, tailgate talks, pre-job briefs, and topic safety moments — not for full risk assessments or incident investigations. Decision-support only; a competent person must review the output.
+### toolbox-talk -> see [Core](Core#toolbox-talk)
+Creates the pre-task crew briefing that often follows a construction RAMS, permit, or risk assessment. Full card on the Core page.
 
 ### traffic-management-plan
-- **Produces:** Produces a construction traffic management plan for a named site — vehicle and pedestrian routing, segregation, loading/delivery and reversing controls, and the site-access and public-interface arrangements.
-- **For:** M, C, F · **Packs:** hse-construction · **Version:** 1.0 · **Jurisdiction:** All
-- **Trigger:** "review a traffic management plan"; "a TMP"
-- **Summary:** Produces a construction traffic management plan for a named site — vehicle and pedestrian routing, segregation, loading/delivery and reversing controls, and the site-access and public-interface arrangements. Use this skill whenever a user asks to write or review a traffic management plan, a TMP, a site traffic plan, vehicle-pedestrian segregation, or construction logistics/access controls for a specific site. It separates people from vehicles by design (one-way systems, segregated routes, eliminating reversing), controls deliveries and the public interface, sets speed and signage rules, and applies the hierarchy of controls — emitting a branded report. Grounded in CDM 2015 Regulation 27 and Schedule 3. Decision-support only; a competent person must review the output.
+- **Produces:** Construction traffic management plan for a named site with vehicle/pedestrian routes, segregation, deliveries, reversing controls, and public-interface arrangements.
+- **For:** M, C, F · **Grounded in:** CDM 2015 Regulation 27 and Schedule 3, HSE HSG144, 29 CFR 1926 Subpart O / 1926.601 / 1926.602 where applicable, and the traffic-segregation hierarchy · **Packs:** hse-construction.
+- **Use when:** A site needs a TMP, site traffic plan, construction logistics/access plan, vehicle-pedestrian segregation, delivery/reversing controls, or public/highway interface controls.
+- **Don't use for:** General project safety planning or a task HIRA; use [construction-phase-plan](#construction-phase-plan) for the CPP and [risk-assessment](Core#risk-assessment) for task risk assessment.
+- **Have ready:** Named site and access points, vehicle and pedestrian types, known conflict points, delivery and reversing profile, public/highway interface, jurisdiction, existing controls, plan window, and review triggers.
+- **Trigger:** "a user asks to write", "review a traffic management plan", "a TMP".
+- **You get:** Named vehicle and pedestrian routes, conflict-point register, segregation-by-design controls, reversing-elimination and one-way/turning arrangements, loading and delivery rules, speed/signage/lighting controls, public/highway protection, monitoring/review actions, and `[GAP]` flags where layout details are missing.
+- **Pairs well with:** [construction-phase-plan](#construction-phase-plan), [lift-plan](#lift-plan), [permit-to-work](Process-Safety#permit-to-work), [toolbox-talk](Core#toolbox-talk).
