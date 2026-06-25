@@ -29,24 +29,52 @@ location) are NOT in the capsule — each chosen skill's own intake asks for tho
 
 ## What a continuation prompt MUST contain (Steps 2+)
 
-Each later step is a lean continuation prompt, not a self-contained context repeat. It carries:
+Each later step requires TWO blocks: a lean continuation prompt (A) and a PASTE-BLOCK (B).
+
+### (A) Lean continuation prompt
+
+It carries:
 
 - **WHY** — one line tying the step to the elicited intent / success-criteria (ROUTE-03).
 - **RUN** — the explicit invocation (`/skill-name` or "use the X skill").
 - **REFERENCE** — a pointer to the Context Capsule above ("paste the Context Capsule first"),
   so the shared context is carried by reference, not re-pasted.
-- **ATTACH** — the specific prior skill OUTPUT to carry forward (e.g. the risk-assessment
-  control set + residual risks), with the reassurance that it is already de-identified.
+- **ATTACH** — the **specific named section or table** to copy from the prior skill's emitted
+  output. Must name the exact heading or table the user should look for, e.g. "copy the
+  'Control Measures Table' and 'Residual Risk Rating' summary from the risk-assessment output"
+  or "copy the 'Safe Work Procedure Steps' table from the JSA output". Generic "attach the
+  prior output" is NOT sufficient — the user needs to know which part to carry forward. Include
+  the de-id reassurance: that output is already de-identified.
 - **DELTA** — only the step-specific new detail (e.g. the permit type and validity window).
 - **DEPENDENCY** — Independent (any order) or Dependent (run after Step N).
 - **FEEDS →** — what this step hands to the next step.
 
+### (B) PASTE-BLOCK (pre-merged, fully self-contained)
+
+Every continuation prompt is immediately followed by a **PASTE-BLOCK**: a clearly titled,
+copy-pasteable block the user pastes at the top of the fresh chat for that step. No assembly
+required. It is titled: "📋 **Copy this entire block and paste it at the top of your Step N
+chat**".
+
+It contains, in order:
+1. The full Context Capsule text (verbatim — the same text as the capsule emitted at the top
+   of the run sheet).
+2. The ATTACH instruction for this step (naming the specific section to copy from the prior
+   skill's output and confirming it is already de-identified).
+3. The DELTA for this step (only the new step-specific detail).
+
+The PASTE-BLOCK is the ONE copy-paste unit for that fresh chat. It is NOT a repeat of the lean
+continuation prompt — it is a pre-merged artifact for users who will not manually assemble
+capsule + step instructions.
+
 ## What a continuation prompt MUST NOT contain
 
-- The full repeated shared context (that is what REFERENCE-to-capsule replaces — the whole
-  point of the asymmetric run sheet is one capsule, not N repeats).
+- The full repeated shared context in the lean continuation prompt (A) — that is what
+  REFERENCE-to-capsule replaces. The PASTE-BLOCK (B) is the appropriate place for the inlined
+  capsule; (A) points by reference.
 - Any verbatim direct identifier, or the re-identification key / name-to-label mapping. The
-  capsule and every continuation prompt are in scope of the de-identification HARD-fail gate.
+  capsule, every continuation prompt, and every PASTE-BLOCK are in scope of the
+  de-identification HARD-fail gate.
 
 ## The attached output is already de-identified
 
@@ -116,8 +144,10 @@ surface, so it carries no identifier.
 **What the persisted file MUST contain (the complete standalone plan).** The saved file is
 self-sufficient — it is the WHOLE plan, not "only from step two": the ONE Context Capsule + the
 ordered chain table + a Step-1 record (what Step 1 is / that it runs in place) + ALL Steps-2+
-continuation prompts (with the opt-in expand-to-standalone note). A user who re-opens the saved
-file after Step 1 has scrolled away has everything needed to resume each later step.
+continuation prompts, each with its lean block (A) AND its PASTE-BLOCK (B) (with the opt-in
+expand-to-standalone note). A user who re-opens the saved file after Step 1 has scrolled away
+has everything needed to resume each later step — they find the relevant step, copy the
+PASTE-BLOCK, and paste it into a fresh chat.
 
 **What counts as clearance.** The clearance gate (Step 4c) asks ONE go/no-go on the presented
 run sheet. Accepted clearances are **"go"**, **"proceed"**, or **"run step 1"**. An **"edit"**
