@@ -19,7 +19,7 @@ Audience tags (`M` / `E` / `F` / `C`) and the five universal rules are explained
 - **Don't use for:** A task where you already know the artifact you want — open that skill's card directly. The router is the easy door in, not a required step.
 - **Have ready:** Nothing but a plain-language description of what you are trying to do; it asks the few disambiguating questions itself (before/after the event, one task or a whole activity, jurisdiction).
 - **Trigger:** "I'm not sure which skill I need", "where do I start", "help me pick an HSE skill".
-- **You get:** A best-fit skill recommendation with a one-line reason, the disambiguating answers you gave captured as context, and a hand-over into the recommended skill so your details follow you in — see [Start Here — Guided Mode](Start-Here-Guided-Mode) for the walkthrough.
+- **You get:** A best-fit skill recommendation with a one-line reason, the disambiguating answers you gave captured as context, and a hand-over into the recommended skill so your details follow you in — see [Start Here - Guided Mode](Start-Here-Guided-Mode) for the walkthrough.
 - **Pairs well with:** every skill in the pack — it is the front door to all of them.
 
 ### board-safety-report

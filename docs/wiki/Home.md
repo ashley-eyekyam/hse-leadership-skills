@@ -1,8 +1,8 @@
-# HSE Leadership Skills — Skill Manual
+# HSE Leadership Skills - Skill Manual
 
-Welcome to the **complete reference to every skill in the pack**. This Wiki is the full per-skill manual: all 94 consultant skills, classified by the install pack they ship in, each with a consistent "skill card" that tells you — at a glance — what it produces, who it's for, when to use it (and when not), what to have ready, and what you get back.
+Welcome to the **complete reference for the v1.2 HSE Leadership Skills catalog**. The project has 94 total catalog entries. This Wiki documents the 93 non-forge manual entries - the 92 consultant artifact skills plus the `using-hse-skills` guided router - and links `hse-skill-forge` separately as a contributor tool.
 
-> 🧭 **New here? Don't read the catalog — let the router pick.** Run **/using-hse-skills**, describe your task in plain words, and it points you to the right skill and hands over your details. See **[Start Here — Guided Mode](Start-Here-Guided-Mode)** for the 30-second walkthrough.
+> **New here? Start with the router.** Run **/using-hse-skills** when you are new, unsure which skill to use, or facing a multi-step HSE task. It recommends one skill or an ordered chain, then hands over the context it captured so the next skill starts warm. See **[Start Here - Guided Mode](Start-Here-Guided-Mode)**.
 
 This is the **reference catalog**. It does not restate one-time setup or the deep flagship walkthroughs — for those, see [Getting Started](../docs/USER_MANUAL.md). For chaining several skills into a real end-to-end task, see [End-to-end journeys](../docs/USER_JOURNEYS.md).
 
@@ -87,6 +87,7 @@ A quick router across the packs. Find the row that matches your need, then open 
 
 | You need to… | Use this skill |
 |---|---|
+| I am not sure which skill I need | [`using-hse-skills`](Start-Here-Guided-Mode) |
 | Assess the risk of a task **before** doing it | [`risk-assessment`](Core#risk-assessment) |
 | Break a physical job into steps with per-step hazards & controls | [`job-safety-analysis`](Core#job-safety-analysis) |
 | Brief a crew **right before** a task | [`toolbox-talk`](Core#toolbox-talk) |
@@ -113,6 +114,7 @@ A quick router across the packs. Find the row that matches your need, then open 
 
 ## Where to go next
 
+- **Guided Mode** - if you are unsure where to start, run `/using-hse-skills`: [Start Here - Guided Mode](Start-Here-Guided-Mode).
 - **Install** — the 30-second install and per-pack install lines: [README](../README.md#install-in-30-seconds).
 - **Getting Started** — one-time setup, the five rules in depth, and single-skill walkthroughs for the three flagships: [`USER_MANUAL.md`](../docs/USER_MANUAL.md).
 - **End-to-end journeys** — chaining several skills for a real task: [`USER_JOURNEYS.md`](../docs/USER_JOURNEYS.md).
@@ -121,4 +123,4 @@ A quick router across the packs. Find the row that matches your need, then open 
 
 ## Extending the pack
 
-Want to build a new skill or change an existing one? Use **`hse-skill-forge`**, the contributor build tool that scaffolds born-conformant skills (it ships in the separate `hse-systems` bundle, not as one of the 94 consultant skills — that's why it has no card here). Then follow [`CONTRIBUTING.md`](../CONTRIBUTING.md) — and remember to update the matching `docs/wiki/<Pack>.md` card so this manual never drifts from the skills it describes.
+Want to build a new skill or change an existing one? Use **`hse-skill-forge`**, the contributor build tool that scaffolds born-conformant skills. It ships in the separate `hse-systems` bundle and is not one of the normal consultant artifact cards in this manual. Follow [`CONTRIBUTING.md`](../CONTRIBUTING.md) and the authoring docs, then update the relevant pack page under `docs/wiki/` so the manual stays aligned with the skills it describes.

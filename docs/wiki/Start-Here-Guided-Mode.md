@@ -1,60 +1,81 @@
-# Start Here — Guided Mode
+# Start Here - Guided Mode
 
-**New to the pack? You don't need to know which skill you want.** There are 94 skills in this manual, and you do not have to read any of them to get started. Just describe your task in plain words and the **guided router** walks you to the right one — and carries your details across so you never retype them.
+`using-hse-skills` is the catalog front door. Use it when you know the HSE job you need to do, but you are not sure which skill name, pack, or sequence fits.
 
-> ⚠️ Everything these skills produce is a **draft to assist a qualified professional — not a finished or approved document.** Every output **must be reviewed and signed off by a competent person** before you rely on it. See [`DISCLAIMER.md`](../DISCLAIMER.md).
+> Everything these skills produce is a **draft to assist a qualified professional - not a finished or approved document.** Every output **must be reviewed and signed off by a competent person** before you rely on it. See [`DISCLAIMER.md`](../DISCLAIMER.md).
 
 ---
 
-## The one thing to run first
+## What to run first
 
-```
+```text
 /using-hse-skills
 ```
 
-The `using-hse-skills` router ships in the **`hse-core`** bundle, so installing the core pack (or `hse-all`) gives it to you. Run it whenever you are not sure which skill fits — it is built for exactly the moment a busy safety professional thinks *"I know what I need to do, I just don't know what this thing is called."*
+It ships in `hse-core` and `hse-all`, so the core install and the all-skills install both give new users the router.
 
----
+## What it is
 
-## How the guided walkthrough works
+- The catalog front door for the v1.2 skill manual.
+- A router for ambiguous, meta, or multi-deliverable HSE tasks.
+- A way to describe the job once and carry the captured context forward.
+- A recommender that names one skill or an ordered chain and explains why.
 
-It is a short conversation, not a form. You stay in plain language the whole way.
+## What it is not
 
-1. **Describe your task in your own words.** No jargon required — "I need to brief my crew before they go up on the roof tomorrow", "something went wrong on the line last night and I have to write it up", "the auditor is coming and I need to check we meet ISO 45001". The router reads your intent.
-2. **Answer a few quick questions.** It asks only what it needs to disambiguate — are you assessing a hazard *before* the job, or investigating something that already happened? Is this one physical task or a whole activity? Which jurisdiction? One question at a time, so it never overwhelms you.
-3. **It points you to the right skill — and hands over your details.** It names the best-fit skill, explains in one line why it fits, and **passes the facts you already gave it straight into that skill** so you do not start over. Describe once, and the context follows you in.
+- Not a risk assessment.
+- Not a toolbox talk.
+- Not a regulatory or HSE deliverable generator by itself.
+- Not required when you already know the exact artifact skill you want.
 
-That's it. From "I'm not sure what I need" to a running skill with your details already loaded — no HSE-software expertise required.
+## Typical use patterns
 
----
+- "I am not sure which assessment is needed."
+- "Where do I start with HSE for this site?"
+- "What is needed for a new contractor job?"
+- "Give me an overview of the toolbox."
+- "This job needs several deliverables: risk assessment, permit, toolbox talk."
+- "I know the task, but not what this plugin calls the right skill."
 
-## A 30-second example
+## When to skip it
+
+- Direct "write a toolbox talk for this roof work" requests can go straight to [`toolbox-talk`](Core#toolbox-talk).
+- Direct "do a risk assessment for this tank clean" requests can go straight to [`risk-assessment`](Core#risk-assessment).
+- Direct "investigate this incident" requests can go straight to [`incident-investigation`](Core#incident-investigation).
+
+## How routing works
+
+1. Captures intent, requirement, success criteria, jurisdiction, industry, and exposure.
+2. Asks only the minimum disambiguating questions needed to choose the right path.
+3. Echoes back captured facts so you can correct the setup before handoff.
+4. Reads the generated skill index instead of relying on a hand-written list.
+5. Recommends one skill or an ordered chain with a WHY for each recommendation.
+6. Pauses at a confirm-or-refine gate before running the first selected skill.
+7. De-identifies captured facts and prepares a context capsule or run sheet for multi-step chains.
+8. Hands off into the first skill with the captured context already carried forward.
+
+## Examples
+
+### 30-second single-skill route
 
 > **You:** I need to brief the team before they clean out tank T-402 tomorrow.
 >
-> **Router:** That's a pre-task crew briefing — the skill for that is **`toolbox-talk`**. A couple of quick questions so I can hand it your details: which crew and trade, and is this a confined-space entry?
+> **Router:** That is a pre-task crew briefing. The best fit is `toolbox-talk` because you need a short supervisor-led briefing before the job. I need two quick facts before handoff: which crew is attending, and is this a confined-space entry?
 >
-> **You:** Maintenance crew, and yes — confined-space entry.
+> **You:** Maintenance crew, and yes, confined-space entry.
 >
-> **Router:** Got it. Because it's a confined-space entry you may also want a full **`risk-assessment`** first — but for tomorrow's briefing, here's `toolbox-talk` with your crew, task, and the confined-space context already filled in. Want me to hand over now?
+> **Router:** Got it. I will hand off to `toolbox-talk` with the tank, crew, date, and confined-space context already captured.
 
-You answered two plain questions and landed inside the right skill, with your facts already captured. No catalog browsing, no guessing the skill's name.
+### Multi-skill chain route
 
----
+> **You:** We have a contractor starting hot work and confined-space cleaning on a construction site next week. I need the paperwork and briefing.
+>
+> **Router:** This is a chain, not one artifact. Start with `risk-assessment` for the task hazards, then `permit-to-work` for the hot-work and confined-space controls, then `toolbox-talk` for the crew briefing. I will carry the site, contractor, work scope, date, and known high-risk activities through the chain.
 
-## When you'd rather pick yourself
+## Links
 
-The router is the easy door in, not the only one. If you already know the artifact you want, jump straight to its pack page:
-
-- The **[packs](Home#the-packs)** list groups every skill by the bundle you install.
-- The **[You need to… → use this skill](Home#you-need-to--use-this-skill)** router table on [Home](Home) maps a need to a skill in one row.
-- Each pack page carries a full **skill card** — what it produces, who it's for, when to use it (and when not), what to have ready, and what you get back.
-
----
-
-## Where to go next
-
-- **Install** — the 30-second install and per-pack install lines: [README](../README.md#install-in-30-seconds).
-- **The full catalog** — every skill, by pack: [Home](Home).
-- **Getting Started** — one-time setup and the five rules in depth: [`USER_MANUAL.md`](../docs/USER_MANUAL.md).
-- **End-to-end journeys** — chaining several skills for a real task: [`USER_JOURNEYS.md`](../docs/USER_JOURNEYS.md).
+- Back to the full manual: [Home](Home)
+- Core router card: [using-hse-skills](Core#using-hse-skills)
+- Install instructions: [README](../README.md#install-in-30-seconds)
+- Getting Started: [`USER_MANUAL.md`](../docs/USER_MANUAL.md)
+- End-to-end journeys: [`USER_JOURNEYS.md`](../docs/USER_JOURNEYS.md)
