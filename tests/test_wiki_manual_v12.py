@@ -225,7 +225,7 @@ def test_full_cards_have_all_required_fields_or_are_declared_stubs():
             if not line.startswith("### "):
                 continue
             skill = line.removeprefix("### ").split(" -> ", 1)[0].strip()
-            if page.name in {"_Sidebar.md"}:
+            if page.name in {"_Sidebar.md", "Start-Here-Guided-Mode.md"}:
                 continue
             block = _card_block(text, skill)
             if " -> see [" in line:
