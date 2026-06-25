@@ -1,42 +1,36 @@
 #!/usr/bin/env python3
-"""extract_skill_cards.py — seed the FACTUAL fields of every skill's Wiki card.
+"""extract_skill_cards.py - seed factual fields for Wiki skill cards.
 
-The Wiki user manual (`docs/wiki/<Pack>.md`) carries one medium-depth "skill
-card" per consultant skill. The factual half of each card — name, audience,
-Packs (bundle membership), version, jurisdiction, trigger phrases — must be
-transcribed from each skill's own `SKILL.md` frontmatter + the generated
-`.claude-plugin/marketplace.json`, NEVER invented (spec §6/§10.2; threat
-T-jld-01/T-jld-03). This script is that authoring aid: per-pack authors run it
-to seed the factual fields, then fill the prose fields (currently the literal
-token `TODO`) from each skill's `SKILL.md`.
+The Wiki user manual (`docs/wiki/*.md`) carries a full card for each
+owning consultant skill and a concise cross-reference stub for shared skills on
+secondary pack pages. Factual fields - name, audience, Packs, version,
+jurisdiction, and trigger phrases - are transcribed from each skill's own
+`SKILL.md` frontmatter plus the generated `.claude-plugin/marketplace.json`,
+never invented.
 
-It is ALSO the verifier's drift hook (spec §13): re-running it and diffing the
-factual fields against the committed Wiki pages surfaces any factual drift.
+This script is an authoring aid and drift hook: per-pack authors can run it to
+seed factual fields, then expand the prose into the richer manual card format.
+Re-running it with `--facts` or `--json` surfaces factual drift against the
+committed Wiki pages.
 
-Skill iteration mirrors `gen_marketplace.py::_iter_skills` exactly (single-level
-`skills/*/SKILL.md` glob — the stray `skills/README.md` has no SKILL.md so the
-glob excludes it). `hse-skill-forge` is EXCLUDED: it is the contributor build
-tool, documented only as a Home "Extending the pack" note (spec §3/§5.2). The
-result is therefore exactly 48 consultant skills.
+Skill iteration mirrors `gen_marketplace.py::_iter_skills` exactly
+(single-level `skills/*/SKILL.md` glob). `hse-skill-forge` is excluded because
+it is the contributor build tool, documented only as a Home "Extending the
+pack" note. The v1.2 extractor therefore returns 93 non-forge catalog/manual
+entries: 92 consultant artifact skills plus the `using-hse-skills` router.
 
-The `Packs` field is read from `marketplace.json` (NOT the single
-`metadata.plugin`): every bundle whose `skills` list contains `./skills/<name>`,
-EXCLUDING the synthesized `hse-all` meta-plugin and the forge bundle
-`hse-systems`. A shared PHA tool therefore shows its true multi-pack membership
-(e.g. bowtie-builder → hse-chemicals, hse-mining, hse-process).
+The `Packs` field is read from `marketplace.json`, excluding `hse-all` and
+`hse-systems`, so shared skills show their real install-pack membership without
+listing the synthesized all-skills bundle or the contributor-tool bundle.
 
 CLI:
-  (default)            print every skill's full seed card (markdown draft stub)
-                       to stdout — `### <name>` per skill, factual fields filled,
-                       prose fields = TODO. (`grep -c '^### '` == 48.)
-  --facts              emit ONLY the factual fields in a stable, diffable form
-                       keyed by skill name (sorted) — the verifier re-runs this
-                       and diffs against the committed pages (spec §13).
-  --json               same factual data as machine-readable JSON.
+  (default)            print seed card markdown for every non-forge entry.
+  --facts              emit only stable factual fields keyed by skill name.
+  --json               emit the factual seed records as machine-readable JSON.
   --repo PATH          point at the repo root (default: inferred from this file).
+  --wiki-url           print the derived .wiki.git clone URL and exit.
 
-Output is idempotent (skills emitted in sorted order). Stdlib + pyyaml only
-(mirrors gen_marketplace.py — no new dependencies; threat T-jld-SC).
+Output is idempotent. Stdlib + pyyaml only.
 """
 
 from __future__ import annotations
@@ -60,12 +54,12 @@ MANIFEST = REPO / ".claude-plugin" / "marketplace.json"
 # publish_wiki.py).
 DEFAULT_WIKI_URL = "https://github.com/ashley-eyekyam/hse-leadership-skills.wiki.git"
 
-# Excluded from the per-skill consultant manual entirely: the build-time forge is
-# documented only as a Home note (spec §3/§5.2).
+# Excluded from the per-skill manual cards: the build-time forge is documented
+# only as a Home contributor-tool note.
 EXCLUDE_SKILLS = {"hse-skill-forge"}
 
-# Bundles that are NOT real packs for the Packs field: the synthesized
-# "install everything" meta-plugin and the contributor forge bundle.
+# Bundles that are not displayed in the Packs field: the synthesized
+# "install everything" meta-plugin and the contributor-tool bundle.
 EXCLUDE_BUNDLES = {"hse-all", "hse-systems"}
 
 # The prose card fields the author fills from SKILL.md (spec §6) — emitted as the
@@ -205,9 +199,9 @@ def _fmt_list(values: List[str]) -> str:
 def render_seed_card(rec: Dict[str, Any]) -> str:
     """A markdown draft card stub: factual fields filled, prose fields = TODO.
 
-    Anchored with `### <folder>` so `grep -c '^### '` over the full output is the
-    48-skill count check, and each card deep-links via its lower-cased hyphenated
-    folder name."""
+    Anchored with `### <folder>` so the full output exposes the v1.2 non-forge
+    catalog/manual entry set, and each card deep-links via its lower-cased
+    hyphenated folder name."""
     lines: List[str] = []
     lines.append(f"### {rec['folder']}")
     lines.append("")

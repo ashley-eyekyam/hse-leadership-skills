@@ -1,29 +1,30 @@
 #!/usr/bin/env python3
-"""publish_wiki.py — OWNER-RUN publish step for the Wiki user manual.
+"""publish_wiki.py - OWNER-RUN publish step for the Wiki user manual.
 
-The 8 source-of-truth pages live in the main repo at `docs/wiki/` (`Home.md`,
-`_Sidebar.md`, and the 6 pack pages) so the manual is PR-reviewed and
-drift-resistant (spec §10.1). This script publishes that mirror to the live
-GitHub Wiki: it clones the repo's `.wiki.git`, copies `docs/wiki/*.md` into the
-clone, `git add -A`, commits, and pushes (spec §10.3).
+The v1.2 source-of-truth wiki pages live in the main repo at `docs/wiki/` so
+the manual is PR-reviewed and drift-resistant. The current page set is the
+19-page v1.2 manual mirror: Home, Sidebar, Start Here, Core, Operations,
+Leadership, the original five sector packs, and the eight new v1.2 sector
+packs. This script publishes that mirror to the live GitHub Wiki: it clones the
+repo's `.wiki.git`, copies `docs/wiki/*.md` into the clone, `git add -A`,
+commits, and pushes.
 
-OWNER PREREQUISITE (spec §11): the GitHub Wiki must be ENABLED and INITIALIZED
-before the first push. In the repo's GitHub UI go to
-Settings → Features → Wikis (tick it on), then create ANY first page in the
-Wiki tab. Only after that does the `.wiki.git` remote exist and can be cloned.
-Running this script against a never-initialized Wiki will fail at the clone
-step.
+OWNER PREREQUISITE: the GitHub Wiki must be ENABLED and INITIALIZED before the
+first push. In the repo's GitHub UI go to Settings -> Features -> Wikis, then
+create any first page in the Wiki tab. Only after that does the `.wiki.git`
+remote exist and can be cloned. Running this script against a never-initialized
+Wiki will fail at the clone step.
 
-The wiki clone URL is DERIVED from the `origin` remote (`git remote get-url
+The wiki clone URL is derived from the `origin` remote (`git remote get-url
 origin`, swapping a trailing `.git` for `.wiki.git`) so the owner is never
 hard-coded. The documented default is:
     https://github.com/ashley-eyekyam/hse-leadership-skills.wiki.git
 
 CLI:
   (default)   clone the .wiki.git, copy docs/wiki/*.md in, commit, push.
-  --dry-run   print every step WITHOUT cloning, copying, committing or pushing
-              (touches nothing — used by the verifier to confirm the script
-              runs and resolves the URL without going near the live Wiki).
+  --dry-run   print every step without cloning, copying, committing or pushing.
+              It lists every page in `docs/wiki/` so the verifier can confirm
+              the full v1.2 page set before a live publish.
   --repo PATH point at the repo root (default: inferred from this file).
   --message M override the commit message.
 
