@@ -15,6 +15,15 @@ invented citation (threat T-03-16):
                              schema AND a renderer produced docx/pdf (or the A4
                              §4.10 degraded path).
 
+A fourth grader is REPORTED-ONLY (D-18, v1.3 FND-04) — same keyless
+deterministic class, but it NEVER sets hard_fail:
+
+    grade_completeness     — the mode-keyed floor-coverage three-way split
+                             (covered_by_content / covered_by_gap / missing)
+                             against references/sme-review.md `modes:`. Runs for
+                             EVERY skill including the six D-11 policy-sensitive
+                             grader-exempt skills; non-gating by construction.
+
 Stdlib + pyyaml only. The citation grader REUSES the lint_skills rule-9 resolver
 (no second resolver). The report grader REUSES generate_report.py's validate_model
 + generate (no re-derived schema).
@@ -23,5 +32,7 @@ Stdlib + pyyaml only. The citation grader REUSES the lint_skills rule-9 resolver
 from .deid import grade_deid
 from .citation import grade_citation
 from .report import grade_report_produced
+from .completeness import grade_completeness
 
-__all__ = ["grade_deid", "grade_citation", "grade_report_produced"]
+__all__ = ["grade_deid", "grade_citation", "grade_report_produced",
+           "grade_completeness"]

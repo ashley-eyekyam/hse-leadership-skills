@@ -88,7 +88,9 @@ REPO = SCRIPTS.parent
 if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
 
-from graders import grade_deid, grade_citation, grade_report_produced  # noqa: E402
+from graders import (  # noqa: E402
+    grade_deid, grade_citation, grade_report_produced, grade_completeness,
+)
 
 # --- D-03: the ONE pinned grader-model constant --------------------------------
 # The eval grader runs on the local Claude SUBSCRIPTION via `claude -p` (2026-06-15
@@ -104,6 +106,13 @@ MOST_CAPABLE_ALIAS = "most-capable-model"
 # The judgement dimensions the MODEL grader scores (the two hard-fail dims are
 # decided deterministically and excluded from the model's remit).
 MODEL_GRADED_DIMS = ("specificity", "hierarchy_of_controls", "defensibility")
+
+# D-18 (v1.3 FND-03): reported-only dims are scored + displayed but STRUCTURALLY
+# excluded from the weighted >=4.0 gate — the gate mean iterates
+# MODEL_GRADED_DIMS explicitly (never sum(scores.values())/len(scores)) — and
+# they NEVER contribute to hard_fail. A distinct tuple so the exclusion is
+# structural, not incidental.
+REPORTED_ONLY_DIMS = ("completeness",)
 
 DEFAULT_GATE = 4.0
 
@@ -139,11 +148,19 @@ POLICY_SENSITIVE_GRADER_EXEMPT = frozenset({
 # timeout the model dims are simply left unscored (the deterministic verdict stands).
 _MODEL_TIMEOUT = 300
 
+# --deterministic-only: force the headless-CI path even when the Claude CLI is
+# on PATH — the model grader is skipped and ONLY the keyless deterministic gate
+# runs (deid / citation / the reported-only completeness split). Set in main().
+_FORCE_DETERMINISTIC = False
+
 
 def _model_available() -> bool:
     """True when the Claude CLI is on PATH — i.e. this is a subscription-authed
-    environment that can run `claude -p`. False in headless CI (no CLI), where the
-    model-graded path is skipped and ONLY the deterministic gate runs."""
+    environment that can run `claude -p`. False in headless CI (no CLI) or under
+    --deterministic-only, where the model-graded path is skipped and ONLY the
+    deterministic gate runs."""
+    if _FORCE_DETERMINISTIC:
+        return False
     return shutil.which("claude") is not None
 
 
@@ -290,13 +307,37 @@ def _load_case_output_text(skill_dir: Path, case: Dict[str, Any]) -> str:
 
 # --- deterministic graders (run FIRST, short-circuit) --------------------------
 
-def run_deterministic(output_text: str) -> Dict[str, Any]:
+def run_deterministic(
+    output_text: str,
+    skill_dir: Optional[Path] = None,
+    mode: Optional[str] = None,
+    completeness_text: Optional[str] = None,
+) -> Dict[str, Any]:
     """The deterministic hard-block layer. Returns a verdict with `hard_fail` set
     on a de-id leak OR an unresolvable citation — either SHORT-CIRCUITS the case
-    before the model grader."""
+    before the model grader.
+
+    Also records a NON-gating `completeness` coverage split (FND-04, D-18):
+    grade_completeness runs here for EVERY skill — including the six D-11
+    POLICY_SENSITIVE_GRADER_EXEMPT skills, whose model grade is skipped later,
+    so this deterministic record is their ONLY completeness signal — and it
+    NEVER contributes to `hard_fail` (reported-only by construction).
+    `completeness_text` lets the caller grade coverage over the pre-captured
+    OUTPUT artifact only (never the intake fixtures); it defaults to
+    `output_text`. Modeless skills / mode-less cases no-op (`scored: False`)."""
     deid = grade_deid(output_text, REPO / "references" / "deid-checklist.md")
     citation = grade_citation(output_text, REPO)
 
+    sme_review_path = (
+        Path(skill_dir) / "references" / "sme-review.md" if skill_dir else Path("")
+    )
+    completeness = grade_completeness(
+        completeness_text if completeness_text is not None else output_text,
+        sme_review_path,
+        mode or "",
+    )
+
+    # D-18: completeness NEVER enters this expression (deid/citation only).
     hard_fail = bool(deid["auto_fail"] or citation["fail"])
     reasons: List[str] = []
     if deid["auto_fail"]:
@@ -309,6 +350,7 @@ def run_deterministic(output_text: str) -> Dict[str, Any]:
         "reasons": reasons,
         "de_identification": {"auto_fail": deid["auto_fail"], "reasons": deid["reasons"]},
         "regulatory_citation_accuracy": citation["regulatory_citation_accuracy"],
+        "completeness": completeness,
     }
 
 
@@ -327,7 +369,12 @@ def run_model_grader(
         return {"scored": False, "model": grader_model, "scores": {}}
 
     rubric_dims = {d["name"]: d for d in rubric.get("dimensions", [])}
-    judged = {n: rubric_dims[n] for n in MODEL_GRADED_DIMS if n in rubric_dims}
+    # D-18: the model also scores the reported-only dims (when present in the
+    # rubric) so `completeness` is emitted + displayed — but the gate mean in
+    # grade_case iterates MODEL_GRADED_DIMS only.
+    judged = {n: rubric_dims[n]
+              for n in (*MODEL_GRADED_DIMS, *REPORTED_ONLY_DIMS)
+              if n in rubric_dims}
     prompt = (
         "You are a document quality-assurance reviewer for HSE safety "
         "deliverables. Your task is to SCORE an EXISTING, already-produced safety "
@@ -350,7 +397,10 @@ def run_model_grader(
         return {"scored": False, "model": grader_model, "scores": {}}
     try:
         scores = _extract_json_obj(raw)
-        scores = {k: int(v) for k, v in scores.items() if k in MODEL_GRADED_DIMS}
+        # D-18: retain reported-only dims alongside the gating dims — the gate
+        # mean excludes them structurally at the grade_case mean site.
+        scores = {k: int(v) for k, v in scores.items()
+                  if k in (*MODEL_GRADED_DIMS, *REPORTED_ONLY_DIMS)}
     except Exception as exc:  # pragma: no cover - model output dependent
         print(f"WARN: model grader parse failed ({exc})", file=sys.stderr)
         return {"scored": False, "model": grader_model, "scores": {}}
@@ -378,7 +428,14 @@ def grade_case(
     # The DETERMINISTIC gate scans intake (seeded-leak negatives) + output. A leak
     # in EITHER hard-fails; the seeded-leak case stays caught even with a clean
     # output present (CR-01 keyless path: intake fixtures carry real text).
-    deterministic = run_deterministic("\n".join(t for t in (intake_text, output_text) if t))
+    # The NON-gating completeness split (D-18) grades the OUTPUT artifact only,
+    # keyed by the case's `mode:` (absent mode -> back-compat no-op).
+    deterministic = run_deterministic(
+        "\n".join(t for t in (intake_text, output_text) if t),
+        skill_dir=skill_dir,
+        mode=case.get("mode"),
+        completeness_text=output_text,
+    )
     record: Dict[str, Any] = {
         "query": case.get("query", ""),
         "deterministic": deterministic,
@@ -423,16 +480,31 @@ def grade_case(
 
     # The model grader scores ONLY the pre-captured OUTPUT artifact (never intake).
     model_grade = run_model_grader(skill_dir, case, output_text, rubric, grader_model)
+
+    # D-18: stash reported-only scores under a DISTINCT key for display —
+    # `completeness: N/5 (reported-only, not gated)` — separate from the gating
+    # mean input below.
+    reported = {k: model_grade["scores"][k]
+                for k in REPORTED_ONLY_DIMS if k in model_grade.get("scores", {})}
+    if reported:
+        model_grade["reported"] = reported
     record["model_grade"] = model_grade
 
-    # Weighted mean over the model-judged dims (equal-weight rubric). Only
-    # computed when the model actually scored (CI path); otherwise pass is
-    # deferred to the deterministic verdict (no hard-fail = not blocked).
+    # Weighted mean over the GATING dims ONLY — iterate MODEL_GRADED_DIMS
+    # explicitly (D-18 structural exclusion: a reported-only dim present in
+    # `scores` can NEVER move this mean). Only computed when the model actually
+    # scored (CI path); otherwise pass is deferred to the deterministic verdict
+    # (no hard-fail = not blocked).
     if model_grade["scored"] and model_grade["scores"]:
         scores = model_grade["scores"]
-        weighted = sum(scores.values()) / len(scores)
-        record["weighted_mean"] = round(weighted, 3)
-        record["pass"] = weighted >= gate_threshold(rubric)
+        gating = [scores[k] for k in MODEL_GRADED_DIMS if k in scores]
+        if gating:
+            weighted = sum(gating) / len(gating)
+            record["weighted_mean"] = round(weighted, 3)
+            record["pass"] = weighted >= gate_threshold(rubric)
+        else:
+            record["weighted_mean"] = None
+            record["pass"] = True  # no gating dim scored — deterministic verdict stands
     else:
         record["weighted_mean"] = None
         record["pass"] = True  # no hard-fail and no model score available
@@ -588,11 +660,20 @@ def main(argv: Optional[List[str]] = None) -> int:
                         "shared-contract change escalates to a full --all sweep)")
     p.add_argument("--base", default="origin/main",
                    help="base ref for --changed (default origin/main)")
+    p.add_argument("--deterministic-only", action="store_true",
+                   help="skip the model grader even when the Claude CLI is on "
+                        "PATH — run ONLY the keyless deterministic gate (the "
+                        "headless-CI path, incl. the reported-only completeness "
+                        "split)")
     p.add_argument("--matrix", action="store_true", help="(local) multi-model grader matrix — developer aid only")
     p.add_argument("--model", default=None, help="executor model for the skill-under-test")
     p.add_argument("--grader-model", default=None, help=f"override the pinned grader (default {GRADER_MODEL})")
     p.add_argument("--out", default=None, help="write the benchmark.json here")
     args = p.parse_args(argv)
+
+    if args.deterministic_only:
+        global _FORCE_DETERMINISTIC
+        _FORCE_DETERMINISTIC = True
 
     if args.deid_selftest:
         return run_deid_selftest()
@@ -624,6 +705,19 @@ def main(argv: Optional[List[str]] = None) -> int:
         print(f"[{bench['skill_name']}] {s['passed']}/{s['total']} pass "
               f"(grader={bench['grader_model']})")
         for r in bench["results"]:
+            # D-18 display: the deterministic coverage split and the model's
+            # reported-only completeness score read together — never gated.
+            comp = (r.get("deterministic") or {}).get("completeness") or {}
+            if comp.get("scored"):
+                print(f"  completeness coverage: {comp['coverage_pct']:.0%} "
+                      f"(mode={comp['mode']}; "
+                      f"content={len(comp['covered_by_content'])} "
+                      f"gap={len(comp['covered_by_gap'])} "
+                      f"missing={len(comp['missing'])}) — reported-only, not gated")
+            reported = (r.get("model_grade") or {}).get("reported") or {}
+            if "completeness" in reported:
+                print(f"  completeness: {reported['completeness']}/5 "
+                      f"(reported-only, not gated)")
             if not r["pass"]:
                 any_fail = True
                 print(f"  FAIL: {r['query'][:70]}", file=sys.stderr)
