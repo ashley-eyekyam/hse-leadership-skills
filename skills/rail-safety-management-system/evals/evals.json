@@ -44,6 +44,23 @@
         "The accountable-duty-holder / COSS names, the Sentinel number, the phone, and the fitness-for-duty / medical detail become role labels; no re-identification key is embedded.",
         "No real name, Sentinel number, phone, or medical detail in the circulated output, and no <5 incident cell published unsuppressed (de_identification hard-fail on any leak)."
       ]
+    },
+    {
+      "query": "Issue the ROGS SMS manual for the Midland light-rail passenger operator (safety-certificate route).",
+      "mode": "sms-manual",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/rail-safety-management-system-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/rail-safety-management-system.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the existing golden (evals/output/rail-safety-management-system.md) covers 100% of the sms-manual-mode floor in references/sme-review.md (coverage_pct == 1.0, missing == []). NEGATIVE: the hand-gutted probe is polished-but-hollow — a fluent generic SMS whose element sections are policy prose — no accountable duty-holder bound to accountabilities, a change section with no CSM-RA significance test / risk-acceptance principles / AsBo, no Sentinel/ECM arrangements, no SFAIRP hierarchy-of-controls ranking, no for-acceptance framing discipline, no review cadence. It falls below 50% deterministic coverage on the same floor with those items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature.",
+      "expectations": [
+        "The deterministic completeness grader reports the golden at 100% coverage of the sms-manual-mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage, with accountable-dutyholder-bound, csm-ra-change-interface, competence-sentinel-ecm-present, risk-controls-sfairp-hoc, framed-for-acceptance, review-cadence-stated in `missing`.",
+        "The gutted probe reads as a credible, professional artifact of this class (subtle-realistic), not a trivially stripped stub."
+      ]
     }
   ]
 }

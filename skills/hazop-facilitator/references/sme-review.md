@@ -4,6 +4,42 @@ sme-review:
     - role: "Chartered process-safety engineer & certified HAZOP chair/facilitator (TÜV FSEng / CMIChemE)"
       expertise: "IEC 61882 node-based HAZOP; guideword×parameter completeness; cause→consequence→safeguard logic on P&IDs; risk-ranked recommendation tracking; New / Revalidation / Write-up study modes."
       lens: "Would this worksheet survive a regulator's / licensor's review as a competently-facilitated, team-recorded HAZOP — and is every credible deviation either addressed or honestly [GAP]'d, never silently dropped?"
+modes:
+  worksheet:
+    detected_by: "Q12 — What output do you need? (Worksheet only / Full report / Recommendation register — all emit the IEC 61882 node worksheet, the skill's single artifact class)"
+    floor:
+      - id: bounded-node-design-intent
+        description: "One bounded node/P&ID section with its normal-operation design intent stated (flow, pressure, temperature…) — deviations are judged against that intent (intake Q2/Q3 specificity anchor)"
+        anchors: ['node', 'design intent']
+        min_matches: 2
+      - id: guideword-parameter-coverage
+        description: "Every relevant guideword × parameter cell is analysed or explicitly closed ('[GAP]' or 'not credible — justified') — no silently empty cells (KB-STD-IEC-61882 matrix discipline)"
+        anchors: ['guideword', 'not credible|no credible deviation']
+        min_matches: 1
+      - id: deviation-chain-complete
+        description: "Each row traces Deviation → Cause → Consequence → Existing safeguards → Recommendation whole; a consequence with no cause (or vice-versa) is incomplete"
+        anchors: ['deviation', 'cause', 'safeguard']
+        min_matches: 3
+      - id: team-recorded-not-autonomous
+        description: "The multidisciplinary team + chair/scribe are recorded as roles and the worksheet reads as team-recorded; an incomplete team carries the 'study not yet performed' banner (intake Q8/Q9, the assistive core)"
+        anchors: ['multidisciplinary', 'chair|scribe']
+        min_matches: 1
+      - id: safeguard-hoc-adequacy
+        description: "Safeguards are hierarchy-of-controls-ranked; a high-consequence deviation carried by administrative/PPE safeguards alone gets a higher-order closing recommendation (KB-SNIP-HOC applied to safeguards)"
+        anchors: ['hierarchy of controls', 'higher.order (safeguard|control|recommendation)']
+        min_matches: 1
+      - id: recommendations-node-linked-owned
+        description: "Each recommendation is a specific change linked to its node/deviation with a named role owner + due date, tracked to closure — never 'consider' / 'review further'"
+        anchors: ['named owner|action owner', 'due date', 'tracked to closure|node.{0,40}(link|ref)']
+        min_matches: 2
+      - id: consequence-risk-ranked
+        description: "Each deviation's consequence is risk-ranked (severity × likelihood band) on the named matrix (intake Q10, risk_matrix output)"
+        anchors: ['risk rank|risk band|severity', '5.?[x×].?5|matrix']
+        min_matches: 1
+      - id: iec61882-grounding
+        description: "The study method is grounded in IEC 61882 (cited from KB-STD-IEC-61882), plus the jurisdiction's PHA duty where one applies (OSHA PSM PHA element)"
+        anchors: ['IEC 61882', 'KB-STD-IEC-61882']
+        min_matches: 1
 ---
 
 # SME Review & Sign-off — hazop-facilitator
@@ -30,6 +66,28 @@ is recorded `[GAP]`, never invented.
 - [ ] Recommendations are actionable (specific change + node link + named owner + due date), not "review further" / "consider".
 - [ ] Each node carries its normal-operation design intent, and deviations are judged against that stated intent — not against an unstated one.
 - [ ] The worksheet names the multidisciplinary team + competencies (process, operations, instrumentation/SIS, mechanical, chair/scribe) and reads as team-recorded; an incomplete team carries the "study not yet performed" banner, and no deviation the team did not raise appears (FLAG).
+
+## Omission lens
+
+Run the shared omission protocol **`KB-SNIP-COMPLETENESS`**
+(`../../../knowledge-base/prompt-snippets/completeness-lens.md`) as the second pass of this
+skill's Step-4 SME review. The `modes:` map in this file's frontmatter declares the per-mode
+must-include floor (the tripwire the pass reconciles against — never its search space).
+Below are ONLY this skill's blind-spot hints.
+
+Skill-specific blind spots (where this artifact class has actually gone hollow):
+- **A worksheet of populated rows over an unswept matrix** — the recorded deviations look
+  rigorous, but nothing shows the guideword × parameter cells that were EXAMINED and
+  closed; the reader cannot distinguish "analysed, not credible" from "never asked", which
+  is the difference between a HAZOP and a list of worries.
+- **Confident engineering values with no provenance** — a likelihood, PFD or severity that
+  the team never agreed, written in as fact instead of [GAP]; the worksheet reads
+  authoritative precisely where it is invented.
+- **Recommendations that dissolve on contact** — "review further", "consider upgrading" —
+  no specific change, no node link, no owner, no date; the study produced activity, not
+  closure.
+- **The intent-less node** — deviations ranked against an unstated design intent; every
+  judgement in the sheet is unanchored and unrepeatable at revalidation.
 
 ## Sign-off note
 SME review: ran (persona: Chartered process-safety engineer & certified HAZOP chair); this

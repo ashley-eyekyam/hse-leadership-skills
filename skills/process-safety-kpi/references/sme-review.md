@@ -4,6 +4,42 @@ sme-review:
     - role: "Process-safety-metrics SME (API RP 754 / CCPS process-safety KPIs)"
       expertise: "Tier-1/Tier-2 PSE threshold classification; normalized-rate denominator discipline; Tier-3/Tier-4 leading indicators; benchmarking with source+year; the PSE-vs-occupational-injury distinction."
       lens: "Is every event tiered correctly under API 754, is the rate denominator fail-loud rather than fabricated, and are leading and lagging indicators both represented?"
+modes:
+  kpi-report:
+    detected_by: "Q9 — What output, for whom? (KPI table / Dashboard / Board or exec pack — all emit the API RP 754 PSE indicator report, the skill's single artifact class)"
+    floor:
+      - id: facility-period-bounded
+        description: "A named facility and reporting period(s) bound the counts (intake Q2 specificity anchor)"
+        anchors: ['facility', 'period|quarter|Q[1-4]']
+        min_matches: 2
+      - id: tier-classification-from-facts
+        description: "Each counted event is classified against the Tier-1 vs Tier-2 PSE threshold criteria (material, quantity, consequence) from the supplied event facts — never lumped or invented (intake Q3; KB-STD-API-RP-754)"
+        anchors: ['Tier.?1', 'Tier.?2', 'threshold']
+        min_matches: 2
+      - id: denominator-fail-loud
+        description: "The rate carries its total work-hours denominator; a missing/zero denominator makes the rate a literal [GAP] (fail-loud) while the count is STILL reported (intake Q4, the incident_rates discipline)"
+        anchors: ['work.?hours|denominator', 'rate']
+        min_matches: 2
+      - id: rate-normalisation-stated
+        description: "The normalized-rate convention is stated (count × base hours ÷ total work hours, API RP 754 base) so the arithmetic is checkable"
+        anchors: ['200,?000|per hours worked|normali[sz]', 'total (work )?hours']
+        min_matches: 1
+      - id: leading-indicators-framed
+        description: "Tier-3 (challenges to safety systems) and Tier-4 (operating discipline) leading indicators are framed alongside the lagging Tier-1/2 counts — never a lagging-only dashboard (intake Q5)"
+        anchors: ['Tier.?3', 'Tier.?4', 'leading indicator']
+        min_matches: 2
+      - id: targets-rag-status
+        description: "Each indicator carries its target/threshold and a red/amber/green status where thresholds were supplied — a count becomes a managed KPI only with a target (intake Q6)"
+        anchors: ['target', 'red|amber|green|RAG']
+        min_matches: 2
+      - id: benchmark-source-year
+        description: "Any benchmark comparison carries its source + year from the KB row (KB-DATA-PSE-BENCHMARKS) — never a bare industry figure (intake Q7)"
+        anchors: ['benchmark']
+        min_matches: 1
+      - id: no-occupational-conflation
+        description: "No occupational TRIR/LTIFR/DART metric is conflated into the PSE counts — an occupational request is routed to incident-rate-calculator (the routing guard)"
+        anchors: ['TRIR|LTIFR|DART|occupational', 'incident-rate-calculator']
+        min_matches: 1
 ---
 
 # SME Review & Sign-off — process-safety-kpi
@@ -30,6 +66,27 @@ invented.
 - [ ] Tier-3 (challenges to safety systems) and Tier-4 (operating discipline) leading indicators are framed alongside the lagging Tier-1/2 counts — not a lagging-only dashboard.
 - [ ] No TRIR/LTIFR/DART occupational metric is conflated into the PSE counts — those route to `incident-rate-calculator`.
 - [ ] Any benchmark figure carries source + year from KB-DATA; no invented industry comparison appears (FLAG).
+
+## Omission lens
+
+Run the shared omission protocol **`KB-SNIP-COMPLETENESS`**
+(`../../../knowledge-base/prompt-snippets/completeness-lens.md`) as the second pass of this
+skill's Step-4 SME review. The `modes:` map in this file's frontmatter declares the per-mode
+must-include floor (the tripwire the pass reconciles against — never its search space).
+Below are ONLY this skill's blind-spot hints.
+
+Skill-specific blind spots (where this artifact class has actually gone hollow):
+- **A rate with no visible arithmetic** — the headline number is present but the
+  denominator, the base-hours convention and the tier test behind each count are
+  nowhere; the dashboard cannot be audited, only believed.
+- **The lagging-only dashboard** — Tier-1/2 counts beautifully trended while Tier-3
+  demands and Tier-4 discipline metrics are absent; the report describes yesterday and
+  predicts nothing.
+- **Counts without thresholds** — indicators reported with no target/RAG line, so no
+  number in the pack can trigger a management response; measurement without management.
+- **The borderline event quietly tiered down** — a release near the Tier-1/Tier-2 boundary
+  classified without showing the quantity-vs-threshold test; one silent judgement moves
+  the headline metric.
 
 ## Sign-off note
 SME review: ran (persona: Process-safety-metrics SME, API RP 754 / CCPS); this is

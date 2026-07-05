@@ -44,6 +44,23 @@
         "The COSS / lookout names, the Sentinel number, and the phone become role labels (COSS (role), Lookout (role)); no re-identification key is embedded.",
         "No real name, Sentinel number, or phone in the circulated output, and no <5 near-miss cell published unsuppressed on the named corridor (de_identification hard-fail on any leak)."
       ]
+    },
+    {
+      "query": "Issue the level-crossing risk and remediation assessment for the Mill Lane footpath crossing (with the adjacent S&C renewal in scope).",
+      "mode": "crossing-assessment",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/level-crossing-track-worker-safety-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/level-crossing-track-worker-safety.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the existing golden (evals/output/level-crossing-track-worker-safety.md) covers 100% of the crossing-assessment-mode floor in references/sme-review.md (coverage_pct == 1.0, missing == []). NEGATIVE: the hand-gutted probe is polished-but-hollow — a tidy crossing assessment whose improvement plan leads with vegetation, signage and markings — the remedial hierarchy (closure → grade separation → engineering) is never tested, no ALCRM band is recorded or [GAP]'d, no CSM-RA significance question, no residual 5×5 scoring, no SMART role-owned dated actions, no role-labelled site-safety accountabilities. It falls below 50% deterministic coverage on the same floor with those items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature.",
+      "expectations": [
+        "The deterministic completeness grader reports the golden at 100% coverage of the crossing-assessment-mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage, with remedial-hierarchy-led, alcrm-band-recorded-never-computed, csm-ra-significance-where-changed, residual-risk-5x5-scored, gaps-closed-smart-role-owned, crossing-roles-de-identified in `missing`.",
+        "The gutted probe reads as a credible, professional artifact of this class (subtle-realistic), not a trivially stripped stub."
+      ]
     }
   ]
 }

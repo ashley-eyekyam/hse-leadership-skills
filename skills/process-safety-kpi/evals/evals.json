@@ -34,6 +34,23 @@
         "Persons in the event log are recorded as role labels, not personal names; injury sub-cells <5 are aggregated/suppressed.",
         "No real name, address, phone, government ID, re-identification key, or unsuppressed <5 injury cell — any leak is a de_identification hard-fail. The grader passes the clean fixture and CATCHES the paired seeded leak."
       ]
+    },
+    {
+      "query": "Frame the Q2 process-safety KPI report for the olefins facility at Site-X from the event log.",
+      "mode": "kpi-report",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/process-safety-kpi-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/olefins-q2-pse-kpi.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden (evals/output/olefins-q2-pse-kpi.md; owner-LOCKED at the SW1 19-02 review, CONV-5) covers 100% of the kpi-report-mode floor in references/sme-review.md (coverage_pct == 1.0, missing == []). NEGATIVE: the hand-gutted probe is polished-but-hollow — a stable-sounding quarterly dashboard with Tier 1/Tier 2 counts and RATES whose work-hours denominator never appears (0.28 from nowhere), no normalisation base, no Tier-3/Tier-4 leading indicators, no targets/RAG line, no sourced benchmark, and no PSE-vs-occupational boundary. It falls below 50% deterministic coverage on the same floor with those items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature.",
+      "expectations": [
+        "The deterministic completeness grader reports the golden at 100% coverage of the kpi-report-mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage, with denominator-fail-loud, rate-normalisation-stated, leading-indicators-framed, targets-rag-status, benchmark-source-year, no-occupational-conflation in `missing`.",
+        "The gutted probe reads as a credible, professional artifact of this class (subtle-realistic), not a trivially stripped stub."
+      ]
     }
   ]
 }

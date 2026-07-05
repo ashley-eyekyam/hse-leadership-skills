@@ -34,6 +34,23 @@
         "Change-owner / PSSR sign-off persons are recorded as role labels, not personal names.",
         "No real name, address, phone, government ID, or re-identification key — any leak is a de_identification hard-fail. The grader passes the clean fixture and CATCHES the paired seeded leak."
       ]
+    },
+    {
+      "query": "Issue the MoC package for the V-101 relief-valve replacement in Unit 100 at Site-X from the change review.",
+      "mode": "moc-package",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/management-of-change-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/relief-valve-replacement-moc.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden (evals/output/relief-valve-replacement-moc.md; owner-LOCKED at the SW1 19-02 review, CONV-5) covers 100% of the moc-package-mode floor in references/sme-review.md (coverage_pct == 1.0, missing == []). NEGATIVE: the hand-gutted probe is polished-but-hollow — a fluent, approved-looking MoC form: change described, a technical basis, a reassuring risk review of the EXISTING safeguards (never what the change introduces, no initial-vs-residual scoring), no temporary/permanent-expiry discipline, no gate signatory roles — and start-up authorised directly on mechanical completion with the PSSR gate silently absent. It falls below 50% deterministic coverage on the same floor with those items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature.",
+      "expectations": [
+        "The deterministic completeness grader reports the golden at 100% coverage of the moc-package-mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage, with the silently-omitted items (change-stated-and-classified, change-ra-introduced-hazards, temporary-expiry-condition, pssr-startup-gate, pssr-items-evidenced, gate-signatories-as-roles) listed in `missing`.",
+        "The gutted probe reads as a credible, professional artifact of this class (subtle-realistic), not a trivially stripped stub."
+      ]
     }
   ]
 }
