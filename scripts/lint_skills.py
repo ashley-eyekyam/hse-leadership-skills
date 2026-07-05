@@ -70,6 +70,20 @@ def _emit(report: Report, msg: str) -> None:
     """Route a rule-11/12 finding to error or warn per RULE_11_12_LEVEL."""
     (report.error if RULE_11_12_LEVEL == "error" else report.warn)(msg)
 
+
+# --- Rule 13 severity (FND-05 / D-20 staged rollout) ---------------------------
+# The completeness / mode-manifest presence-floor findings (rule 13) route through
+# _emit13() at this single level — a DISTINCT token from RULE_11_12_LEVEL so the
+# Phase-20 cutover (GATE-02) flips rule 13 alone, without entangling the
+# already-HARD rules 11/12. WARN this phase; the flip is the single token below
+# ("warn" -> "error") and the check content never changes.
+RULE_13_LEVEL = "warn"
+
+
+def _emit13(report: Report, msg: str) -> None:
+    """Route a rule-13 finding to error or warn per RULE_13_LEVEL."""
+    (report.error if RULE_13_LEVEL == "error" else report.warn)(msg)
+
 # scripts/ -> repo root
 REPO = Path(__file__).resolve().parent.parent
 TEMPLATE = REPO / "template"
@@ -770,6 +784,112 @@ def _rule12_sme_review(report: Report, body: str, skill_dir: Path) -> None:
         )
 
 
+def _rule13_completeness(report: Report, body: str, skill_dir: Path) -> None:
+    """FND-05 rule 13 — the completeness / mode-manifest presence FLOOR on
+    references/sme-review.md. Every finding via _emit13() (WARN this phase,
+    RULE_13_LEVEL). Presence + structure ONLY (D-20): a `modes:` map exists, is
+    well-formed, and every anchor COMPILES (validity, never quality) — this rule
+    never scores anchor breadth, counts synonyms, or judges floor adequacy;
+    effectiveness belongs to the deterministic completeness PAIR (FND-06).
+
+    `body` is accepted for signature parity with the sibling rules; rule 13 reads
+    only the sme-review.md file (SKILL.md roster wiring is rule 12's concern)."""
+    # Presence: rule 12 already fires on a missing sme-review.md — don't double-report.
+    f = skill_dir / "references" / "sme-review.md"
+    if not f.is_file():
+        return
+    fm, sme_body = _split_frontmatter(_read(f))
+
+    # 1. modes: parses as a mapping with >=1 mode (yaml.safe_load via
+    #    _split_frontmatter; malformed YAML yields fm={} — a finding, never a crash).
+    modes = fm.get("modes")
+    if not isinstance(modes, dict) or not modes:
+        _emit13(
+            report,
+            "rule 13: modes manifest absent/unparseable (need a mapping with >=1 mode)",
+        )
+    else:
+        for mode_id, mode in modes.items():
+            m = mode if isinstance(mode, dict) else {}
+            if not isinstance(mode, dict):
+                _emit13(report, f"rule 13: mode '{mode_id}' is not a mapping")
+            # 2. Non-empty detected_by string.
+            db = m.get("detected_by")
+            if not (isinstance(db, str) and db.strip()):
+                _emit13(report, f"rule 13: mode '{mode_id}' missing non-empty detected_by")
+            # 3. >=3 floor items (the D-20 structural minimum; the 4-8 authoring
+            #    band is per-family review guidance, never linted — D-13).
+            floor = m.get("floor")
+            items = floor if isinstance(floor, list) else []
+            if len(items) < 3:
+                _emit13(
+                    report,
+                    f"rule 13: mode '{mode_id}' floor has {len(items)} items (need >=3)",
+                )
+            for idx, item in enumerate(items):
+                it = item if isinstance(item, dict) else {}
+                raw_id = it.get("id")
+                has_id = isinstance(raw_id, str) and bool(raw_id.strip())
+                label = raw_id if has_id else f"item {idx}"
+                # 4. Item shape: id(str) / description(str) / anchors(non-empty
+                #    list) / min_matches(int >=1).
+                if not has_id:
+                    _emit13(report, f"rule 13: mode '{mode_id}' {label} missing id (str)")
+                desc = it.get("description")
+                if not (isinstance(desc, str) and desc.strip()):
+                    _emit13(
+                        report,
+                        f"rule 13: mode '{mode_id}' {label} missing description (str)",
+                    )
+                anchors = it.get("anchors")
+                if not (isinstance(anchors, list) and anchors):
+                    _emit13(
+                        report,
+                        f"rule 13: mode '{mode_id}' {label} anchors must be a non-empty list",
+                    )
+                    anchors = []
+                mm = it.get("min_matches")
+                if not (isinstance(mm, int) and not isinstance(mm, bool) and mm >= 1):
+                    _emit13(
+                        report,
+                        f"rule 13: mode '{mode_id}' {label} min_matches must be an int >=1",
+                    )
+                # 5. Every anchor compiles as a case-insensitive regex — the ONLY
+                #    anchor check, and it is validity, not effectiveness
+                #    (T-18-02-01): a bad anchor is a finding, never a linter crash.
+                for anchor in anchors:
+                    try:
+                        re.compile(str(anchor), re.I)
+                    except re.error as exc:
+                        _emit13(
+                            report,
+                            f"rule 13: mode '{mode_id}' {label} anchor "
+                            f"{str(anchor)!r} does not compile ({exc})",
+                        )
+
+    # 6. An `## Omission lens` section is present in the body; 7. that section
+    #    references the completeness KB snippet id (same section-scan idiom as
+    #    rule 12's checklist counter).
+    has_lens = False
+    in_lens = False
+    lens_lines: List[str] = []
+    for line in sme_body.split("\n"):
+        if re.match(r"^\s*#{1,6}\s", line):
+            in_lens = bool(re.search(r"(?i)omission\s+lens", line))
+            if in_lens:
+                has_lens = True
+            continue
+        if in_lens:
+            lens_lines.append(line)
+    if not has_lens:
+        _emit13(report, "rule 13: sme-review.md missing '## Omission lens' section")
+    elif "KB-SNIP-COMPLETENESS" not in "\n".join(lens_lines):
+        _emit13(
+            report,
+            "rule 13: Omission lens section does not reference KB-SNIP-COMPLETENESS",
+        )
+
+
 # --- public API ----------------------------------------------------------------
 
 def validate_skill(path: Path, repo: Path = REPO) -> Report:
@@ -806,6 +926,11 @@ def validate_skill(path: Path, repo: Path = REPO) -> Report:
     if plugin != "hse-systems" and not is_frozen_example:
         _rule11_intake_coverage(report, body, skill_dir, repo)
         _rule12_sme_review(report, body, skill_dir)
+        # Rule 13 (FND-05) rides the SAME two-pronged gate — exemptions are the
+        # forge + the frozen example ONLY (D-21); the using-hse-skills router
+        # WARNs like every other skill. Findings route through _emit13 (WARN this
+        # phase, RULE_13_LEVEL — flips independently of rules 11/12 at Phase 20).
+        _rule13_completeness(report, body, skill_dir)
     return report
 
 
