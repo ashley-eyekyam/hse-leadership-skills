@@ -16,9 +16,12 @@ Pins the Phase-18 staged-carrier invariant over the on-disk artifacts:
         Rule-9 resolver.
 
 The gated literals live ONLY in the module constants below (KB_ID,
-LENS_TOKENS, SNIPPET_TOKENS — no duplicates in comments or docstrings) so the
-18-10 owner LOCK can re-pin them to the approved bytes with a one-place edit.
-These are DRAFT bytes until that LOCK.
+LENS_TOKENS, SNIPPET_TOKENS — no duplicates in comments or docstrings) so any
+future owner LOCK can re-pin them to newly approved bytes with a one-place
+edit. These are the OWNER-LOCKED bytes: approved at the consolidated 18-10
+review (CONV-5 / D-09, 2026-07-05). Full approved carrier lines are pinned
+verbatim; any drift in the staged block or the snippet BREAKS this suite
+until a new owner LOCK re-pins the constants.
 
 Plain pytest, sandbox-offline, no framework config — mirrors
 tests/test_deid_contract.py. Paths resolve relative to the repo root so the
@@ -53,16 +56,17 @@ START_MARKER = "<!-- hse:block:orchestration:start -->"
 END_MARKER = "<!-- hse:block:orchestration:end -->"
 
 # ---------------------------------------------------------------------------
-# The re-pinnable constants (DRAFT — authored by 18-04 Task 1; the 18-10 owner
-# LOCK re-pins these to the approved bytes). Each token sits on ONE line in its
-# carrier file, so plain substring matching is exact.
+# The re-pinnable constants (OWNER-LOCKED — pinned to the bytes approved at the
+# consolidated 18-10 owner review, CONV-5 / D-09, 2026-07-05). Each token sits
+# on ONE line in its carrier file, so plain substring matching is exact.
 # ---------------------------------------------------------------------------
 
 KB_ID = "KB-SNIP-COMPLETENESS"
 KB_FILE = "completeness-lens.md"
 
 LENS_TOKENS = [
-    # The Step-4 MANDATE strings.
+    # The Step-4 MANDATE strings (short leak-sentinels — these must also stay
+    # ABSENT from the live block until the Phase-20 cutover).
     "Omission lens",
     "detect the emitted mode",
     "never fabricate",
@@ -70,15 +74,30 @@ LENS_TOKENS = [
     # The named single-thread omission-pass clause — the load-bearing line for
     # hosts with no subagent capability.
     "run the Omission lens absence-listing pass yourself",
+    # The owner-LOCKED exact carrier lines, pinned verbatim (one line each in
+    # the staged block's marked region).
+    "Omission lens (the SECOND, unconstrained omission pass): detect the emitted mode,",
+    "list what a competent consultant would have included for THIS mode BEFORE checking",
+    "the mode's floor, surface every miss as a `[GAP]` / deficiency-list entry, and",
+    "never fabricate content to fill a gap (protocol: `KB-SNIP-COMPLETENESS`).",
+    "run the Omission lens absence-listing pass yourself (unconstrained, BEFORE the floor",
+    "check — surface misses as `[GAP]`, never fabricate), and pass the review before",
 ]
 
-# The D-07 PROTOCOL carriers the snippet must hold (single source).
+# The D-07 PROTOCOL carriers the snippet must hold (single source) — the short
+# section anchors plus the owner-LOCKED exact protocol lines, pinned verbatim.
 SNIPPET_TOKENS = [
     "must-list-then-refute",
     "Bounded single-pass exit",
     "[GAP]",
     "never fabricate",
     "Verbosity guard",
+    # The owner-LOCKED exact carrier lines (one line each in the snippet).
+    "**Fragment ID:** `KB-SNIP-COMPLETENESS`",
+    "1. **Detect the emitted mode.** Identify which mode (from the skill's",
+    "5. **Surface — never fabricate.** Every real miss becomes a `[GAP]` / deficiency-list",
+    "Run the lens ONCE per review cycle. Do not loop it until it finds nothing — one",
+    "deficiency list with item names and one-line reasons. Never pad the artifact or the",
 ]
 
 
