@@ -500,6 +500,22 @@ def grade_case(
         record["pass"] = True
         return record
 
+    # D-02: a case flagged deterministic_only skips the model-grader leg (the
+    # deterministic graders + the reported-only completeness split already ran
+    # above). Used for machinery-proof cases whose expectations describe grader
+    # mechanics (coverage %, tripwire firing) that artifact text cannot
+    # demonstrate — they flap FAIL under the local model grader (18-10 finding 2).
+    # Per-CASE only: distinct from the whole-run --deterministic-only flag, which
+    # would drop the model leg on the REAL golden/probe cases in a family sweep.
+    if case.get("deterministic_only") is True:
+        record["model_grade"] = {
+            "scored": False,
+            "reason": "deterministic_only case (D-02; deterministic verdict binding)",
+        }
+        record["weighted_mean"] = None
+        record["pass"] = True
+        return record
+
     # The model grader scores ONLY the pre-captured OUTPUT artifact (never intake).
     model_grade = run_model_grader(skill_dir, case, output_text, rubric, grader_model)
 

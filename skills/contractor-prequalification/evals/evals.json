@@ -43,6 +43,7 @@
     {
       "query": "Issue the blank risk-tiered PQQ for a painting-contractor package (interior painting, facade painting at height, spray painting, confined-space painting) at a Tamil Nadu industrial site, India — the questionnaire the contractor must answer with verifiable evidence before any scoring.",
       "mode": "questionnaire",
+      "deterministic_only": true,
       "files": ["evals/files/contractor-prequalification-gutted.md"],
       "output_files": ["evals/output/contractor-prequalification.md"],
       "expected_behavior": "The completeness PAIR (FND-06 / D-15, the D-02 separation proof). POSITIVE: the LOCKED golden output covers 100% of the questionnaire-mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (files/contractor-prequalification-gutted.md — derived from the REAL Nagapattinam painting-contractor PQQ, the pack's one empirically-failed shipped artifact) is polished-but-hollow: professional, evidence-anchored questions that SILENTLY omit the scoring scheme, the named approval authority, the India statutory-registration checks, and SMART owned-and-dated condition discipline — it falls below 50% deterministic coverage on the same floor with those items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs (golden >=4 / probe <=2 on the reported-only completeness dimension) run LOCALLY on the subscription (D-03), captured at the 18-10 owner gate — never in CI.",
@@ -56,6 +57,7 @@
     {
       "query": "Run the omission-lens review (KB-SNIP-COMPLETENESS second pass of the Step-4 SME review) over the issued painting-contractor PQQ and surface every completeness deficiency — without inventing anything to fill a gap.",
       "mode": "questionnaire",
+      "deterministic_only": true,
       "files": ["evals/files/contractor-prequalification-gutted.md"],
       "output_files": ["evals/output/contractor-prequalification-remediated.md"],
       "expected_behavior": "The CLEAN half of the fabrication guard (FND-07 / D-16a). The remediated output (output/contractor-prequalification-remediated.md — the staged omission-lens protocol run LOCALLY over the gutted probe, D-17) surfaces EVERY silently-missing floor item as a literal [GAP] deficiency-list entry naming the item (scoring-scheme, approval-authority, statutory-regime-check, conditions-smart-owned) plus the beyond-floor generative-pass findings, and routes every unresolved fact to the competent person. grade_completeness reports those floor items as covered_by_gap (never missing, never filled by invented content); grade_citation is CLEAN (the only cited KB id resolves) and grade_deid is CLEAN — ZERO invented form-ids, figures, or citations anywhere. Honest surfacing is the rewarded behaviour; the artifact explicitly refuses to fabricate statute details or state forms to close the statutory gap. Owner-LOCKED at the consolidated 18-10 review (CONV-5 / D-17, 5 July 2026).",
@@ -69,6 +71,7 @@
     {
       "query": "Prove the fabrication tripwire has teeth: what happens when the same omission-lens remediation fabricates the statutory-compliance deficiency closed instead of surfacing it?",
       "mode": "questionnaire",
+      "deterministic_only": true,
       "files": [],
       "output_files": ["evals/output/contractor-prequalification-remediated.md"],
       "expected_behavior": "The SEEDED half of the fabrication guard (FND-07 / D-16b). The seeded-fabrication fixture (files/contractor-prequalification-fabricated.md) is the SAME remediation as case 5 but with the statutory-regime [GAP] deliberately replaced by fabricated compliance — a planted NON-RESOLVING knowledge-base citation plus an invented state form-id. The deterministic citation grader TRIPS on it: grade_citation returns fail: True with regulatory_citation_accuracy forced below 4 (the citation.py hard-fail class), and the coverage split makes the self-patch visible (the fabricated passage flips statutory-regime-check from covered_by_gap to covered_by_content while the tripwire fires). Like the de-id seeded-leak fixture (case 3 precedent), the fabricated negative is intentionally NOT wired into this case's files — wiring it would hard-fail the case by design; it is proven caught out-of-band by the deterministic tripwire (18-06 verification; tripwire firing re-confirmed in the 18-10 owner sweep, 5 July 2026). The fabricated fixture stays a labelled negative outside the 18-10 CONV-5 text-LOCK set.",
