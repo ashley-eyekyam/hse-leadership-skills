@@ -370,9 +370,13 @@ def _sme_review_md(name: str, answers: dict) -> str:
 
     Reads the Wave-1 template `templates/sme-review.md` byte-for-byte (1 generic
     HSE-SME-Reviewer persona with non-empty role/expertise/lens + a >=3-item domain
-    checklist — already born-conformant against Rule 12). Substitutes only the
-    `<skill>` heading placeholder. `answers` is accepted for signature parity but
-    ignored (answers.json threading is DEFERRED, research §5.4)."""
+    checklist — born-conformant against Rule 12 — plus a `modes:` placeholder
+    manifest (one `default` mode, `detected_by: always`, 3 TODO-stub floor items)
+    and a `## Omission lens` TODO section referencing `KB-SNIP-COMPLETENESS` —
+    born-conformant against Rule 13; the author fills real floor values at
+    backfill, the forge never invents them). Substitutes only the `<skill>`
+    heading placeholder. `answers` is accepted for signature parity but ignored
+    (answers.json threading is DEFERRED, research §5.4)."""
     text = _read(FORGE_TEMPLATES / "sme-review.md")
     return text.replace("# SME Review & Sign-off — <skill>", f"# SME Review & Sign-off — {name}")
 
