@@ -1,5 +1,5 @@
 {
-  "_comment": "The B3 toolbox-talk eval set (§3.11). THREE cases: (1) specificity-vs-generic, (2) de-id auto-fail PAIR, (3) length/readability + sign-off-present. Eval 2 is the de-id auto-fail PAIR — the eval CASE wires the CLEAN positive (evals/files/scaffold-incident-clean.md) so the per-skill eval gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/scaffold-incident-pii.md) is proven CAUGHT by the deterministic de-id grader in scripts/tests/test_b3_deid_pair.py (leak.auto_fail True, clean.auto_fail False) — mirroring the canary --deid-selftest. case `files` are skill-dir-relative as evals/files/<name>.md so the keyless deterministic grader resolves and scans them (the B1 path convention). rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only.",
+  "_comment": "The B3 toolbox-talk eval set (§3.11). SIX cases: (1) specificity-vs-generic, (2) de-id auto-fail PAIR, (3) length/readability + sign-off-present, (4) completeness PAIR (FND-06: LOCKED golden 100% vs gutted probe <50% on the short-briefing floor), (5) clean omission-lens remediation (FND-07/D-16a: every miss a literal [GAP], citation+deid clean, stays SHORT), (6) fabrication-guard documentation (FND-07/D-16b: the seeded-fabrication fixture evals/files/toolbox-talk-fabricated.md trips grade_citation out-of-band; intentionally NOT wired into files — the de-id seeded-leak precedent). Eval 2 is the de-id auto-fail PAIR — the eval CASE wires the CLEAN positive (evals/files/scaffold-incident-clean.md) so the per-skill eval gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/scaffold-incident-pii.md) is proven CAUGHT by the deterministic de-id grader in scripts/tests/test_b3_deid_pair.py (leak.auto_fail True, clean.auto_fail False) — mirroring the canary --deid-selftest. case `files` are skill-dir-relative as evals/files/<name>.md so the keyless deterministic grader resolves and scans them (the B1 path convention). rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only; the completeness dimension is reported-only (never in the weighted mean, D-18). Cases 4-6 fixtures are CANDIDATEs pending the consolidated owner-LOCK (18-10, CONV-5).",
   "skill": "toolbox-talk",
   "rubric": "rubric.yaml",
   "evals": [
@@ -40,6 +40,20 @@
         "Structured as hook -> specific hazards -> HoC-aware controls -> incident -> discussion prompts -> takeaways -> sign-off.",
         "Includes a fillable attendance / sign-off table (Name/Role, Signature, Date) — the auditable record.",
         "Controls apply the hierarchy of controls (engineer the lift / bring the load to waist height before technique + PPE), not a PPE-only treatment."
+      ]
+    },
+    {
+      "query": "Grade the short-briefing completeness PAIR: the LOCKED re-roofing Bay 3 golden against a fluent, padded, generic working-at-height talk that never lands on today's actual job.",
+      "mode": "short-briefing",
+      "files": ["evals/files/toolbox-talk-gutted.md"],
+      "output_files": ["evals/output/reroof-bay3.md"],
+      "expected_behavior": "The completeness PAIR (FND-06 / D-15, the D-02 separation proof on the SHORT-artifact / verbosity-guard axis). POSITIVE: the LOCKED short golden (output/reroof-bay3.md) covers 100% of the short-briefing floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []) — the floor is TIGHT and satisfiable within a <5-min talk. NEGATIVE: the gutted probe (files/toolbox-talk-gutted.md) is the anywhere-talk: wordy, polished, PADDED-but-hollow (Pitfall 8 — length and platitudes must not raise coverage). It keeps the credible shell (a duration header, a vacuous takeaways section, a real sign-off table) while SILENTLY omitting the substance no competent supervisor would leave out — the named task/site hazards, the hierarchy-of-controls treatment, the de-identified/labelled-typical incident reference, and the open crew discussion prompts — and falls below 50% deterministic coverage with those items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs (golden >=4 / probe <=2 on the reported-only completeness dimension) run LOCALLY on the subscription (D-03), captured at the 18-10 owner gate — never in CI.",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED short golden at 100% coverage of the short-briefing floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted items (named-task-hazards, hierarchy-of-controls, incident-reference, discussion-prompts) listed in `missing`.",
+        "Verbosity does not save the probe: it is longer and wordier than the golden yet scores LOW — padding and safety platitudes never substitute for the floor (Pitfall 8 / D-18).",
+        "The probe reads as a deliverable, fluent pre-start talk (plausible header, tidy structure, sign-off table) — polished and generic, not a trivially stripped stub.",
+        "The probe is a CANDIDATE fixture pending the consolidated owner-LOCK (18-10, CONV-5); owner reviews the gutting for subtle-realism before it calibrates GATE-03."
       ]
     }
   ]
