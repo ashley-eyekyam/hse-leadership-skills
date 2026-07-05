@@ -10,9 +10,9 @@ grade is skipped — so it must run for EVERY skill and must be crash-proof.
 Three-way split per floor item (D-10 anchor matching / D-11 honest-gap credit):
 
     covered_by_content — any anchor matches the output OUTSIDE a gap segment;
-    covered_by_gap     — a literal ``[GAP`` marker line NAMES the item (id or a
-                         description token) — honest surfacing is COVERED,
-                         never pressured toward a FILL;
+    covered_by_gap     — a literal ``[GAP`` marker line NAMES the item (its id,
+                         or one of the item's OWN anchors) — honest surfacing
+                         is COVERED, never pressured toward a FILL;
     missing            — silently absent.
 
     coverage_pct = (covered_by_content + covered_by_gap) / floor_total
@@ -56,11 +56,6 @@ _GAP_MARK = "[GAP"
 # as non-matching with a logged reason, never compiled.
 _MAX_ANCHOR_LEN = 512
 
-# Tokens of this length or longer from an item description participate in the
-# gap-naming co-occurrence check (item id always participates).
-_DESC_TOKEN_RE = re.compile(r"[A-Za-z][A-Za-z0-9_-]{3,}")
-
-
 def _compile_anchor(anchor: Any) -> Optional[Pattern[str]]:
     """Compile ONE untrusted author anchor case-insensitively (D-10).
 
@@ -90,18 +85,23 @@ def _split_gap_segments(text: str) -> Tuple[List[str], str]:
     return gap_lines, "\n".join(non_gap_lines)
 
 
-def _gap_names_item(gap_lines: List[str], item_id: str, description: str) -> bool:
-    """True when a literal gap-marker line co-occurs with the item id or a
-    description token (D-11: honest surfacing counts as covered_by_gap)."""
-    tokens = set()
-    if item_id:
-        tokens.add(item_id.lower())
-    tokens.update(t.lower() for t in _DESC_TOKEN_RE.findall(description or ""))
-    if not tokens:
-        return False
+def _gap_names_item(
+    gap_lines: List[str], item_id: str, anchors_compiled: List[Pattern[str]],
+) -> bool:
+    """True when a literal gap-marker line NAMES this specific item — its id
+    (case-insensitive substring) or one of the item's OWN compiled anchors
+    (D-11: honest surfacing counts as covered_by_gap).
+
+    Gap-credit is bound to the item's OWN identity, NEVER generic word overlap
+    with the item description: a ``[GAP]`` line honestly naming item A must not
+    credit a silently-absent item B that merely shares a common English word
+    (18-REVIEW CR-01 — silent absence masked as honest surfacing would invert
+    the contract's core signal)."""
+    id_low = (item_id or "").lower()
     for line in gap_lines:
-        low = line.lower()
-        if any(tok in low for tok in tokens):
+        if id_low and id_low in line.lower():
+            return True
+        if any(rx.search(line) for rx in anchors_compiled):
             return True
     return False
 
@@ -178,7 +178,6 @@ def grade_completeness(output_text: str, sme_review_path: Path, mode: str) -> Di
                 f"{item_id}: floor item is not a mapping — treated as missing")
             continue
         item_id = str(item.get("id") or f"item-{idx + 1}")
-        description = str(item.get("description") or "")
         raw_anchors = item.get("anchors")
         raw_anchors = raw_anchors if isinstance(raw_anchors, list) else []
         raw_min = item.get("min_matches", 1)
@@ -202,7 +201,7 @@ def grade_completeness(output_text: str, sme_review_path: Path, mode: str) -> Di
         content_hits = sum(1 for rx in compiled if rx.search(non_gap_text))
         if compiled and content_hits >= min_matches:
             result["covered_by_content"].append(item_id)
-        elif _gap_names_item(gap_lines, item_id, description):
+        elif _gap_names_item(gap_lines, item_id, compiled):
             result["covered_by_gap"].append(item_id)
         else:
             result["missing"].append(item_id)

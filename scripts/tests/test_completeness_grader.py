@@ -101,6 +101,56 @@ def test_gap_naming_counts_as_covered_by_gap(tmp_path):
     assert v["coverage_pct"] == 1.0  # gap-surfacing is COVERED, never penalised
 
 
+def test_gap_line_for_item_a_never_credits_silent_item_b(tmp_path):
+    # 18-REVIEW CR-01 regression: gap-credit is bound to the item's OWN
+    # identity (id / its own anchors), NEVER shared description words. item-B
+    # is NEVER surfaced; item-A's honest gap line shares ordinary >=4-char
+    # description words with item-B ("decision", "owner") — item-B must land
+    # in `missing`, not `covered_by_gap`.
+    fm = (
+        "---\n"
+        "modes:\n"
+        "  default:\n"
+        "    detected_by: always\n"
+        "    floor:\n"
+        "      - id: item-a\n"
+        '        description: "approval decision owner sign-off"\n'
+        '        anchors: ["approval authority"]\n'
+        "        min_matches: 1\n"
+        "      - id: item-b\n"
+        '        description: "review date recorded for the decision"\n'
+        '        anchors: ["review date"]\n'
+        "        min_matches: 1\n"
+        "---\n"
+        "body\n"
+    )
+    sme = _write_sme_review(tmp_path, fm)
+    text = (
+        _GAP
+        + " item-a — no approval authority or decision owner named for sign-off.\n"
+    )
+    v = grade_completeness(text, sme, "default")
+    assert v["scored"] is True
+    assert v["covered_by_gap"] == ["item-a"]
+    assert v["missing"] == ["item-b"]  # silent absence stays MISSING
+    assert v["coverage_pct"] == 0.5
+
+
+def test_gap_line_matching_items_own_anchor_credits_that_item(tmp_path):
+    # The item-identity binding admits the item's OWN anchors: a gap line that
+    # does not carry the literal id but does match one of the item's anchors
+    # still earns covered_by_gap (honest surfacing by the item's own signal).
+    sme = _write_sme_review(tmp_path, _MODES_FM)
+    text = (
+        "Training records are maintained per role.\n"
+        "Each action owner is a named role.\n"
+        + _GAP + " the next review cadence was never confirmed with the site.\n"
+    )
+    v = grade_completeness(text, sme, "default")
+    assert "review-date" in v["covered_by_gap"]  # via its own "next review" anchor
+    assert v["missing"] == []
+
+
 def test_silently_missing_item_lands_in_missing(tmp_path):
     sme = _write_sme_review(tmp_path, _MODES_FM)
     text = (
