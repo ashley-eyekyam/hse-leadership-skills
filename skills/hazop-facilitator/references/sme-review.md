@@ -9,11 +9,11 @@ modes:
     detected_by: "Q12 — What output do you need? (Worksheet only / Full report / Recommendation register — all emit the IEC 61882 node worksheet, the skill's single artifact class)"
     floor:
       - id: bounded-node-design-intent
-        description: "One bounded node/P&ID section with its normal-operation design intent stated (flow, pressure, temperature…) — deviations are judged against that intent (intake Q2/Q3 specificity anchor)"
+        description: "One bounded node/P&ID section with its normal-operation design intent stated (flow, pressure, temperature…) — deviations are judged against that intent (intake Q2/Q3 specificity anchor); the design LIMITS the severities are judged against (MAWP / design pressure, design temperature) are recorded or explicitly [GAP]'d (19-02 canary fold-back)"
         anchors: ['node', 'design intent']
         min_matches: 2
       - id: guideword-parameter-coverage
-        description: "Every relevant guideword × parameter cell is analysed or explicitly closed ('[GAP]' or 'not credible — justified') — no silently empty cells (KB-STD-IEC-61882 matrix discipline)"
+        description: "Every relevant guideword × parameter cell is analysed or explicitly closed ('[GAP]' or 'not credible — justified') — no silently empty cells (KB-STD-IEC-61882 matrix discipline); the parameter SET itself is justified — parameters not examined (level, phase, time/sequence where relevant to the service) are recorded as considered-and-excluded, never silently absent (19-02 canary fold-back)"
         anchors: ['guideword', 'not credible|no credible deviation']
         min_matches: 1
       - id: deviation-chain-complete
@@ -40,6 +40,10 @@ modes:
         description: "The study method is grounded in IEC 61882 (cited from KB-STD-IEC-61882), plus the jurisdiction's PHA duty where one applies (OSHA PSM PHA element)"
         anchors: ['IEC 61882', 'KB-STD-IEC-61882']
         min_matches: 1
+      - id: study-record-identity-and-basis
+        description: "The record carries its filing identity and study basis — study type (new / revalidation), the workshop session date, and the source-document register (P&ID no./revision, line list, prior PHA) — each present or an explicit [GAP] with a closure action; a worksheet that cannot be tied to a session date and a P&ID revision cannot be filed as a PHA record (19-02 canary fold-back, D-14)"
+        anchors: ['workshop session date|study date|session date', 'P&ID', 'study type|revalidation']
+        min_matches: 2
 ---
 
 # SME Review & Sign-off — hazop-facilitator
@@ -88,6 +92,21 @@ Skill-specific blind spots (where this artifact class has actually gone hollow):
   closure.
 - **The intent-less node** — deviations ranked against an unstated design intent; every
   judgement in the sheet is unanchored and unrepeatable at revalidation.
+- **Safeguard credit with no independence case** *(19-02 canary fold-back)* — alarms and
+  trips credited as separate layers with no BPCS/SIS split, no SIL, and no independence
+  from the initiating failure; the safeguard column reads engineered precisely where it is
+  unverifiable. Where a High deviation needs a layer count, reference `lopa-worksheet` —
+  never rebuild it here.
+- **The jurisdiction hook cited, its element set unswept** *(19-02 canary fold-back)* —
+  "OSHA PSM PHA element" invoked while facility siting, human factors and incident history
+  (29 CFR 1910.119(e)(3)) are silently absent; the frame is named but its demanded content
+  is never addressed or [GAP]'d.
+- **The high-severity open item with no bridge** *(19-02 canary fold-back)* — an
+  acknowledged-inadequate safeguard rides a weeks-out recommendation due date with no
+  interim measure and no justification; severity and urgency silently decoupled.
+- **Single-cause deviations** *(19-02 canary fold-back)* — every chain reads complete but
+  no cause SET was swept (fire case, control-valve failure modes, utility loss); prompt the
+  team for the full credible set, record what they raise, never invent.
 
 ## Sign-off note
 SME review: ran (persona: Chartered process-safety engineer & certified HAZOP chair); this

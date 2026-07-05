@@ -1,3 +1,4 @@
+<!-- CANDIDATE pending owner re-LOCK — 19-02 Task 6 canary fold-back applied three D-14 golden-defect corrections to this pre-existing v1.2 golden (crossing-type terminology UWC→footpath, reasonable-practicability double-negative redrafted, ROW-diversion order routed to the local highway authority). Owner re-LOCK required (CONV-5) before further reliance; do NOT edit without a new owner LOCK. -->
 # Level-Crossing & Track-Worker (On or Near the Line) Safe System of Work — Mill Lane footpath crossing & adjacent S&C renewal
 
 **Site:** Mill Lane footpath level crossing + the switches-and-crossings (S&C) renewal on the Down Main, 12m 40ch–12m 55ch
@@ -11,7 +12,7 @@
 ## 1. Scope & ALCRM band (recorded, not recomputed)
 
 This safe system of work covers two adjacent activities at Mill Lane: the **footpath level
-crossing** (a user-worked pedestrian crossing today treated with a passive sign) and the
+crossing** (a footpath crossing with passive signage only — no user-operated gates or barriers) and the
 **S&C renewal** on the Down Main (proposed as a red-zone task with a single lookout while
 the line stays open).
 
@@ -25,8 +26,9 @@ Rail model output).
 ## 2. Level-crossing remedial hierarchy — closure first, signage last
 
 The crossing is currently "managed" with a new STOP, LOOK, LISTEN sign and a passive
-decision-aid. **A signage-led treatment is rejected**: closure and grade separation were not
-shown to be not reasonably practicable, and a sign leaves pedestrians crossing at rail level.
+decision-aid. **A signage-led treatment is rejected**: neither closure nor grade separation
+has been shown to be not reasonably practicable — both remain live remedial candidates —
+and a sign leaves pedestrians crossing at rail level.
 The remedial hierarchy is applied in order:
 
 | Order | Control | Disposition for Mill Lane | Owner (role) |
@@ -87,7 +89,7 @@ feasibility & design is returned.
 | Action | Priority | Owner (role) | Due |
 |---|---|---|---|
 | Commission footbridge feasibility & design (grade separation as the lead crossing control) | P1 | Engineering Lead (role) | 2026-09-30 |
-| Pursue the right-of-way closure/diversion order in parallel (the elimination option) | P2 | Asset / Route Owner (role) | 2026-12-15 |
+| Apply to the local highway authority for the right-of-way closure/diversion order in parallel (the elimination option — determination rests with the local authority and typically takes 12–36 months) | P2 | Asset / Route Owner (role) | 2026-12-15 |
 | Replan the S&C renewal as a possession; remove lookout-only working from the method of work | P1 | PICOP (role) | 2026-08-15 |
 | Confirm the current NR/L2/OHS/019 issue/date with the rail-SME and update the citation (`[ASSUMED A3]` → confirmed) | P3 | Safety Lead (role) | 2026-08-01 |
 

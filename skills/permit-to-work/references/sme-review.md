@@ -9,7 +9,7 @@ modes:
     detected_by: "Q10 — What output, for whom? (Permit form / Permit + SIMOPS plan — the one permit-to-work package; the SIMOPS section is a leg of it, never a separate workflow)"
     floor:
       - id: type-specific-mandatory-controls
-        description: "The type-specific mandatory controls for the named permit type(s) are present — hot work: fire watch + combustibles removed + extinguisher; confined space: gas test + attendant + rescue plan; excavation: buried-services scan + shoring; line break: drain/flush/depressurise + double isolation (intake Q1/Q4 gate)"
+        description: "The type-specific mandatory controls for the named permit type(s) are present — hot work: fire watch + combustibles removed + extinguisher; confined space: gas test + attendant + rescue plan; excavation: buried-services scan + shoring; line break: drain/flush/depressurise + double isolation (intake Q1/Q4 gate); the gas test names WHICH gases — flammable (LEL) AND the stream's credible toxic/asphyxiant species AND oxygen where enrichment/depletion is possible — a flammable-only 'pass' is false assurance (19-02 canary fold-back)"
         anchors: ['fire watch', 'combustible', 'gas test|rescue plan|buried.services']
         min_matches: 2
       - id: isolations-engineered-loto
@@ -25,7 +25,7 @@ modes:
         anchors: ['permit issuer|issuing authority', 'performing authority']
         min_matches: 2
       - id: validity-conditions-handover
-        description: "Permit conditions plus a bounded validity period and the shift-handover rule are stated — no open-ended permit (intake Q8)"
+        description: "Permit conditions plus a bounded validity period and the shift-handover rule are stated — no open-ended permit (intake Q8); including the permit-holder-absence rule — work stops or an authorised deputy takes over, stated on the permit (19-02 canary fold-back)"
         anchors: ['validity', 'handover|single shift|24.?h']
         min_matches: 2
       - id: not-valid-until-confirmed
@@ -86,6 +86,22 @@ Skill-specific blind spots (where this artifact class has actually gone hollow):
 - **The permit that never ends** — no validity bound, no shift-handover rule, no
   re-validation trigger on conditions change (weather, gas re-test); the permit outlives
   the conditions it was written for.
+- **The flammable-only gas test** *(19-02 canary fold-back)* — 'gas test: pass' scoped to
+  LEL alone on a live unit; the toxic/asphyxiant species (an H2S IDLH sits orders of
+  magnitude below its LEL) and oxygen enrichment go silently untested, so the permit's
+  cleanest-looking control gives false assurance.
+- **Technique-blind controls** *(19-02 canary fold-back)* — the canonical hot-work set
+  (fire watch, combustibles, extinguisher) present while the technique's own hazards go
+  unnamed: welding return-current path across flanged joints, in-service pipe wall
+  thickness (UT) + WPS before the arc strikes, insulation smoulder beyond the fire-watch
+  window, a numeric wind limit for elevated open-air work.
+- **The permit with no emergency leg** *(19-02 canary fold-back)* — every control listed,
+  yet no alarm response, assembly point, or control-room notification; the crew knows how
+  to stop the work but not what to do when the plant does.
+- **Closure that skips return-to-service** *(19-02 canary fold-back)* — the Area Authority
+  signs off the worksite while nothing requires the inspection authority to release the
+  work (post-weld inspection / NDE / leak test) before pressure is restored; the permit
+  ends but the line's fitness was never gated.
 
 ## Sign-off note
 SME review: ran (persona: Control-of-work / PTW issuing authority); this is

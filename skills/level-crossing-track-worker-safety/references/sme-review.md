@@ -17,7 +17,7 @@ modes:
         anchors: ['closure', 'grade separation', 'signage|sighting']
         min_matches: 2
       - id: alcrm-band-recorded-never-computed
-        description: "The ALCRM individual/collective band is RECORDED from the user's licensed model output (or a literal [GAP] where none exists) — never invented, recomputed, or hard-coded (intake Q4; KB-DATA ALCRM row, D-03)"
+        description: "The ALCRM individual/collective band is RECORDED from the user's licensed model output (or a literal [GAP] where none exists) — never invented, recomputed, or hard-coded (intake Q4; KB-DATA ALCRM row, D-03); the record states WHICH output (individual AND collective) and the model-run vintage/date — a bare band letter cannot be validated as current (19-02 canary fold-back)"
         anchors: ['ALCRM']
         min_matches: 1
       - id: csm-ra-significance-where-changed
@@ -25,7 +25,7 @@ modes:
         anchors: ['CSM.?RA', 'significan']
         min_matches: 1
       - id: residual-risk-5x5-scored
-        description: "Residual risk after the chosen treatment is scored on the 5×5 matrix (risk_matrix output)"
+        description: "Residual risk after the chosen treatment is scored on the 5×5 matrix (risk_matrix output); showing the likelihood × severity components behind each product, never a bare score (19-02 canary fold-back)"
         anchors: ['residual risk', '5.?[x×].?5']
         min_matches: 2
       - id: gaps-closed-smart-role-owned
@@ -64,7 +64,7 @@ modes:
         anchors: ['brief']
         min_matches: 1
       - id: residual-risk-5x5-scored
-        description: "Residual risk under the chosen protection arrangement is scored on the 5×5 matrix (risk_matrix output)"
+        description: "Residual risk under the chosen protection arrangement is scored on the 5×5 matrix (risk_matrix output); showing the likelihood × severity components behind each product, never a bare score (19-02 canary fold-back)"
         anchors: ['residual risk', '5.?[x×].?5']
         min_matches: 2
       - id: gaps-closed-smart-role-owned
@@ -118,6 +118,23 @@ Skill-specific blind spots (where this artifact class has actually gone hollow):
 - **The unchanged-asset assumption** — the works alter the crossing (new equipment,
   changed operation) but the CSM-RA significance question is never asked; the change
   slips past the assessment regime entirely.
+- **The band with no inputs** *(19-02 canary fold-back)* — an ALCRM band recorded while
+  sighting distance, line speed and user/train frequencies never appear; no reviewer can
+  validate the priority claim as current.
+- **No emergency leg on an on-or-near-the-line document** *(19-02 canary fold-back)* —
+  signaller emergency contact, RIDDOR/RAIB notification and first-aid cover absent while
+  every protection control reads complete.
+- **The two assessed legs never meet** *(19-02 canary fold-back)* — crossing users and the
+  adjacent worksite each assessed correctly, their interaction (plant movements across the
+  approach, changed sightlines during construction) silently unexamined; possession
+  establishment and handback — the highest-risk transitions — treated as instantaneous.
+- **The crossing's own statutory basis missing** *(19-02 canary fold-back)* — no crossing
+  order / baseline-equipment obligation referenced and no incident history confirmed (even
+  as 'none recorded'); the assessment floats free of the instrument governing the asset.
+- **Interim-period ALARP asserted by silence** *(19-02 canary fold-back)* — a High
+  residual left standing on a far-dated lead control with no interim uplift (MSL
+  reduction, monitoring, usage data) and no explicit ALARP statement for the bridge
+  period.
 
 ## Sign-off note
 SME review: ran (persona: Level-crossing / track-worker safety SME — NR/L2/OHS/019 +
