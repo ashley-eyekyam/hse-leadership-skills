@@ -22,7 +22,7 @@ modes:
         min_matches: 1
       - id: residual-rescoring
         description: "Residual risk is re-scored with controls applied and the initial -> residual movement is shown — residual is never assumed"
-        anchors: ['residual (risk|score)', 're.scor', 'initial.{0,30}residual']
+        anchors: ['residual (risk|score)', 're-scor', 'initial.{0,30}residual']
         min_matches: 1
       - id: smart-actions-owned-dated
         description: "Every corrective action is SMART — a named role-label owner, an ISO due date, and a link to the hazard it treats (intake Q10b)"

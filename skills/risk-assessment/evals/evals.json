@@ -1,5 +1,5 @@
 {
-  "_comment": "The B1 risk-assessment eval set (§3.9). FOUR cases (not 3 — the 4th exercises the ISO 14001 environmental branch, Decision 8). Eval 2 is the de-id auto-fail PAIR. The eval CASE wires the CLEAN positive (evals/files/manual-handling-clean.md) so the per-skill eval gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/manual-handling-pii.md) is proven CAUGHT by the deterministic de-id grader in scripts/tests/test_b1_deid_pair.py (the fixture-pair contract: leak.auto_fail is True, clean.auto_fail is False) — mirroring the canary --deid-selftest. rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only.",
+  "_comment": "The B1 risk-assessment eval set (§3.9). FOUR cases (not 3 — the 4th exercises the ISO 14001 environmental branch, Decision 8). Eval 2 is the de-id auto-fail PAIR. The eval CASE wires the CLEAN positive (evals/files/manual-handling-clean.md) so the per-skill eval gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/manual-handling-pii.md) is proven CAUGHT by the deterministic de-id grader in scripts/tests/test_b1_deid_pair.py (the fixture-pair contract: leak.auto_fail is True, clean.auto_fail is False) — mirroring the canary --deid-selftest. rubric.yaml is the canonical template/evals/rubric.yaml. Model-graded weighted >=4.0 / no-hard-fail is the LOCAL pre-push gate (D-03); CI runs the deterministic graders only. v1.3 Phase 18 (FND-06/FND-07) adds the mode-keyed completeness machinery against the modes: floor in references/sme-review.md: case 4 gains mode 'environmental-aspects' (its LOCKED golden output/solvent-degreasing-env.md covers 100% of that floor); case 5 is the completeness PAIR for the dense hira mode (the LOCKED golden output/confined-space.md covers 100% of the hira floor; the gutted probe files/risk-assessment-gutted.md — derived from the dense golden by SILENT floor removal — falls below 50%). All Phase-18 fixtures are CANDIDATEs pending the consolidated owner-LOCK in 18-10 (CONV-5).",
   "skill": "risk-assessment",
   "rubric": "rubric.yaml",
   "evals": [
@@ -44,6 +44,7 @@
     },
     {
       "query": "Assess the environmental aspects of the solvent degreasing line at Plant 3 (load -> spray -> drain -> dry), Q0 = Both: VOC emissions to air + spent solvent released to water, normal + abnormal (maintenance drain-down) conditions, UK, 5x5 matrix.",
+      "mode": "environmental-aspects",
       "files": ["evals/files/solvent-degreasing-env.md"],
       "output_files": ["evals/output/solvent-degreasing-env.md"],
       "expected_behavior": "Runs the ISO 14001 6.1.2 environmental-aspects branch (Decision 8): names the actual activity, identifies the aspect->impact pairs grounded in ISO 14001 clause 6.1.2 (cited), scores each aspect's significance via the SAME risk_matrix.score engine (environmental consequence descriptors — no engine fork), applies the hierarchy of controls to the aspect (>=1 Elimination/Substitution/Engineering control — substitute an aqueous degreaser, enclose + carbon-capture the VOC, close-loop the solvent — or a justified absence), re-scores residual significance, and the report carries the environmental aspects/impacts register section. De-id holds.",
@@ -54,6 +55,19 @@
         "Applies the hierarchy of controls to the aspect: proposes >=1 Elimination/Substitution/Engineering control (substitute aqueous degreaser; enclose + carbon-capture; close-loop) or a justified absence — not PPE/admin-only (hierarchy_of_controls).",
         "Re-scores residual significance and shows the movement; the report carries the environmental aspects/impacts register section.",
         "De-identification holds (role labels only); a branded report.json / docx / pdf is produced."
+      ]
+    },
+    {
+      "query": "Build the full baseline HIRA for the confined-space entry to clean tank T-402 at Plant 3, Maharashtra — the dense full-assessment artifact this skill's completeness floor is calibrated on.",
+      "mode": "hira",
+      "files": ["evals/files/risk-assessment-gutted.md"],
+      "output_files": ["evals/output/confined-space.md"],
+      "expected_behavior": "The completeness PAIR (FND-06 / D-15, the D-02 separation proof on the dense-artifact axis). POSITIVE: the LOCKED dense golden (output/confined-space.md) covers 100% of the hira-mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (files/risk-assessment-gutted.md — derived from the SAME dense golden by silent floor removal) is polished-but-hollow: a credible front half (per-step hazard identification, 5x5 initial scoring, exposed parties, de-id status) whose back half SILENTLY omits the hierarchy-of-controls treatment, the residual re-score, named/dated action ownership, the ISO 45001 clause 6.1.2 / state statutory basis, and the review cycle — it falls below 50% deterministic coverage on the same floor with those items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs (golden >=4 / probe <=2 on the reported-only completeness dimension) run LOCALLY on the subscription (D-03), captured at the 18-10 owner gate — never in CI.",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED dense golden at 100% coverage of the hira-mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted items (hierarchy-of-controls, residual-rescoring, smart-actions-owned-dated, regulatory-basis, review-validity) listed in `missing`.",
+        "The gutted probe reads as a credible full risk assessment (real hazard table, real matrix scores, flat precaution list, sign-off block) — polished, well-formed, and silently missing what no competent consultant would omit — not a trivially stripped stub.",
+        "The probe is a CANDIDATE fixture pending the consolidated owner-LOCK (18-10, CONV-5); owner reviews the gutting for subtle-realism before it calibrates GATE-03."
       ]
     }
   ]
