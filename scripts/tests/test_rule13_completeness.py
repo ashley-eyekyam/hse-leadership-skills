@@ -34,6 +34,7 @@ FIXTURES = Path(__file__).resolve().parent / "fixtures" / "rule13"
 WELL_FORMED = FIXTURES / "well-formed"
 BROKEN = FIXTURES / "broken-modes"
 BAD_ANCHOR = FIXTURES / "bad-anchor"
+UNCOVERABLE = FIXTURES / "uncoverable-min-matches"
 
 
 def run_rule13(skill_dir):
@@ -123,6 +124,41 @@ def test_bad_anchor_is_a_finding_not_a_crash():
     # the ONLY finding (presence floor — no collateral findings).
     assert len(findings) == 1, findings
     assert _r13(report.errors) == []
+
+
+# --- (18-REVIEW W3) min_matches must not exceed the anchor count -----------------
+
+def test_min_matches_exceeding_anchor_count_is_a_warn_finding():
+    # A floor item with min_matches: 3 but only 2 anchors can NEVER be
+    # covered_by_content (content_hits counts DISTINCT matching anchors) —
+    # uncoverable by construction. Rule 13 must flag it, WARN-routed while
+    # RULE_13_LEVEL == "warn" (the staged discipline is untouched).
+    assert lint_skills.RULE_13_LEVEL == "warn"
+    report = run_rule13(UNCOVERABLE)
+    findings = _r13(report.warnings)
+    assert len(findings) == 1, findings  # the ONLY finding on this fixture
+    assert "min_matches (3)" in findings[0], findings
+    assert "anchor count (2)" in findings[0], findings
+    assert "item-2" in findings[0], findings
+    assert _r13(report.errors) == []
+
+
+def test_min_matches_equal_to_anchor_count_is_not_flagged():
+    # Boundary: the well-formed fixture's item-3 declares min_matches: 2 with
+    # exactly 2 anchors — satisfiable, must stay finding-free (already pinned
+    # by the zero-findings test; re-asserted here as the explicit boundary).
+    report = run_rule13(WELL_FORMED)
+    assert _r13(report.errors + report.warnings) == []
+
+
+def test_uncoverable_min_matches_does_not_double_fire_on_invalid_shapes():
+    # The broken-modes fixture's shapeless item (anchors: [] + min_matches: 0)
+    # must keep firing exactly its OWN findings — the new satisfiability check
+    # is an `elif` and must not stack a second min_matches finding on top.
+    findings = _r13(run_rule13(BROKEN).warnings)
+    mm_findings = [f for f in findings if "min_matches" in f]
+    assert len(mm_findings) == 1, mm_findings
+    assert "int >=1" in mm_findings[0]
 
 
 # --- presence-floor boundary: missing file is rule 12's finding, not rule 13's ---

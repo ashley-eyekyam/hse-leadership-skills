@@ -854,6 +854,22 @@ def _rule13_completeness(report: Report, body: str, skill_dir: Path) -> None:
                         report,
                         f"rule 13: mode '{mode_id}' {label} min_matches must be an int >=1",
                     )
+                elif anchors and mm > len(anchors):
+                    # 4b. (18-REVIEW W3) min_matches must be satisfiable: the
+                    #     grader's content_hits counts DISTINCT matching anchors,
+                    #     so min_matches > len(anchors) makes the item
+                    #     covered_by_content-UNREACHABLE by construction —
+                    #     silently biasing coverage down with no signal. Still
+                    #     validity, not effectiveness (D-20). `elif` keeps the
+                    #     single-finding discipline (an invalid min_matches
+                    #     already fired above; an empty/invalid anchors list
+                    #     already fired its own finding and was reset to []).
+                    _emit13(
+                        report,
+                        f"rule 13: mode '{mode_id}' {label} min_matches ({mm}) "
+                        f"exceeds the anchor count ({len(anchors)}) — the item "
+                        f"can never be covered_by_content",
+                    )
                 # 5. Every anchor compiles as a case-insensitive regex — the ONLY
                 #    anchor check, and it is validity, not effectiveness
                 #    (T-18-02-01): a bad anchor is a finding, never a linter crash.
