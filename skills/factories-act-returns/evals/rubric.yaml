@@ -130,3 +130,49 @@ dimensions:
         KB-REG-IN-STATEFORMS.
       "1": >
         A fabricated or wrong-jurisdiction citation.
+
+  # ---------------------------------------------------------------------------
+  # completeness — the REPORTED-ONLY sixth dimension (v1.3 FND-03, D-18/D-19).
+  # Scored + displayed by run_evals.py but STRUCTURALLY excluded from the
+  # >=4.0 weighted gate (the gate mean iterates MODEL_GRADED_DIMS only;
+  # REPORTED_ONLY_DIMS in run_evals.py, Plan 18-01). weight 0.0 so the five
+  # gating dimensions keep their equal 0.20 shares and the gate is provably
+  # unchanged. Byte-canonically re-stamped to every skills/*/evals/rubric.yaml
+  # by scripts/stamp_rubric.py (frozen examples/ + skills/hse-skill-forge
+  # excluded, D-21). Penalty anchors sit at 5 / 4 / 2 / 1 — there is
+  # deliberately NO "3": any silent floor miss drops straight to 2 (D-18's
+  # two-tier penalty: silent absence is far worse than surfaced absence).
+  - name: completeness
+    weight: 0.0
+    hard_fail: false
+    reported_only: true
+    description: >
+      Measures what is ABSENT from the artifact against the mode floor (the
+      must-include items in the skill's sme-review.md modes: manifest) — not
+      how much is present. Penalty semantics are two-tier (silent absence is
+      far worse than surfaced absence): ANY must-include floor item that is
+      SILENTLY missing caps the score at 2; an absence honestly surfaced as a
+      [GAP]/deficiency-list entry naming the item costs only mildly. Verbosity
+      CANNOT raise the score — added length that covers no missing floor item
+      moves nothing. The grader MUST NAME the absent floor items in its
+      rationale (manifest-anchored, bounded judgment — never an open-ended
+      fishing expedition).
+    anchors:
+      "5": >
+        The mode floor is fully covered by substantive content AND there is no
+        nameable material omission a competent consultant would flag. Nothing
+        material is absent — silently or otherwise.
+      "4": >
+        Minor omissions only, and every one is honestly surfaced as a
+        [GAP]/deficiency-list entry naming the missing item (the pilot-golden
+        bar). No floor item is silently absent.
+      "2": >
+        A polished-looking artifact with multiple floor items SILENTLY absent —
+        it reads complete and professionally formatted, yet items no competent
+        consultant would omit are simply not there and nothing tells the reader
+        they are missing (the gutted-probe signature: the shipped
+        Nagapattinam-PQQ failure mode). Any silent floor miss caps the score
+        here regardless of polish or length.
+      "1": >
+        A hollow shell — most of the mode floor is absent and unacknowledged;
+        the artifact performs the format without the substance.
