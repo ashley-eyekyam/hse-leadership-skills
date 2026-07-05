@@ -1,4 +1,5 @@
-<!-- CANDIDATE fixture — pending the consolidated owner-LOCK (18-10, CONV-5 / D-17).
+<!-- LOCKED fixture — owner-LOCKED at the consolidated 18-10 review (CONV-5 / D-17, 5 July 2026);
+     do NOT edit without a new owner LOCK.
      The CLEAN completeness-remediated output (FND-07 / D-16a): the staged
      omission-lens protocol (template/blocks/staged/orchestration.md Step-4 second
      pass + the KB-SNIP-COMPLETENESS must-list-then-refute steps) run LOCALLY over

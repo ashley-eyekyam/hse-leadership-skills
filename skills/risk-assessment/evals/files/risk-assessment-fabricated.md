@@ -1,4 +1,5 @@
-<!-- CANDIDATE fixture — pending the consolidated owner-LOCK (18-10, CONV-5 / D-16b).
+<!-- Labelled NEGATIVE fixture — outside the 18-10 CONV-5 owner text-LOCK set; the deterministic
+     citation-tripwire firing was re-confirmed in the 18-10 owner sweep (5 July 2026) (D-16b).
      The SEEDED-FABRICATION negative fixture (FND-07): the SAME omission-lens
      remediation as evals/output/risk-assessment-remediated.md, but with the
      regulatory-basis deficiency deliberately FABRICATED closed instead of

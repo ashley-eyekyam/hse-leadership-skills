@@ -1,4 +1,5 @@
-<!-- CANDIDATE fixture — pending the consolidated owner-LOCK (18-10, CONV-5).
+<!-- LOCKED fixture — owner-LOCKED at the consolidated 18-10 review (CONV-5, 5 July 2026);
+     do NOT edit without a new owner LOCK.
      The GUTTED completeness probe for the questionnaire mode (FND-06 / D-15):
      derived from the REAL Nagapattinam painting-contractor PQQ — the pack's one
      empirically-failed shipped artifact (see the private build repo's

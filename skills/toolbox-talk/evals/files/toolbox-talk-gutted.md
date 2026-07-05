@@ -1,4 +1,5 @@
-<!-- CANDIDATE fixture — pending the consolidated owner-LOCK (18-10, CONV-5).
+<!-- LOCKED fixture — owner-LOCKED at the consolidated 18-10 review (CONV-5, 5 July 2026);
+     do NOT edit without a new owner LOCK.
      The GUTTED completeness probe for the short-briefing mode (FND-06 / D-15):
      a plausible, fluent, even WORDY pre-start talk that reads deliverable —
      and is deliberately the anywhere-talk: generic category patter with no

@@ -1,4 +1,5 @@
-<!-- CANDIDATE fixture — pending the consolidated owner-LOCK (18-10, CONV-5).
+<!-- LOCKED fixture — owner-LOCKED at the consolidated 18-10 review (CONV-5, 5 July 2026);
+     do NOT edit without a new owner LOCK.
      The GUTTED completeness probe for the hira mode (FND-06 / D-15): derived from
      the LOCKED dense golden evals/output/confined-space.md by SILENT floor removal.
      Polished-but-hollow by construction: the front half of the assessment is real
