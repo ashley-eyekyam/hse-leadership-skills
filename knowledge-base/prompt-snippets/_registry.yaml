@@ -862,3 +862,19 @@
   last_reviewed: 2026-06-23
   volatile: false
   supersedes: null
+
+# --- Phase 18 (v1.3 completeness contract, 18-04): the shared omission-lens protocol ---
+- id: KB-SNIP-COMPLETENESS
+  file: completeness-lens.md
+  title: "Omission lens — the shared completeness / absence-listing protocol"
+  facets:
+    jurisdiction: [All]
+    industry: [All]
+    topics: [completeness, omission-lens, must-list-then-refute, gap-surfacing, sme-review, verbosity-guard]
+    audience: [M, C, F]
+  summary: "Shared omission-lens protocol (D-07): generative absence-listing THEN floor reconcile; must-list-then-refute; bounded single-pass exit; [GAP]-surface never fabricate; verbosity guard (enumerate internally, surface only a short deficiency note). Referenced by every sme-review.md '## Omission lens' section; single source, never restated."
+  source: "v1.3 completeness contract — Phase 18 D-06/D-07 (critic omission-gap root cause)"
+  year: 2026
+  last_reviewed: 2026-07-05
+  volatile: false
+  supersedes: null

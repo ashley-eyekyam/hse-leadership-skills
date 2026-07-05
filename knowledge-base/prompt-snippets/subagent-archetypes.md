@@ -136,6 +136,14 @@ See `KB-SNIP-SME-QA` (`sme-signoff.md`) for the canonical mandatory pre-output s
 > - **un-evidenced claims** — any conclusion not traced to a cited source (source + year);
 > - the overarching test: **"would this survive a regulator?"** — flag anything that
 >   would not.
+> **Second pass — the Omission lens (completeness).** After the checklist pass above,
+> the SAME reviewer runs ONE further, unconstrained omission pass: detect the emitted
+> mode and ask **"what would a competent [persona] have included for THIS mode that is
+> ABSENT?"** — enumerate candidates internally (must-list-then-refute), reconcile
+> against the mode floor in `references/sme-review.md`, and FLAG every real miss as a
+> `[GAP]` / deficiency-list entry (a short note, never the full enumeration). Bounded
+> single pass; never fabricate content to fill a gap. Protocol single source:
+> `KB-SNIP-COMPLETENESS` (`completeness-lens.md`).
 > **Tools:** Read only (it reviews; it never writes, scores, or signs off).
 > **Scope-out:** does NOT approve the artifact, does NOT stand in for the human
 > competent-person sign-off, and a FLAG it raises is **recorded, never merge-blocking**
