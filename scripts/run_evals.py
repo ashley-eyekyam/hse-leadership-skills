@@ -236,6 +236,28 @@ def gate_threshold(rubric: Dict[str, Any]) -> float:
     return float((rubric.get("gate") or {}).get("weighted_mean_min", DEFAULT_GATE))
 
 
+def dim_weights(rubric: Dict[str, Any]) -> Dict[str, float]:
+    """Per-dimension `weight:` map from the rubric's dimensions list (18-REVIEW
+    W2: the gate mean must HONOUR declared weights, not silently assume they
+    are uniform). A dimension with a missing / non-numeric / negative weight
+    defaults to 1.0 (an equal share), so a synthetic rubric without weight
+    fields keeps the plain-mean behaviour. With the canonical template rubric
+    (five gating dims at 0.20 each) the weighted mean equals the plain mean —
+    but a future rubric retune of any gating weight is now honoured."""
+    out: Dict[str, float] = {}
+    for dim in rubric.get("dimensions") or []:
+        if not isinstance(dim, dict):
+            continue
+        name = dim.get("name")
+        if not isinstance(name, str) or not name:
+            continue
+        w = dim.get("weight", 1.0)
+        if isinstance(w, bool) or not isinstance(w, (int, float)) or w < 0:
+            w = 1.0
+        out[name] = float(w)
+    return out
+
+
 # --- per-case artifact loaders -------------------------------------------------
 # Two DISTINCT artifact streams per case (the measurement-validity fix):
 #   * INTAKE  (`case["files"]`)        — the de-identified skill INPUT (scope,
@@ -490,16 +512,27 @@ def grade_case(
         model_grade["reported"] = reported
     record["model_grade"] = model_grade
 
-    # Weighted mean over the GATING dims ONLY — iterate MODEL_GRADED_DIMS
+    # TRUE weighted mean over the GATING dims ONLY — iterate MODEL_GRADED_DIMS
     # explicitly (D-18 structural exclusion: a reported-only dim present in
-    # `scores` can NEVER move this mean). Only computed when the model actually
+    # `scores` can NEVER move this mean) and honour the rubric's declared
+    # `weight:` per dimension (18-REVIEW W2 — previously an unweighted mean
+    # that silently ignored a retuned gating weight; identical result under
+    # the canonical equal-0.20 rubric). Only computed when the model actually
     # scored (CI path); otherwise pass is deferred to the deterministic verdict
     # (no hard-fail = not blocked).
     if model_grade["scored"] and model_grade["scores"]:
         scores = model_grade["scores"]
-        gating = [scores[k] for k in MODEL_GRADED_DIMS if k in scores]
+        weights = dim_weights(rubric)
+        gating = [(scores[k], weights.get(k, 1.0))
+                  for k in MODEL_GRADED_DIMS if k in scores]
         if gating:
-            weighted = sum(gating) / len(gating)
+            total_w = sum(w for _, w in gating)
+            if total_w > 0:
+                weighted = sum(s * w for s, w in gating) / total_w
+            else:
+                # Degenerate all-zero-weight gating set: fall back to the plain
+                # mean rather than divide by zero (the gate still applies).
+                weighted = sum(s for s, _ in gating) / len(gating)
             record["weighted_mean"] = round(weighted, 3)
             record["pass"] = weighted >= gate_threshold(rubric)
         else:
