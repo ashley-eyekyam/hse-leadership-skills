@@ -4,6 +4,59 @@ sme-review:
     - role: "Biological Safety Officer (BSO) / Biosafety Professional (CDC/NIH BMBL + WHO Laboratory Biosafety Manual competent; Registered Biosafety Professional (RBP) where available)"
       expertise: "The CDC/NIH Biosafety in Microbiological and Biomedical Laboratories (BMBL, 6th ed.) biosafety levels BSL-1 to BSL-4 (containment practices, facilities, safety equipment per level) and the biosafety-cabinet classes (I / II A-B / III); the WHO Laboratory Biosafety Manual (4th ed.) risk-group classification RG1-RG4 and the agent + procedure + competence risk-assessment approach; the NIH Guidelines for recombinant or synthetic nucleic-acid molecules and Institutional Biosafety Committee (IBC) oversight; UK COSHH 2002 with the ACDP (Advisory Committee on Dangerous Pathogens) hazard groups; OSHA 29 CFR 1910.1030 where a laboratory procedure handles human blood / OPIM; India Bio-Medical Waste Management Rules 2016 lab-waste segregation via hse-india; primary-containment selection (biosafety-cabinet class against the aerosol potential, directional airflow, waste decontamination); laboratory biosecurity / access-control and agent accountability; immunisation and serological surveillance of laboratory workers; and the special-category-health-data (PHI) handling of the specimen-source patient's identity and the worker's serological-surveillance / occupational-health record (GDPR Art. 9 / OSHA 1910.1030(f) confidentiality)."
       lens: "Is the agent's risk group (RG1-RG4) determined FIRST, and where the agent's risk group is unknown or unlisted is a literal [GAP] emitted and routed to a competent biosafety officer rather than a risk group or BSL being INVENTED? Does the selected biosafety level match the established risk group AND the procedure -- is a BSL assigned from the agent alone, ignoring aerosolization, FLAGGED? Is the primary containment (biosafety-cabinet class against the aerosol potential, directional airflow, waste decontamination) selected BEFORE PPE -- is a 'wear a respirator and gloves' treatment with no biosafety cabinet or BSL-appropriate facility FLAGGED and pushed up the hierarchy, with PPE as the residual barrier matched to the BSL? Are the biosecurity / access-control measures present where the agent warrants them, and the immunisation / serological-surveillance offer and the confidential exposure-response pathway authored? Is the specimen-source patient referenced by role only with any clinical detail held separately, the worker's serological-surveillance / OH record held confidentially per 1910.1030(f) / GDPR Art. 9, every <5 lab-incident category suppressed (including the secondary back-calculation), and is the specimen-source-patient identity and the worker's identity scrubbed with ZERO leak and no re-identification key co-located or emitted as a file?"
+modes:
+  biosafety-assessment:
+    detected_by: Q9 — Output artifact wanted + its reader (full biosafety risk assessment + containment plan / risk-group + BSL determination summary / quick containment / cabinet-class answer — all render the single biosafety determination at the reader's depth)
+    floor:
+    - id: bsa-risk-group-first
+      description: The agent's risk group (RG1-RG4) determined first; Unknown becomes a `[GAP]` routed to a competent Biological Safety Officer, never invented (intake Q2; WHO LBM / KB-SNIP-BIOSAFETY-RA)
+      anchors:
+      - risk group
+      - RG[1-4]
+      - \[GAP\]
+      min_matches: 1
+    - id: bsa-bsl-from-agent-and-aerosol
+      description: The biosafety level (BSL-1-4) determined from the agent AND the procedure's aerosol potential, not the agent alone (intake Q3; CDC/NIH BMBL; a BSL from the agent alone is FLAGGED)
+      anchors:
+      - BSL.?[1-4]|biosafety level
+      - aerosol
+      - procedure|centrifug|sonicat
+      min_matches: 1
+    - id: bsa-engineering-containment-first
+      description: Primary engineering containment — biosafety-cabinet class (I / II / III), directional airflow / ventilation, autoclave decontamination — before PPE (intake Q4; a PPE-led plan is refused)
+      anchors:
+      - biosafety cabinet
+      - class (I|II|III)|directional airflow
+      - autoclave|ventilation
+      min_matches: 1
+    - id: bsa-exposure-response-immunisation
+      description: A confidential exposure-response pathway (first aid, confidential incident report, occupational-health follow-up) plus the immunisation / serological-surveillance offer held confidentially (intake Q5)
+      anchors:
+      - exposure.{0,8}response|post.exposure
+      - occupational.health
+      - immunis|serological|surveillance
+      min_matches: 1
+    - id: bsa-phi-deid
+      description: The specimen-source patient + the worker + the surveillance record de-identified to role labels; `<5` lab-incident cells suppressed (intake PHI gate)
+      anchors:
+      - de.identif
+      - role label|specimen.source|worker
+      - suppress|small.cell|separate
+      min_matches: 1
+    - id: bsa-statutory-regime
+      description: The jurisdiction's real statutory regime cited — US OSHA 1910.1030 (human blood/OPIM) / EU-UK COSHH 2002 + ACDP / India BMW Rules 2016 (state-detected via hse-india) — not generic HSE (intake Q6)
+      anchors:
+      - OSHA 1910.1030|OSHA
+      - COSHH|ACDP
+      - BMW|biomedical.waste
+      min_matches: 1
+    - id: bsa-owner-review
+      description: Named action owner(s) + a competent Biological Safety Officer verifier + a review cycle (annual / on-agent-change / on-procedure-change / on-incident) (intake Q10/Q11)
+      anchors:
+      - owner
+      - Biological Safety Officer|biosafety officer
+      - review
+      min_matches: 1
 ---
 
 # SME Review & Sign-off — lab-biosafety-assessment
@@ -38,6 +91,19 @@ HoC / no-PPE-led, owned-and-dated actions) are the enforced class and are not re
       identity, no named worker, no serological-surveillance / serostatus result tied to a person, no
       `<5` lab-incident cell, and no embedded / co-located re-identification key (and no key file) in
       the circulated artifact (a leak is a non-waivable `de_identification` hard-fail).
+
+## Omission lens
+
+Run the shared omission protocol **`KB-SNIP-COMPLETENESS`**
+(`../../../knowledge-base/prompt-snippets/completeness-lens.md`) as the second pass of this
+skill's Step-4 SME review. The `modes:` map in this file's frontmatter declares the per-mode
+must-include floor (the tripwire the pass reconciles against — never its search space).
+Below are ONLY this skill's blind-spot hints.
+
+Skill-specific blind spots (where this artifact class has actually gone hollow):
+- **The BSL selected from the agent alone** — the procedure's aerosol-generating potential (centrifugation, sonication, vortexing, pipetting) modifies the required containment; a level picked from the risk group without the aerosol assessment is hollow.
+- **PPE substituted for engineering containment** — a plan naming a respirator + gloves where the biosafety-cabinet class or the BSL facility ventilation is the required primary control; and the immunisation / serological-surveillance offer and the confidential exposure pathway are often dropped.
+- **An invented risk group or BSL where the agent is unknown** — an unknown / unlisted agent risk group must be a `[GAP]` routed to a competent Biological Safety Officer, never a fabricated RG/BSL (an indefensible containment decision); India lab-waste defers to hse-india with mandatory state detection, never a national form number.
 
 ## Sign-off note
 SME review: ran (persona: Biological Safety Officer (BSO) / Biosafety Professional); this is

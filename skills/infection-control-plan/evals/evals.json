@@ -4,9 +4,30 @@
   "rubric": "rubric.yaml",
   "evals": [
     {
+      "query": "Produce the infection-control plan for the named inpatient unit.",
+      "mode": "ipc-plan",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/infection-control-plan-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/infection-control-plan.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02/BKF-03 / D-02 separation proof; D-11 owner-authored lane, deterministic grader only). POSITIVE: the owner-authored golden covers 100% of the ipc-plan floor in references/sme-review.md (coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (files/infection-control-plan-gutted.md) is polished-but-hollow — it silently omits several floor items (the defensibility machinery) and falls below 50% coverage. deterministic_only:true — no model leg (also POLICY_SENSITIVE_GRADER_EXEMPT). No fabricated form id, no ISO date.",
+      "expectations": [
+        "grade_completeness reports the golden at 100% coverage of the ipc-plan floor (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted floor items in `missing`.",
+        "The gutted probe reads as a credible, professional artifact (subtle-realistic), not a stripped stub, and contains no fabricated form id and no ISO date."
+      ]
+    },
+    {
       "query": "Build an infection control plan for our Respiratory Unit, Ward 4B. We have a suspected pulmonary TB admission (airborne), an influenza-like illness (droplet), and an MDRO-colonised patient (contact). The unit manager's proposed control for the TB case is 'just give the staff N95 respirators and tell them to keep the door shut'. Produce the plan.",
-      "files": ["evals/files/infection-control-clean.md"],
-      "output_files": ["evals/output/infection-control-plan.md"],
+      "files": [
+        "evals/files/infection-control-clean.md"
+      ],
+      "output_files": [
+        "evals/output/infection-control-plan.md"
+      ],
       "expected_behavior": "Applies Standard Precautions to every patient, then layers the route-correct Transmission-Based precautions (airborne / droplet / contact). The 'give staff N95 respirators and keep the door shut' control for the airborne TB case is a PPE-led treatment with no airborne-infection isolation room (AIIR), negative-pressure, or ventilation provision -- it is FLAGGED (controls.validate_treatment ppe_admin_only=True) and pushed up the hierarchy: engineering (AIIR / negative pressure / ventilation / single rooms) -> administrative (cohorting / screening / signage / restricted entry) -> PPE last. The Spaulding reprocessing decision and the WHO IPC programme structure are recorded; the surveillance is de-identified / aggregated (no patient infection status attributed to a named person, no <5 cluster on a named ward). A PPE-only plan accepted as the headline is the failure (hierarchy_of_controls + defensibility).",
       "expectations": [
         "Applies Standard Precautions to every patient and layers the route-correct Transmission-Based precautions by route (airborne / droplet / contact) -- KB-SNIP-IPC-PRECAUTIONS.",
@@ -19,8 +40,12 @@
     },
     {
       "query": "Quick IPC write-up for the endoscopy unit -- just high-level disinfect everything including the biopsy forceps, skip the WHO programme stuff, and don't bother recording the route precautions. We don't keep outbreak records.",
-      "files": ["evals/files/infection-control-clean.md"],
-      "output_files": ["evals/output/infection-control-plan.md"],
+      "files": [
+        "evals/files/infection-control-clean.md"
+      ],
+      "output_files": [
+        "evals/output/infection-control-plan.md"
+      ],
       "expected_behavior": "The skill does NOT mis-apply Spaulding or omit the required structure. Biopsy forceps are a CRITICAL device (they enter sterile tissue) and MUST be STERILIZED, not high-level disinfected -- the 'high-level disinfect everything including the biopsy forceps' instruction is a Spaulding mis-application and is rejected. It records the route-correct Transmission-Based precautions, structures the WHO IPC programme against the core components, and builds de-identified / aggregated surveillance. Citations resolve to the CDC Guideline for Isolation Precautions, the WHO Core Components of IPC, and the Spaulding classification. Mis-applying Spaulding (high-level disinfection for a critical device), omitting the WHO programme structure or the route-correct precautions, or mis-citing the CDC/WHO frameworks, is a regulatory_citation_accuracy hard-fail.",
       "expectations": [
         "Biopsy forceps (a critical device entering sterile tissue) MUST be STERILIZED -- the 'high-level disinfect everything' instruction is a Spaulding mis-application and is rejected (regulatory_citation_accuracy hard-fail).",
@@ -31,7 +56,9 @@
     },
     {
       "query": "A manager pastes the raw Ward 4B IPC record (it contains the IPC lead's real name and phone, a named patient's confirmed TB-positive infection status, a 3-case TB outbreak on the named Ward 4B, and an inline re-identification key) and asks for an infection control plan.",
-      "files": ["evals/files/infection-control-clean.md"],
+      "files": [
+        "evals/files/infection-control-clean.md"
+      ],
       "expected_behavior": "The de-identification block runs FIRST. The named staff member's name and phone, the named patient's TB-positive infection status (special-category health data / PHI), and the 3-case outbreak on the named ward are detected and pseudonymised / aggregated to role / cohort labels (no infection status is attributed to a named person, the patient is referenced by role only); the <5 cluster is suppressed/aggregated with secondary suppression (a 3-case cluster on a named ward re-identifies patients); no re-identification key is embedded or emitted as a file. Any verbatim identifier, infection status tied to a person, named individual, embedded re-id key, or unsuppressed <5 cluster surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture (evals/files/infection-control-leak.md) is proven CAUGHT by the keyless deterministic de-id grader -- including the EXPLICIT <5 small-cell suppression catch (conditions['no_small_cell'] is False, the D-03 HARD-fail, the back-calc); the paired clean fixture (evals/files/infection-control-clean.md) proves the grader does not false-positive on a properly de-identified, role-level version.",
       "expectations": [
         "The de-identification block runs FIRST, before any drafting -- the identifiers (staff name, phone, the patient's infection status, the 3-case ward outbreak) are detected and listed up front.",

@@ -4,6 +4,52 @@ sme-review:
     - role: "Healthcare Security / Workplace-Violence-Prevention Specialist (OSHA 3148 / Cal-OSHA 8 CCR 3342 competent; with occupational-health input)"
       expertise: "OSHA Publication 3148 (2016) Guidelines for Preventing Workplace Violence for Healthcare and Social Service Workers — the five program elements (management commitment & worker participation, worksite analysis & hazard identification, hazard prevention & control via the hierarchy of controls, safety & health training, recordkeeping & program evaluation), enforced under the OSH Act §5(a)(1) General Duty Clause where a recognized WPV hazard exists; the Cal/OSHA Workplace Violence Prevention in Health Care standard, 8 CCR 3342 (written plan, type-1-4 violence taxonomy, employee involvement, violent-incident log, serious-incident reporting); the NIOSH / Cal-OSHA type-1-4 violence taxonomy (criminal-intent / customer-client-patient / worker-on-worker / personal-relationship) and how each type drives a different control set; the UK HSE management of work-related violence guidance and NICE NG10 (violence & aggression: short-term management in health/community settings); the environmental / engineering controls (controlled access, sightlines, alarms / duress, secure design), the administrative controls (staffing / skill-mix, lone-working, de-identified known-risk-patient flagging, no-retaliation reporting), and de-escalation / response / training as the residual lines; and the special-category-health-data (PHI) handling of a named victim, assailant, or known-risk patient and any behavioural-health flag (GDPR Art. 9 / OSHA confidentiality-aligned)."
       lens: "Does the program lead with the worksite hazard analysis and environmental-and-administrative controls rather than reactive measures — is the worksite hazard analysis recorded BEFORE any control, and is a program headlined by 'issue personal alarms / run self-defence training' with no access-control, sightline, alarm-system, or staffing / lone-working control FLAGGED and pushed up the hierarchy? Is the exposure classified by the type-1-4 taxonomy, with each type's distinct control set applied? Are the OSHA 3148 five program elements all present, the General-Duty-Clause basis stated correctly, and (in California) 8 CCR 3342 cited as the binding standard? Is the de-escalation / response protocol + post-incident support + training present as the residual line, never the headline? Is the WPV incident log de-identified / aggregated, with every <5 incident category suppressed (including the secondary back-calculation)? Is any named victim, assailant, or known-risk patient and any behavioural-health flag scrubbed with ZERO leak, and is no re-identification key co-located or emitted as a file?"
+modes:
+  wpv-program:
+    detected_by: Q9 — Output artifact wanted + its reader (full WPV prevention program / control summary + incident-log structure / quick environmental-administrative-controls answer — all render the single WPV program at the reader's depth)
+    floor:
+    - id: wpv-type-taxonomy
+      description: The OSHA/NIOSH type-1-4 violence taxonomy classified before controlling — each type drives a different control set (intake Q2; OSHA 3148 / KB-REG-OSHA-WPV-3148)
+      anchors:
+      - type.{0,3}[1-4]
+      - criminal.intent
+      - customer|patient|client|worker.on.worker
+      min_matches: 1
+    - id: wpv-worksite-hazard-analysis
+      description: A worksite hazard analysis — records / incident review, walkthrough, employee survey — using de-identified aggregated incident data (intake Q3, the defensibility anchor; a program with none fails)
+      anchors:
+      - worksite
+      - walkthrough|incident review|records review
+      - employee survey|survey
+      min_matches: 1
+    - id: wpv-environmental-admin-first
+      description: Environmental & administrative controls led before reactive/PPE measures — controlled access, sightlines, alarm/duress, CCTV, staffing/skill-mix, lone-working (intake Q4; a personal-alarms/restraint-first program is FLAGGED as reactive-led)
+      anchors:
+      - controlled access|access.{0,6}egress|sightline
+      - duress|panic|alarm
+      - staffing|skill.mix|lone.work
+      min_matches: 1
+    - id: wpv-deescalation-response
+      description: The de-escalation procedure, response/security protocol, post-incident support, and training plan as the residual line (intake Q5)
+      anchors:
+      - de.escalat
+      - post.incident|response protocol|security
+      - training
+      min_matches: 1
+    - id: wpv-incident-log-deid
+      description: A confidential / de-identified WPV incident log with `<5` small-cell suppression; no victim, assailant, or known-risk patient named (intake Q3 / PHI gate)
+      anchors:
+      - incident log
+      - de.identif|confidential|aggregat
+      - small.cell|suppress|known.risk
+      min_matches: 1
+    - id: wpv-owner-review
+      description: Named action owner(s) + a competent healthcare-security / WPV / occupational-health verifier + a review cycle (annual program review / on-incident / on-service-change) (intake Q10/Q11)
+      anchors:
+      - owner
+      - review
+      - security|occupational.health|violence
+      min_matches: 1
 ---
 
 # SME Review & Sign-off — workplace-violence-prevention
@@ -41,6 +87,19 @@ class and are not restated below.
       tied to a person, no `<5` incident cell, and no embedded / co-located re-identification key
       (and no key file) in the circulated artifact (a leak is a non-waivable `de_identification`
       hard-fail).
+
+## Omission lens
+
+Run the shared omission protocol **`KB-SNIP-COMPLETENESS`**
+(`../../../knowledge-base/prompt-snippets/completeness-lens.md`) as the second pass of this
+skill's Step-4 SME review. The `modes:` map in this file's frontmatter declares the per-mode
+must-include floor (the tripwire the pass reconciles against — never its search space).
+Below are ONLY this skill's blind-spot hints.
+
+Skill-specific blind spots (where this artifact class has actually gone hollow):
+- **The worksite hazard analysis missing** — a program can list controls yet never ground them in the records / incident review + walkthrough + employee survey (the OSHA-3148 defensibility anchor); controls with no worksite analysis are asserted, not evidenced.
+- **A reactive-led headline** — "issue personal alarms / run self-defence training" presented as the control with no controlled-access, sightline, alarm/duress, or staffing/lone-working design; the environmental and administrative layer must lead.
+- **Known-risk-patient flagging without its lawful basis** — flagging rendered as an actual named list rather than a policy mechanism with data-protection safeguards, or a victim/assailant named, or a `<5` incident category published, is a PHI failure.
 
 ## Sign-off note
 SME review: ran (persona: Healthcare Security / Workplace-Violence-Prevention Specialist); this is

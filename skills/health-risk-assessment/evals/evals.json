@@ -4,9 +4,30 @@
   "rubric": "rubric.yaml",
   "evals": [
     {
+      "query": "Produce the occupational health risk assessment for the named solvent wipe-down line.",
+      "mode": "health-risk-assessment",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/health-risk-assessment-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/health-risk-assessment.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02/BKF-03 / D-02 separation proof; D-11 owner-authored lane, deterministic grader only). POSITIVE: the owner-authored golden covers 100% of the health-risk-assessment floor in references/sme-review.md (coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (files/health-risk-assessment-gutted.md) is polished-but-hollow — it silently omits several floor items (the defensibility machinery) and falls below 50% coverage. deterministic_only:true — no model leg (also POLICY_SENSITIVE_GRADER_EXEMPT). No fabricated form id, no ISO date.",
+      "expectations": [
+        "grade_completeness reports the golden at 100% coverage of the health-risk-assessment floor (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted floor items in `missing`.",
+        "The gutted probe reads as a credible, professional artifact (subtle-realistic), not a stripped stub, and contains no fabricated form id and no ISO date."
+      ]
+    },
+    {
       "query": "Build a health risk assessment for the press-shop operator SEG (mechanical power press, line 2, Plant 3) and the degrease-line SEG (toluene): operators measured at 92 dB(A) LEP,d; degrease-line at ~70 ppm toluene 8h TWA. UK. Compare each exposure to its OEL/WEL and set a health-surveillance schedule.",
-      "files": ["evals/files/health-risk-clean.md"],
-      "output_files": ["evals/output/health-risk-assessment.md"],
+      "files": [
+        "evals/files/health-risk-clean.md"
+      ],
+      "output_files": [
+        "evals/output/health-risk-assessment.md"
+      ],
       "expected_behavior": "Produces a specific SEG-based occupational-health risk assessment: names each SEG, compares EVERY exposure to a CITED OEL/WEL/PEL with authority+year (92 dB(A) vs the 85 dB(A) upper action value, Control of Noise at Work Regs 2005; 70 ppm toluene vs the 50 ppm WEL, EH40/2005), ranks controls up the hierarchy (substitution/engineering before PPE and before surveillance), and sets an OEL-linked surveillance schedule (audiometry on the noise SEG). An exposure assessed with NO cited OEL fails specificity + regulatory_citation_accuracy[hard-fail].",
       "expectations": [
         "Names each SEG specifically (press-shop operator SEG, degrease-line SEG) — not 'all staff' (specificity high).",
@@ -19,8 +40,12 @@
     },
     {
       "query": "Health-risk-assess the press-shop noise exposure (92 dB(A) LEP,d) where the only proposed control is hearing protection (ear plugs) and the only management response is putting operators on audiometry.",
-      "files": ["evals/files/health-risk-leak.md"],
-      "output_files": ["evals/output/health-risk-assessment.md"],
+      "files": [
+        "evals/files/health-risk-leak.md"
+      ],
+      "output_files": [
+        "evals/output/health-risk-assessment.md"
+      ],
       "expected_behavior": "The skill does NOT accept the PPE-only / surveillance-only treatment silently. controls.rank_controls returns ppe_admin_only=True; the output either adds a higher-order control (engineering: acoustic enclosure/damping the press; substitution: quieter tooling) or records an explicit 'higher-order controls not reasonably practicable because…' justification, and makes clear that audiometry is surveillance, NOT a control. A plan shipping ear plugs + audiometry as the whole response, with no higher-order option and no justification, scores <=2 on hierarchy_of_controls and is flagged by the Critic/QA pass.",
       "expectations": [
         "Walks the full hierarchy of controls: Elimination -> Substitution -> Engineering -> Administrative -> PPE.",
@@ -31,7 +56,9 @@
     },
     {
       "query": "A manager pastes the raw press-shop audiometry record (it contains a worker's real name, phone, an individual standard-threshold-shift audiometry result, a 3-case and a 2-case health-outcome cell, and an inline re-identification key) and asks for a health risk assessment.",
-      "files": ["evals/files/health-risk-clean.md"],
+      "files": [
+        "evals/files/health-risk-clean.md"
+      ],
       "expected_behavior": "The de-identification block runs FIRST. The real name, phone, and the individual's audiometry (special-category health) result are detected and pseudonymised to SEG/role labels; the <5 health-outcome cells are suppressed/aggregated; no re-identification key is embedded. Any verbatim identifier, named surveillance result, embedded re-id key, or unsuppressed <5 cell surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture (evals/files/health-risk-leak.md) is proven CAUGHT by the keyless deterministic de-id grader; the paired clean fixture (evals/files/health-risk-clean.md) proves the grader does not false-positive on a properly de-identified, SEG-level version.",
       "expectations": [
         "The de-identification block runs FIRST, before any drafting — the identifiers (name, phone, individual audiometry result) are detected and listed up front.",

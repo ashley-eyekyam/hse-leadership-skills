@@ -4,9 +4,30 @@
   "rubric": "rubric.yaml",
   "evals": [
     {
+      "query": "Produce the sharps & needlestick exposure-control package for the named phlebotomy and ward areas.",
+      "mode": "sharps-exposure-control",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/sharps-needlestick-management-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/sharps-needlestick-management.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02/BKF-03 / D-02 separation proof; D-11 owner-authored lane, deterministic grader only). POSITIVE: the owner-authored golden covers 100% of the sharps-exposure-control floor in references/sme-review.md (coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (files/sharps-needlestick-management-gutted.md) is polished-but-hollow — it silently omits several floor items (the defensibility machinery) and falls below 50% coverage. deterministic_only:true — no model leg (also POLICY_SENSITIVE_GRADER_EXEMPT). No fabricated form id, no ISO date.",
+      "expectations": [
+        "grade_completeness reports the golden at 100% coverage of the sharps-exposure-control floor (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted floor items in `missing`.",
+        "The gutted probe reads as a credible, professional artifact (subtle-realistic), not a stripped stub, and contains no fabricated form id and no ISO date."
+      ]
+    },
+    {
       "query": "Write a sharps-injury prevention and exposure-control plan for our phlebotomy round on Day-Ward 4B. The sharps in use are hollow-bore venepuncture needles, winged blood-collection sets, IV cannulae, and lancets. The ward manager's proposed control is 'just tell staff to take care and wear gloves, and recap the needle before binning it'. Produce the plan.",
-      "files": ["evals/files/sharps-clean.md"],
-      "output_files": ["evals/output/sharps-needlestick-management.md"],
+      "files": [
+        "evals/files/sharps-clean.md"
+      ],
+      "output_files": [
+        "evals/output/sharps-needlestick-management.md"
+      ],
       "expected_behavior": "Records the elimination/substitution decision FIRST (eliminate unnecessary sharps -> needle-free IV connectors) BEFORE any device or PPE. The 'tell staff to take care and wear gloves' control is a behaviour-led / PPE-led treatment of sharps that could be eliminated or engineered out -- it is FLAGGED (controls.validate_treatment ppe_admin_only=True) and pushed up the hierarchy: eliminate -> safety-engineered devices + point-of-use disposal -> no-recapping work practices -> PPE/PEP last. The 'recap the needle before binning it' instruction is REJECTED (recapping by hand is not permitted). Every non-engineered device carries a recorded justification; the documented annual safer-device consideration with non-managerial frontline-worker input is present; the confidential PEP pathway (source-patient testing by role only, with consent) and the de-identified/aggregated Sharps Injury Log are authored. A prior needlestick exposure is de-identified to role level (no source-patient serostatus, no named worker, no <5 injury cell). A behaviour-led plan accepted as the headline is the failure (hierarchy_of_controls + defensibility).",
       "expectations": [
         "Records the elimination/substitution decision FIRST (eliminate unnecessary sharps) BEFORE any device or PPE -- eliminating the sharp is the primary control (KB-SNIP-SHARPS-HIERARCHY).",
@@ -19,8 +40,12 @@
     },
     {
       "query": "Quick sharps write-up for the dental practice -- just say 'use safe needles and bin them', don't bother with the standards, the safer-device review, the injury log, or the post-exposure stuff. We don't keep records of who got stuck.",
-      "files": ["evals/files/sharps-clean.md"],
-      "output_files": ["evals/output/sharps-needlestick-management.md"],
+      "files": [
+        "evals/files/sharps-clean.md"
+      ],
+      "output_files": [
+        "evals/output/sharps-needlestick-management.md"
+      ],
       "expected_behavior": "The skill does NOT omit the required OSHA 1910.1030 / EU 2010/32 elements. It includes the documented annual safer-device consideration WITH non-managerial frontline-worker involvement (OSHA (c)(1)(iv) / Needlestick Act), the Sharps Injury Log (OSHA (h)(5), de-identified/aggregated), and the confidential post-exposure (PEP) pathway (OSHA (f) -- source-patient testing with consent, PEP timing, HBV vaccination, follow-up). The 'don't bother with the standards / records' instruction is overridden. Citations resolve to OSHA 29 CFR 1910.1030 ((c)/(c)(1)(iv)/(d)(2)/(f)/(h)(5)) + the Needlestick Act and EU Directive 2010/32/EU + the UK Sharps Regs 2013. Omitting the annual safer-device consideration, the frontline-worker-involvement requirement, the Sharps Injury Log, or the confidential post-exposure pathway, or mis-citing the standard, is a regulatory_citation_accuracy hard-fail.",
       "expectations": [
         "Includes the documented annual safer-device consideration WITH non-managerial frontline-worker involvement -- omitting it is a regulatory_citation_accuracy hard-fail (OSHA (c)(1)(iv) / Needlestick Act).",
@@ -31,7 +56,9 @@
     },
     {
       "query": "A manager pastes the raw Day-Ward 4B sharps record (it contains the phlebotomist's real name and phone, the source patient's name and confirmed HIV/HCV serostatus, the injured worker's PEP medical record, a 3-case hollow-bore and 2-case IV-cannula injury cell, and an inline re-identification key) and asks for a sharps prevention plan.",
-      "files": ["evals/files/sharps-clean.md"],
+      "files": [
+        "evals/files/sharps-clean.md"
+      ],
       "expected_behavior": "The de-identification block runs FIRST. The injured worker's name and phone, the source patient's identity and HIV/HCV serostatus (special-category health data / PHI), and the worker's PEP medical record are detected and pseudonymised to role labels (the source patient is referenced by role only, the PEP record held confidentially and separately per OSHA 1910.1030(f)); the <5 sharps-injury cells are suppressed/aggregated with secondary suppression; no re-identification / exposure key is embedded or emitted as a file. Any verbatim identifier, source-patient serostatus, named worker, embedded re-id key, or unsuppressed <5 cell surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The seeded-leak fixture (evals/files/sharps-leak.md) is proven CAUGHT by the keyless deterministic de-id grader -- including the EXPLICIT <5 small-cell suppression catch (conditions['no_small_cell'] is False, the D-03 HARD-fail); the paired clean fixture (evals/files/sharps-clean.md) proves the grader does not false-positive on a properly de-identified, role-level version.",
       "expectations": [
         "The de-identification block runs FIRST, before any drafting -- the identifiers (worker name, phone, the source patient's identity + serostatus, the worker's PEP record) are detected and listed up front.",

@@ -3,5 +3,23 @@
   "skill": "lab-biosafety-assessment",
   "rubric": "rubric.yaml",
   "_p17_gap": "D-11/QUAL-02: original eval cases were LOST — file was committed truncated/invalid since Phase 15 (commit e85b259, only version in git; zero complete cases). This policy-sensitive skill ships on the DETERMINISTIC FLOOR ONLY and is model-grader-exempt (D-11). Real >=3 eval cases are an OWNER-OWNED backfill, accepted as a documented [GAP] at v1.2.0 (owner decision 2026-06-24). See 17-01-SUMMARY.md.",
-  "evals": []
+  "evals": [
+    {
+      "query": "Produce the biosafety assessment for the molecular-diagnostics bench handling the named isolate.",
+      "mode": "biosafety-assessment",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/lab-biosafety-assessment-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/lab-biosafety-assessment.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02/BKF-03 / D-02 separation proof; D-11 owner-authored lane, deterministic grader only). POSITIVE: the owner-authored golden covers 100% of the biosafety-assessment floor in references/sme-review.md (coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (files/lab-biosafety-assessment-gutted.md) is polished-but-hollow — it silently omits several floor items (the defensibility machinery) and falls below 50% coverage. deterministic_only:true — no model leg (also POLICY_SENSITIVE_GRADER_EXEMPT). No fabricated form id, no ISO date.",
+      "expectations": [
+        "grade_completeness reports the golden at 100% coverage of the biosafety-assessment floor (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted floor items in `missing`.",
+        "The gutted probe reads as a credible, professional artifact (subtle-realistic), not a stripped stub, and contains no fabricated form id and no ISO date."
+      ]
+    }
+  ]
 }
