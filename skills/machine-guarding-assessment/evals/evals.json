@@ -50,6 +50,19 @@
         "REFUSES to assess until the machine type & motion (Q2), the danger zones (Q3), and the existing-safeguarding status (Q4) are captured; never assumes a zone is guarded because it 'looks guarded'.",
         "Never emits 'guard all moving parts' — each danger zone gets a specific guard/device selected in order (KB-SNIP-GUARD-SELECTION); a missing input is a [GAP]."
       ]
+    },
+    {
+      "query": "Assess machine guarding on the PL-3 250-ton mechanical power press (blanking line, Plant 3): danger zones are the descending platen point of operation (a prior amputation occurred here, the light-curtain interlock was bridged), the rear power-transmission shaft/coupling (fixed guard removed), and the feed-roll in-running nip.",
+      "mode": "machine-guarding-assessment",
+      "deterministic_only": true,
+      "files": ["evals/files/machine-guarding-assessment-gutted.md"],
+      "output_files": ["evals/output/machine-guarding-assessment.md"],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof, born deterministic_only). POSITIVE: the LOCKED golden covers 100% of the machine-guarding-assessment mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (files/machine-guarding-assessment-gutted.md) is polished-but-hollow — a credible assessment that names the machine and cites 1910.212 but SILENTLY drops the engineering-led guard gate / access-frequency selection (accepts a PPE 'keep hands clear/gloves' control as the headline), the defeated-guard high-priority discipline, the maintenance LOTO energy isolation, and the prior-incident de-identification — falling below 50% deterministic coverage with those items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs run LOCALLY (D-03).",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED golden at 100% coverage of the machine-guarding-assessment mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted items (mg-engineering-led-guard-gate, mg-defeated-guard-high-priority, mg-loto-maintenance, mg-deid-prior-incident) listed in `missing`.",
+        "The gutted probe reads as a credible, professional guarding assessment (the Nagapattinam failure signature: polished, well-formed — and silently accepting a PPE 'keep hands clear' control where an engineering-led guard, defeated-guard escalation and LOTO no competent machinery-safety engineer would omit), not a trivially stripped stub."
+      ]
     }
   ]
 }

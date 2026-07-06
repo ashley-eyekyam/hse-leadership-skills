@@ -52,6 +52,19 @@
         "REFUSES the generic 'a building site' — elicits the named project (scope + programme), >=1 significant activity, and the contractor configuration (the GATE) before producing anything.",
         "Does not emit a generic / boilerplate / template-only CPP (specificity dimension <=2 if it did)."
       ]
+    },
+    {
+      "query": "Draw up the Construction Phase Plan, UK / principal contractor (CDM 2015): Tower B fit-out — demolish the level-3 partitions, then erect the steel frame and install cladding to levels 3-5 of an occupied building with an adjacent public footpath. Notifiable (>500 person-days). Significant activities = demolition, work at height, lifting.",
+      "mode": "construction-phase-plan",
+      "deterministic_only": true,
+      "files": ["evals/files/construction-phase-plan-gutted.md"],
+      "output_files": ["evals/output/construction-phase-plan.md"],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof, born deterministic_only). POSITIVE: the LOCKED golden output covers 100% of the construction-phase-plan mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (files/construction-phase-plan-gutted.md) is polished-but-hollow — a credible, professionally-formatted CPP that SILENTLY omits the collective-protection work-at-height gate (harness-led, no collective/edge protection), the F10 / Reg 12(2) notification position, the PCI -> CPP -> H&S File chain, the hierarchy-ranking discipline, and the de-identification of input-derived persons — it falls below 50% deterministic coverage on the same floor with those items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs (golden >=4 / probe <=2 on the completeness dimension) run LOCALLY (D-03).",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED golden at 100% coverage of the construction-phase-plan mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted items (cpp-at-height-collective-leads, cpp-f10-reg12-notification, cpp-cdm-chain-pci-gap, cpp-hoc-ranked-owned-actions, cpp-deid-role-labels) listed in `missing`.",
+        "The gutted probe reads as a credible, professional CPP (the Nagapattinam failure signature: polished, well-formed — and silently missing what no competent CDM duty-holder would omit), not a trivially stripped stub."
+      ]
     }
   ]
 }

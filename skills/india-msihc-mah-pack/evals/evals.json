@@ -44,6 +44,19 @@
         "Flags the drill-only (administrative-only) treatment as inadequate; proposes higher-order controls.",
         "Assigns a named (role-label) owner + date to each emergency-plan action."
       ]
+    },
+    {
+      "query": "Produce the full MSIHC / MAH pack for a Tamil Nadu chemical-storage site (state confirmed): chlorine 25 t (isolated drums) + LPG 30 t (bulk bullet); PESO licence held; not currently a notified MAH; a residential colony within the off-site impact zone; no on-site emergency plan; occupier = Factory Manager.",
+      "mode": "msihc-pack",
+      "deterministic_only": true,
+      "files": ["evals/files/india-msihc-mah-pack-gutted.md"],
+      "output_files": ["evals/output/chlorine-lpg-msihc-pack.md"],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof, born deterministic_only). POSITIVE: the LOCKED golden (owner-LOCKED at the SW3 19-04 review, CONV-5) covers 100% of the msihc-pack mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (files/india-msihc-mah-pack-gutted.md) is polished-but-hollow — a credible pack that gives an MAH verdict and an off-site District-authority pointer but SILENTLY drops the state-first/no-national-form discipline (invents a national Form 1 — the sharp India failure), the on-site emergency plan + safety-report outlines, the HoC-ranked major-accident controls, the open [GAP] register, and the OSH-Code transition note — falling below 50% deterministic coverage with those items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs run LOCALLY (D-03); a reproducible grader refusal moves this hazard-domain skill to the deterministic-only lane (D-04).",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED golden at 100% coverage of the msihc-pack mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted items (msihc-state-first-no-national-form, msihc-onsite-plan-safety-report, msihc-major-accident-controls-hoc, msihc-gap-register-nothing-invented, msihc-osh-code-transition) listed in `missing`.",
+        "The gutted probe reads as a credible, professional MSIHC pack (the Nagapattinam failure signature: polished, well-formed — and silently inventing a national form and missing the on-site plan / HoC controls / gap register no competent MSIHC specialist would omit), not a trivially stripped stub."
+      ]
     }
   ]
 }

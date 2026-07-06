@@ -50,6 +50,19 @@
         "Refuses a generic area ('the factory') or SEG ('all staff') — Q2 is the specificity anchor; records [ASSUMPTION] / [GAP], never invents a dB figure.",
         "On no exposure data, recommends a measurement strategy first (ISO 9612) rather than fabricating a comparison or setting a surveillance plan."
       ]
+    },
+    {
+      "query": "Assess noise exposure and set the hearing-conservation + audiometry plan for Plant 3 (US OSHA): the press-shop operator SEG on line 2 is measured at 92 dB(A) L_EX,8h and the maintenance SEG (press setters) is estimated at 87 dB(A).",
+      "mode": "noise-exposure-health-surveillance",
+      "deterministic_only": true,
+      "files": ["evals/files/noise-exposure-health-surveillance-gutted.md"],
+      "output_files": ["evals/output/noise-exposure-health-surveillance.md"],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof, born deterministic_only). POSITIVE: the LOCKED golden covers 100% of the noise-exposure-health-surveillance mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (files/noise-exposure-health-surveillance-gutted.md) is polished-but-hollow — a credible assessment that names the SEGs/zones and cites the 1910.95 action level but SILENTLY drops the transcribed-not-computed discipline (narrates a 'calculated' dB), the source/engineering-above-HPD hierarchy (HPD-only), the action-level-linked audiometry with STS follow-up, and the special-category audiometric de-identification — falling below 50% deterministic coverage with those items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs run LOCALLY (D-03).",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED golden at 100% coverage of the noise-exposure-health-surveillance mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted items (noise-transcribed-not-computed, noise-controls-above-hpd, noise-audiometry-action-level-linked, noise-special-category-deid) listed in `missing`.",
+        "The gutted probe reads as a credible, professional noise assessment (the Nagapattinam failure signature: polished, well-formed — and silently HPD-led with a computed dB and an unlinked audiogram no competent occupational hygienist would omit), not a trivially stripped stub."
+      ]
     }
   ]
 }

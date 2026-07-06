@@ -51,6 +51,19 @@
         "The unknown ground history and any other missing source are each recorded as a [GAP] with a named owner + ISO due date (gap discipline); partial as-builts are flagged as an information limitation.",
         "The live gas main is captured as a buried/overhead-services hazard with an intrusive-survey action before excavation."
       ]
+    },
+    {
+      "query": "Compile the CDM 2015 Reg 4 Pre-Construction Information for the Tower B brownfield refurbishment (strip out and reclad levels 3-5, lower floors 0-2 occupied, north public footpath): asbestos R&D survey outstanding, ground conditions not investigated, partial as-built services drawings held.",
+      "mode": "pre-construction-information",
+      "deterministic_only": true,
+      "files": ["evals/files/pre-construction-information-gutted.md"],
+      "output_files": ["evals/output/pre-construction-information.md"],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof, born deterministic_only). POSITIVE: the LOCKED golden covers 100% of the pre-construction-information mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (files/pre-construction-information-gutted.md) is polished-but-hollow — a tidy PCI that lists what is known and SILENTLY drops the information-gaps register/gap discipline, the asbestos survey status, the client's Reg 4 duty + timing, the CDM document-chain, and the restricted-distribution/de-identification — falling below 50% deterministic coverage with those items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs run LOCALLY (D-03).",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED golden at 100% coverage of the pre-construction-information mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted items (pci-gap-discipline-owned, pci-asbestos-status-explicit, pci-client-reg4-duty-timing, pci-cdm-chain-loose-coupling, pci-restricted-distribution-deid) listed in `missing`.",
+        "The gutted probe reads as a credible, professional PCI (the Nagapattinam failure signature: a tidy checklist that silently hides what is not known — the missing asbestos survey and gap discipline no competent principal designer would omit), not a trivially stripped stub."
+      ]
     }
   ]
 }

@@ -50,6 +50,19 @@
         "Proposes a higher-order designed-in future-work control first (permanent edge protection + anchor system at next refurbishment; crawl boards / staging for atrium-glazing access; never walk on the fragile glazing).",
         "Treats a lower-order-only arrangement with no justification as a defect the Critic/QA pass must catch (hierarchy_of_controls + defensibility); each control carries a named (role-label) owner."
       ]
+    },
+    {
+      "query": "Compile the CDM 2015 Health & Safety File for the completed Tower B office fit-out (levels 3-9, occupied commercial): future-work scope maintenance + refurbishment; residual/unusual hazards include fragile atrium-roof glazing, unguarded roof plant deck, and presumed asbestos in the riser lagging.",
+      "mode": "health-safety-file",
+      "deterministic_only": true,
+      "files": ["evals/files/health-safety-file-gutted.md"],
+      "output_files": ["evals/output/health-safety-file.md"],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof, born deterministic_only). POSITIVE: the LOCKED golden covers 100% of the health-safety-file mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (files/health-safety-file-gutted.md) is polished-but-hollow — a credible, well-formatted 'H&S File' that is actually a general-specification dump: it SILENTLY drops the residual-only discipline, the hazardous-materials-in-situ / asbestos hold-point, the HoC future-work arrangements, the principal-designer duty and Reg 12(6)-(9) handover, and the CDM document-chain — falling below 50% deterministic coverage with those items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs run LOCALLY (D-03).",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED golden at 100% coverage of the health-safety-file mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted items (hsf-residual-only-located, hsf-hazmat-in-situ-located, hsf-future-work-hoc, hsf-pd-duty-handover, hsf-cdm-chain-loose-coupling) listed in `missing`.",
+        "The gutted probe reads as a credible, professional H&S File (the Nagapattinam failure signature: a polished spec dump silently missing the residual-only record no competent principal designer would omit), not a trivially stripped stub."
+      ]
     }
   ]
 }

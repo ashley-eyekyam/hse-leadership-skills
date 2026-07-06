@@ -44,6 +44,19 @@
         "Records an explicit [GAP] and routes to a competent laboratory for testing.",
         "Justifies any ATEX zone from release grade + ventilation, never defaulted."
       ]
+    },
+    {
+      "query": "Run the Dust Hazard Analysis and set the basis of safety for a maize-starch milling and pneumatic-conveying line (hammer mill, conveying, cyclone, day silo, bagging) at a food-processing site (NFPA 652/660): dust data held Kst 180 bar.m/s, Pmax 8.5 bar, MIE 30 mJ (Chilworth, 2024); existing safeguards are bonding/earthing and housekeeping.",
+      "mode": "dust-hazard-assessment",
+      "deterministic_only": true,
+      "files": ["evals/files/reactive-dust-explosion-assessment-gutted.md"],
+      "output_files": ["evals/output/maize-starch-dha.md"],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof, born deterministic_only). POSITIVE: the LOCKED golden (owner-LOCKED at the SW3 19-04 review, CONV-5) covers 100% of the dust-hazard-assessment mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (files/reactive-dust-explosion-assessment-gutted.md) is polished-but-hollow — a credible DHA that states the dust parameters and enumerates ignition sources but SILENTLY drops the derived area classification, the declared basis of safety (offers housekeeping/PPE instead), the reactive-chemistry/thermal screen, the HoC-ranked controls, and the connected-vessel/hazop-facilitator hand-off — falling below 50% deterministic coverage with those items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs run LOCALLY (D-03); a reproducible grader refusal moves this hazard-domain skill to the deterministic-only lane (D-04).",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED golden at 100% coverage of the dust-hazard-assessment mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted items (rde-area-classification-derived, rde-basis-of-safety-stated, rde-reactive-thermal-screen, rde-controls-hoc-ranked, rde-hazop-handoff) listed in `missing`.",
+        "The gutted probe reads as a credible, professional DHA (the Nagapattinam failure signature: polished, well-formed — and silently offering housekeeping as the basis of safety with no derived zone, reactive screen or connected-vessel path no competent dust specialist would omit), not a trivially stripped stub."
+      ]
     }
   ]
 }

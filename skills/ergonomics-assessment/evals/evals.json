@@ -50,6 +50,19 @@
         "Refuses a generic task ('general handling') — Q2 is the specificity anchor; records [GAP], never invents a task.",
         "On a missing required parameter (a posture angle, a load weight, a lift distance), records a [GAP] and requests the measurement rather than inventing the value."
       ]
+    },
+    {
+      "query": "Assess the despatch-bay carton lift for the line-2 packer SEG (Plant 3): 16 kg cartons lifted from a floor-level pallet (H 30 cm, V 40 cm, D 110 cm, A 30 degrees, 4 lifts/min over 2 h, fair coupling) to the conveyor infeed, using the NIOSH revised lifting equation.",
+      "mode": "ergonomics-assessment",
+      "deterministic_only": true,
+      "files": ["evals/files/ergonomics-assessment-gutted.md"],
+      "output_files": ["evals/output/ergonomics-assessment.md"],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof, born deterministic_only). POSITIVE: the LOCKED golden covers 100% of the ergonomics-assessment mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (files/ergonomics-assessment-gutted.md) is polished-but-hollow — a credible assessment that names the task and cites NIOSH/RULA but SILENTLY drops the engine score with its inputs (no RWL/Lifting Index/multipliers), the missing-parameter [GAP] discipline, the redesign-before-training hierarchy (training-led instead), and the special-category MSD/fitness de-identification — falling below 50% deterministic coverage with those items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs run LOCALLY (D-03).",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED golden at 100% coverage of the ergonomics-assessment mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted items (ergo-score-engine-inputs-shown, ergo-missing-params-gap, ergo-controls-redesign-before-training, ergo-special-category-deid) listed in `missing`.",
+        "The gutted probe reads as a credible, professional ergonomics assessment (the Nagapattinam failure signature: a free-text 'high risk' silently missing the engine score and redesign-before-training discipline no competent ergonomist would omit), not a trivially stripped stub."
+      ]
     }
   ]
 }

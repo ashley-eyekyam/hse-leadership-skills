@@ -4,6 +4,34 @@ sme-review:
     - role: "Occupational Hygienist / Audiometric Technician / OH Physician"
       expertise: "Occupational-noise exposure assessment (ISO 9612 measurement, ISO 1999 NIHL estimation), action-level / exposure-limit comparison (OSHA 1910.95 85/90 dBA; UK Control of Noise at Work Regs 2005 80/85/87 dB(A)), exposure-zone mapping, engineering noise control vs hearing protection, hearing-conservation-program design, audiometric surveillance regimes (baseline / annual / standard-threshold-shift triggers), and special-category audiometric-health-data confidentiality."
       lens: "Is each area/SEG named and specific, is every exposure compared to a CITED action level / limit (authority+year) and TRANSCRIBED not computed, are noise-reduction controls driven up the hierarchy ABOVE hearing protection, is the audiometry schedule action-level-linked — and is there ZERO special-category audiometric-health leak (no named STS result, no <5 audiometric cell)?"
+modes:
+  noise-exposure-health-surveillance:
+    detected_by: "Q1 — Output type (the noise-exposure assessment + hearing-conservation/audiometry plan)"
+    floor:
+      - id: noise-areas-segs-specific
+        description: "Areas/SEGs are specific — each names the area/process and the roles exposed with an exposure-zone map; a generic area ('the factory') or SEG ('all staff') is a FLAG (KB-SNIP-MANUFACTURING-CLAUSE-MAP)"
+        anchors: ['exposure.zone (map|register)', '\bSEG\b']
+        min_matches: 1
+      - id: noise-exposure-vs-cited-action-level
+        description: "Every exposure is compared to a CITED action level / limit with authority+year (OSHA 1910.95 85/90 dBA; Noise Regs 2005 80/85/87 dB(A)) — no fabricated dB, no uncited threshold (KB-REG-OSHA1910-95)"
+        anchors: ['action level', '1910\.95|noise (at work )?regs']
+        min_matches: 1
+      - id: noise-transcribed-not-computed
+        description: "Exposure is TRANSCRIBED (measured/estimated), not computed — the skill does not run a dosimetry calculation; a narrated 'calculated 89 dBA' with no source value is a FLAG (KB-STD-ISO1999-9612)"
+        anchors: ['transcribed', 'not computed|no dosimetry is computed']
+        min_matches: 1
+      - id: noise-controls-above-hpd
+        description: "Noise-reduction controls beat the noise ABOVE hearing protection (source/engineering precede HPD, which is LAST); an 'issue ear defenders' only plan for >=85 dBA is a FLAG (KB-SNIP-NOISE-CONTROL-HIERARCHY / KB-SNIP-HOC)"
+        anchors: ['hearing protection is last|LAST resort', 'source.{0,4}engineering|acoustic enclosure']
+        min_matches: 1
+      - id: noise-audiometry-action-level-linked
+        description: "The audiometry schedule is action-level-linked (baseline + annual triggered by the >=85 dBA exposure-vs-action-level comparison) with STS-determination follow-up — never asserted"
+        anchors: ['action.level.linked', 'STS follow|standard.threshold.shift']
+        min_matches: 1
+      - id: noise-special-category-deid
+        description: "Special-category audiometric data is protected — audiometry/STS results reported by SEG/role, <5 audiometric cells suppressed, never circulated with names (a leak is a de-id hard-fail)"
+        anchors: ['special.category', 'de.identif', 'small.cell|<\s?5']
+        min_matches: 1
 ---
 
 # SME Review & Sign-off — noise-exposure-health-surveillance
@@ -21,6 +49,25 @@ protection-only, owned-and-dated actions) are the enforced class and are not res
 - [ ] **The audiometry schedule is action-level-linked** — baseline + annual audiometry is triggered by the exposure-vs-action-level comparison (≥ 85 dBA), with STS-determination follow-up; a surveillance schedule with no action-level linkage is a FLAG.
 - [ ] **Special-category audiometric data is protected** — audiometry / STS results reported by SEG/role, `<5` audiometric cells suppressed, never circulated with names; a named STS result or a `<5` audiometric cell is a FLAG (and a de_identification hard-fail).
 - [ ] **India defers correctly** — for an India site the state is resolved and the skill defers to `hse-india`, emitting a literal `[GAP]` and never a minted national form-id; a fabricated India form number is a FLAG.
+
+## Omission lens
+
+Run the shared omission protocol **`KB-SNIP-COMPLETENESS`**
+(`../../../knowledge-base/prompt-snippets/completeness-lens.md`) as the second pass of this
+skill's Step-4 SME review. The `modes:` map in this file's frontmatter declares the per-mode
+must-include floor (the tripwire the pass reconciles against — never its search space).
+Below are ONLY this skill's blind-spot hints.
+
+Skill-specific blind spots (where this artifact class has actually gone hollow):
+- **The dB with no source — a level asserted by silence (canary S5)** — an exposure figure with no
+  measured/estimated source, no ISO 9612 method, and no cited action level; the quantitative basis
+  is the deliverable, not a narrated 'calculated' number.
+- **The regime named, its element set unswept (canary S6)** — 1910.95 / Noise Regs cited while the
+  hearing-conservation-program element set (zones, signage, training, HPD fit-test, audiometry,
+  re-survey trigger) is not actually swept.
+- **The audiometry with no linkage or STS bridge (canary S2/S3)** — an annual-audiogram schedule
+  with no action-level trigger, no standard-threshold-shift follow-up, and no review of prior
+  STS/NIHL results (de-identified) — the surveillance loop left open.
 
 ## Sign-off note
 SME review: ran (persona: Occupational Hygienist / Audiometric Technician / OH Physician); this

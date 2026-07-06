@@ -49,6 +49,19 @@
         "Requires routes to be suitable, sufficient and separated and grounded in CDM 2015 Reg 27 + Schedule 3 (warning of approach) — never a generic plan.",
         "De-identification holds — the reviewed/produced plan is site/route-level and names no individual."
       ]
+    },
+    {
+      "query": "Produce the Traffic Management Plan for the Meadowbank Road construction site (CDM 2015 Reg 27 / Schedule 3): a north gate for HGV deliveries and a south gate for operatives, a north loading bay where reversing HGVs cross the operative welfare route, and a public footway along the north hoarding.",
+      "mode": "traffic-management-plan",
+      "deterministic_only": true,
+      "files": ["evals/files/traffic-management-plan-gutted.md"],
+      "output_files": ["evals/output/traffic-management-plan.md"],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof, born deterministic_only). POSITIVE: the LOCKED golden covers 100% of the traffic-management-plan mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (files/traffic-management-plan-gutted.md) is polished-but-hollow — a credible TMP that keeps a named entrance and a speed/signage section but SILENTLY drops segregation-by-design (banksman-led instead), reversing-by-elimination (one-way/turning), the managed loading/delivery + warning-of-approach, the public hoarding/covered-way interface, and the monitoring/review + de-identification — falling below 50% deterministic coverage with those items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs run LOCALLY (D-03).",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED golden at 100% coverage of the traffic-management-plan mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted items (tmp-segregation-by-design-leads, tmp-reversing-eliminated, tmp-routes-suitable-loading-mgmt, tmp-public-highway-interface, tmp-monitoring-review-deid) listed in `missing`.",
+        "The gutted probe reads as a credible, professional TMP (the Nagapattinam failure signature: polished, well-formed — and silently reliant on a banksman where segregation-by-design and reversing-elimination no competent traffic coordinator would omit), not a trivially stripped stub."
+      ]
     }
   ]
 }

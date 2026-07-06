@@ -50,6 +50,19 @@
         "Treats an unsupplied chart value as a [GAP], never invented; flags re-selection of the equipment if utilisation exceeds the planned safe-utilisation margin.",
         "Cites the BS 7121 utilisation test source; de-identification holds."
       ]
+    },
+    {
+      "query": "Produce the lift plan for lifting a 12.8 t packaged AHU (12.0 t load + 0.8 t rigging) to the level-6 plant deck with a 50 t mobile crane at 12 m radius, past an 11 kV overhead line and adjacent to an occupied building elevation.",
+      "mode": "lift-plan",
+      "deterministic_only": true,
+      "files": ["evals/files/lift-plan-gutted.md"],
+      "output_files": ["evals/output/lift-plan.md"],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof, born deterministic_only). POSITIVE: the LOCKED golden covers 100% of the lift-plan mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (files/lift-plan-gutted.md) is polished-but-hollow — a credible, well-formatted lift plan that SILENTLY drops the confirmed-weight/appointed-person gate, the SWL-transcribed-from-chart-never-computed discipline (asserts capacity instead), the overhead-line engineered-exclusion HoC gate (PPE 'take care' instead), the contingency/abort + in-service wind limit, and the re-scored residual risk / hold-point — falling below 50% deterministic coverage with those items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs run LOCALLY (D-03).",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED golden at 100% coverage of the lift-plan mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted items (lift-gate-confirmed-weight-ap, lift-swl-transcribed-not-computed, lift-proximity-hoc-overhead-line, lift-contingency-abort-weather, lift-residual-rescored-owned) listed in `missing`.",
+        "The gutted probe reads as a credible, professional lift plan (the Nagapattinam failure signature: polished, well-formed — and silently missing the SWL-from-chart / overhead-line / abort discipline no competent appointed person would omit), not a trivially stripped stub."
+      ]
     }
   ]
 }

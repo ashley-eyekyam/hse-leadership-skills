@@ -50,6 +50,19 @@
         "REFUSES to emit any PPE row until the body-region hazards (Q2) and the per-hazard higher-order controls (Q3 — the controls-first gate) are captured.",
         "On a hazard with no higher-order control recorded, emits a controls-first FLAG and withholds the PPE row rather than inventing a PPE selection."
       ]
+    },
+    {
+      "query": "Build the PPE matrix for the line-3 fettling cell (fettler + grinder roles, Plant 3, US OSHA): body-region hazards are eye/face grinding sparks, sustained grinding noise, metal/silica dust, and hand/arm abrasion & vibration; higher-order controls are in place for the first three but none is recorded for the hand/arm hazard.",
+      "mode": "ppe-matrix",
+      "deterministic_only": true,
+      "files": ["evals/files/ppe-matrix-gutted.md"],
+      "output_files": ["evals/output/ppe-matrix.md"],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof, born deterministic_only). POSITIVE: the LOCKED golden covers 100% of the ppe-matrix mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (files/ppe-matrix-gutted.md) is polished-but-hollow — a credible task-specific PPE table that cites EN/ANSI standards but SILENTLY drops the controls-first gate (PPE-first, no higher-order controls considered), the controls-first FLAG / withheld PPE cell for the uncontrolled hazard, the 1910.132(d)(2) written certification, and the special-category respiratory-clearance de-identification — falling below 50% deterministic coverage with those items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs run LOCALLY (D-03).",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED golden at 100% coverage of the ppe-matrix mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted items (ppe-controls-first-gate, ppe-flag-no-higher-order, ppe-written-certification, ppe-special-category-deid) listed in `missing`.",
+        "The gutted probe reads as a credible, professional PPE matrix (the Nagapattinam failure signature: a polished PPE-first table silently missing the controls-first gate and 1910.132(d)(2) certification no competent CSP would omit), not a trivially stripped stub."
+      ]
     }
   ]
 }
