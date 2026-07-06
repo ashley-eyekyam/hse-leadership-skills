@@ -34,6 +34,19 @@
         "Occupier/officer name, Aadhaar, employee ID and home address become role labels; small cells are aggregated/suppressed (<5).",
         "No real name, Aadhaar/government ID, employee ID, address or health detail in the circulated briefing, and no re-identification key embedded (de_identification hard-fail)."
       ]
+    },
+    {
+      "query": "Brief a Delhi factory on the OSH-Code transition and what to file now for the annual return.",
+      "mode": "transition-briefing",
+      "deterministic_only": true,
+      "files": ["evals/files/india-osh-code-pack-gutted.md"],
+      "output_files": ["evals/output/india-osh-code-pack.md"],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden (owner-LOCKED at the SW5 19-06 review, CONV-5) covers 100% of the transition-briefing floor in references/sme-review.md (coverage_pct == 1.0, missing == []) — legacy DL Form 21 primary, state resolved before commencement, never instruct filing an unnotified form, the consolidated form as a literal [GAP], per-state notification (GJ/AR notified, DL not) sourced, threshold shifts sourced, the savings clause, and the staleness caveat. NEGATIVE: the gutted probe (files/india-osh-code-pack-gutted.md) is polished-but-hollow — a clean briefing that SILENTLY omits the legacy-primary answer, the never-file-unnotified-form safety check, the [GAP], the per-state status, the thresholds, the savings clause, and the staleness caveat (and dangerously implies the factory should move to the consolidated return) — falling below 50% coverage. No fabricated form id, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden (owner-LOCKED at the SW5 19-06 review, CONV-5) at 100% coverage of the transition-briefing floor (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items (legacy-form-primary, never-file-unnotified-form, consolidated-form-gap-never-invented, per-state-notification-sourced, threshold-shifts-sourced, savings-clause-legacy-valid, staleness-caveat) in `missing`.",
+        "The gutted probe reads as a credible, professional briefing (subtle-realistic), not a trivially stripped stub, and contains no fabricated form id and no ISO date."
+      ]
     }
   ]
 }

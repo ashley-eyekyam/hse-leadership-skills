@@ -45,6 +45,23 @@
         "The personal phone number is removed; the <5 suspension-trauma injury cell is aggregated/suppressed; no re-identification key is embedded.",
         "No climber name, GWO certificate number, phone, small cell, or re-id key in the circulated output (de_identification hard-fail)."
       ]
+    },
+    {
+      "query": "Assess work at height and rescue for a wind-turbine tower climb.",
+      "mode": "assessment",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/wind-turbine-work-at-height-rescue-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/wind-turbine-work-at-height-rescue.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden covers 100% of the assessment floor (missing == []) — avoid-then-prevent (reg 6/7), a mandatory tested team-owned suspended-worker rescue, two-person-minimum manning, GWO competence cited, named weather hold/stop thresholds, and residual/SMART owned actions. NEGATIVE: the gutted probe is polished-but-hollow — a harness-and-three-points note whose 'rescue' is calling the emergency services, SILENTLY omitting avoid-then-prevent, the tested team rescue, two-person manning, GWO competence, the weather thresholds, and residual/SMART actions — below 50% coverage. No fabricated value, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden at 100% coverage (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items in `missing`.",
+        "The gutted probe reads as a credible, professional note (subtle-realistic), not a trivially stripped stub, and contains no fabricated value and no ISO date."
+      ]
     }
   ]
 }

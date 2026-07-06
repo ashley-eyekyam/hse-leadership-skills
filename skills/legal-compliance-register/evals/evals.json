@@ -49,6 +49,23 @@
         "States that applicability cannot be determined until the jurisdiction(s) + activity profile are captured (no obligation listed for an out-of-scope jurisdiction/activity).",
         "For an India jurisdiction, refuses to cite any India obligation before mandatory state detection completes (defers to hse-india after the state is confirmed)."
       ]
+    },
+    {
+      "query": "Build a legal & compliance register for a UK office + a Maharashtra (India) site.",
+      "mode": "register",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/legal-compliance-register-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/legal-compliance-register.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden covers 100% of the register floor in references/sme-review.md (coverage_pct == 1.0, missing == []) — applicability confirmed against named activities, the India leg deferred to hse-india (no minted national form), jurisdiction-correct citations, complete rows with owner + review date, and the 9.1.2 compliance-evaluation with gaps owned/dated. NEGATIVE: the gutted probe (files/legal-compliance-register-gutted.md) is polished-but-hollow — a clean list of UK regs that SILENTLY omits per-activity applicability, the India deferral, per-row owners/review dates, and the compliance-evaluation (asserting 'broadly compliant' with no evidence) — falling below 50% coverage. No fabricated form id, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden at 100% coverage of the register floor (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items (applicability-confirmed, india-deferred-not-minted, rows-complete-owner-review-dated, compliance-evaluation-present) in `missing`.",
+        "The gutted probe reads as a credible, professional register (subtle-realistic), not a trivially stripped stub, and contains no fabricated form id and no ISO date."
+      ]
     }
   ]
 }

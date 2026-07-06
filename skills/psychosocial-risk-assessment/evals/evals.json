@@ -38,6 +38,23 @@
         "Asks for corroborating multi-source data (validated survey / focus groups / sickness-absence / grievance data) and records [GAP] rather than inventing a rating.",
         "Does not emit a generic or single-source psychosocial RA (the multi-source triangulation gate is the core-value lever here)."
       ]
+    },
+    {
+      "query": "Run a psychosocial risk assessment for a contact-centre team using the HSE Management Standards.",
+      "mode": "assessment",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/psychosocial-risk-assessment-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/psychosocial-risk-assessment.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden covers 100% of the assessment floor (coverage_pct == 1.0, missing == []) — assessed at source (work design not the individual), >=2-source triangulation, small-cell confidentiality, work-design controls above resilience, domain completeness, benchmark fidelity (source+year), and no individual named. NEGATIVE: the gutted probe is polished-but-hollow — a single-survey review that relocates the hazard to individuals, offers resilience training first, and SILENTLY omits triangulation, small-cell confidentiality, the work-design-above-resilience hierarchy, domain completeness, and benchmark provenance — below 50% coverage. No fabricated form id, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden at 100% coverage of the assessment floor (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items in `missing`.",
+        "The gutted probe reads as a credible, professional assessment (subtle-realistic), not a trivially stripped stub, and contains no fabricated form id and no ISO date."
+      ]
     }
   ]
 }

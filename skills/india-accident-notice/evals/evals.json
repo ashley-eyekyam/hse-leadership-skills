@@ -34,6 +34,19 @@
         "Injured-worker/witness name, Aadhaar, employee ID and home address become role labels; small injury cells are aggregated/suppressed (<5).",
         "No real name, Aadhaar/government ID, employee ID, address or diagnosis in the circulated notice, and no re-identification key embedded (de_identification hard-fail)."
       ]
+    },
+    {
+      "query": "Assemble the statutory accident notice for a serious lost-time injury at a coal mine (DGMS region resolved) — the notice, not the RCA.",
+      "mode": "accident-notice",
+      "deterministic_only": true,
+      "files": ["evals/files/india-accident-notice-gutted.md"],
+      "output_files": ["evals/output/india-accident-notice.md"],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden (owner-LOCKED at the SW5 19-06 review, CONV-5) covers 100% of the accident-notice floor in references/sme-review.md (coverage_pct == 1.0, missing == []) — DGMS region resolved, the 24h deadline owned, the Form J verified anchor, the numbered DGMS form id as a literal [GAP], mine routing via DGMS not the state form, RCA deferred to incident-investigation, de-id role labels, and the OSH-Code duty-retained note. NEGATIVE: the gutted probe (files/india-accident-notice-gutted.md) is polished-but-hollow — a clean-looking accident notice that SILENTLY omits the 24h deadline, the Form J anchor, the [GAP] on the numbered form, the DGMS routing, the incident-investigation hand-off, and the OSH-Code note — falling below 50% coverage. No fabricated form id, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden (owner-LOCKED at the SW5 19-06 review, CONV-5) at 100% coverage of the accident-notice floor (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items (twentyfour-hour-deadline-owned, form-j-verified-anchor, dgms-form-id-gap-never-invented, no-rca-defers-incident-investigation, osh-code-duty-retained) in `missing`.",
+        "The gutted probe reads as a credible, professional notice (subtle-realistic), not a trivially stripped stub, and contains no fabricated form id and no ISO date."
+      ]
     }
   ]
 }

@@ -49,6 +49,23 @@
         "REFUSES the device-led 'just issue everyone a lone-worker device' as the headline control — lone working is led by eliminating the solitary exposure first; a device is at most a residual supplement (the core value).",
         "Treats a coverage gap as a control failure and a missed-check-in responder/time as required — never accepts 'no mobile signal' as residual and never invents a check-in input ([GAP])."
       ]
+    },
+    {
+      "query": "Assess lone working for a mobile service technician visiting customer sites alone.",
+      "mode": "assessment",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/lone-working-assessment-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/lone-working-assessment.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden covers 100% of the assessment floor (missing == []) — eliminate the solitary exposure first, a coverage-checked communication path, a scheduled check-in AND missed-check-in escalation, a BS 8484 device only as a residual supplement, at-height/electrical routed to the sibling, violence/wellbeing considered, and evidence-owned actions. NEGATIVE: the gutted probe is polished-but-hollow — a carry-a-phone-and-text note that SILENTLY omits eliminating the exposure, the coverage check, the missed-check-in escalation, the device-as-residual framing, the routing, and violence/wellbeing — below 50% coverage. No fabricated value, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden at 100% coverage (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items in `missing`.",
+        "The gutted probe reads as a credible, professional note (subtle-realistic), not a trivially stripped stub, and contains no fabricated value and no ISO date."
+      ]
     }
   ]
 }

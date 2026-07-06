@@ -50,6 +50,23 @@
         "Does not accept self-assertion ('managers say safety is well handled') as evidence — a clause with no evidence is a scored gap (level 0/1), and the analysis names the [GAP], rather than a vacuous pass.",
         "Does not emit a generic, template-only or pre-filled gap analysis for an unnamed organisation (specificity dimension)."
       ]
+    },
+    {
+      "query": "Run an ISO 45001 gap analysis for AcmeCo Plant 2 (single-site manufacturing) preparing for initial certification.",
+      "mode": "gap-analysis",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/iso45001-gap-analysis-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/iso45001-gap-analysis.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden covers 100% of the gap-analysis floor in references/sme-review.md (coverage_pct == 1.0, missing == []) — every clause scored or N/A, certification-blockers classified not downgraded, conformance matched to evidence, gaps traced to clause+evidence+owner, a blockers-first owned/dated roadmap, the hierarchy check on clause 6.1, and standard fidelity. NEGATIVE: the gutted probe (files/iso45001-gap-analysis-gutted.md) is polished-but-hollow — a clean readiness overview that scores a few strong areas on a vague maturity scale but SILENTLY omits full clause coverage, blocker classification, evidence-based conformance, owned gaps, a blockers-first roadmap, the hierarchy check, and cited clause numbers — falling below 50% coverage. No fabricated form id, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden at 100% coverage of the gap-analysis floor (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items (blockers-classified-not-downgraded, conformance-matches-evidence, gap-traces-clause-evidence-owner, roadmap-blockers-first-owned-dated, hierarchy-on-planning-clause, standard-fidelity) in `missing`.",
+        "The gutted probe reads as a credible, professional readiness overview (subtle-realistic), not a trivially stripped stub, and contains no fabricated form id and no ISO date."
+      ]
     }
   ]
 }

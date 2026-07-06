@@ -34,6 +34,19 @@
         "Occupier/worker name, Aadhaar, employee ID and home address become role labels; small accident cells are aggregated/suppressed (<5).",
         "No real name, Aadhaar/government ID, employee ID, address or injury detail in the circulated return, and no re-identification key embedded (de_identification hard-fail)."
       ]
+    },
+    {
+      "query": "Assemble the Gujarat Factories Act annual return for CY2025 (a ~180-worker engineering factory) — the filled state return package.",
+      "mode": "return-assembly",
+      "deterministic_only": true,
+      "files": ["evals/files/factories-act-returns-gutted.md"],
+      "output_files": ["evals/output/factories-act-returns.md"],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden (owner-LOCKED at the SW5 19-06 review, CONV-5) covers 100% of the return-assembly floor in references/sme-review.md (coverage_pct == 1.0, missing == []) — the correct state form or [GAP], the GJ form id preserved as a literal [GAP], the obligation cadence/period pinned, the citing rule/authority KB-row-sourced, absent fields kept as literal [GAP]/placeholders, the occupier duty + small-cell suppression, and the OSH-Code note legacy-primary. NEGATIVE: the gutted probe (files/factories-act-returns-gutted.md) is polished-but-hollow — a clean-looking assembled return that SILENTLY omits the [GAP] discipline on the unverified form id, the KB-row sourcing, the small-cell suppression, the occupier framing, and the OSH-Code note (and fills a small lost-time-injury cell verbatim instead of aggregating) — falling below 50% coverage. No fabricated form id, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden (owner-LOCKED at the SW5 19-06 review, CONV-5) at 100% coverage of the return-assembly floor (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items (gj-gap-preserved-never-backfilled, row-sourced-rule-authority, absent-fields-are-literal-gap, occupier-duty-small-cell-suppressed, osh-code-note-legacy-primary) in `missing`.",
+        "The gutted probe reads as a credible, professional return (subtle-realistic), not a trivially stripped stub, and contains no fabricated form id and no ISO date."
+      ]
     }
   ]
 }

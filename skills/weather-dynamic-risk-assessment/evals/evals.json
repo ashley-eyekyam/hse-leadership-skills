@@ -45,6 +45,23 @@
         "The <5 cold-stress and fall-in-high-wind injury cells are aggregated/suppressed; no re-identification key is embedded.",
         "No worker name, phone, small cell, or re-id key in the circulated output (de_identification hard-fail)."
       ]
+    },
+    {
+      "query": "Assess weather-dynamic risk for wind-turbine maintenance including work at height.",
+      "mode": "assessment",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/weather-dynamic-risk-assessment-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/weather-dynamic-risk-assessment.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden covers 100% of the assessment floor (missing == []) — every parameter a named numeric threshold -> action, a re-assessment trigger, hub-height measurement, BS 7121-1 cited correctly, the ~15 m/s cut-off proposed-and-confirmed, eliminate-the-exposure-first, and owned/dated actions. NEGATIVE: the gutted probe is polished-but-hollow — a 'monitor the weather and stop if unsafe' note that SILENTLY omits the numeric thresholds, the re-assessment triggers, hub-height measurement, the BS 7121-1 citation, the confirmed cut-off, and owned actions — below 50% coverage. No fabricated value, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden at 100% coverage (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items in `missing`.",
+        "The gutted probe reads as a credible, professional note (subtle-realistic), not a trivially stripped stub, and contains no fabricated value and no ISO date."
+      ]
     }
   ]
 }

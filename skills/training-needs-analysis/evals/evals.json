@@ -51,6 +51,23 @@
         "Also requires at least one competence source (Q3) before banding any current-state level — refuses to assert a competence level with no evidence.",
         "Does NOT emit a generic, role-less, or template-only training plan (specificity GATE) — no fabricated roles, levels, or legal competencies."
       ]
+    },
+    {
+      "query": "Build a training needs analysis for a site team with legal-required competencies and single-point-of-failure risks.",
+      "mode": "tna",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/training-needs-analysis-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/training-needs-analysis.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden covers 100% of the tna floor (coverage_pct == 1.0, missing == []) — named roles + headcounts, evidence-traced gaps, legal-required competencies cited, no statutory gap downgraded to green, single-points-of-failure by role, training framed as an administrative control, and an expiry/refresher tracker. NEGATIVE: the gutted probe is polished-but-hollow — an 'everyone needs training' plan that SILENTLY omits named roles, evidence-traced gaps, statutory competency citation, the SPOF register, the hierarchy framing, and the expiry tracker — below 50% coverage. No fabricated form id, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden at 100% coverage of the tna floor (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items in `missing`.",
+        "The gutted probe reads as a credible, professional TNA (subtle-realistic), not a trivially stripped stub, and contains no fabricated form id and no ISO date."
+      ]
     }
   ]
 }

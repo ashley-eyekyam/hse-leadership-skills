@@ -7,6 +7,34 @@ sme-review:
     - role: "QRA-provenance & SCE-verification reviewer"
       expertise: "Consequence/likelihood-modelling provenance; ALARP cost-benefit framing; SCE performance-standard verification; distinguishing fabricated from externally-supplied quantitative results."
       lens: "Is every quantitative figure traceable to an external, competent QRA — never computed or invented by the skill — is every SCE/barrier-effectiveness claim tied to a verifier finding or performance standard, and is an absent number/claim an honest [GAP] rather than a guess? And is there NO 'accepted/approved/authorised' language anywhere (acceptance is the competent authority's act)?"
+modes:
+  safety-case:
+    detected_by: "Q = the requested deliverable (an offshore safety-case argument for the named installation) — single-output skill; this mode is always active"
+    floor:
+      - id: schedule-6-7-elements
+        description: "All Schedule 6/7 elements are present and credited from KB-REG-OFFSHORE-SCR (MAH identification, SEMS, SCE, etc.) — a missing element is a FLAG"
+        anchors: ['schedule 6|schedule 7|kb-reg-offshore', 'mah|sems|sce|element']
+        min_matches: 2
+      - id: alarp-demonstration-not-assertion
+        description: "ALARP is a demonstration via the measures actually taken, never an unevidenced assertion"
+        anchors: ['alarp', 'demonstrat|measures|reduced']
+        min_matches: 2
+      - id: quantitative-recorded-or-gap
+        description: "Every quantitative result (QRA, consequence distance, ALARP cost-benefit, MAH frequency) is recorded as supplied or a literal [GAP] — never AI-invented"
+        anchors: ['qra|quantitative|consequence distance|frequency', '\[gap|recorded|supplied']
+        min_matches: 1
+      - id: sce-barrier-evidenced
+        description: "No barrier/SCE is asserted effective without a cited performance-standard evidence reference or a verifier finding"
+        anchors: ['sce|safety.critical element|barrier', 'performance standard|verifier|verification']
+        min_matches: 2
+      - id: mah-traces-pha
+        description: "The MAH scenarios trace to the PHA inputs (HAZID/HAZOP/bowtie) for this installation, not a generic set"
+        anchors: ['mah|major accident', 'hazid|hazop|bowtie|pha']
+        min_matches: 2
+      - id: eer-cross-referenced-marine
+        description: "The EER element is cross-referenced to the sibling marine-emergency-response plan, not rebuilt"
+        anchors: ['eer', 'marine-emergency-response|cross.referenc']
+        min_matches: 1
 ---
 
 # SME Review & Sign-off — offshore-safety-case
@@ -37,6 +65,25 @@ The checklist below leans on that confirmed enumeration; a missing element is re
 - [ ] No barrier / SCE is asserted effective without a cited performance-standard evidence reference or a verifier finding; an un-evidenced "barrier is effective" claim is flagged and downgraded to `[GAP]`.
 - [ ] The MAH scenarios trace to the PHA inputs (HAZID/HAZOP/bowtie) for this installation — not a generic substance-class list — and the SEMS delivers the CMAPP policy commitments (no policy claim unsupported by an SMS element).
 - [ ] The EER element is **cross-referenced** to the sibling `marine-emergency-response` (MAR-03) plan, not rebuilt; and the whole output reads as duty-holder-supplied, structured work, not an autonomously authored safety case — and carries NO "accepted / approved / authorised" language (FLAG).
+
+## Omission lens
+
+Run the shared omission protocol **`KB-SNIP-COMPLETENESS`**
+(`../../../knowledge-base/prompt-snippets/completeness-lens.md`) as the second pass of this
+skill's Step-4 SME review. The `modes:` map in this file's frontmatter declares the per-mode
+must-include floor (the tripwire the pass reconciles against — never its search space).
+Below are ONLY this skill's blind-spot hints.
+
+Skill-specific blind spots (where this artifact class has actually gone hollow):
+- **The Schedule element silently dropped (S6)** — a safety-case argument that credits the strong
+  elements and omits a Schedule 6/7 element (SEMS, CMAPP, an SCE class) reads complete and argues
+  nothing. Every element is present or explicitly [GAP].
+- **ALARP asserted, not demonstrated** — "risks are ALARP" with no link to the measures actually
+  taken and no cost-benefit framing is an assertion; the demonstration is the deliverable.
+- **The AI-invented QRA number (S5)** — any quantitative result (frequency, consequence distance,
+  cost-benefit figure) not supplied by the duty-holder is a literal [GAP], never fabricated.
+- **The barrier with no bridge (S2)** — an SCE flagged degraded/unverified with no interim control
+  and no verification date is an open major-accident exposure hidden in a register.
 
 ## Sign-off note
 SME review: ran (personas: offshore safety-case author / process-safety lead + QRA-provenance

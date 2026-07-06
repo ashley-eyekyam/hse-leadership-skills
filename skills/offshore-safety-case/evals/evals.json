@@ -44,6 +44,23 @@
         "Named persons (prior-incident names, station-bill role-holders, duty-holder contacts) are recorded as role labels, not personal names, in the circulated argument; persons-on-board carried as a count.",
         "No real name, contact, certificate number, or re-identification key — any leak is a de_identification hard-fail. The grader passes the clean fixture and CATCHES the paired seeded leak."
       ]
+    },
+    {
+      "query": "Structure the safety-case argument for an offshore installation (Schedule 6/7 elements, ALARP, SCEs).",
+      "mode": "safety-case",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/offshore-safety-case-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/offshore-safety-case.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden covers 100% of the safety-case floor (missing == []) — all Schedule 6/7 elements credited, ALARP as a demonstration, every quantitative result recorded or [GAP], SCE/barrier effectiveness evidenced, MAH scenarios tracing to the PHA, and EER cross-referenced. NEGATIVE: the gutted probe is polished-but-hollow — a summary that asserts risks are 'acceptable and ALARP' but SILENTLY omits the Schedule element set, the ALARP demonstration, the quantitative/[GAP] discipline, SCE evidence, the PHA trace, and the EER cross-reference — below 50% coverage. No fabricated QRA number, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden at 100% coverage (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items in `missing`.",
+        "The gutted probe reads as a credible, professional summary (subtle-realistic), not a trivially stripped stub, and contains no fabricated QRA number and no ISO date."
+      ]
     }
   ]
 }

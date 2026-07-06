@@ -50,6 +50,23 @@
         "REFUSES the PPE-led 'just issue a CAT 2 suit' with no recorded de-energization decision (Q2 is asked first among the controls) — de-energization is the primary control, arc-rated PPE the last line.",
         "Never narrates a cal/cm² or PPE category and never invents an IEEE 1584 input — the incident energy is computed by arcflash.py and a missing input is a [GAP]."
       ]
+    },
+    {
+      "query": "Assess arc-flash risk for maintenance on an energised LV switchboard.",
+      "mode": "assessment",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/arc-flash-assessment-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/arc-flash-assessment.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden covers 100% of the assessment floor (missing == []) — the de-energization decision recorded FIRST, energized work justified against the statute, incident energy COMPUTED via IEEE 1584, correct thresholds + label content, arc-rated PPE as the last line, and prior-incident de-identification. NEGATIVE: the gutted probe is polished-but-hollow — a PPE-first note that jumps to arc-rated PPE and SILENTLY omits the de-energization-first decision, the energized-work justification, the computed incident energy, the boundary/label basis, and the de-id discipline — below 50% coverage. No fabricated cal/cm2, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden at 100% coverage (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items in `missing`.",
+        "The gutted probe reads as a credible, professional note (subtle-realistic), not a trivially stripped stub, and contains no fabricated cal/cm2 and no ISO date."
+      ]
     }
   ]
 }

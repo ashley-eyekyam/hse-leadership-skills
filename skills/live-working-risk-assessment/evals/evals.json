@@ -50,6 +50,23 @@
         "Does NOT proceed past the de-energization evaluation (Q2) without genuinely evaluating de-energization; if live work is proposed, the statutory three-part justification (Q3) is mandatory and a convenience reason is REFUSED.",
         "Never reduces the assessment to 'wear the flash suit' — arc-rated PPE is the documented last line; a missing input is a [GAP], never an invented approach boundary or incident-energy value."
       ]
+    },
+    {
+      "query": "Assess live working for fault-finding on an energised control panel.",
+      "mode": "assessment",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/live-working-risk-assessment-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/live-working-risk-assessment.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden covers 100% of the assessment floor (missing == []) — de-energization evaluated FIRST, the statutory three-part justification, approach boundaries defined, incident energy cross-referenced (not invented), arc-rated PPE as the last line, and the permit Annex J content. NEGATIVE: the gutted probe is polished-but-hollow — a 'needs to be done live' note that jumps to PPE and SILENTLY omits the de-energization-first evaluation, the three-part statutory test, the approach boundaries, the cross-referenced incident energy, and the permit Annex J — below 50% coverage. No fabricated cal/cm2, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden at 100% coverage (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items in `missing`.",
+        "The gutted probe reads as a credible, professional note (subtle-realistic), not a trivially stripped stub, and contains no fabricated cal/cm2 and no ISO date."
+      ]
     }
   ]
 }

@@ -50,6 +50,23 @@
         "REFUSES to assess until the survey scope & at-height structures (Q2), the object taxonomy (Q3), and the existing-securing status (Q4) are captured; never assumes an item is secured because it 'looks secured'.",
         "Never emits a generic 'wear hard hats below' control — reliable securing + survey + exclusion zones lead (KB-SNIP-DROPS-SECURING); a missing input is a [GAP]."
       ]
+    },
+    {
+      "query": "Assess dropped-object risk for tools and fixed items at height above a walkway (offshore module).",
+      "mode": "assessment",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/dropped-objects-prevention-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/dropped-objects-prevention.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden covers 100% of the assessment floor (missing == []) — reliable-securing-led, static/dynamic taxonomy, consequence bands traced to m·g·h, a dropped-object register, residual re-scored after securing + exclusion zones, resolving citations with India deferral, and SMART owned actions. NEGATIVE: the gutted probe is polished-but-hollow — a hard-hats-below note with a tool register that SILENTLY omits the reliable-securing lead, the static/dynamic taxonomy, the m·g·h consequence basis, the residual re-score, the citations, and owned SMART actions — below 50% coverage. No fabricated value, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden at 100% coverage (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items in `missing`.",
+        "The gutted probe reads as a credible, professional note (subtle-realistic), not a trivially stripped stub, and contains no fabricated value and no ISO date."
+      ]
     }
   ]
 }

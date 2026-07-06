@@ -4,6 +4,34 @@ sme-review:
     - role: "Authorised / Senior Authorised Person (HV) — Chartered Electrical Engineer with operational switching authority (CEng / PE)"
       expertise: "Electrical safety-rules and switching authority for HV/LV apparatus: the ordered switching sequence (isolate → prove dead → earth → sanction → restore) and the safety-document control (permit-to-work for dead work; sanction-to-test for controlled re-energization); NFPA 70E Article 120 (establishing + verifying an electrically safe work condition), Annex K and 120.5; OSHA 29 CFR 1910.269 (T&D — 269(d) lockout/tagout, 269(n) protective grounding, 269(m) de-energizing lines and equipment), 1910.333 (selection and use of work practices), and 1910.147 (the LOTO standard); UK EAWR 1989 regs 12–13 (means of cutting off supply + isolation / working dead) and HSG85 (electricity at work — safe working practices), with the prove-test-prove discipline and protective-earthing requirement by voltage; and India CEA / state electricity rules and line-clearance permit practice via hse-india."
       lens: "Is the program de-energize-led and isolation-first — is the de-energization / isolation decision (the Article 120 ESWC) recorded BEFORE work, and does the ordered switching sequence enumerate every point of isolation? Is every work step gated behind PROVE-DEAD (prove-test-prove) AND protective earthing where the procedure / voltage requires it — is working un-proven or un-earthed flagged rather than authorised? Is the sanction-to-test kept DISTINCT from a permit-to-work (controlled re-energization for testing is never a work-on-dead permit)? Is each switching step authorised at the right level (authorised vs senior authorised person by voltage)? Is the 1910.269 grounding / EAWR reg 12–13 isolation citation accurate, and is restoration controlled (cancel the document, remove earths, remove locks/tags)? Is a prior switching / electrocution incident de-identified to role level with ZERO leak?"
+modes:
+  program:
+    detected_by: "Q = the requested deliverable (an electrical permit / switching program for the named apparatus) — single-output skill; this mode is always active"
+    floor:
+      - id: de-energization-isolation-first
+        description: "The de-energization / isolation decision (the Article 120 ESWC) is recorded FIRST, before work"
+        anchors: ['de-energiz|isolation|eswc|article 120', 'first|primary|decision|before']
+        min_matches: 2
+      - id: prove-dead-earthing-gate
+        description: "Every work step is gated behind PROVE-DEAD and protective earthing in the ordered switching sequence"
+        anchors: ['prove dead|proved dead|earth', 'sequence|step|before|gate']
+        min_matches: 2
+      - id: sanction-to-test-distinct
+        description: "The sanction-to-test is kept DISTINCT from a permit-to-work (controlled re-energization for testing)"
+        anchors: ['sanction.to.test', 'permit.to.work|distinct|test']
+        min_matches: 1
+      - id: switching-step-authorised
+        description: "Each switching step is authorised at the right level (authorised vs senior authorised person)"
+        anchors: ['authorised|senior authorised', 'switching|step|level']
+        min_matches: 2
+      - id: grounding-isolation-duty-cited
+        description: "The grounding / isolation duty is cited correctly (OSHA 1910.269(d) LOTO / EAWR)"
+        anchors: ['1910.269|loto|grounding|eawr|isolation', 'isolat|earth|cited']
+        min_matches: 2
+      - id: restoration-controlled
+        description: "Restoration is controlled — on completion the safety document is cancelled and earths are removed in order"
+        anchors: ['restoration|cancel|earths removed|re-energ', 'complet|order|earth']
+        min_matches: 1
 ---
 
 # SME Review & Sign-off — electrical-permit-switching-program
@@ -36,6 +64,26 @@ restated below.
 - [ ] **A prior switching / electrocution incident is de-identified** — no named injured operator,
       no `<5` injury cell, no embedded re-identification key (a leak is a de_identification
       hard-fail).
+
+## Omission lens
+
+Run the shared omission protocol **`KB-SNIP-COMPLETENESS`**
+(`../../../knowledge-base/prompt-snippets/completeness-lens.md`) as the second pass of this
+skill's Step-4 SME review. The `modes:` map in this file's frontmatter declares the per-mode
+must-include floor (the tripwire the pass reconciles against — never its search space).
+Below are ONLY this skill's blind-spot hints.
+
+Skill-specific blind spots (where this artifact class has actually gone hollow):
+- **The isolation points unswept (S6)** — the ordered switching sequence names isolation "in
+  general" but does not enumerate every point of isolation and every earth; an un-enumerated point
+  is a live-conductor waiting behind a signed permit.
+- **The restoration / re-energization leg dropped (S1)** — the isolation is set out but the
+  controlled restoration (cancel the document, remove earths in order, prove the system before
+  re-energizing) is silently omitted; restoration is where switching incidents happen.
+- **Sanction-to-test conflated with a permit-to-work** — treating controlled test re-energization
+  as an ordinary permit is a category error that has killed testers; keep them distinct.
+- **The un-authorised step** — a switching step with no authorised/senior-authorised-person level
+  assigned is an instruction with no competent owner.
 
 ## Sign-off note
 SME review: ran (persona: Authorised / Senior Authorised Person (HV) — Chartered Electrical

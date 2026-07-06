@@ -50,6 +50,23 @@
         "Does not draft any pack until the named site + at least the emergency arrangements + at least one site-specific hazard are captured; a baseline topic with no named site arrangement is named as a [GAP], never filled with boilerplate.",
         "Names the requirement that every induction topic is tied to a named site arrangement and the site's real hazards — not a one-size-fits-all template (specificity dimension)."
       ]
+    },
+    {
+      "query": "Build a site health & safety induction pack for permanent new-starter warehouse operatives at the Tilbury distribution warehouse.",
+      "mode": "induction",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/induction-pack-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/induction-pack.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden covers 100% of the induction floor in references/sme-review.md (coverage_pct == 1.0, missing == []) — site-specific not generic, site hazards with hierarchy-ranked controls, a competence-verification record proving understanding, verification level matched to role risk, contractor site-rules/PTW awareness, and a scheduled owned refresher. NEGATIVE: the gutted probe (files/induction-pack-gutted.md) is polished-but-hollow — a clean induction with general rules and a signature line that SILENTLY omits the per-inductee understanding check, the role-risk verification match, the contractor PTW content, and the owned/dated refresher, and leans on generic PPE-first rules — falling below 50% coverage. No fabricated form id, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden at 100% coverage of the induction floor (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items (competence-verification-understanding, verification-matches-role-risk, contractor-site-rules-ptw, refresher-scheduled-owned) in `missing`.",
+        "The gutted probe reads as a credible, professional induction (subtle-realistic), not a trivially stripped stub, and contains no fabricated form id and no ISO date."
+      ]
     }
   ]
 }

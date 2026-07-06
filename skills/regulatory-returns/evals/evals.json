@@ -47,6 +47,23 @@
         "Does NOT assert a deadline without first resolving the jurisdiction (Q1) — a deadline stated in the abstract is a defect.",
         "Elicits jurisdiction first, then return type and incident facts; produces no determination or generic/template return on the vague input."
       ]
+    },
+    {
+      "query": "Determine recordability for a medical-treatment injury (US, OSHA) and identify the correct form and deadline.",
+      "mode": "return",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/regulatory-returns-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/regulatory-returns.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden covers 100% of the return floor (coverage_pct == 1.0, missing == []) — the verdict traced to the statutory test (OSHA 1904.7), the correct form (300/300A/301), the jurisdiction-anchored deadline, the India-deferral, correct de-identification, and every determination traced to evidence. NEGATIVE: the gutted probe is polished-but-hollow — a plausible 'this appears recordable' note that SILENTLY omits the statutory test, the exact form, the anchored deadline, the de-identification discipline, and the evidence trail — below 50% coverage. No fabricated form id, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden at 100% coverage of the return floor (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items in `missing`.",
+        "The gutted probe reads as a credible, professional return note (subtle-realistic), not a trivially stripped stub, and contains no fabricated form id and no ISO date."
+      ]
     }
   ]
 }

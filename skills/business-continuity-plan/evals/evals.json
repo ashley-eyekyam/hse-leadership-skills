@@ -49,6 +49,23 @@
         "Disambiguates scope at Q1 — confirms this is continuity (critical activities / RTO / RPO / MTPD), and would route an incident-response request to emergency-response-plan (the BCP<->ERP boundary).",
         "Does not emit a generic or template-only artifact or invent recovery times (specificity dimension)."
       ]
+    },
+    {
+      "query": "Write a business continuity plan for the claims-processing function at the Northgate Operations Centre (critical activities: claims intake, payment run, contact centre).",
+      "mode": "bcp",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/business-continuity-plan-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/business-continuity-plan.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden covers 100% of the bcp floor in references/sme-review.md (coverage_pct == 1.0, missing == []) — RTO strictly inside MTPD, RPO present, every dependency covered by a strategy, BIA driving the objectives, recovery roles with deputies, an exercise/test programme, and the BCP<->ERP boundary. NEGATIVE: the gutted probe (files/business-continuity-plan-gutted.md) is polished-but-hollow — a clean-looking BCP that lists strategies and testing but SILENTLY omits the MTPD/RTO/RPO recovery-objective rigour, the BIA basis, the recovery-role deputies, and the ERP cross-reference — falling below 50% coverage. No fabricated form id, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden at 100% coverage of the bcp floor (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items (rto-inside-mtpd, rpo-present, bia-drives-objectives, recovery-roles-have-deputies, bcp-erp-boundary) in `missing`.",
+        "The gutted probe reads as a credible, professional BCP (subtle-realistic), not a trivially stripped stub, and contains no fabricated form id and no ISO date."
+      ]
     }
   ]
 }

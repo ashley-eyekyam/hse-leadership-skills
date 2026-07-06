@@ -50,6 +50,23 @@
         "REFUSES to author a program until the operating voltage (Q2) and the points of isolation/earthing (Q3) are captured; never authorises work without prove-dead and (where required) protective earthing.",
         "Builds the ordered switching sequence (isolate -> prove dead -> earth -> sanction -> restore) with per-step authorisation; a missing input is a [GAP], never an invented isolation point."
       ]
+    },
+    {
+      "query": "Write a switching program to isolate a feeder for downstream panel maintenance.",
+      "mode": "program",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/electrical-permit-switching-program-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/electrical-permit-switching-program.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden covers 100% of the program floor (missing == []) — the de-energization/isolation decision FIRST, every work step gated behind prove-dead + protective earthing, sanction-to-test kept distinct from a permit-to-work, each step authorised at the right level, the grounding/isolation duty cited, and controlled restoration. NEGATIVE: the gutted probe is polished-but-hollow — a LOTO-style sequence that SILENTLY omits the prove-dead + protective-earthing gate, the sanction-to-test distinction, the authorisation levels, the cited grounding duty, and controlled restoration — below 50% coverage. No fabricated value, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden at 100% coverage (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items in `missing`.",
+        "The gutted probe reads as a credible, professional sequence (subtle-realistic), not a trivially stripped stub, and contains no fabricated value and no ISO date."
+      ]
     }
   ]
 }

@@ -34,6 +34,19 @@
         "Site-in-charge/worker name, Aadhaar, employee ID and home address become role labels; small injury cells are aggregated/suppressed (<5).",
         "No real name, Aadhaar/government ID, employee ID, address or health detail in the circulated output, and no re-identification key embedded (de_identification hard-fail)."
       ]
+    },
+    {
+      "query": "Review BOCW compliance for a ~250-worker Karnataka construction site (principal employer + two contractors) — the compliance gap-list with the annual return and Safety-Officer threshold.",
+      "mode": "compliance-review",
+      "deterministic_only": true,
+      "files": ["evals/files/bocw-compliance-gutted.md"],
+      "output_files": ["evals/output/bocw-compliance.md"],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden (owner-LOCKED at the SW5 19-06 review, CONV-5) covers 100% of the compliance-review floor in references/sme-review.md (coverage_pct == 1.0, missing == []) — state resolved before the Board is cited, Form XXV + 1% cess verified anchors, the cess base as cost of construction, the state Safety-Officer threshold surfaced as [GAP], correct duty-holder attribution, the SO threshold state-not-national, SMART owned-and-dated corrective actions, and the OSH-Code savings/legacy-primary note. NEGATIVE: the gutted probe (files/bocw-compliance-gutted.md) is polished-but-hollow — a clean compliance overview that SILENTLY omits Form XXV/cess anchors, the cess base, the [GAP] on the KA threshold, duty-holder attribution, the SMART owned-and-dated discipline, and the OSH-Code note — falling below 50% coverage. No fabricated form id, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden (owner-LOCKED at the SW5 19-06 review, CONV-5) at 100% coverage of the compliance-review floor (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items (form-xxv-cess-verified-anchors, cess-base-cost-of-construction, state-values-gap-never-invented, corrective-controls-smart-owned, osh-code-savings-legacy-primary) in `missing`.",
+        "The gutted probe reads as a credible, professional compliance overview (subtle-realistic), not a trivially stripped stub, and contains no fabricated form id and no ISO date."
+      ]
     }
   ]
 }

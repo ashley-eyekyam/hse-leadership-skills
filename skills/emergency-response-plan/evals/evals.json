@@ -51,6 +51,23 @@
         "Does NOT emit a generic or template ERP and does NOT invent a site, scenario, or muster point ([GAP] not invention).",
         "Disambiguates ERP vs BCP at Q1 — if the user wants continuity of critical activities (RTO/RPO/MTPD) it routes to business-continuity-plan rather than producing a generic plan here."
       ]
+    },
+    {
+      "query": "Write an emergency response plan for the Plant 4 solvent-storage warehouse (45 staff, 2 shifts) — scenarios fire/explosion and chemical spill.",
+      "mode": "erp",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/emergency-response-plan-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/emergency-response-plan.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden covers 100% of the erp floor in references/sme-review.md (coverage_pct == 1.0, missing == []) — prevention before response, scenario-keyed procedures, roles with named deputies, named/reachable muster points with routes, a dated drill schedule, the external-responder interface, and the ERP<->BCP boundary. NEGATIVE: the gutted probe (files/emergency-response-plan-gutted.md) is polished-but-hollow — a clean-looking ERP that names scenarios and an assembly point but SILENTLY omits prevention-before-response, role deputies, named routes/roll-call rigour, the dated drill schedule, the external-responder access/isolation interface, and the BCP boundary — falling below 50% coverage. No fabricated form id, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden at 100% coverage of the erp floor (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items (prevention-before-response, roles-have-named-deputies, drill-schedule-dated, external-responder-interface, erp-bcp-boundary) in `missing`.",
+        "The gutted probe reads as a credible, professional ERP (subtle-realistic), not a trivially stripped stub, and contains no fabricated form id and no ISO date."
+      ]
     }
   ]
 }

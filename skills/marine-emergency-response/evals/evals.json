@@ -44,6 +44,23 @@
         "The OIM / muster-controller names, the BOSIET certificate number, and the phone become role labels (OIM (role), Muster controller (role)); no re-identification key is embedded.",
         "No real name, certificate number, or phone in the circulated station bill, and no <5 MOB/drill-injury cell published unsuppressed (de_identification hard-fail on any leak)."
       ]
+    },
+    {
+      "query": "Assess the emergency-response arrangements for an offshore installation (escalation control, TEMPSC vs POB, muster).",
+      "mode": "assessment",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/marine-emergency-response-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/marine-emergency-response.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden covers 100% of the assessment floor (missing == []) — escalation-prevention/TR integrity, the EER hierarchy escalation-first, TEMPSC capacity vs POB, muster/POB/station bill, residual re-scored, SMART [GAP]-closure owned actions, and the sibling cross-reference. NEGATIVE: the gutted probe is polished-but-hollow — a muster-and-evacuate note that SILENTLY omits the escalation/TR-integrity posture, the TEMPSC-vs-POB capacity check, the station-bill/POB-accounting rigour, residual scoring, owned actions, and the cross-reference — below 50% coverage. No fabricated value, no ISO date. Model legs run LOCALLY (D-03), never in CI.",
+      "expectations": [
+        "grade_completeness reports the LOCKED golden at 100% coverage (coverage_pct == 1.0, missing == []).",
+        "grade_completeness reports the gutted probe BELOW 50% coverage, with the silently-omitted items in `missing`.",
+        "The gutted probe reads as a credible, professional note (subtle-realistic), not a trivially stripped stub, and contains no fabricated value and no ISO date."
+      ]
     }
   ]
 }

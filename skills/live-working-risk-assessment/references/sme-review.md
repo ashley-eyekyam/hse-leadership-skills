@@ -4,6 +4,34 @@ sme-review:
     - role: "Chartered / Professional Electrical Engineer with live-working / authorised-person competence (CEng / PE — NFPA 70E / EAWR reg 14)"
       expertise: "Live-working (energized-work) risk assessment and the statutory live-working justification: the de-energize-first default and the three-part statutory test (it is unreasonable to be dead + reasonable to work live + suitable precautions are taken) per EAWR 1989 reg 14 / OSHA 1910.333(a)(2) / NFPA 70E 130.2; NFPA 70E Article 120 (establishing + verifying an electrically safe work condition), 110.5/130.2 (energized-work justification + permit), 130.4 (shock risk assessment + the limited/restricted approach boundaries), and Annex J (the energized electrical work permit); OSHA 29 CFR 1910.333 (selection and use of work practices — de-energize-first) and 1910.269 (T&D minimum approach distances); UK EAWR 1989 reg 14 read with HSG85 and HSR25; the arc-flash incident energy + PPE category at the working position cross-referenced from the arc-flash assessment (computed once, never re-derived); and India CEA / state electricity rules and line-clearance permit practice via hse-india."
       lens: "Is the assessment de-energize-led — is the de-energization evaluation (the ESWC default per Article 120) recorded BEFORE any live-work justification, and is live work treated as the rare, fully-justified exception rather than the default? Where live work is proposed, does the justification meet the full three-part statutory test (unreasonable to be dead + reasonable to work live + suitable precautions), and is a justification of mere convenience / cost / schedule ('production cannot stop / it's quicker') REJECTED rather than accepted? Are the limited and restricted approach boundaries defined (NFPA 70E 130.4 / 1910.269)? Is the arc-flash incident energy + PPE category at the working position CROSS-REFERENCED from the arc-flash assessment (never invented or re-derived here), and is arc-rated PPE the documented LAST line rather than the headline control? Does the energized-work permit carry the Annex J content (justification + precautions + approach boundaries + PPE + authorising signature)? Is the EAWR reg 14 / 1910.333 / NFPA 70E 130.2/130.4/Annex J citation accurate? Is a prior contact / electrocution / arc-flash burn incident de-identified to role level with ZERO leak?"
+modes:
+  assessment:
+    detected_by: "Q = the requested deliverable (a live-working risk assessment for the named task) — single-output skill; this mode is always active"
+    floor:
+      - id: de-energization-evaluated-first
+        description: "The de-energization evaluation (the ESWC default per Article 120) is recorded FIRST, before any live-work justification"
+        anchors: ['de-energiz|eswc|article 120', 'first|primary|before|default']
+        min_matches: 2
+      - id: three-part-justification
+        description: "The statutory three-part live-working test is met (all of infeasible de-energized / justified / precautions), not convenience"
+        anchors: ['three.part|justif|1910.333|eawr reg 14', 'live work|infeasib|impractic|test']
+        min_matches: 1
+      - id: approach-boundaries-defined
+        description: "The limited and restricted approach boundaries (NFPA 70E 130.4 / OSHA 1910.269) are defined"
+        anchors: ['approach boundar|70e 130.4|limited|restricted', 'boundar']
+        min_matches: 2
+      - id: incident-energy-cross-referenced
+        description: "The arc-flash incident energy (cal/cm2) + PPE is CROSS-REFERENCED, never invented here"
+        anchors: ['incident energy|cal/cm|cross.referenc', 'arc|ppe']
+        min_matches: 1
+      - id: arc-rated-ppe-last
+        description: "Arc-rated PPE is the documented LAST line, never the headline control"
+        anchors: ['arc.rated', 'ppe|last']
+        min_matches: 2
+      - id: permit-annex-j
+        description: "The energized-work permit carries the NFPA 70E Annex J content (justification + precautions + approvals)"
+        anchors: ['annex j|permit', 'justif|precaution|approv']
+        min_matches: 1
 ---
 
 # SME Review & Sign-off — live-working-risk-assessment
@@ -46,6 +74,26 @@ restated below.
 - [ ] **A prior contact / electrocution / arc-flash burn incident is de-identified** — no named
       injured worker, no `<5` injury cell, no embedded re-identification key (a leak is a
       de_identification hard-fail).
+
+## Omission lens
+
+Run the shared omission protocol **`KB-SNIP-COMPLETENESS`**
+(`../../../knowledge-base/prompt-snippets/completeness-lens.md`) as the second pass of this
+skill's Step-4 SME review. The `modes:` map in this file's frontmatter declares the per-mode
+must-include floor (the tripwire the pass reconciles against — never its search space).
+Below are ONLY this skill's blind-spot hints.
+
+Skill-specific blind spots (where this artifact class has actually gone hollow):
+- **Live work as the default, not the rare exception (assistive boundary)** — the de-energization
+  evaluation is recorded first and live work is justified only where all three statutory limbs are
+  met; a plan that treats live work as normal on convenience grounds inverts the ESWC.
+- **The invented incident energy (S5)** — the arc-flash cal/cm² and PPE class are cross-referenced
+  from the arc-flash assessment, never invented in the live-working document; a missing value is
+  [GAP].
+- **The undefined approach boundary** — a live task with no limited/restricted approach boundary
+  and no unqualified-person exclusion is an uncontrolled shock exposure.
+- **The permit with no Annex J content** — an energized-work permit missing the justification,
+  precautions and approvals is paperwork, not a control.
 
 ## Sign-off note
 SME review: ran (persona: Chartered / Professional Electrical Engineer with live-working /
