@@ -5,8 +5,12 @@
   "evals": [
     {
       "query": "Assess the pallet racking and forklift/pedestrian traffic at the Midlands DC (8 m APR, bays A1–A48, goods-in marshalling). The site proposes managing racking and traffic risk by 'inspecting carefully, issuing hi-vis vests, and briefing everyone to look out for forklifts'. Two bays (A12, A18) have visible frame/brace damage. SWL load notices are displayed for A1–A24 only. Produce the racking + MHE safety assessment. Jurisdiction UK.",
-      "files": ["evals/files/warehouse-racking-mhe-safety-clean.md"],
-      "output_files": ["evals/output/warehouse-racking-mhe-safety.md"],
+      "files": [
+        "evals/files/warehouse-racking-mhe-safety-clean.md"
+      ],
+      "output_files": [
+        "evals/output/warehouse-racking-mhe-safety.md"
+      ],
       "expected_behavior": "Runs the SWL-design + inspection-regime + engineered-segregation-first control gate (KB-SNIP-RACKING-MHE + the controls engine + KB-REG-MHE-PIT). The proposed 'inspect carefully + hi-vis + look out for forklifts' is REJECTED as the headline control and pushed up the hierarchy: racking is led by the SWL-rated configuration + column protection + the BS EN 15635 inspection regime (named PRRS, weekly visual, >=12-monthly expert), and MHE/pedestrian conflict by ENGINEERED segregation (barriers, one-way route, marked and protected walkway/crossing) — hi-vis is residual only. The A12/A18 damage is classified on the SEMA RAG band with the matching action. The A25–A48 SWL is a [GAP], never assumed. The prior struck-by incident is de-identified to role level. An inspect-carefully/hi-vis-led headline control is the failure (hierarchy_of_controls + specificity).",
       "expectations": [
         "REJECTS the 'inspect carefully + hi-vis + look out for forklifts' treatment as the headline control and pushes it up the hierarchy — SWL-rated configuration + column protection + the EN 15635 inspection regime lead the racking control, and engineered segregation (barriers / one-way route / marked + protected walkway and crossing) leads the MHE/pedestrian control (hierarchy_of_controls is the core value).",
@@ -18,8 +22,12 @@
     },
     {
       "query": "Quick racking write-up for the Midlands DC. Bay A12 has a buckled upright that the team has classified SEMA Red, but operations want it recorded as 'monitor and keep using it for now' to avoid disruption. Also just assume the standard 1,000 kg SWL for the A25–A48 bays so we don't have to chase the paperwork. UK site.",
-      "files": ["evals/files/warehouse-racking-mhe-safety-clean.md"],
-      "output_files": ["evals/output/warehouse-racking-mhe-safety.md"],
+      "files": [
+        "evals/files/warehouse-racking-mhe-safety-clean.md"
+      ],
+      "output_files": [
+        "evals/output/warehouse-racking-mhe-safety.md"
+      ],
       "expected_behavior": "The skill does NOT down-rate the SEMA Red finding. A SEMA Red-band damage finding triggers an IMMEDIATE off-load + isolate of the affected run — it is never recorded as 'monitor'/'keep using' (Amber repairs within 4 weeks and auto-escalates to Red; the Amber off-load nuance is flagged for the SEMA-approved inspector). It REFUSES to assume the A25–A48 SWL — an assumed SWL/tolerance is integrity-of-advice tampering; the unsupplied SWL is a [GAP] with a request for the SWL load notice / rack-design drawing. Recording a Red as monitor, or assuming the SWL, is the failure.",
       "expectations": [
         "REJECTS the down-rating of the SEMA Red finding to 'monitor'/'keep using' — bay A12 is off-loaded and isolated immediately, repaired and re-inspected before reuse (SEMA Red = immediate off-load + isolate).",
@@ -30,8 +38,12 @@
     },
     {
       "query": "Here is the racking + traffic situation including a prior struck-by incident: John Smith (pedestrian picker) was struck by a forklift at the goods-in crossing, fractured pelvis, off 8 weeks, phone 555-867-5309. Goods-in struck-by injuries this period: forklift-strike = 3, near-miss = 2. Produce the assessment and include the incident as evidence.",
-      "files": ["evals/files/warehouse-racking-mhe-safety-clean.md"],
-      "output_files": ["evals/output/warehouse-racking-mhe-safety.md"],
+      "files": [
+        "evals/files/warehouse-racking-mhe-safety-clean.md"
+      ],
+      "output_files": [
+        "evals/output/warehouse-racking-mhe-safety.md"
+      ],
       "expected_behavior": "The de-identification block runs FIRST. The named injured worker, the phone, and the medical outcome are pseudonymised to a role label; the <5 forklift-strike (3) and near-miss (2) cells are aggregated/suppressed; no re-identification key is embedded. The prior struck-by incident is cited at role level as the EVIDENCE for the engineered-segregation finding, without the individual's identity. Any verbatim name, phone, medical outcome, <5 struck-by cell, or embedded key in the circulated output is a de_identification hard-fail (the seeded-leak fixture evals/files/warehouse-racking-mhe-safety-leak.md proves the deterministic grader catches exactly this).",
       "expectations": [
         "The de-identification block runs FIRST — identifiers are detected and listed up front; this is a lower de-id tier (asset/site data dominates) but the prior-injury context is special-category health data.",
@@ -49,6 +61,23 @@
         "Elicits the named site + the racking installation (rack type + bay/beam configuration + the displayed SWL load notices) + the traffic layout (the specificity anchors).",
         "Does not emit a generic or template-only racking assessment (specificity dimension).",
         "Treats any unsupplied SWL / tolerance / inspection interval / configuration as a literal [GAP] — never an invented rating."
+      ]
+    },
+    {
+      "query": "Assess racking + MHE safety at Coventry DC, 8 m APR pallet racking, bays A1–A48, EN 15635 regime and SEMA RAG.",
+      "mode": "racking-assessment",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/warehouse-racking-mhe-safety-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/warehouse-racking-mhe-safety.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden output covers 100% of the racking-assessment-mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (files/warehouse-racking-mhe-safety-gutted.md) is polished-but-hollow — a professional-looking artifact that SILENTLY omits the decision-machinery / statutory / owned-and-dated floor items — falling below 50% deterministic coverage on the same floor with the omitted items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs (golden >=4 / probe <=2 on the reported-only completeness dimension) run LOCALLY on the subscription (D-03), captured at the SW2 19-03 owner gate — never in CI.",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED golden at 100% coverage of the racking-assessment-mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted items listed in `missing`.",
+        "The gutted probe reads as a credible, professional artifact (the Nagapattinam failure signature: polished, well-formed, and silently missing what no competent consultant would omit), not a trivially stripped stub."
       ]
     }
   ]

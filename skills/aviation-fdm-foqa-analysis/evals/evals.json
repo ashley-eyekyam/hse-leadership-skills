@@ -44,6 +44,23 @@
         "Does NOT ingest or simulate raw flight data; frames the analysis structure from what is actually supplied.",
         "States the assistive boundary explicitly rather than presenting fabricated numbers as analysed results."
       ]
+    },
+    {
+      "query": "Structure this quarter's FDM/FOQA exceedance summary into SMS findings and actions for our DGCA A320 operator (12 unstabilised approaches, 4 high-ROD).",
+      "mode": "exceedance-analysis",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/aviation-fdm-foqa-analysis-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/foqa-quarterly-exceedances.md"
+      ],
+      "expected_behavior": "The completeness PAIR (BKF-02 / D-02 separation proof). POSITIVE: the LOCKED golden output covers 100% of the exceedance-analysis-mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (files/aviation-fdm-foqa-analysis-gutted.md) is polished-but-hollow — a professional-looking artifact that SILENTLY omits the decision-machinery / statutory / owned-and-dated floor items — falling below 50% deterministic coverage on the same floor with the omitted items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs (golden >=4 / probe <=2 on the reported-only completeness dimension) run LOCALLY on the subscription (D-03), captured at the SW2 19-03 owner gate — never in CI.",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED golden at 100% coverage of the exceedance-analysis-mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted items listed in `missing`.",
+        "The gutted probe reads as a credible, professional artifact (the Nagapattinam failure signature: polished, well-formed, and silently missing what no competent consultant would omit), not a trivially stripped stub."
+      ]
     }
   ]
 }

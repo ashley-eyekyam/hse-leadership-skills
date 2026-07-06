@@ -1,4 +1,4 @@
-<!-- CANDIDATE pending owner re-LOCK — 19-02 Task 6 canary fold-back applied three D-14 golden-defect corrections to this pre-existing v1.2 golden (crossing-type terminology UWC→footpath, reasonable-practicability double-negative redrafted, ROW-diversion order routed to the local highway authority). Owner re-LOCK required (CONV-5) before further reliance; do NOT edit without a new owner LOCK. -->
+<!-- LOCKED fixture — owner re-LOCKED at the SW2 19-03 review (CONV-5, 5 July 2026) after the 19-02 canary corrections (19-02 Task 6 canary fold-back applied three D-14 golden-defect corrections to this pre-existing v1.2 golden (crossing-type terminology UWC→footpath, reasonable-practicability double-negative redrafted, ROW-diversion order routed to the local highway authority). Owner re-LOCK required (CONV-5) before further reliance; already applied); do NOT edit without a new owner LOCK. -->
 # Level-Crossing & Track-Worker (On or Near the Line) Safe System of Work — Mill Lane footpath crossing & adjacent S&C renewal
 
 **Site:** Mill Lane footpath level crossing + the switches-and-crossings (S&C) renewal on the Down Main, 12m 40ch–12m 55ch

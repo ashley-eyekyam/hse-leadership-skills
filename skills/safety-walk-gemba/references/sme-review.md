@@ -4,6 +4,34 @@ sme-review:
     - role: "HSE Leadership / Engagement Coach"
       expertise: "Felt-leadership / visible safety leadership (HSE HSG65), gemba / genchi-genbutsu engagement walks, ISO 45001:2018 clauses 5.1 (leadership and commitment) and 5.4 (consultation and participation of workers), psychological safety in frontline conversations, and converting leadership commitments into tracked leading-indicator actions."
       lens: "Is this an engagement walk built on OPEN, area-specific conversation prompts (never a closed yes/no tick-box checklist), with worker concerns captured role-labelled (no individual named, psychological safety preserved), and EVERY commitment converted to an owned, dated action tracked to closure whose closure-rate is reported as a leading indicator?"
+modes:
+  gemba-walk:
+    detected_by: "Q1 — Engagement gemba walk (this skill, not an audit / BBS programme / culture survey / KPI framework) + Q6 output (walk plan / walk record + tracked commitments / both)"
+    floor:
+      - id: gem-open-prompts-not-tickbox
+        description: "The walk is built from open, area-specific, non-interrogative prompts that invite the worker's own account — a closed yes/no checklist (an inspection, not a gemba walk) is a FLAG"
+        anchors: ['open prompt', 'open question', 'not a (tick|check)', 'engagement', 'conversation']
+        min_matches: 1
+      - id: gem-concerns-role-labelled
+        description: "Every worker concern is attributed to a role/group, never to a nameable individual — a named-worker→concern attribution is a FLAG and a de-id hard-fail (psychological safety)"
+        anchors: ['role.label', 'role/group', 'concern', 'psychological safety']
+        min_matches: 2
+      - id: gem-commitments-owned-dated
+        description: "Each commitment made on the walk is converted to an owned + dated action tracked to closure — a commitment with no owner / no due date / no closure tracking is a FLAG"
+        anchors: ['commitment', 'owner', 'due', 'closure']
+        min_matches: 2
+      - id: gem-closure-rate-leading
+        description: "The count and closure-rate of walk commitments is reported as a leading indicator (KB-DATA-LEADING-INDICATORS, source + year) — a one-off conversation with no forward measure is a FLAG"
+        anchors: ['closure.rate', 'leading indicator']
+        min_matches: 1
+      - id: gem-clause-fidelity
+        description: "The walk is framed against ISO 45001:2018 clause 5.1 / 5.4 (KB-SNIP-LEADERSHIP-CLAUSE-MAP); a citation drift or a fabricated clause is a FLAG"
+        anchors: ['ISO 45001', '5\.1', '5\.4', 'leadership']
+        min_matches: 2
+      - id: gem-right-tool-engagement
+        description: "This is an engagement walk, not an audit / behaviour-observation programme / maturity survey / KPI framework — a walk that has drifted into one of those is steered back to the right sibling"
+        anchors: ['gemba', 'engagement walk', 'felt.leadership']
+        min_matches: 1
 ---
 
 # SME Review & Sign-off — safety-walk-gemba
@@ -34,6 +62,26 @@ class and are not restated below.
   walk that has drifted into one of those is a FLAG (steer to the right sibling).
 - [ ] **Clause fidelity** — the walk is framed against ISO 45001:2018 **5.1 / 5.4**
   (`KB-SNIP-LEADERSHIP-CLAUSE-MAP`); a citation drift or a fabricated clause is a FLAG.
+
+## Omission lens
+
+Run the shared omission protocol **`KB-SNIP-COMPLETENESS`**
+(`../../../knowledge-base/prompt-snippets/completeness-lens.md`) as the second pass of this
+skill's Step-4 SME review. The `modes:` map in this file's frontmatter declares the per-mode
+must-include floor (the tripwire the pass reconciles against — never its search space).
+Below are ONLY this skill's blind-spot hints.
+
+Skill-specific blind spots (where this artifact class has actually gone hollow):
+- **The commitment with no bridge** — a hazard surfaced on the walk that cannot be fixed on
+  the spot is logged as a commitment dated weeks out with no interim make-safe (isolate,
+  barrier, stop-task) for the intervening period, so the walk records the risk and leaves it
+  live.
+- **The concern raised but not fed back** — the walk captures worker concerns but never closes
+  the loop back to those workers (what was done, why not), so the engagement promise erodes
+  and future walks surface less.
+- **Scope-honesty on the walk's purpose** — the output is titled an engagement/felt-leadership
+  walk but reads as a covert inspection or a compliance tick-list, mismatching what the crew
+  was told and undermining psychological safety.
 
 ## Sign-off note
 SME review: ran (persona: HSE Leadership / Engagement Coach); this is **decision-support

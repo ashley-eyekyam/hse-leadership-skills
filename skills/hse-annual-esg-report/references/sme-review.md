@@ -4,6 +4,34 @@ sme-review:
     - role: "ESG / Sustainability Assurance Specialist"
       expertise: "GRI 403 / SASB / ESRS S1 OH&S disclosure requirements; ISAE 3000 (Revised) and AA1000AS assurance engagements; reporting-boundary and consolidation concepts (operational / financial control, own-workforce vs non-employee split); per-metric data quality (definition, denominator, source, period, completeness); double materiality; and statistical-disclosure-control de-identification (small-cell <5 suppression + secondary suppression so totals cannot back-calculate a cell)."
       lens: "would a limited/reasonable-assurance provider sign this — is every figure boundary-stated and denominator-defined, is every claimed GRI 403 disclosure actually present, do the lagging rates match incident_rates standard definitions, can any suppressed small cell be reverse-engineered from a published total, and does the document avoid reading as a final assured or legal disclosure"
+modes:
+  esg-disclosure:
+    detected_by: "Q0 — What ESG OH&S artifact? == full annual OH&S disclosure / a framework section (GRI 403, ESRS S1, SASB) — the produced ESG safety-performance disclosure"
+    floor:
+      - id: esg-boundary-and-workforce-split
+        description: "Every published figure carries its reporting boundary (operational / financial / equity-share) AND its workforce split (own-workforce vs non-employee/contractors, per ESRS S1) — a figure with no stated boundary is not assurable"
+        anchors: ['boundary', 'own.workforce', 'non.employee', 'operational control']
+        min_matches: 2
+      - id: esg-rate-denominator-defined
+        description: "Every published rate carries its denominator + definition (hours worked, the recordable basis), is sourced and period-bound, and the lagging rates match the incident_rates standard definitions — a rate with no denominator is rejected, never estimated"
+        anchors: ['denominator', 'hours worked', 'TRIR', 'LTIFR', 'DART']
+        min_matches: 2
+      - id: esg-framework-fidelity
+        description: "Every claimed GRI 403 / SASB / ESRS S1 disclosure is actually present (KB-STD-ESG-GRI403 crosswalk); a claimed-but-absent required disclosure is a citation hard-fail, recorded [GAP], never papered over"
+        anchors: ['GRI 403', 'ESRS', 'SASB', '\[GAP\]']
+        min_matches: 1
+      - id: esg-deid-secondary-suppression
+        description: "All injury/illness figures aggregated; no <5 small cell published (especially fatalities/ill-health by site/demographic); secondary suppression so no suppressed cell is back-calculable; no re-identification mapping"
+        anchors: ['aggregat', 'small.cell', 'suppress', 'fewer than 5', '<5']
+        min_matches: 2
+      - id: esg-assurance-and-materiality
+        description: "The intended assurance level (limited / reasonable) is recorded so evidence rigour matches it, and the double-materiality basis for reporting own-workforce H&S is stated"
+        anchors: ['assurance', 'limited', 'reasonable', 'materiality']
+        min_matches: 2
+      - id: esg-preassurance-boundary
+        description: "The disclosure carries a decision-support / pre-assurance disclaimer and a de-id/aggregation notice, and never reads as a final assured, audited, or legal document"
+        anchors: ['decision.support', 'pre.assur', 'disclaimer', 'not.{0,20}assured']
+        min_matches: 1
 ---
 
 # SME Review & Sign-off — hse-annual-esg-report
@@ -15,6 +43,26 @@ sme-review:
 - [ ] **Strictest-tier de-id holds** — all injury/illness figures aggregated; no `<5` small cell published (especially fatalities/ill-health by site or demographic); **secondary suppression applied so no suppressed cell is back-calculable** from a published total or the remaining cells; no re-identification mapping in the document.
 - [ ] **Assurance level + materiality stated** — the intended assurance level (limited / reasonable) is recorded so the evidence rigour matches it, and the double-materiality basis for reporting own-workforce H&S is stated.
 - [ ] **Boundary held** — the disclosure carries a decision-support / pre-assurance disclaimer and a de-id/aggregation notice, and never reads as a final assured, audited, or legal document.
+
+## Omission lens
+
+Run the shared omission protocol **`KB-SNIP-COMPLETENESS`**
+(`../../../knowledge-base/prompt-snippets/completeness-lens.md`) as the second pass of this
+skill's Step-4 SME review. The `modes:` map in this file's frontmatter declares the per-mode
+must-include floor (the tripwire the pass reconciles against — never its search space).
+Below are ONLY this skill's blind-spot hints.
+
+Skill-specific blind spots (where this artifact class has actually gone hollow):
+- **The framework named, its disclosure set unswept** — the report claims GRI 403 / ESRS S1 /
+  SASB conformance but silently omits required sub-disclosures (worker participation and
+  consultation, occupational-health services, work-related ill-health, the value-chain
+  workers ESRS S1 demands), so the conformance claim is broader than the content.
+- **Comparatives, restatement, and completeness** — a rate is published without prior-period
+  comparatives, without a restatement note where the definition or boundary changed, and
+  without a data-completeness/estimation statement, so a year-on-year movement cannot be read.
+- **Back-calculation across the whole table** — small cells are individually suppressed but a
+  suppressed cell is recoverable from a published total or the surviving cells; secondary
+  suppression must hold across the entire disclosure, not cell by cell.
 
 ## Sign-off note
 SME review: ran (persona: ESG / Sustainability Assurance Specialist); this is
