@@ -5,8 +5,12 @@
   "evals": [
     {
       "query": "Run a management-system safety audit of the permit-to-work (PTW) system at the Plant 3 maintenance shop (issuance -> isolation -> sign-off -> close-out; hot-work excluded), against ISO 45001 clause 8.1 operational control + the org's PTW procedure. UK, org 5x5 matrix. Sampled evidence: 12 issued permits across 3 shifts, an isolation-register extract, two interview summaries by role, the authoriser training matrix, and a direct issuance observation.",
-      "files": ["evals/files/ptw-audit-clean.md"],
-      "output_files": ["evals/output/ptw-audit.md"],
+      "files": [
+        "evals/files/ptw-audit-clean.md"
+      ],
+      "output_files": [
+        "evals/output/ptw-audit.md"
+      ],
       "expected_behavior": "Produces a specific clause-by-clause audit: names the actual audited scope/boundary (the PTW system at the Plant 3 maintenance shop, hot-work excluded) — not 'general site audit'; walks the criteria clause-by-clause; every finding carries a 4-class classification (conformity / NC-major / NC-minor / observation / opportunity) and a specific evidence trail; every nonconformity is risk-rated on the 5x5 matrix via risk_matrix; a conformity rating is summarised from the per-finding ratings; every corrective action is HoC-ranked (>=1 Engineering-or-higher control or a justified absence; controls.ppe_admin_only clears or is justified) with a named (role) owner + ISO due date + finding link, validated by smart_actions; the CAPA register uses the B5 schema verbatim {action,owner,due,measure,links_to_cause,hoc_tier} with links_to_cause = the finding id; ISO 45001 9.2 cited as the method + clause 8.1 as the criteria; a branded audit report.json/docx/pdf produced.",
       "expectations": [
         "Names the actual audited scope/boundary (the PTW system at the Plant 3 maintenance shop, hot-work excluded) — not 'general site audit' (specificity high).",
@@ -22,7 +26,9 @@
     },
     {
       "query": "A manager pastes the raw competence/training-records audit evidence (it contains a worker's real name, home address, phone, a health condition, an inline re-identification key, and a 2-person injury cell) and asks for a safety audit against ISO 45001 clause 7.2.",
-      "files": ["evals/files/training-audit-clean.md"],
+      "files": [
+        "evals/files/training-audit-clean.md"
+      ],
       "expected_behavior": "The de-identification block runs FIRST, before any assessment. The real name, home address, phone, and health detail are detected and pseudonymised to role labels; the <5 injury cell is suppressed/aggregated; no re-identification key is embedded. Any verbatim identifier, address, embedded re-id key, or unsuppressed <5 cell surviving into a finding's evidence trail is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). Audit evidence (training matrices, signed permits, injury records) is the highest-density PII surface in the pack, so the De-identifier-first gate is load-bearing. The eval CASE wires the CLEAN positive (files/training-audit-clean.md) so the per-skill gate passes; the SEEDED-LEAK negative (files/training-audit-pii.md) is proven caught by the deterministic de-id grader (scripts/tests/test_b6_deid_pair.py) — the hard-fail is the proof the gate is live.",
       "expectations": [
         "The de-identification block runs FIRST, before any assessment — the identifiers (name, address, phone, health detail) in the audit evidence are detected and listed up front.",
@@ -33,8 +39,12 @@
     },
     {
       "query": "Run a compliance audit of the machinery-guarding regime on the Plant 3 press line against the applicable regulatory duties (UK). Some criteria have strong evidence, the statutory-examination criterion has only a verbal assurance with no certificate sampled, and the isolation-before-maintenance nonconformity is presented with an administrative-only proposed corrective action ('remind staff to follow the procedure').",
-      "files": ["evals/files/compliance-audit-thin-evidence.md"],
-      "output_files": ["evals/output/compliance-audit.md"],
+      "files": [
+        "evals/files/compliance-audit-thin-evidence.md"
+      ],
+      "output_files": [
+        "evals/output/compliance-audit.md"
+      ],
       "expected_behavior": "The skill does NOT pass a criterion on absent evidence: the statutory-examination criterion with only a verbal assurance is recorded as a nonconformity or 'insufficient evidence', never a silent conformity. Every finding's classification is justified by the cited evidence (no unsupported 'conformity' and no unsupported 'nonconformity'). The admin-only isolation corrective action triggers controls.ppe_admin_only=True; the output either adds a higher-order control (an isolation interlock / lock-off-to-isolate engineering control) or records an explicit justification that higher-order controls are not reasonably practicable. The criteria gate holds: the audit will not classify without a resolved criteria set, and cites the regulatory duties for the criteria (the criteria-gate spine). An audit that asserts conformity with no evidence, or ships an admin-only corrective action with no higher-order option and no justification, scores <=2 on defensibility/hierarchy_of_controls and is flagged by the Critic/QA pass.",
       "expectations": [
         "Does NOT pass the statutory-examination criterion on the verbal assurance — absent evidence is recorded as a nonconformity / 'insufficient evidence', never a silent conformity (defensibility, the criteria-gate + finding-traced-to-evidence spine).",
@@ -42,6 +52,23 @@
         "The admin-only isolation corrective action triggers controls.ppe_admin_only=True; the output either adds a higher-order control (isolation interlock / lock-off-to-isolate engineering control) OR records an explicit 'not reasonably practicable because...' justification (hierarchy_of_controls is the core value; an un-justified admin-only fix scores <=2).",
         "The criteria gate holds — the audit resolves and cites the regulatory duties for the criteria before classifying (regulatory_citation_accuracy); it does not classify a finding without a criteria set.",
         "Every nonconformity is risk-rated; each corrective action carries a named (role) owner + ISO due date + finding link (defensibility); de-identification holds."
+      ]
+    },
+    {
+      "query": "Run a management-system safety audit of the permit-to-work system at the Plant 3 maintenance shop (issuance -> isolation -> sign-off -> close-out) against ISO 45001 cl. 8.1 + the org PTW procedure; UK, org 5x5 matrix.",
+      "mode": "audit",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/safety-audit-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/ptw-audit.md"
+      ],
+      "expected_behavior": "The completeness PAIR (D-02 separation proof) for safety-audit. POSITIVE: the LOCKED golden (evals/output/ptw-audit.md) covers 100% of the audit-mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (evals/files/safety-audit-gutted.md) is polished-but-hollow — a credible, professional artifact that SILENTLY omits several floor items (the Nagapattinam signature), scoring below 50% deterministic coverage on the same floor with the omitted items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs (golden >=4 / probe <=2 on the reported-only completeness dimension) run LOCALLY on the subscription (D-03), captured at the SW4 owner gate — never in CI.",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED golden at 100% coverage of the audit-mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted floor items listed in `missing`.",
+        "The gutted probe reads as a credible, professional artifact (subtle-realistic: polished, well-formed, silently missing what no competent consultant would omit), not a trivially stripped stub."
       ]
     }
   ]

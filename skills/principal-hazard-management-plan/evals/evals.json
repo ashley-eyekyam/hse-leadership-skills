@@ -18,7 +18,7 @@
       "files": [],
       "expected_behavior": "Records [GAP] for the engineering values the team / geotech has not supplied rather than inventing them; links the critical controls to ICMM CCM.",
       "expectations": [
-        "Records [GAP] for the un-supplied engineering values \u2014 does NOT invent a standoff/support value (no-fabrication / D-05a).",
+        "Records [GAP] for the un-supplied engineering values — does NOT invent a standoff/support value (no-fabrication / D-05a).",
         "Links the critical controls to the ICMM CCM (performance + verification).",
         "Frames the output as workshop structuring for the team (assistive)."
       ]
@@ -30,9 +30,26 @@
       ],
       "expected_behavior": "The de-identification block runs FIRST; attendees become role labels; any verbatim leak is a de_identification hard-fail.",
       "expectations": [
-        "The de-identification block runs FIRST \u2014 identifiers listed up front.",
+        "The de-identification block runs FIRST — identifiers listed up front.",
         "Attendees are role labels; no personal data in the circulated plan.",
         "No re-identification key embedded (de_identification hard-fail)."
+      ]
+    },
+    {
+      "query": "Build a principal hazard management plan for the inrush principal hazard at an underground coal mine.",
+      "mode": "phmp",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/principal-hazard-management-plan-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/inrush-phmp.md"
+      ],
+      "expected_behavior": "The completeness PAIR (D-02 separation proof) for principal-hazard-management-plan. POSITIVE: the LOCKED golden (evals/output/inrush-phmp.md) covers 100% of the phmp-mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (evals/files/principal-hazard-management-plan-gutted.md) is polished-but-hollow — a credible, professional artifact that SILENTLY omits several floor items (the Nagapattinam signature), scoring below 50% deterministic coverage on the same floor with the omitted items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs (golden >=4 / probe <=2 on the reported-only completeness dimension) run LOCALLY on the subscription (D-03), captured at the SW4 owner gate — never in CI.",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED golden at 100% coverage of the phmp-mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted floor items listed in `missing`.",
+        "The gutted probe reads as a credible, professional artifact (subtle-realistic: polished, well-formed, silently missing what no competent consultant would omit), not a trivially stripped stub."
       ]
     }
   ]

@@ -4,12 +4,12 @@
   "rubric": "rubric.yaml",
   "evals": [
     {
-      "query": "We had an accident at our mine \u2014 what do we file? (no region, no detail given)",
+      "query": "We had an accident at our mine — what do we file? (no region, no detail given)",
       "files": [],
       "expected_behavior": "Runs the intake; refuses to cite a form until the mine, region/zone and obligation are captured; resolves region before any DGMS form.",
       "expectations": [
         "Runs the structured intake before citing any form.",
-        "Resolves the DGMS region/zone first (mandatory) \u2014 does not assume.",
+        "Resolves the DGMS region/zone first (mandatory) — does not assume.",
         "Echoes that the output is a draft for a competent (DGMS-qualified) person's review."
       ]
     },
@@ -19,20 +19,37 @@
       "expected_behavior": "Cites the verified 24h-notice duty + timing but records the numbered form id as [GAP] (DGMS-prescribed, verify per mine) rather than inventing a number; cites Form J for the register entry.",
       "expectations": [
         "Confirms the 24-hour notice duty + timing (verified anchor) and the Form J register entry.",
-        "Records the un-verified numbered accident-notice form id as [GAP] \u2014 does NOT invent a form number (no-fabrication / D-05b).",
+        "Records the un-verified numbered accident-notice form id as [GAP] — does NOT invent a form number (no-fabrication / D-05b).",
         "Appends the OSH-Code transition note (legacy-first)."
       ]
     },
     {
-      "query": "Draft the accident-notice facts \u2014 here is the injured worker's name, ID, address and injury.",
+      "query": "Draft the accident-notice facts — here is the injured worker's name, ID, address and injury.",
       "files": [
         "files/deid-clean.md"
       ],
       "expected_behavior": "The de-identification block runs FIRST; the name, ID, address and health detail are pseudonymised to role labels and small cells suppressed; any verbatim leak is a de_identification hard-fail.",
       "expectations": [
-        "The de-identification block runs FIRST \u2014 identifiers are listed up front.",
+        "The de-identification block runs FIRST — identifiers are listed up front.",
         "Injured-miner name/ID/address become role labels; the injury cell is aggregated/suppressed (<5).",
         "No real name, government ID, address or health detail in the circulated output, and no re-identification key embedded (de_identification hard-fail)."
+      ]
+    },
+    {
+      "query": "Assemble the DGMS statutory reporting pack for a serious reportable accident at an underground coal mine in the Dhanbad zone under the Mines Act 1952 / Coal Mines Regulations 2017.",
+      "mode": "statutory-pack",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/dgms-statutory-pack-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/serious-accident-notice-dhanbad.md"
+      ],
+      "expected_behavior": "The completeness PAIR (D-02 separation proof) for dgms-statutory-pack. POSITIVE: the LOCKED golden (evals/output/serious-accident-notice-dhanbad.md) covers 100% of the statutory-pack-mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (evals/files/dgms-statutory-pack-gutted.md) is polished-but-hollow — a credible, professional artifact that SILENTLY omits several floor items (the Nagapattinam signature), scoring below 50% deterministic coverage on the same floor with the omitted items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs (golden >=4 / probe <=2 on the reported-only completeness dimension) run LOCALLY on the subscription (D-03), captured at the SW4 owner gate — never in CI.",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED golden at 100% coverage of the statutory-pack-mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted floor items listed in `missing`.",
+        "The gutted probe reads as a credible, professional artifact (subtle-realistic: polished, well-formed, silently missing what no competent consultant would omit), not a trivially stripped stub."
       ]
     }
   ]

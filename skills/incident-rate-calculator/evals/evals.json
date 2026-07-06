@@ -5,8 +5,12 @@
   "evals": [
     {
       "query": "Calculate our incident rates for Plant 2, Q1 2026: 3 OSHA-recordable cases (2 of them DART) and 1 lost-time injury, over 290,000 hours worked this quarter. Use the OSHA standard bases.",
-      "files": ["evals/files/known-inputs-trir.md"],
-      "output_files": ["evals/output/known-inputs-trir.md"],
+      "files": [
+        "evals/files/known-inputs-trir.md"
+      ],
+      "output_files": [
+        "evals/output/known-inputs-trir.md"
+      ],
       "expected_behavior": "Echoes the captured facts, then CALLS the shared incident_rates engine and presents the returned figures VERBATIM — it does NOT compute, estimate, round, or sanity-recompute any rate in prose. For these known inputs TRIR is exactly 2.07 (3 × 200,000 ÷ 290,000 = 2.0689… → 2.07), DART 1.38, LTIFR 3.45, at the OSHA bases (200,000 for TRIR/DART, 1,000,000 for LTIFR). Each rate is presented with its formula, inputs, base, and period so the figure is reproducible. A branded report.json carrying value + formula + base is produced. This is the determinism/correctness spine — the same inputs through the same code always return 2.07.",
       "expectations": [
         "Presents TRIR = 2.07 for 3 recordables / 290,000 hours at base 200,000 — the exact, reproducible engine result.",
@@ -18,7 +22,9 @@
     },
     {
       "query": "Calculate our TRIR for Warehouse C in March 2026 — we had 4 recordable cases. (The total hours worked figure is not available.)",
-      "files": ["evals/files/missing-denominator.md"],
+      "files": [
+        "evals/files/missing-denominator.md"
+      ],
       "expected_behavior": "Recognises there is no denominator and REFUSES to fabricate one. It surfaces the engine's honest error (hours_worked must be > 0) rather than emitting a rate, asks for the real hours-worked figure, and NEVER produces a fake 0.0, NEVER assumes a default exposure base, and NEVER annualizes a partial period. A rate with no exposure base is meaningless, and a fabricated denominator is an audit liability — the correct behaviour is to fail loud, not to guess.",
       "expectations": [
         "Refuses to compute a rate without the hours worked — the mandatory denominator — and asks for the real figure.",
@@ -29,7 +35,9 @@
     },
     {
       "query": "Here is our raw case log for the quarter — calculate the rates over 290,000 hours and give me something I can circulate.",
-      "files": ["evals/files/rate-caselog-clean.md"],
+      "files": [
+        "evals/files/rate-caselog-clean.md"
+      ],
       "expected_behavior": "The de-identification scrub runs FIRST, even though B10 is single-threaded: the pasted case log is reduced to AGGREGATE COUNTS ONLY before any computation — no per-case line, no individual identifier, and no injury/illness sub-group with fewer than 5 individuals (small-cell suppression), and no re-identification key. Only the aggregate counts reach the engine, which then returns the rates presented verbatim. Any verbatim name, embedded re-id key, per-case narration, or unsuppressed <5 cell surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). The eval CASE wires the CLEAN positive (evals/files/rate-caselog-clean.md) so the per-skill eval gate passes without a spurious hard-fail; the SEEDED-LEAK NEGATIVE (evals/files/rate-caselog-pii.md) is proven CAUGHT by the deterministic de-id grader in scripts/tests/test_b10_deid_pair.py — the hard-fail there is the proof the gate is live.",
       "expectations": [
         "The de-identification scrub runs FIRST, before computation — even though B10 is single-threaded (the inline-first scrub).",
@@ -37,6 +45,23 @@
         "No injury/illness sub-group with fewer than 5 individuals is published (small-cell suppression with secondary suppression); no real name, DOB, health detail, or re-identification key appears — any such leak is a de_identification hard-fail (auto-fail, non-waivable).",
         "The rates are still produced by the engine from the aggregate counts and presented verbatim — de-identification does not become an excuse to skip or fabricate the calculation.",
         "The deterministic de-id grader CATCHES the paired seeded-leak fixture (evals/files/rate-caselog-pii.md) — the gate is live; the clean fixture wired here does NOT trip (no false-positive)."
+      ]
+    },
+    {
+      "query": "Calculate TRIR, DART and LTIFR for Plant 2, Q1 2026 (3 recordables, 2 DART, 1 LTI over 290,000 hours) on the OSHA standard bases.",
+      "mode": "rate-calculation",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/incident-rate-calculator-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/known-inputs-trir.md"
+      ],
+      "expected_behavior": "The completeness PAIR (D-02 separation proof) for incident-rate-calculator. POSITIVE: the LOCKED golden (evals/output/known-inputs-trir.md) covers 100% of the rate-calculation-mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (evals/files/incident-rate-calculator-gutted.md) is polished-but-hollow — a credible, professional artifact that SILENTLY omits several floor items (the Nagapattinam signature), scoring below 50% deterministic coverage on the same floor with the omitted items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs (golden >=4 / probe <=2 on the reported-only completeness dimension) run LOCALLY on the subscription (D-03), captured at the SW4 owner gate — never in CI.",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED golden at 100% coverage of the rate-calculation-mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted floor items listed in `missing`.",
+        "The gutted probe reads as a credible, professional artifact (subtle-realistic: polished, well-formed, silently missing what no competent consultant would omit), not a trivially stripped stub."
       ]
     }
   ]

@@ -5,7 +5,9 @@
   "evals": [
     {
       "query": "Build a RAMS, UK / principal contractor (CDM 2015): erect a mobile access tower to replace south-elevation cladding panels on levels 2-4 of an occupied building with an adjacent public footpath. 8-step sequence (mobilise -> clear-down). Plant = tower + MEWP. Competencies = PASMA + IPAF. Working-at-height permit. Org 5x5 matrix.",
-      "files": ["evals/files/scaffold-cladding-uk.md"],
+      "files": [
+        "evals/files/scaffold-cladding-uk.md"
+      ],
       "expected_behavior": "Produces a specific, sequenced RAMS: names the actual activity/site, scores every hazard on the 5x5 matrix via risk_matrix, applies the hierarchy of controls with >=1 Engineering-or-higher control (or a justified absence), re-scores residual risk, builds a SEQUENCED method statement, and ties them with a BIDIRECTIONAL RA<->MS cross-reference (every method step traces to RA rows AND every RA hazard is addressed by a step). Names competent persons, sets activity-specific emergency/rescue arrangements, ships a briefing/sign-off record with empty signature rows, assigns SMART actions with named owners + ISO dates, cites CDM 2015 Reg 13 + ISO 45001 6.1.2/8.1.2, and produces a branded report.",
       "expectations": [
         "Names the actual activity/site (erect a tower to replace south-elevation cladding, levels 2-4, occupied building + public footpath) — not 'general construction works' (specificity high).",
@@ -22,7 +24,9 @@
     },
     {
       "query": "A contractor pastes the raw trench-excavation brief (it contains an operative's real name, DOB, phone, home address, NI number, a near-miss note naming the injured worker, an embedded re-identification key, and a 2-person injury cell) and asks for a RAMS.",
-      "files": ["evals/files/excavation-clean.md"],
+      "files": [
+        "evals/files/excavation-clean.md"
+      ],
       "expected_behavior": "The de-identification block runs FIRST. The real name, DOB, phone, home address, NI number, and the near-miss-named worker are detected and pseudonymised to role labels; the <5 injury cell is suppressed/aggregated; no re-identification key is embedded. Any input-derived identifier, address, embedded re-id key, or unsuppressed <5 cell surviving into the circulated output is a de_identification AUTO-FAIL (non-waivable, overrides the weighted mean). CRUCIALLY this is layered with the named-competent-persons EXCEPTION: the competent persons the user deliberately assigns at Q-C (appointed person, supervisor) stay NAMED in the sign-off record, and the briefing-acknowledgement table ships with EMPTY signature rows (no pre-populated operative names). The seeded-leak fixture (files/excavation-pii.md) is proven CAUGHT in scripts/tests/test_b4_deid_pair.py; the paired clean positive (wired here) proves no false-positive.",
       "expectations": [
         "The de-identification block runs FIRST, before any drafting — the identifiers (name, DOB, phone, address, NI number, near-miss-named worker) are detected and listed up front.",
@@ -34,7 +38,9 @@
     },
     {
       "query": "Produce a RAMS for hot-works welding of new handrail sections onto a steel walkway at high level. The requester's draft method is just: 'work safely, wear PPE, have a fire extinguisher, be careful of sparks' — no sequence, no permit, no fire watch.",
-      "files": ["evals/files/hotwork-generic.md"],
+      "files": [
+        "evals/files/hotwork-generic.md"
+      ],
       "expected_behavior": "The skill does NOT accept the vague PPE-only method. It forces a SEQUENCED safe system of work (set up -> hot-work permit + fire watch -> fire blankets/screens -> weld -> post-work fire-watch period -> clear). controls.rank_controls returns ppe_admin_only=True on the fire control, and the output either adds a higher-order control (eliminate hot work via a cold-cut/bolted connection; engineering via fire blankets/screens/gas detection) or records an explicit justification. Every method step is cross-referenced to an RA hazard. An output that ships the vague PPE-only method with no sequence and no higher-order control scores <=2 on specificity and hierarchy_of_controls and is flagged by the Critic/QA pass.",
       "expectations": [
         "Does NOT accept the generic, unsequenced method — it forces a SEQUENCED safe system of work (set up -> permit + fire watch -> fire screens -> weld -> post-work fire-watch -> clear).",
@@ -46,7 +52,9 @@
     },
     {
       "query": "Build a RAMS, India / Maharashtra: a mobile-crane TANDEM lift of precast beams on a building site. Sequenced method, plant = two mobile cranes + lifting accessories, competencies = appointed person + slinger/signaller (as supplied), lifting-operations permit. Org 5x5 matrix.",
-      "files": ["evals/files/lifting-india-mh.md"],
+      "files": [
+        "evals/files/lifting-india-mh.md"
+      ],
       "expected_behavior": "Resolves and CONFIRMS the state (Maharashtra) before citing any form (mandatory state detection). The regulatory basis cites BOCW + the resolved Maharashtra state form via KB-REG-IN-STATEFORMS (never a hard-coded national number) with the OSH-Code transition note appended; an unseeded state would be [GAP], never fabricated. The RA<->MS cross-reference holds bidirectionally; >=1 Engineering-or-higher control (or a justified absence) on the lifting hazards; named competent persons (appointed person, slinger/signaller) present in the sign-off record; de-id holds; a branded report is produced.",
       "expectations": [
         "The state is RESOLVED (Maharashtra) and CONFIRMED before any form is cited (mandatory state detection) — never proceeds on an unstated state.",
@@ -55,6 +63,23 @@
         "The bidirectional RA<->MS cross-reference holds (every tandem-lift step traces to RA rows and every RA hazard is addressed by a step); the method statement is sequenced (specificity).",
         "At least one Engineering-or-higher control (or a justified absence) on the lifting hazards; named competent persons (appointed person, slinger/signaller) present in the sign-off record (hierarchy_of_controls + defensibility).",
         "De-identification holds (role labels for input-derived persons); a branded report.json / docx / pdf is produced."
+      ]
+    },
+    {
+      "query": "Build a RAMS (UK / principal contractor, CDM 2015): erect a mobile access tower to replace south-elevation cladding panels on levels 2-4 of an occupied building with an adjacent public footpath; org 5x5 matrix.",
+      "mode": "rams",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/rams-builder-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/scaffold-cladding-uk.md"
+      ],
+      "expected_behavior": "The completeness PAIR (D-02 separation proof) for rams-builder. POSITIVE: the LOCKED golden (evals/output/scaffold-cladding-uk.md) covers 100% of the rams-mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (evals/files/rams-builder-gutted.md) is polished-but-hollow — a credible, professional artifact that SILENTLY omits several floor items (the Nagapattinam signature), scoring below 50% deterministic coverage on the same floor with the omitted items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs (golden >=4 / probe <=2 on the reported-only completeness dimension) run LOCALLY on the subscription (D-03), captured at the SW4 owner gate — never in CI.",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED golden at 100% coverage of the rams-mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted floor items listed in `missing`.",
+        "The gutted probe reads as a credible, professional artifact (subtle-realistic: polished, well-formed, silently missing what no competent consultant would omit), not a trivially stripped stub."
       ]
     }
   ]

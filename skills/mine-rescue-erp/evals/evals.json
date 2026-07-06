@@ -30,9 +30,26 @@
       ],
       "expected_behavior": "The de-identification block runs FIRST; casualty names/addresses become role labels; small cells suppressed; any verbatim leak is a de_identification hard-fail.",
       "expectations": [
-        "The de-identification block runs FIRST \u2014 identifiers listed up front.",
+        "The de-identification block runs FIRST — identifiers listed up front.",
         "Casualty names/addresses become role labels; the casualty cell is aggregated/suppressed (<5).",
         "No re-identification key embedded (de_identification hard-fail)."
+      ]
+    },
+    {
+      "query": "Build a mine-rescue emergency response plan for an underground coal mine (fire, inrush, entrapment): mobilisation, command, refuge/self-rescuer, mutual-aid.",
+      "mode": "erp",
+      "deterministic_only": true,
+      "files": [
+        "evals/files/mine-rescue-erp-gutted.md"
+      ],
+      "output_files": [
+        "evals/output/underground-coal-rescue-erp.md"
+      ],
+      "expected_behavior": "The completeness PAIR (D-02 separation proof) for mine-rescue-erp. POSITIVE: the LOCKED golden (evals/output/underground-coal-rescue-erp.md) covers 100% of the erp-mode floor declared in references/sme-review.md (grade_completeness coverage_pct == 1.0, missing == []). NEGATIVE: the gutted probe (evals/files/mine-rescue-erp-gutted.md) is polished-but-hollow — a credible, professional artifact that SILENTLY omits several floor items (the Nagapattinam signature), scoring below 50% deterministic coverage on the same floor with the omitted items in `missing`. Silent absence (not honest [GAP] surfacing) is the failure signature. The model-dim legs (golden >=4 / probe <=2 on the reported-only completeness dimension) run LOCALLY on the subscription (D-03), captured at the SW4 owner gate — never in CI.",
+      "expectations": [
+        "The deterministic completeness grader reports the LOCKED golden at 100% coverage of the erp-mode floor (coverage_pct == 1.0, missing == []).",
+        "The deterministic completeness grader reports the gutted probe BELOW 50% coverage on the same floor, with the silently-omitted floor items listed in `missing`.",
+        "The gutted probe reads as a credible, professional artifact (subtle-realistic: polished, well-formed, silently missing what no competent consultant would omit), not a trivially stripped stub."
       ]
     }
   ]
