@@ -20,7 +20,7 @@ A checklist can only find the gaps that someone remembered to write down. The om
 
 ## What the completeness pair proves
 
-The behaviour is held in place by a **completeness pair** built into the quality harness, one per skill:
+Each skill carries a **completeness pair** in its offline test suite — evidence that the omission pass actually discriminates, not just goes through the motions:
 
 #### The complete reference
 
@@ -30,11 +30,11 @@ A full, well-formed reference deliverable for the skill's artifact. It should sc
 
 The same artifact with sections, controls, and required elements deliberately **stripped out**. It should score **low** — a good omission pass notices the holes.
 
-The **measurable separation** between the two scores is the signal. If a skill stops noticing what is missing, the complete reference and the gutted probe drift together, the separation collapses, and the check fails. The scores are produced by a **keyless, local grader**, so the result is reproducible rather than a subjective opinion.
+If a skill's omission pass stopped noticing what is missing, the complete reference and the gutted probe would drift toward the same score — the pair exists to catch exactly that regression. The scores are produced by a **keyless, local grader**, so the result is reproducible rather than a subjective opinion.
 
 ## A hard, deterministic gate
 
-The completeness separation is now a **hard gate**, not an advisory metric. A skill whose pair no longer separates cannot pass — the same way a de-identification leak or an invented citation is a non-waivable failure elsewhere in the quality gate. Because the grader is deterministic and local, the gate gives the same verdict on every run.
+The gate that actually ships is simpler and stricter than a score comparison: every required floor item for the artifact's mode must be covered by the reference deliverable — by content, or by an honest `[GAP]` marker where something is genuinely missing or unverifiable. A silently missing floor item is a **hard, deterministic failure**, the same way a de-identification leak or an invented citation is a non-waivable failure elsewhere in the quality gate. Because the grader is keyless and local, it gives the same verdict on every run.
 
 ## The [GAP]-not-invented discipline
 
