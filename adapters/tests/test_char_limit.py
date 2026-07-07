@@ -19,13 +19,16 @@ def _emit(skill_dir, platform, tmp_path):
     return out
 
 
-def test_emitted_instruction_within_limit(risk_assessment_dir, tmp_path):
-    out = _emit(risk_assessment_dir, "chatgpt", tmp_path)
+def test_emitted_instruction_within_limit(incident_investigation_dir, tmp_path):
+    # incident-investigation is the canonical 8000-host (chatgpt/copilot) fitting
+    # exemplar post-cutover; risk-assessment now overflows those hosts (D-06) and is
+    # exercised on gemini/generic + in the spill unit tests below.
+    out = _emit(incident_investigation_dir, "chatgpt", tmp_path)
     platforms = build.load_platforms()
     limit = platforms["platforms"]["chatgpt"]["char_limit"]
     instr = (out / "instructions.md").read_text(encoding="utf-8")
     assert len(instr) <= limit
-    rep = va.validate_bundle(out, risk_assessment_dir, "chatgpt", platforms)
+    rep = va.validate_bundle(out, incident_investigation_dir, "chatgpt", platforms)
     assert not any("char_limit" in e for e in rep.errors), rep.errors
 
 

@@ -9,6 +9,17 @@ The three spec exemplars (C §3.0 / §5 acceptance #2) exercise the build's vari
   - risk-assessment       — moderate 3-agent roster + an A7 dependency (scripts/).
   - toolbox-talk          — single-thread roster, NO A7 dependency (no scripts/).
   - incident-investigation — 4-agent fan-out roster + an A7 dependency.
+
+Post-Phase-20 v1.3 HARD cutover (D-06): the promoted single-thread-fallback omission
+re-bind added a uniform +138 chars to every adapter surface, pushing risk-assessment's
+irreducible core over the REAL 8000-char ChatGPT/Copilot cap. risk-assessment is now in
+build.KNOWN_OVERFLOW_SKIP for [chatgpt, copilot] and ships on the 9000-cap hosts
+(gemini/generic) only. The individual ChatGPT/Copilot emit tests therefore use
+incident-investigation as the canonical 8000-host FITTING exemplar (also an A7 flagship);
+risk_assessment_dir is retained for the gemini/generic emit tests, the block/spill unit
+tests (which only load_skill), and the exemplar trio (whose all-platform tests are now
+KNOWN_OVERFLOW_SKIP-aware). This is a test-suite reconciliation to already-decided
+behavior (owner-approved 2026-07-07), NOT a change to risk-assessment's shipped surface.
 """
 
 import sys
@@ -53,8 +64,19 @@ def toolbox_talk_dir() -> Path:
 
 @pytest.fixture(scope="session")
 def incident_investigation_dir() -> Path:
-    """4-agent fan-out roster + A7."""
+    """4-agent fan-out roster + A7. Post-D-06 this is the canonical 8000-host
+    (chatgpt/copilot) FITTING exemplar for the individual emit tests (risk-assessment
+    now overflows those hosts)."""
     return SKILLS_DIR / "incident-investigation"
+
+
+@pytest.fixture(scope="session")
+def job_safety_analysis_dir() -> Path:
+    """Moderate roster + A7, fits the 8000-char ChatGPT/Copilot cap AND lifts a
+    conversation starter from its first MCQ — the true post-D-06 analog to
+    risk-assessment for the ChatGPT manifest-shape test (incident-investigation's intake
+    yields no liftable starter, so it can't exercise that assertion)."""
+    return SKILLS_DIR / "job-safety-analysis"
 
 
 @pytest.fixture(scope="session")

@@ -32,8 +32,8 @@ def _emit_copilot(skill_dir, tmp_path):
     return adapted, out, platforms
 
 
-def test_copilot_manifest_schema_1_7(risk_assessment_dir, tmp_path):
-    _, out, _ = _emit_copilot(risk_assessment_dir, tmp_path)
+def test_copilot_manifest_schema_1_7(incident_investigation_dir, tmp_path):
+    _, out, _ = _emit_copilot(incident_investigation_dir, tmp_path)
     manifest = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
     assert manifest["schema"] == "1.7"
     # Declarative-agent shape.
@@ -41,23 +41,23 @@ def test_copilot_manifest_schema_1_7(risk_assessment_dir, tmp_path):
         assert key in manifest, f"copilot manifest missing {key}"
 
 
-def test_copilot_manifest_string_props_within_limit(risk_assessment_dir, tmp_path):
-    _, out, platforms = _emit_copilot(risk_assessment_dir, tmp_path)
+def test_copilot_manifest_string_props_within_limit(incident_investigation_dir, tmp_path):
+    _, out, platforms = _emit_copilot(incident_investigation_dir, tmp_path)
     limit = platforms["platforms"]["copilot"]["manifest_string_limit"]
     manifest = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
     assert len(manifest["description"]) <= limit
     assert len(manifest["instructions"]) <= limit  # a pointer, not the full body
 
 
-def test_copilot_instructions_within_char_limit(risk_assessment_dir, tmp_path):
-    _, out, platforms = _emit_copilot(risk_assessment_dir, tmp_path)
+def test_copilot_instructions_within_char_limit(incident_investigation_dir, tmp_path):
+    _, out, platforms = _emit_copilot(incident_investigation_dir, tmp_path)
     text = (out / "instructions.md").read_text(encoding="utf-8")
     assert len(text) <= platforms["platforms"]["copilot"]["char_limit"]
 
 
-def test_copilot_four_non_negotiables_in_instructions(risk_assessment_dir, tmp_path):
+def test_copilot_four_non_negotiables_in_instructions(incident_investigation_dir, tmp_path):
     # Anti-XPIA: the four non-negotiables stay IN the instruction field, never spilled.
-    _, out, _ = _emit_copilot(risk_assessment_dir, tmp_path)
+    _, out, _ = _emit_copilot(incident_investigation_dir, tmp_path)
     text = (out / "instructions.md").read_text(encoding="utf-8")
     assert "De-identification" in text           # de-id block
     assert "Disclaimer" in text                  # DISCLAIMER preamble
@@ -65,8 +65,8 @@ def test_copilot_four_non_negotiables_in_instructions(risk_assessment_dir, tmp_p
     assert "Jurisdiction" in text                # §2.7 intake
 
 
-def test_copilot_markdown_degradation_no_assets(risk_assessment_dir, tmp_path):
-    _, out, _ = _emit_copilot(risk_assessment_dir, tmp_path)
+def test_copilot_markdown_degradation_no_assets(incident_investigation_dir, tmp_path):
+    _, out, _ = _emit_copilot(incident_investigation_dir, tmp_path)
     assert not (out / "assets").exists()
     text = (out / "instructions.md").read_text(encoding="utf-8")
     assert "generate_report.py" not in text
@@ -159,14 +159,23 @@ def test_char_fit_never_moves_irreducible_core():
 
 
 def test_emit_chatgpt_copilot_all_exemplars(exemplar_dirs, tmp_path):
-    # ChatGPT + Copilot (the 8000-char hosts) emit clean for all three exemplars,
+    # ChatGPT + Copilot (the 8000-char hosts) emit clean for the exemplars that fit,
     # exercising roster + A7-dependency variance (moderate/single-thread/4-fan-out;
-    # A7 yes/no/yes).
+    # A7 yes/no/yes). Per D-06 (Phase-20 v1.3 HARD cutover), the promoted single-thread
+    # fallback added a uniform +138 chars, pushing risk-assessment's irreducible core
+    # over the REAL 8000-char cap on BOTH hosts. It is documented-ly excluded
+    # (build.KNOWN_OVERFLOW_SKIP) and MUST hard-fail with IrreducibleOverflow here —
+    # never silently truncate the de-id/HoC/intake core or the omission re-bind — while
+    # still shipping on the 9000-cap hosts (gemini/generic).
     platforms = build.load_platforms()
     for name, skill_dir in exemplar_dirs.items():
         adapted = build.load_skill(skill_dir)
         for platform in ("chatgpt", "copilot"):
             out = tmp_path / platform / name
+            if platform in build.KNOWN_OVERFLOW_SKIP.get(name, ()):
+                with pytest.raises(build.IrreducibleOverflow):
+                    build.emit(adapted, platform, out, platforms)
+                continue
             build.emit(adapted, platform, out, platforms)
             problems = build._self_check(out, platform, platforms)
             assert not problems, f"{platform}/{name}: {problems}"

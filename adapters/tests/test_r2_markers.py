@@ -18,38 +18,38 @@ def _emit_validate(skill_dir, platform, tmp_path):
     return out, rep
 
 
-def test_no_marker_literal_in_chatgpt_instructions(risk_assessment_dir, tmp_path):
-    out, rep = _emit_validate(risk_assessment_dir, "chatgpt", tmp_path)
+def test_no_marker_literal_in_chatgpt_instructions(incident_investigation_dir, tmp_path):
+    out, rep = _emit_validate(incident_investigation_dir, "chatgpt", tmp_path)
     instr = (out / "instructions.md").read_text(encoding="utf-8")
     assert "<!-- hse:block" not in instr
     # The validator agrees: no R2 error for a clean bundle.
     assert not any("R2" in e or "hse:block" in e for e in rep.errors), rep.errors
 
 
-def test_knowledge_skill_copy_preserves_markers(risk_assessment_dir, tmp_path):
-    out, rep = _emit_validate(risk_assessment_dir, "chatgpt", tmp_path)
+def test_knowledge_skill_copy_preserves_markers(incident_investigation_dir, tmp_path):
+    out, rep = _emit_validate(incident_investigation_dir, "chatgpt", tmp_path)
     skill_copy = (out / "knowledge" / "SKILL.md").read_text(encoding="utf-8")
     assert "<!-- hse:block" in skill_copy, "knowledge SKILL.md must keep its markers"
 
 
-def test_output_format_heading_survives_strip(risk_assessment_dir, tmp_path):
+def test_output_format_heading_survives_strip(incident_investigation_dir, tmp_path):
     # Pitfall 1: the report-output marker shares its line with `## Output format`.
-    out, rep = _emit_validate(risk_assessment_dir, "chatgpt", tmp_path)
+    out, rep = _emit_validate(incident_investigation_dir, "chatgpt", tmp_path)
     instr = (out / "instructions.md").read_text(encoding="utf-8")
     assert "## Output format" in instr
     assert not any("Output format" in e for e in rep.errors), rep.errors
 
 
-def test_validator_catches_marker_leak_in_instructions(risk_assessment_dir, tmp_path):
+def test_validator_catches_marker_leak_in_instructions(incident_investigation_dir, tmp_path):
     # NEGATIVE: a hand-tampered instructions field with a leaked marker FAILS check 4.
-    out, _ = _emit_validate(risk_assessment_dir, "chatgpt", tmp_path)
+    out, _ = _emit_validate(incident_investigation_dir, "chatgpt", tmp_path)
     instr_path = out / "instructions.md"
     instr_path.write_text(
         instr_path.read_text(encoding="utf-8") + "\n<!-- hse:block:deid:start -->\n",
         encoding="utf-8",
     )
     platforms = build.load_platforms()
-    rep = va.validate_bundle(out, risk_assessment_dir, "chatgpt", platforms)
+    rep = va.validate_bundle(out, incident_investigation_dir, "chatgpt", platforms)
     assert not rep.ok
     assert any("hse:block" in e or "R2" in e for e in rep.errors), rep.errors
 

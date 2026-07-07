@@ -22,16 +22,16 @@ def _emit(skill_dir, platform, tmp_path):
 # --- POSITIVE: a clean ChatGPT bundle has no heavy assets/, names the shared ones --
 
 
-def test_chatgpt_bundle_has_no_committed_assets(risk_assessment_dir, tmp_path):
-    adapted, out = _emit(risk_assessment_dir, "chatgpt", tmp_path)
+def test_chatgpt_bundle_has_no_committed_assets(incident_investigation_dir, tmp_path):
+    adapted, out = _emit(incident_investigation_dir, "chatgpt", tmp_path)
     assert not (out / "assets").exists(), "heavy assets/ must never be committed (D-09)"
     problems = va.check_no_heavy_assets(out, "chatgpt")
     assert problems == [], problems
 
 
-def test_chatgpt_install_names_shared_assets(risk_assessment_dir, tmp_path):
+def test_chatgpt_install_names_shared_assets(incident_investigation_dir, tmp_path):
     # has_a7 exemplar: INSTALL names both report-engine AND hse_components.
-    adapted, out = _emit(risk_assessment_dir, "chatgpt", tmp_path)
+    adapted, out = _emit(incident_investigation_dir, "chatgpt", tmp_path)
     install = (out / "INSTALL.md").read_text(encoding="utf-8")
     assert "assets/report-engine/" in install
     assert "scripts/hse_components/" in install  # has_a7 True
@@ -57,21 +57,21 @@ def test_all_platforms_no_heavy_assets(incident_investigation_dir, tmp_path):
 # --- NEGATIVE FIXTURE: a planted assets/ payload FAILS -------------------------
 
 
-def test_planted_assets_dir_fails(risk_assessment_dir, tmp_path):
-    adapted, out = _emit(risk_assessment_dir, "chatgpt", tmp_path)
+def test_planted_assets_dir_fails(incident_investigation_dir, tmp_path):
+    adapted, out = _emit(incident_investigation_dir, "chatgpt", tmp_path)
     planted = out / "assets" / "report-engine"
     planted.mkdir(parents=True)
     (planted / "generate_report.py").write_text("# heavy duplicate\n", encoding="utf-8")
     problems = va.check_no_heavy_assets(out, "chatgpt")
     assert problems, "a planted assets/ payload must hard-fail (D-09)"
     platforms = build.load_platforms()
-    rep = va.validate_bundle(out, risk_assessment_dir, "chatgpt", platforms)
+    rep = va.validate_bundle(out, incident_investigation_dir, "chatgpt", platforms)
     assert not rep.ok
     assert any("assets" in e for e in rep.errors), rep.errors
 
 
-def test_chatgpt_install_missing_asset_name_fails(risk_assessment_dir, tmp_path):
-    adapted, out = _emit(risk_assessment_dir, "chatgpt", tmp_path)
+def test_chatgpt_install_missing_asset_name_fails(incident_investigation_dir, tmp_path):
+    adapted, out = _emit(incident_investigation_dir, "chatgpt", tmp_path)
     install_path = out / "INSTALL.md"
     text = install_path.read_text(encoding="utf-8").replace("assets/report-engine/", "X")
     install_path.write_text(text, encoding="utf-8")

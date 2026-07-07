@@ -22,10 +22,10 @@ def _emit(skill_dir, platform, tmp_path):
 # --- POSITIVE: all four present in a clean bundle ⇒ no non-negotiable error -----
 
 
-def test_all_four_present_chatgpt(risk_assessment_dir, tmp_path):
-    adapted, out = _emit(risk_assessment_dir, "chatgpt", tmp_path)
+def test_all_four_present_chatgpt(incident_investigation_dir, tmp_path):
+    adapted, out = _emit(incident_investigation_dir, "chatgpt", tmp_path)
     platforms = build.load_platforms()
-    rep = va.validate_bundle(out, risk_assessment_dir, "chatgpt", platforms)
+    rep = va.validate_bundle(out, incident_investigation_dir, "chatgpt", platforms)
     nn = [e for e in rep.errors if "non-negotiable" in e or "hierarchy" in e or "intake" in e]
     assert not nn, nn
     instr = (out / "instructions.md").read_text(encoding="utf-8")
@@ -47,10 +47,10 @@ def test_all_four_present_copilot_anti_xpia(incident_investigation_dir, tmp_path
 # --- NEGATIVE FIXTURE: a non-negotiable spilled to knowledge/ FAILS check 3 -----
 
 
-def test_deid_spilled_to_knowledge_fails(risk_assessment_dir, tmp_path):
+def test_deid_spilled_to_knowledge_fails(incident_investigation_dir, tmp_path):
     """The de-id block is moved OUT of instructions (as if mis-spilled to knowledge/)
     — validate_bundle MUST error (mirrors A8's de-id fixture-pair hard-fail)."""
-    adapted, out = _emit(risk_assessment_dir, "chatgpt", tmp_path)
+    adapted, out = _emit(incident_investigation_dir, "chatgpt", tmp_path)
     instr_path = out / "instructions.md"
     instr = instr_path.read_text(encoding="utf-8")
     # Strip the de-id block content out of the instruction surface entirely.
@@ -65,7 +65,7 @@ def test_deid_spilled_to_knowledge_fails(risk_assessment_dir, tmp_path):
     instr_path.write_text(leaned, encoding="utf-8")
 
     platforms = build.load_platforms()
-    rep = va.validate_bundle(out, risk_assessment_dir, "chatgpt", platforms)
+    rep = va.validate_bundle(out, incident_investigation_dir, "chatgpt", platforms)
     assert not rep.ok
     assert any("de-id" in e.lower() and "non-negotiable" in e for e in rep.errors), rep.errors
 

@@ -43,20 +43,20 @@ def _emit(skill_dir, platform, tmp_path):
 
 
 @pytest.mark.parametrize("platform", build.PLATFORMS)
-def test_cr01_no_repo_relative_pointer_in_instructions(risk_assessment_dir, platform, tmp_path):
+def test_cr01_no_repo_relative_pointer_in_instructions(incident_investigation_dir, platform, tmp_path):
     """No `../../`, `references/<file>`, or `branding/<file>` pointer survives — they are
     DEAD on a host that flattens uploads to knowledge/<basename>."""
-    _adapted, out = _emit(risk_assessment_dir, platform, tmp_path)
+    _adapted, out = _emit(incident_investigation_dir, platform, tmp_path)
     instr = (out / _INSTRUCTION_FILE[platform]).read_text(encoding="utf-8")
     leaked = _REPO_RELATIVE_RE.findall(instr)
     assert not leaked, f"repo-relative pointer(s) leaked into {platform} instructions: {leaked}"
 
 
 @pytest.mark.parametrize("platform", build.PLATFORMS)
-def test_cr01_every_knowledge_pointer_resolves(risk_assessment_dir, platform, tmp_path):
+def test_cr01_every_knowledge_pointer_resolves(incident_investigation_dir, platform, tmp_path):
     """Every rehomed `knowledge/<file>` pointer in the instructions resolves to an
     actually-uploaded file in the bundle's knowledge/ directory."""
-    _adapted, out = _emit(risk_assessment_dir, platform, tmp_path)
+    _adapted, out = _emit(incident_investigation_dir, platform, tmp_path)
     instr = (out / _INSTRUCTION_FILE[platform]).read_text(encoding="utf-8")
     present = {p.name for p in (out / "knowledge").iterdir() if p.is_file()}
     for base in _KNOWLEDGE_POINTER_RE.findall(instr):
@@ -64,11 +64,11 @@ def test_cr01_every_knowledge_pointer_resolves(risk_assessment_dir, platform, tm
 
 
 @pytest.mark.parametrize("platform", build.PLATFORMS)
-def test_cr01_company_card_bundled_and_attribution_resolves(risk_assessment_dir, platform, tmp_path):
+def test_cr01_company_card_bundled_and_attribution_resolves(incident_investigation_dir, platform, tmp_path):
     """`branding/company-card.yaml` is bundled into knowledge/, and the attribution
     pointer (when it survives char-fit — the Attribution section is spillable) is the
     rehomed `knowledge/company-card.yaml`, never the dead `branding/` form."""
-    _adapted, out = _emit(risk_assessment_dir, platform, tmp_path)
+    _adapted, out = _emit(incident_investigation_dir, platform, tmp_path)
     # The card is always bundled, even if the attribution prose is spilled to knowledge.
     assert (out / "knowledge" / "company-card.yaml").is_file()
     instr = (out / _INSTRUCTION_FILE[platform]).read_text(encoding="utf-8")
@@ -83,11 +83,14 @@ def test_cr01_company_card_bundled_and_attribution_resolves(risk_assessment_dir,
 
 
 @pytest.mark.parametrize("platform", build.PLATFORMS)
-def test_wr01_single_thread_fallback_prose_survives(risk_assessment_dir, platform, tmp_path):
+def test_wr01_single_thread_fallback_prose_survives(incident_investigation_dir, platform, tmp_path):
     """The fallback is no longer truncated to a dangling header — the skill's own
     fallback words (de-id scrub first · scope discipline · the promoted SME Review &
-    Sign-off pass) survive."""
-    _adapted, out = _emit(risk_assessment_dir, platform, tmp_path)
+    Sign-off pass) survive. Exercised on the canonical 8000-host fitting exemplar
+    (incident-investigation) so the omission re-bind is proven present on chatgpt/copilot
+    too; risk-assessment carries the identical promoted fallback but per D-06 ships only
+    on gemini/generic post-cutover."""
+    _adapted, out = _emit(incident_investigation_dir, platform, tmp_path)
     instr = (out / _INSTRUCTION_FILE[platform]).read_text(encoding="utf-8")
     assert "Single-threaded fallback:" in instr
     # The continuation prose (not just the header) must be present — the FND-07/08

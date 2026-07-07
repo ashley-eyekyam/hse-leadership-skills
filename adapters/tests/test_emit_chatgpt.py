@@ -17,16 +17,16 @@ def _emit(skill_dir, tmp_path):
     return adapted, out
 
 
-def test_chatgpt_writes_required_files(risk_assessment_dir, tmp_path):
-    _, out = _emit(risk_assessment_dir, tmp_path)
+def test_chatgpt_writes_required_files(incident_investigation_dir, tmp_path):
+    _, out = _emit(incident_investigation_dir, tmp_path)
     assert (out / "instructions.md").is_file()
     assert (out / "manifest.json").is_file()
     assert (out / "INSTALL.md").is_file()
     assert (out / "knowledge").is_dir()
 
 
-def test_chatgpt_instructions_marker_free_with_heading(risk_assessment_dir, tmp_path):
-    _, out = _emit(risk_assessment_dir, tmp_path)
+def test_chatgpt_instructions_marker_free_with_heading(incident_investigation_dir, tmp_path):
+    _, out = _emit(incident_investigation_dir, tmp_path)
     text = (out / "instructions.md").read_text(encoding="utf-8")
     assert "<!-- hse:block" not in text
     assert "## Output format" in text
@@ -35,10 +35,15 @@ def test_chatgpt_instructions_marker_free_with_heading(risk_assessment_dir, tmp_
     assert "Code Interpreter" in text
 
 
-def test_chatgpt_manifest_shape(risk_assessment_dir, tmp_path):
-    adapted, out = _emit(risk_assessment_dir, tmp_path)
+def test_chatgpt_manifest_shape(job_safety_analysis_dir, tmp_path):
+    # Uses job-safety-analysis (moderate roster + A7, fits the 8000-cap) rather than the
+    # sibling tests' incident-investigation because this assertion requires a skill whose
+    # first-MCQ intake yields a liftable conversation starter — incident-investigation's
+    # intake does not, and risk-assessment (the original exemplar) now overflows the cap
+    # (D-06). All three are A7 flagships; the manifest shape is identical.
+    adapted, out = _emit(job_safety_analysis_dir, tmp_path)
     manifest = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
-    assert manifest["name"] == "risk-assessment"
+    assert manifest["name"] == "job-safety-analysis"
     assert manifest["description"] == adapted.description
     assert manifest["instructions_file"] == "instructions.md"
     assert manifest["code_interpreter"] is True
@@ -48,8 +53,8 @@ def test_chatgpt_manifest_shape(risk_assessment_dir, tmp_path):
     assert manifest["conversation_starters"], "no conversation starters lifted"
 
 
-def test_chatgpt_a7_asset_reference_present_when_has_a7(risk_assessment_dir, tmp_path):
-    _, out = _emit(risk_assessment_dir, tmp_path)
+def test_chatgpt_a7_asset_reference_present_when_has_a7(incident_investigation_dir, tmp_path):
+    _, out = _emit(incident_investigation_dir, tmp_path)
     install = (out / "INSTALL.md").read_text(encoding="utf-8")
     # D-09: INSTALL names the canonical shared assets to upload.
     assert "assets/report-engine/" in install
@@ -65,15 +70,15 @@ def test_chatgpt_no_a7_reference_for_toolbox(toolbox_talk_dir, tmp_path):
     assert "assets/report-engine/" in install
 
 
-def test_chatgpt_no_committed_heavy_assets(risk_assessment_dir, tmp_path):
+def test_chatgpt_no_committed_heavy_assets(incident_investigation_dir, tmp_path):
     # D-09: the committed bundle carries instructions+knowledge+manifest only — the
     # heavy Code-Interpreter assets are NAMED in INSTALL, never physically duplicated.
-    _, out = _emit(risk_assessment_dir, tmp_path)
+    _, out = _emit(incident_investigation_dir, tmp_path)
     assert not (out / "assets").exists(), "heavy assets must not be duplicated into the bundle"
 
 
-def test_chatgpt_knowledge_includes_disclaimer_and_skill_copy(risk_assessment_dir, tmp_path):
-    _, out = _emit(risk_assessment_dir, tmp_path)
+def test_chatgpt_knowledge_includes_disclaimer_and_skill_copy(incident_investigation_dir, tmp_path):
+    _, out = _emit(incident_investigation_dir, tmp_path)
     names = {p.name for p in (out / "knowledge").iterdir()}
     assert "DISCLAIMER.md" in names
     assert "SKILL.md" in names
@@ -82,8 +87,8 @@ def test_chatgpt_knowledge_includes_disclaimer_and_skill_copy(risk_assessment_di
     assert "<!-- hse:block" in skill_copy
 
 
-def test_chatgpt_manifest_byte_identical_across_reruns(risk_assessment_dir, tmp_path):
-    adapted = build.load_skill(risk_assessment_dir)
+def test_chatgpt_manifest_byte_identical_across_reruns(incident_investigation_dir, tmp_path):
+    adapted = build.load_skill(incident_investigation_dir)
     platforms = build.load_platforms()
     out1 = tmp_path / "run1"
     out2 = tmp_path / "run2"

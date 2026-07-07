@@ -70,17 +70,32 @@ def test_committed_tree_has_full_catalog_on_4_platforms():
             assert (bundle / "knowledge").is_dir()
 
 
-def test_known_overflow_skips_ship_on_gemini_and_generic():
-    # Each known-overflow skill must STILL ship a complete adapter on the 9000-cap
-    # hosts (gemini + generic) — the exclusion drops only the overflowing 8000 host,
-    # never the skill itself (D-07: source intact, core never truncated).
-    for skill in build.KNOWN_OVERFLOW_SKIP:
-        for platform in ("gemini", "generic"):
+def test_known_overflow_skips_present_iff_not_skipped():
+    # Each known-overflow skill ships a complete adapter on EXACTLY the platforms NOT in
+    # its skip list, and is ABSENT on the platforms IN its skip list. The exclusion drops
+    # only the host(s) whose REAL vendor cap the irreducible core exceeds — never the
+    # skill itself where it fits (D-07: source intact, core never truncated).
+    #
+    # Post-Phase-20 v1.3 HARD cutover the promoted single-thread fallback added a uniform
+    # +138 chars (the omission re-bind), so the skip map grew from 3 to 9 pairs (D-06):
+    #   - risk-assessment / lift-plan / lone-working-assessment spill on the 8000 hosts
+    #     (chatgpt/copilot) but STILL ship on the 9000 hosts (gemini/generic);
+    #   - wind-turbine-work-at-height-rescue now exceeds even the 9000 hosts and ships on
+    #     NO adapter platform — still a native skill, just no Tier-B adapter.
+    # This test therefore asserts the general present-iff-not-skipped invariant rather
+    # than a blanket "ships on gemini/generic" (which wind-turbine no longer satisfies).
+    for skill, skip_platforms in build.KNOWN_OVERFLOW_SKIP.items():
+        for platform in build.PLATFORMS:
             bundle = ADAPTERS / platform / skill
-            assert bundle.is_dir(), (
-                f"{platform}/{skill}: known-overflow skill missing its 9000-cap bundle"
-            )
-            assert (bundle / build._INSTRUCTION_FILE[platform]).is_file()
+            if platform in skip_platforms:
+                assert not bundle.exists(), (
+                    f"{platform}/{skill}: in KNOWN_OVERFLOW_SKIP but a bundle is present"
+                )
+            else:
+                assert bundle.is_dir(), (
+                    f"{platform}/{skill}: not skipped but its adapter bundle is missing"
+                )
+                assert (bundle / build._INSTRUCTION_FILE[platform]).is_file()
 
 
 def test_known_overflow_set_is_genuinely_irreducible():
@@ -134,17 +149,29 @@ def test_three_exemplars_validate_all_platforms(exemplar_dirs):
     for name, skill_dir in exemplar_dirs.items():
         for platform in build.PLATFORMS:
             bundle = ADAPTERS / platform / name
+            if platform in build.KNOWN_OVERFLOW_SKIP.get(name, ()):
+                # D-06: this exemplar's irreducible core exceeds the platform's REAL cap
+                # post-cutover; it ships only where it fits. Assert ABSENT here (never a
+                # silently-truncated bundle) — the exemplar still validates on the hosts
+                # where it does ship (e.g. risk-assessment on gemini/generic).
+                assert not bundle.exists(), (
+                    f"{platform}/{name}: in KNOWN_OVERFLOW_SKIP but a bundle is present"
+                )
+                continue
             rep = va.validate_bundle(bundle, skill_dir, platform, platforms)
             assert rep.ok, f"{platform}/{name}: {rep.errors}"
 
 
 def test_a7_variance_in_committed_install():
-    # risk-assessment + incident-investigation declare A7 → ChatGPT INSTALL names
-    # hse_components; toolbox-talk does NOT.
+    # job-safety-analysis + incident-investigation declare A7 → ChatGPT INSTALL names
+    # hse_components; toolbox-talk does NOT. (risk-assessment also declares A7, but per
+    # D-06 it overflows the 8000-char ChatGPT cap post-cutover and ships gemini/generic
+    # only — and the A7 shared-asset naming lives specifically in the ChatGPT
+    # Code-Interpreter INSTALL — so a chatgpt-shipping A7 flagship stands in for it here.)
     def install(name):
         return (ADAPTERS / "chatgpt" / name / "INSTALL.md").read_text(encoding="utf-8")
 
-    assert "scripts/hse_components/" in install("risk-assessment")
+    assert "scripts/hse_components/" in install("job-safety-analysis")
     assert "scripts/hse_components/" in install("incident-investigation")
     assert "scripts/hse_components/" not in install("toolbox-talk")
 

@@ -5,8 +5,13 @@ adapters/<platform>/<skill>/INSTALL.md — never hand-authored — so a vendor c
 move (or a build relayout) cannot silently invalidate a hand-copied README step.
 
 This test proves the README's ChatGPT install block matches the canonical steps in
-adapters/chatgpt/risk-assessment/INSTALL.md byte-for-byte (per numbered step), for a
-representative platform. If the emitted INSTALL.md changes, this test fails until the
+adapters/chatgpt/incident-investigation/INSTALL.md byte-for-byte (per numbered step),
+for a representative A7 flagship. (The representative skill was risk-assessment until
+the Phase-20 v1.3 HARD cutover; per D-06 risk-assessment now overflows the 8000-char
+ChatGPT/Copilot cap and ships gemini/generic-only, so the canonical ChatGPT INSTALL
+exemplar moved to incident-investigation — an A7 flagship whose INSTALL steps are
+byte-identical to the shared Code-Interpreter install path.) If the emitted INSTALL.md
+changes, this test fails until the
 README block is re-lifted (the README install section is regenerated from C's outputs,
 not hand-maintained).
 
@@ -20,7 +25,7 @@ import pytest
 
 REPO = Path(__file__).resolve().parent.parent.parent
 README = REPO / "README.md"
-INSTALL = REPO / "adapters" / "chatgpt" / "risk-assessment" / "INSTALL.md"
+INSTALL = REPO / "adapters" / "chatgpt" / "incident-investigation" / "INSTALL.md"
 
 
 def _numbered_steps(text: str) -> list[str]:
@@ -42,7 +47,7 @@ def readme_text() -> str:
 @pytest.fixture(scope="module")
 def install_text() -> str:
     assert INSTALL.exists(), (
-        "adapters/chatgpt/risk-assessment/INSTALL.md must exist (emitted by C / 07-02)"
+        "adapters/chatgpt/incident-investigation/INSTALL.md must exist (emitted by C / 07-02)"
     )
     return INSTALL.read_text(encoding="utf-8")
 
@@ -61,7 +66,7 @@ def test_chatgpt_install_block_lifted_verbatim(readme_text, install_text):
 
     assert readme_steps == install_steps, (
         "README ChatGPT install block has drifted from adapters/chatgpt/"
-        "risk-assessment/INSTALL.md.\n"
+        "incident-investigation/INSTALL.md.\n"
         f"  INSTALL.md steps: {install_steps}\n"
         f"  README block steps: {readme_steps}\n"
         "Re-lift the block from the emitted INSTALL.md (Decision 2 — no hand-authoring)."

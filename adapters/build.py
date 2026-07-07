@@ -447,18 +447,31 @@ PLATFORMS = ["chatgpt", "gemini", "copilot", "generic"]
 # 8,000-cap host(s). The source SKILL.md is untouched; the irreducible core is
 # never truncated; build --all --check stays exit 0.
 #
-# The set was MEASURED, not guessed — `build.py --all --check` (pre-exclusion, P17)
-# enumerated exactly these IrreducibleOverflow (skill, platform) pairs and no others:
-#   - weather-dynamic-risk-assessment   overflows chatgpt (8399) AND copilot (8510)
-#   - wind-turbine-work-at-height-rescue overflows chatgpt (8882) AND copilot (8993)
-#   - lone-working-assessment           overflows copilot (8002) only (chatgpt fits)
-# gemini/generic (9,000) clear all three irreducible cores with headroom, so each
-# skill still ships a complete adapter on those hosts. Re-derive by re-running
-# `python3 adapters/build.py --all --check` after removing this map.
+# The set was MEASURED, not guessed — `build.py --all --check` enumerated exactly
+# these IrreducibleOverflow (skill, platform) pairs and no others. The Phase-20 v1.3
+# HARD cutover PROMOTED the enlarged single-thread fallback blockquote (the omission
+# re-bind) into the orchestration block, adding a UNIFORM +138 chars to every adapter
+# surface (`_orchestration_instruction()` collapses the re-bind to one line). That
+# +138 growth pushes 6 additional near-cap (skill, platform) bundles over their
+# advisory vendor cap — hence the entries below grew from 3 pairs (P17) to 9 pairs.
+# Per D-06 the owner-LOCKed fallback bytes stay byte-exact; the irreducible core
+# (de-id + specificity gate + the omission re-bind itself) is NEVER truncated — the
+# over-cap bundles simply spill gracefully and are emitted on the 9,000-cap hosts
+# (gemini/generic) that still clear their cores with headroom. The measured pairs
+# (18-09 D-08 dry-run, confirmed twice — char_fit probe + real `build.py --check`):
+#   - weather-dynamic-risk-assessment   overflows chatgpt (8399) AND copilot (8510)   [P17]
+#   - wind-turbine-work-at-height-rescue overflows chatgpt (8882) AND copilot (8993)   [P17]
+#                                    now ALSO gemini (9131, +131) AND generic (9131)   [P20 +138]
+#   - lone-working-assessment           overflows copilot (8002) [P17] AND chatgpt (8029, +29) [P20]
+#   - risk-assessment                   overflows copilot (8138, +138) AND chatgpt (8027, +27)  [P20 NEW]
+#   - lift-plan                         overflows copilot (8023, +23)                            [P20 NEW]
+# Re-derive by re-running `python3 adapters/build.py --all --check` after removing this map.
 KNOWN_OVERFLOW_SKIP: Dict[str, List[str]] = {
     "weather-dynamic-risk-assessment": ["chatgpt", "copilot"],
-    "wind-turbine-work-at-height-rescue": ["chatgpt", "copilot"],
-    "lone-working-assessment": ["copilot"],
+    "wind-turbine-work-at-height-rescue": ["chatgpt", "copilot", "gemini", "generic"],
+    "lone-working-assessment": ["copilot", "chatgpt"],
+    "risk-assessment": ["copilot", "chatgpt"],
+    "lift-plan": ["copilot"],
 }
 
 # The A4 house-standard section order (C §3.4) the markdown-report degradation
