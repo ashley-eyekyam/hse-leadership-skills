@@ -16,8 +16,10 @@ Three invariants, all keyless and hazard-content-free:
       SYNTHETIC benign fixture dir + the exempt-set membership branch ONLY —
       no hazard golden is read (D-11 guardrail).
 
-Also pins the prohibitions: a missing-everything completeness record leaves
-`hard_fail` False (completeness never enters the hard-fail expression).
+Also pins the Phase-20 D-01 cutover: a missing-everything DETERMINISTIC
+completeness record now sets `hard_fail` True (the deterministic floor gates),
+while the MODEL `completeness` rubric dim stays out of the weighted >=4.0 mean
+(invariant (a) above is unchanged — only the deterministic floor gates).
 """
 
 import sys
@@ -179,11 +181,14 @@ def test_d11_exempt_skill_gets_deterministic_completeness_not_model_grade(
     assert record["pass"] is True
 
 
-# --- prohibition pin: completeness never influences hard_fail --------------------
+# --- Phase-20 D-01 pin: the DETERMINISTIC completeness floor NOW gates hard_fail -
 
-def test_missing_everything_completeness_leaves_hard_fail_false(monkeypatch, tmp_path):
-    # An output covering NONE of the floor: completeness reports 0% coverage,
-    # yet hard_fail stays False (the expression is deid/citation ONLY).
+def test_missing_everything_completeness_hard_fails_after_cutover(monkeypatch, tmp_path):
+    # An output covering NONE of the floor: completeness reports 0% coverage.
+    # As of the Phase-20 HARD cutover (D-01) a scored skill with any missing
+    # floor item hard-fails the case (alongside de-id / citation). The MODEL
+    # completeness rubric dim stays reported-only / out of the weighted mean —
+    # only this deterministic floor coverage gates.
     skill_dir, case = _make_skill_dir(
         tmp_path, "skill-zero-coverage", sme_fm=_SME_FM,
         output="A short benign note that matches no floor anchor at all.\n")
@@ -195,8 +200,8 @@ def test_missing_everything_completeness_leaves_hard_fail_false(monkeypatch, tmp
     assert comp["scored"] is True
     assert comp["coverage_pct"] == 0.0
     assert len(comp["missing"]) == 3
-    assert record["deterministic"]["hard_fail"] is False  # never gated (D-18)
-    assert record["pass"] is True
+    assert record["deterministic"]["hard_fail"] is True  # gated (D-01 cutover)
+    assert record["pass"] is False
 
 
 def test_modeless_case_completeness_noop_in_grade_case(monkeypatch, tmp_path):

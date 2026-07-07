@@ -166,7 +166,11 @@ Give it the draft + the inputs + the output contract. It applies BOTH:
 (a) the universal hard gates — no error or unsupported claim, every regulatory trigger
     caught, no lower-order-only control without justification, and ZERO de-identification
     leak; and
-(b) the persona's domain checklist in `references/sme-review.md`.
+(b) the persona's domain checklist in `references/sme-review.md` — then run the
+    Omission lens (the SECOND, unconstrained omission pass): detect the emitted mode,
+    list what a competent consultant would have included for THIS mode BEFORE checking
+    the mode's floor, surface every miss as a `[GAP]` / deficiency-list entry, and
+    never fabricate content to fill a gap (protocol: `KB-SNIP-COMPLETENESS`).
 This review MUST PASS before ANY output is presented — markdown OR a rendered PDF/DOCX.
 Fix everything it raises and re-run until clean. This is decision-support that PRECEDES,
 never replaces, the human competent-person sign-off (it never emits "approved by a
@@ -174,8 +178,10 @@ competent person").
 
 > Single-threaded fallback: if your host has no subagent capability, perform the SME
 > Review & Sign-off pass yourself in THIS context — run the de-identification scrub
-> first, keep the scope discipline, apply the persona checklist + universal gates, and
-> pass the review before presenting any output (markdown or rendered).
+> first, keep the scope discipline, apply the persona checklist + universal gates,
+> run the Omission lens absence-listing pass yourself (unconstrained, BEFORE the floor
+> check — surface misses as `[GAP]`, never fabricate), and pass the review before
+> presenting any output (markdown or rendered).
 <!-- hse:block:orchestration:end -->
 
 ### Subagent roster for THIS skill

@@ -64,14 +64,16 @@ jobs:
         if: steps.guard.outputs.present == 'true'
         run: python scripts/lint_skills.py --all
 
-      # D-12 / FND-04: completeness coverage is CI-VISIBLE but WARN-only at the
-      # foundation stage — a STEP inside the existing `lint` job (a new job would
-      # register a new branch-protection context, which is forbidden). Keyless,
-      # deterministic (D-03 — no model grader in CI); the CLI hard-exits 0 and the
-      # `|| true` belt-and-braces guarantees this step can never fail the job.
-      - name: Completeness coverage (WARN — reported-only, D-12)
+      # D-01 (Phase-20 HARD cutover) / FND-04: completeness coverage now GATES —
+      # a STEP inside the existing `lint` job (a new job would register a new
+      # branch-protection context, which is forbidden — GATE-05). Keyless,
+      # deterministic (D-03 — no model grader in CI); `--gate` exits 1 if any
+      # scored skill has a missing floor item (all 93 in-scope skills are floor-
+      # clean post-Phase-19, so this is green day one). The coverage table still
+      # prints for signal visibility.
+      - name: Completeness coverage (HARD gate — D-01)
         if: steps.guard.outputs.present == 'true'
-        run: python scripts/graders/completeness.py --all || true
+        run: python scripts/graders/completeness.py --all --gate
 
   standard-validate:
     name: standard-validate

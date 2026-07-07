@@ -5,10 +5,10 @@ Pins the Phase-18 staged-carrier invariant over the on-disk artifacts:
   (i)   every lens token is PRESENT in the staged next-version block
         (template/blocks/staged/orchestration.md — the exact future bytes for
         the Phase-20 atomic cutover), inside its marked region;
-  (ii)  every lens token is ABSENT from the live block
-        (template/blocks/orchestration.md — READ-ONLY until the Phase-20
-        cutover). This is the "not applied until cutover" invariant: the suite
-        FAILS the moment any lens string is copied into the live block;
+  (ii)  every lens token is PRESENT in the live block
+        (template/blocks/orchestration.md — promoted at the Phase-20 atomic
+        cutover). This is the "cutover applied" invariant: the suite FAILS if
+        any lens string is missing from the live block after cutover;
   (iii) the staged block retains the orchestration start/end markers
         byte-identical to the live block (the cutover is a byte-exact copy);
   (iv)  the completeness KB snippet resolves — the snippet file exists in
@@ -132,15 +132,19 @@ def test_lens_tokens_sit_inside_the_staged_marked_region():
         )
 
 
-# (ii) lens tokens ABSENT from the live block — the FND-01 invariant ------------
+# (ii) lens tokens PRESENT in the live block — post-cutover invariant -----------
+# Phase-20 GATE-01 atomic cutover: the staged bytes are now promoted live, so the
+# D-10 pre-flight invariant is INVERTED — every lens token that had to stay ABSENT
+# until the cutover must now be PRESENT in the live block (and, since live == staged,
+# test_staged_markers_byte_identical_to_live still holds).
 
-def test_lens_tokens_absent_from_live_block():
+def test_lens_tokens_present_in_live_block():
     live = _read(LIVE)
     for tok in LENS_TOKENS:
-        assert tok not in live, (
-            f"lens token {tok!r} leaked into the LIVE block before the "
-            "Phase-20 atomic cutover — template/blocks/orchestration.md is "
-            "READ-ONLY until GATE-01"
+        assert tok in live, (
+            f"lens token {tok!r} is missing from the LIVE block after the "
+            "Phase-20 atomic cutover — template/blocks/orchestration.md must "
+            "carry the promoted omission-lens bytes (GATE-01)"
         )
 
 

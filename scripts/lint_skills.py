@@ -75,9 +75,12 @@ def _emit(report: Report, msg: str) -> None:
 # The completeness / mode-manifest presence-floor findings (rule 13) route through
 # _emit13() at this single level — a DISTINCT token from RULE_11_12_LEVEL so the
 # Phase-20 cutover (GATE-02) flips rule 13 alone, without entangling the
-# already-HARD rules 11/12. WARN this phase; the flip is the single token below
-# ("warn" -> "error") and the check content never changes.
-RULE_13_LEVEL = "warn"
+# already-HARD rules 11/12. As of the Phase-20 HARD cutover these findings land
+# as ERROR (HARD); the 93 in-scope skills were backfilled floor-clean in Phase 19
+# so `lint --all` stays GREEN. The flip was the single token below
+# ("warn" -> "error"); the CLI/CI invocation is unchanged (no --strict, no env
+# var) so D-03 holds and none of the branch-protection CI contexts move.
+RULE_13_LEVEL = "error"
 
 
 def _emit13(report: Report, msg: str) -> None:

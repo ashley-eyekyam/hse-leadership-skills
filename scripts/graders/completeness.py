@@ -26,7 +26,8 @@ declared"}`` so the 94 shipped skills stay green under WARN.
 
 Stdlib + pyyaml only — keyless, no model subprocess, no API key (D-03/D-12).
 The `modes:` frontmatter is parsed via the linter's shared `_split_frontmatter`
-(one parser, no second YAML reader). The `--all` CLI always exits 0 (WARN).
+(one parser, no second YAML reader). The CLI is reported-only by default; under
+`--gate` (the Phase-20 HARD cutover, D-01) it exits 1 on any missing floor item.
 """
 
 from __future__ import annotations
@@ -211,7 +212,7 @@ def grade_completeness(output_text: str, sme_review_path: Path, mode: str) -> Di
     return result
 
 
-# --- thin keyless CLI (CI WARN step — D-12; ALWAYS exits 0) ---------------------
+# --- thin keyless CLI (CI gating step — D-01; --gate exits 1 on any miss) -------
 
 def _iter_skill_dirs(repo: Path) -> List[Path]:
     """Every skill dir under skills/ carrying an evals/evals.json (nested-safe)."""
@@ -258,14 +259,21 @@ def _fmt_row(cols: List[str], widths: List[int]) -> str:
 
 
 def main(argv: Optional[List[str]] = None) -> int:
-    """Keyless coverage-table CLI. ALWAYS exits 0 (WARN / reported-only, D-12)."""
+    """Keyless coverage-table CLI. Prints the coverage table always; under
+    ``--gate`` (the Phase-20 HARD cutover, D-01) exits 1 if ANY scored skill has
+    missing floor items, else 0. Without ``--gate`` it stays reported-only and
+    exits 0 (back-compat)."""
     p = argparse.ArgumentParser(
-        description="Deterministic completeness coverage (reported-only, WARN — "
-                    "always exits 0; keyless, no model call).")
+        description="Deterministic completeness coverage (keyless, no model call). "
+                    "Reported-only by default; with --gate, exits 1 on any missing "
+                    "floor item (Phase-20 HARD cutover, D-01).")
     p.add_argument("--all", action="store_true",
                    help="grade every skill under skills/ (golden mode from evals.json)")
     p.add_argument("--skill", default=None,
                    help="grade one skill by directory name")
+    p.add_argument("--gate", action="store_true",
+                   help="HARD gate: exit 1 if any scored skill has missing floor "
+                        "items (D-01); the coverage table still prints (GATE-05)")
     args = p.parse_args(argv)
 
     targets: List[Path]
@@ -285,22 +293,28 @@ def main(argv: Optional[List[str]] = None) -> int:
                     "coverage"], widths))
     print(_fmt_row(["-" * w for w in widths], widths))
     scored_count = 0
+    missing_total = 0
+    skills_with_missing: List[str] = []
     for skill_dir in targets:
         sme = skill_dir / "references" / "sme-review.md"
         try:
             mode, out_text = _golden_mode_and_output(skill_dir)
             verdict = grade_completeness(out_text, sme, mode or "")
-        except Exception as exc:  # belt-and-braces: the WARN sweep never crashes
+        except Exception as exc:  # belt-and-braces: the sweep never crashes
             print(_fmt_row([skill_dir.name, "-", "-", "-", "-", "-",
                             f"error: {exc}"], widths))
             continue
         if verdict["scored"]:
             scored_count += 1
+            n_missing = len(verdict["missing"])
+            if n_missing:
+                missing_total += n_missing
+                skills_with_missing.append(skill_dir.name)
             print(_fmt_row([
                 skill_dir.name, verdict["mode"], str(verdict["floor_total"]),
                 str(len(verdict["covered_by_content"])),
                 str(len(verdict["covered_by_gap"])),
-                str(len(verdict["missing"])),
+                str(n_missing),
                 f"{verdict['coverage_pct']:.0%}",
             ], widths))
             for reason in verdict["reasons"]:
@@ -308,9 +322,17 @@ def main(argv: Optional[List[str]] = None) -> int:
         else:
             note = verdict.get("error") or verdict.get("reason", "not scored")
             print(_fmt_row([skill_dir.name, "-", "-", "-", "-", "-", note], widths))
-    print(f"\ncompleteness coverage: {scored_count}/{len(targets)} skill(s) scored "
-          f"(reported-only, not gated — WARN)")
-    return 0  # ALWAYS 0: reported-only (D-12/D-18)
+
+    gated = " (HARD gate — D-01)" if args.gate else " (reported-only)"
+    print(f"\ncompleteness coverage: {scored_count}/{len(targets)} skill(s) scored"
+          f"{gated}; {missing_total} missing floor item(s) across "
+          f"{len(skills_with_missing)} skill(s).")
+
+    if args.gate and missing_total > 0:
+        print("FAIL: completeness floor coverage incomplete — missing items in: "
+              + ", ".join(skills_with_missing))
+        return 1  # HARD gate (D-01): any missing floor item fails the CI lint step
+    return 0
 
 
 if __name__ == "__main__":

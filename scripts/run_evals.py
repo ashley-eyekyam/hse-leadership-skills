@@ -359,13 +359,24 @@ def run_deterministic(
         mode or "",
     )
 
-    # D-18: completeness NEVER enters this expression (deid/citation only).
-    hard_fail = bool(deid["auto_fail"] or citation["fail"])
+    # Phase-20 HARD cutover (D-01): the DETERMINISTIC completeness coverage now
+    # gates — a scored skill with any missing floor item hard-fails the case
+    # (alongside de-id / citation). The MODEL `completeness` rubric dim stays
+    # reported-only / out of the weighted >=4.0 mean (REPORTED_ONLY_DIMS) — only
+    # this deterministic floor coverage gates. Modeless / unscored cases (scored:
+    # False) never gate.
+    completeness_hard_fail = bool(
+        completeness.get("scored") and completeness.get("missing"))
+    hard_fail = bool(deid["auto_fail"] or citation["fail"] or completeness_hard_fail)
     reasons: List[str] = []
     if deid["auto_fail"]:
         reasons.append("de_identification: " + "; ".join(deid["reasons"]))
     if citation["fail"]:
         reasons.append("regulatory_citation_accuracy: " + "; ".join(citation["reasons"]))
+    if completeness_hard_fail:
+        reasons.append(
+            "completeness: missing floor item(s) — "
+            + ", ".join(completeness.get("missing", [])))
 
     return {
         "hard_fail": hard_fail,

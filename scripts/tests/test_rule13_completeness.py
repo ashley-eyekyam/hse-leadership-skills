@@ -6,11 +6,11 @@ are invisible to the catalog and the rubric re-stamp). Pins the four contract
 points of the staged-switch discipline (18-02 / D-20):
 
   (a) a deliberately-broken `modes:` map produces rule-13 findings routed to
-      `report.warnings` (NOT `report.errors`) while the module-level severity
-      token is "warn" — WARN-not-HARD this phase;
-  (b) with the severity token monkeypatched to "error" the SAME broken fixture
-      routes to `report.errors` — the single-token level flip is the ONLY
-      Phase-20 change, and it flips independently of the rules-11/12 token;
+      `report.errors` (NOT `report.warnings`) now that the module-level severity
+      token is "error" — HARD as of the Phase-20 cutover;
+  (b) with the severity token monkeypatched back to "warn" the SAME broken
+      fixture routes to `report.warnings` — the single-token level flip is the
+      ONLY Phase-20 change, and it flips independently of the rules-11/12 token;
   (c) a well-formed `modes:` map + omission-lens section yields ZERO rule-13
       findings (the presence floor accepts a structurally valid manifest);
   (d) an un-compilable author anchor is reported as a finding and does NOT
@@ -52,28 +52,28 @@ def _r13(msgs):
 
 # --- the staged-switch tokens are DISTINCT (Phase-20 flip independence) ---------
 
-def test_rule13_level_is_a_distinct_warn_token():
-    # RULE_13_LEVEL must exist as its own module constant, currently "warn",
-    # SEPARATE from the already-HARD rules-11/12 token — so the Phase-20 flip
-    # of rule 13 cannot entangle rules 11/12.
-    assert lint_skills.RULE_13_LEVEL == "warn"
+def test_rule13_level_is_a_distinct_error_token():
+    # RULE_13_LEVEL must exist as its own module constant — HARD ("error") as of
+    # the Phase-20 cutover, SEPARATE from the already-HARD rules-11/12 token so
+    # the flip of rule 13 did not entangle rules 11/12.
+    assert lint_skills.RULE_13_LEVEL == "error"
     assert lint_skills.RULE_11_12_LEVEL == "error"
 
 
-# --- (a) broken fixture: WARN, not HARD, while RULE_13_LEVEL == "warn" ----------
+# --- (a) broken fixture: HARD, now that RULE_13_LEVEL == "error" ----------------
 
-def test_broken_fixture_routes_to_warnings_not_errors():
-    assert lint_skills.RULE_13_LEVEL == "warn"
+def test_broken_fixture_routes_to_errors_not_warnings():
+    assert lint_skills.RULE_13_LEVEL == "error"
     report = run_rule13(BROKEN)
-    assert _r13(report.warnings), "broken modes: fixture must produce rule-13 findings"
-    assert _r13(report.errors) == [], (
-        "rule-13 findings must be WARN (not HARD) while the level token is 'warn': "
-        f"{report.errors}"
+    assert _r13(report.errors), "broken modes: fixture must produce rule-13 findings"
+    assert _r13(report.warnings) == [], (
+        "rule-13 findings must be HARD (errors) now that the level token is 'error': "
+        f"{report.warnings}"
     )
 
 
 def test_broken_fixture_fires_each_specific_structural_break():
-    findings = _r13(run_rule13(BROKEN).warnings)
+    findings = _r13(run_rule13(BROKEN).errors)
     joined = "\n".join(findings)
     assert "detected_by" in joined, findings          # missing detected_by
     assert "need >=3" in joined, findings             # floor <3 items
@@ -83,15 +83,17 @@ def test_broken_fixture_fires_each_specific_structural_break():
     assert "Omission lens" in joined, findings        # section absent
 
 
-# --- (b) the level flip routes the SAME fixture to errors -----------------------
+# --- (b) the level token routes the SAME fixture: warn<->error are symmetric ----
 
-def test_level_flip_to_error_routes_same_fixture_to_errors(monkeypatch):
-    monkeypatch.setattr(lint_skills, "RULE_13_LEVEL", "error")
+def test_level_flip_to_warn_routes_same_fixture_to_warnings(monkeypatch):
+    # Monkeypatched BACK to the pre-cutover "warn", the SAME broken fixture routes
+    # to report.warnings — proving the single-token flip is the whole mechanism.
+    monkeypatch.setattr(lint_skills, "RULE_13_LEVEL", "warn")
     report = run_rule13(BROKEN)
-    assert _r13(report.errors), (
-        "under RULE_13_LEVEL='error' the broken fixture must route to report.errors"
+    assert _r13(report.warnings), (
+        "under RULE_13_LEVEL='warn' the broken fixture must route to report.warnings"
     )
-    assert _r13(report.warnings) == [], report.warnings
+    assert _r13(report.errors) == [], report.errors
 
 
 def test_level_flip_does_not_touch_rules_11_12_token(monkeypatch):
@@ -118,29 +120,29 @@ def test_well_formed_fixture_yields_zero_rule13_findings():
 def test_bad_anchor_is_a_finding_not_a_crash():
     # Must not raise (the try/except re.error inside the rule).
     report = run_rule13(BAD_ANCHOR)
-    findings = _r13(report.warnings)
+    findings = _r13(report.errors)
     assert any("does not compile" in f for f in findings), findings
     # The bad-anchor fixture is otherwise well-formed: the compile failure is
     # the ONLY finding (presence floor — no collateral findings).
     assert len(findings) == 1, findings
-    assert _r13(report.errors) == []
+    assert _r13(report.warnings) == []
 
 
 # --- (18-REVIEW W3) min_matches must not exceed the anchor count -----------------
 
-def test_min_matches_exceeding_anchor_count_is_a_warn_finding():
+def test_min_matches_exceeding_anchor_count_is_an_error_finding():
     # A floor item with min_matches: 3 but only 2 anchors can NEVER be
     # covered_by_content (content_hits counts DISTINCT matching anchors) —
-    # uncoverable by construction. Rule 13 must flag it, WARN-routed while
-    # RULE_13_LEVEL == "warn" (the staged discipline is untouched).
-    assert lint_skills.RULE_13_LEVEL == "warn"
+    # uncoverable by construction. Rule 13 must flag it, HARD-routed now that
+    # RULE_13_LEVEL == "error" (the Phase-20 cutover).
+    assert lint_skills.RULE_13_LEVEL == "error"
     report = run_rule13(UNCOVERABLE)
-    findings = _r13(report.warnings)
+    findings = _r13(report.errors)
     assert len(findings) == 1, findings  # the ONLY finding on this fixture
     assert "min_matches (3)" in findings[0], findings
     assert "anchor count (2)" in findings[0], findings
     assert "item-2" in findings[0], findings
-    assert _r13(report.errors) == []
+    assert _r13(report.warnings) == []
 
 
 def test_min_matches_equal_to_anchor_count_is_not_flagged():
@@ -155,7 +157,7 @@ def test_uncoverable_min_matches_does_not_double_fire_on_invalid_shapes():
     # The broken-modes fixture's shapeless item (anchors: [] + min_matches: 0)
     # must keep firing exactly its OWN findings — the new satisfiability check
     # is an `elif` and must not stack a second min_matches finding on top.
-    findings = _r13(run_rule13(BROKEN).warnings)
+    findings = _r13(run_rule13(BROKEN).errors)
     mm_findings = [f for f in findings if "min_matches" in f]
     assert len(mm_findings) == 1, mm_findings
     assert "int >=1" in mm_findings[0]
