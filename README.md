@@ -249,6 +249,16 @@ Not sure which of these to reach for? Describe the job in plain words and run **
 
 ---
 
+## Completeness & Adversarial Review
+
+A defensible safety document is judged as much by what it *leaves out* as by what it says — a control that was never considered, a jurisdiction step that was never checked, a residual-risk figure that was quietly skipped. To guard against silent omissions, every skill's built-in SME review now runs an **omission pass** over its own draft. Acting as the domain-expert persona, the skill asks an open-ended question first — *for the artifact it is actually emitting, what would a competent consultant have included that is absent here?* — and only then checks the draft against that answer. It is deliberately **open-ended-then-check, never a fixed tick-box list**: a checklist can only ever find the gaps someone remembered to write down, and the omissions that sink a document are the ones no checklist anticipated.
+
+This behaviour is held in place by a **completeness pair** built into the quality harness. For each skill, a complete reference deliverable scores high while a deliberately gutted probe of the same artifact — with sections and controls stripped out — scores low, and the measurable separation between the two is now a **hard, deterministic gate**: if a skill stops noticing what is missing, the pair collapses and the gate fails. The separation is computed by a keyless, local grader, so the check is reproducible rather than a subjective judgement.
+
+Crucially, the omission pass **surfaces gaps — it never fabricates to fill them.** When something required is missing or unverifiable, the skill records it as a literal `[GAP]` marker or a named deficiency in the draft, rather than inventing a form number, a measurement, or a citation to paper over the hole. This keeps the completeness discipline squarely within the decision-support boundary: it makes the missing work *visible* to your accountable competent-person review — it does not silently do that work for you.
+
+---
+
 ## A 60-second "try it"
 
 A single pass on the flagship `risk-assessment` skill makes the core value concrete before you read anything else.

@@ -2,6 +2,7 @@
 
 - [Start Here — Guided Mode](Start-Here-Guided-Mode)
 - [Home](Home)
+- [Completeness & Adversarial Review](Completeness-Adversarial-Review)
 
 **Packs**
 

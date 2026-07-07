@@ -22,6 +22,7 @@ EXPECTED_WIKI_PAGES = {
     "Home.md",
     "_Sidebar.md",
     "Start-Here-Guided-Mode.md",
+    "Completeness-Adversarial-Review.md",
     "Core.md",
     "Operations.md",
     "Leadership.md",
@@ -136,7 +137,7 @@ def test_publish_wiki_dry_run_lists_every_v12_page():
         text=True,
     )
     output = result.stdout
-    assert "[dry-run] pages (19):" in output
+    assert "[dry-run] pages (20):" in output
     for page in EXPECTED_WIKI_PAGES:
         assert f"- {page}" in output
 

@@ -114,6 +114,7 @@ A quick router across the packs. Find the row that matches your need, then open 
 
 ## Where to go next
 
+- **Completeness & Adversarial Review** — how every skill's SME review runs an omission pass, what the completeness pair proves, and the `[GAP]`-not-invented discipline: [Completeness & Adversarial Review](Completeness-Adversarial-Review).
 - **Guided Mode** - if you are unsure where to start, run `/using-hse-skills`: [Start Here - Guided Mode](Start-Here-Guided-Mode).
 - **Install** — the 30-second install and per-pack install lines: [README](../README.md#install-in-30-seconds).
 - **Getting Started** — one-time setup, the five rules in depth, and single-skill walkthroughs for the three flagships: [`USER_MANUAL.md`](../docs/USER_MANUAL.md).
