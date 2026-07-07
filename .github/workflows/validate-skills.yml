@@ -141,6 +141,17 @@ jobs:
         if: steps.guard.outputs.present == 'true'
         run: pip install pyyaml jsonschema reportlab python-docx pytest
 
+      # Rebuild the gitignored, regenerable adapter renders BEFORE pytest — the
+      # bundle_diff pytest gate diffs the on-disk adapter knowledge/*.md renders,
+      # which have been gitignored + regenerable since f448e21. A fresh CI
+      # checkout ships none, so the gate fails on a stale/empty render tree.
+      # Mirrors adapters.yml's `build` job invocation so pytest sees the same
+      # reconciled tree adapters.yml does. `--all` writes the tree (`--check`
+      # only validates and does NOT reconcile it).
+      - name: Rebuild adapter renders (bundle_diff gate needs fresh renders)
+        if: steps.guard.outputs.present == 'true'
+        run: python adapters/build.py --all
+
       - name: Run pytest
         if: steps.guard.outputs.present == 'true'
         # Discover from the REPO ROOT so all suites run (scripts/tests,
