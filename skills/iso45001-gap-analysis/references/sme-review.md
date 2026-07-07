@@ -76,6 +76,10 @@ Skill-specific blind spots (where this artifact class has actually gone hollow):
   every conformance level to sighted records, or mark it a gap.
 - **The un-owned, undated roadmap** — remediation actions with no named owner, no date, and no
   blockers-first ordering are a wish-list, not a certification plan.
+- **The rule applied selectively (19-08 audit)** — the certification-blocker rule is applied to some
+  qualifying clauses but not every clause at the same maturity, a clause bundle hides a sub-clause's
+  lower score, or a mandatory clause (7.1 resources, 8.1.3 MOC) is silently absent rather than
+  scored or N/A'd; the rule binds every qualifying clause or none.
 
 ## Sign-off note
 SME review: ran (persona: Lead Auditor / Management-Systems Consultant); this is

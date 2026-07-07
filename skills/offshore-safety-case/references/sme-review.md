@@ -84,6 +84,9 @@ Skill-specific blind spots (where this artifact class has actually gone hollow):
   cost-benefit figure) not supplied by the duty-holder is a literal [GAP], never fabricated.
 - **The barrier with no bridge (S2)** — an SCE flagged degraded/unverified with no interim control
   and no verification date is an open major-accident exposure hidden in a register.
+- **The safety-only safety case (19-08 audit)** — environmental major accidents (OPPC / MER), the
+  ageing-installation / life-extension position, and the SEMS element set are left empty while
+  structural and process MAHs are addressed; a missing element is [GAP], never silent.
 
 ## Sign-off note
 SME review: ran (personas: offshore safety-case author / process-safety lead + QRA-provenance

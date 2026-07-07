@@ -81,6 +81,9 @@ Skill-specific blind spots (where this artifact class has actually gone hollow):
   to chemical-transport-safety.
 - **The Section 8 that leads with PPE (assistive completeness)** — engineering/LEV/containment
   controls omitted so RPE/PPE becomes the §8 headline, with OELs stated without source+year.
+- **The cited value with no vintage (19-08 audit, S9 currency)** — an OEL, a harmonised Annex VI
+  entry, or a downstream notification duty (UFI / poison-centre / registration number) carried
+  without confirming it is the current requirement, or silently omitted from the 16-section set.
 
 ## Sign-off note
 SME review: ran (personas: Industrial toxicologist / GHS-CLP classification SME + Regulatory-

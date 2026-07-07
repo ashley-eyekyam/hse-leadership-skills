@@ -95,6 +95,9 @@ Skill-specific blind spots (where this artifact class has actually gone hollow):
 - **Method-vs-law honesty** — the assessment presents a proprietary maturity model as if it
   were a standard or a compliance verdict, rather than a cited diagnostic method the competent
   person interprets.
+- **The instrument with no provenance (19-08 audit)** — a 'validated survey' asserted without naming
+  the instrument, its response rate, or the score-to-rung/stage rubric; a maturity band is not
+  reproducible or defensible without its inputs and conversion logic shown or [GAP]'d.
 
 ## Sign-off note
 SME review: ran (persona: Safety Culture / OD Consultant); this is **decision-support

@@ -79,6 +79,10 @@ Skill-specific blind spots (where this artifact class has actually gone hollow):
 - **The welfare/exclusion quantitative basis asserted by silence (canary S5)** — welfare sized
   to a stated peak headcount, exclusion-zone distances and person-day counts recorded or
   `[GAP]`'d, never asserted with no inputs.
+- **The refurb/occupied-building blind spot (19-08 audit)** — an asbestos position (survey /
+  management plan), a temporary-works regime (coordinator / design check), and the named CDM
+  duty-holder chain (client, principal designer, principal contractor) are completeness surfaces a
+  competent PC never omits; absent ones are [GAP], never silent.
 
 ## Sign-off note
 SME review: ran (personas: Principal Contractor + CDM Construction Manager); this is

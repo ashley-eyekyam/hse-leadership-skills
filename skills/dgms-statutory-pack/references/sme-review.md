@@ -82,6 +82,10 @@ Skill-specific blind spots (where this artifact class has actually gone hollow):
   is genuinely notifiable, or a genuinely notifiable event with no deadline stated.
 - **Identifiers into a submission** — injured-person or personnel identifiers surviving into
   a pack destined for DGMS submission or wider circulation without the de-id pass.
+- **The single-statute notice (19-08 audit, extends S6)** — the DGMS notice is cited while the
+  PARALLEL notification chain the same event triggers (police station, District Magistrate,
+  Employees' Compensation Act, ESI Act, Mine Rescue Rules) is unswept, and the missed-deadline
+  consequence is unstated.
 
 ## Sign-off note
 Reviewed-as: DGMS statutory-compliance specialist — model QA (decision-support);

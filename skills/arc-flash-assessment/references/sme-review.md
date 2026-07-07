@@ -84,6 +84,10 @@ Skill-specific blind spots (where this artifact class has actually gone hollow):
   response for a burn/electrocution casualty, and no rescue-from-contact arrangement.
 - **The label with no basis** — an NFPA 70E 130.5(H) label whose boundary/PPE figures are not
   traced to the computed incident energy is a sticker, not a control.
+- **The single-current arc study (19-08 audit)** — incident energy computed at 100% arcing current
+  only, the IEEE 1584-2018 second calculation at 85% (and the enclosure/gap inputs it needs)
+  omitted, and the shock-approach boundaries left as a stub; the controlling case may be the lower
+  arcing current.
 
 ## Sign-off note
 SME review: ran (persona: Chartered / Professional Electrical Engineer); this is

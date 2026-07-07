@@ -67,6 +67,10 @@ Skill-specific blind spots (where this artifact class has actually gone hollow):
 - **GWO reproduced, weather un-owned (S6)** — the GWO competence is cited (not reproduced) and the
   weather hold/stop thresholds are named here but owned by the weather sibling, not silently
   dropped or re-authored.
+- **The climb with no isolation (19-08 audit)** — turbine energy isolation / lockout and a
+  permit-to-work are absent, and the post-rescue legs (lightning stand-down, anti-suspension-trauma
+  handling) are missing; a rescue plan that stops at 'recover in minutes' without the isolation and
+  medical legs is incomplete.
 
 ## Sign-off note
 SME review: ran (persona: GWO-competent wind-turbine work-at-height & rescue technician / trainer);

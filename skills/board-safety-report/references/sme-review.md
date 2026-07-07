@@ -90,6 +90,10 @@ Skill-specific blind spots (where this artifact class has actually gone hollow):
   behind outcome frequency (what *did* happen).
 - **Altitude leakage** — operational CAPA minutiae or task lists dragged into a governance
   paper (that belongs in capa-manager), or conversely a strategic ask left with no owner.
+- **The safety-only 'HSE' paper (19-08 audit)** — environmental performance, occupational-health
+  metrics, and a contractor-vs-employee exposure split are absent, and a funding/decision ask
+  carries no cost figure; the board cannot govern what the paper neither separates, prices, nor
+  trends beyond two points.
 
 ## Sign-off note
 SME review: ran (personas: Board-level HSE governance advisor + safety-performance

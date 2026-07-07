@@ -69,6 +69,10 @@ Skill-specific blind spots (where this artifact class has actually gone hollow):
   actually swept for the task.
 - **Surveillance/symptom linkage absent (canary S3)** — reported MSD symptoms in the SEG neither
   reviewed nor their absence confirmed, and no symptom-triggered re-assessment trigger set.
+- **The single-point score (19-08 audit)** — origin is scored but the CONTROLLING condition
+  (destination / worst-case reach) and the MAXIMUM foreseeable load are left unscored, and any
+  supplementary posture method (RULA/REBA) an overhead or awkward placement demands is absent; an
+  origin-only NIOSH LI understates the demand.
 
 ## Sign-off note
 SME review: ran (persona: Chartered Ergonomist (CIEHF) / Occupational-Health Professional);

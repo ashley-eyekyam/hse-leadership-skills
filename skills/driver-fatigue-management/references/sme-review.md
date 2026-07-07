@@ -90,6 +90,10 @@ Skill-specific blind spots (where this artifact class has actually gone hollow):
 - **The quantitative basis absent** — a control (maximum shift length, minimum rest) is
   asserted without the rule threshold, the current roster figure, or the ELD/tachograph source
   it is measured against, so the finding cannot be reproduced or audited.
+- **The single-regulation blind spot (19-08 audit)** — the working-time / night-worker regime that
+  runs ALONGSIDE the drivers'-hours rule (e.g. RTWTR 2005 / WTD, night-work cap) is unchecked, and
+  the breach's enforcement consequence (licence/penalty) and whether it is structural to the roster
+  (not one driver) is unstated.
 
 ## Sign-off note
 SME review: ran (persona: road-transport safety & driver-fatigue / FRMS specialist); this is

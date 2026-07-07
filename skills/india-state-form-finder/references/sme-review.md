@@ -86,6 +86,9 @@ Skill-specific blind spots (where this artifact class has actually gone hollow):
 - **Sibling-obligation scope creep** — resolving (or worse, assembling) a Mines/DGMS, PESO or
   MSIHC obligation this finder does not own instead of routing it onward; the finder locates the
   Factories-Act/BOCW form and hands off, never fabricates a sibling regime's form.
+- **The resolved form with no consequence (19-08 audit, S10 enforcement)** — a form id, deadline,
+  and portal are returned, but the late-filing / penalty / prosecution exposure, a passed-deadline
+  warning, and any parallel obligation the same establishment triggers are left unstated.
 
 ## Sign-off note
 SME review: ran (persona: multi-state India HSE-compliance research specialist (statutory form

@@ -79,6 +79,10 @@ Skill-specific blind spots (where this artifact class has actually gone hollow):
 - **Scope-honesty on the disciplinary boundary** — the policy protects reporting but leaves
   the reckless/negligent boundary and the burden of proof vague, so in practice either
   everything is punished or nothing is — the two failure modes a real panel meets.
+- **The policy with no reach (19-08 audit)** — panels and culpability bands are defined, but no
+  workforce awareness/training obligation, no bar on using safety-report data in performance
+  appraisal, and no recusal/independent-appeal path; a just-culture policy nobody is trained on and
+  that discipline can be routed around is inoperative.
 
 ## Sign-off note
 SME review: ran (persona: Just-culture / human-factors specialist, with an aviation
