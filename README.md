@@ -4,9 +4,9 @@
 
 # HSE Leadership Skills
 
-**Consultant-grade HSE documents — site- and task-specific, hierarchy-of-controls-driven, de-identified — drafted in minutes. Open-source Agent Skills for safety leaders.**
+**Consultant-grade HSE documents (site- and task-specific, hierarchy-of-controls-driven, de-identified) drafted in minutes. Open-source Agent Skills for safety leaders.**
 
-*Every skill interrogates your task before it drafts, and runs a domain-expert sign-off before it shows you anything. Build once, run anywhere — one portable `SKILL.md` per skill, rendered to each host by the adapter build.*
+*Every skill interrogates your task before it drafts, and runs a domain-expert sign-off before it shows you anything. Build once, run anywhere: one portable `SKILL.md` per skill, rendered to each host by the adapter build.*
 
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
 [![Agent Skills standard](https://img.shields.io/badge/standard-Agent_Skills-6f42c1.svg)](https://agentskills.io)
@@ -22,32 +22,32 @@
 </div>
 
 <!--
-  docs/assets/demo.gif — the highest-converting hero element — is an owner fast-follow.
+  docs/assets/demo.gif (the highest-converting hero element) is an owner fast-follow.
   Its scenario (the T-402 risk-assessment end-to-end) is scripted in docs/BRANDING.md.
   It does not block the release tag. The architecture diagram + flagship screenshots below
   are in-repo now.
 -->
 
-HSE Leadership Skills is an open-source, cross-platform pack of **Agent Skills** for HSE/safety leaders, managers, frontline supervisors, and external consultants. Generic AI prompting produces generic safety paperwork — the kind a regulator rejects: vague tasks, controls that collapse to PPE, actions with no owner, causes that stop at "worker error," and personal data leaking into documents that get widely shared.
+HSE Leadership Skills is an open-source, cross-platform pack of **Agent Skills** for HSE/safety leaders, managers, frontline supervisors, and external consultants. Generic AI prompting produces generic safety paperwork, the kind a regulator rejects: vague tasks, controls that collapse to PPE, actions with no owner, causes that stop at "worker error," and personal data leaking into documents that get widely shared.
 
-Each skill in this pack is built to push against exactly those failures. Before it drafts anything, it **interrogates the task** — one question at a time — for the exact site, activity, exposed groups, evidence, jurisdiction, and existing controls, and refuses to proceed on a vague request. It then applies the **hierarchy of controls**, **de-identifies** sensitive data, and — before it shows you a single line — runs a **domain-expert (SME) review and sign-off pass** over the draft. What you get back is a site- and task-specific artifact with scored residual risk, named owners, and due dates, rendered as a beautifully branded report. The four cross-platform bundles (ChatGPT · Gemini · Copilot · generic) are **CI-validated** so the non-negotiables — the structured intake, the de-identification block, the hierarchy-of-controls discipline, the SME sign-off, and the report contract — survive the render to each host. No host is privileged; all are equal peers.
+Each skill in this pack is built to push against exactly those failures. Before it drafts anything, it **interrogates the task** (one question at a time) for the exact site, activity, exposed groups, evidence, jurisdiction, and existing controls, and refuses to proceed on a vague request. It then applies the **hierarchy of controls**, **de-identifies** sensitive data, and, before it shows you a single line, runs a **domain-expert (SME) review and sign-off pass** over the draft. What you get back is a site- and task-specific artifact with scored residual risk, named owners, and due dates, rendered as a beautifully branded report. The four cross-platform bundles (ChatGPT · Gemini · Copilot · generic) are **CI-validated** so the non-negotiables (the structured intake, the de-identification block, the hierarchy-of-controls discipline, the SME sign-off, and the report contract) survive the render to each host. No host is privileged; all are equal peers.
 
-> **Decision-support only.** Outputs are drafts for competent-person review and sign-off — not legal advice, not approved deliverables. The built-in SME review pass is a quality gate that strengthens the draft; it never replaces your accountable competent-person review. See the full [trust & safety band](#trust--safety) and [`DISCLAIMER.md`](./DISCLAIMER.md).
+> **Decision-support only.** Outputs are drafts for competent-person review and sign-off, not legal advice, not approved deliverables. The built-in SME review pass is a quality gate that strengthens the draft; it never replaces your accountable competent-person review. See the full [trust & safety band](#trust--safety) and [`DISCLAIMER.md`](./DISCLAIMER.md).
 
 ---
 
 ## Install in 30 seconds
 
-Every skill is one portable `SKILL.md`, rendered into each host's format by the adapter build — so the same skill installs on Claude, ChatGPT, Gemini, Copilot, or any open-standard tool.
+Every skill is one portable `SKILL.md`, rendered into each host's format by the adapter build, so the same skill installs on Claude, ChatGPT, Gemini, Copilot, or any open-standard tool.
 
-### Quick start — install the whole pack (Claude)
+### Quick start: install the whole pack (Claude)
 
 ```text
 /plugin marketplace add ashley-eyekyam/hse-leadership-skills
 /plugin install hse-all@hse-leadership-skills
 ```
 
-Those two lines install the whole `hse-all` toolbox — **93 skills**: the **92 consultant skills** plus the `using-hse-skills` guided router, so even a first-time user lands on the navigator that points them to the right skill. (The full catalog is **94 skills**: `hse-all` now includes the router and omits only the `hse-skill-forge` authoring skill, which ships in the `hse-systems` bundle — install it with `/plugin install hse-systems@hse-leadership-skills`. The router also ships in `hse-core`.)
+Those two lines install the whole `hse-all` toolbox, **93 skills**: the **92 consultant skills** plus the `using-hse-skills` guided router, so even a first-time user lands on the navigator that points them to the right skill. (The full catalog is **94 skills**: `hse-all` now includes the router and omits only the `hse-skill-forge` authoring skill, which ships in the `hse-systems` bundle; install it with `/plugin install hse-systems@hse-leadership-skills`. The router also ships in `hse-core`.)
 
 ### Or install just what you need
 
@@ -80,10 +80,10 @@ Those two lines install the whole `hse-all` toolbox — **93 skills**: the **92 
 
 ### Other platforms
 
-These blocks are **lifted verbatim** from each skill's emitted `adapters/<platform>/<skill>/INSTALL.md` — never hand-authored, so they cannot drift from what the build produces. The example below is `risk-assessment`; every skill ships the same per-platform `INSTALL.md`.
+These blocks are **lifted verbatim** from each skill's emitted `adapters/<platform>/<skill>/INSTALL.md`, never hand-authored, so they cannot drift from what the build produces. The example below is `risk-assessment`; every skill ships the same per-platform `INSTALL.md`.
 
 <details>
-<summary><strong>ChatGPT — Custom GPT</strong></summary>
+<summary><strong>ChatGPT: Custom GPT</strong></summary>
 
 1. Create a new Custom GPT (Configure tab).
 2. Paste `instructions.md` into the **Instructions** field.
@@ -95,7 +95,7 @@ These blocks are **lifted verbatim** from each skill's emitted `adapters/<platfo
 </details>
 
 <details>
-<summary><strong>Gemini — Gem</strong></summary>
+<summary><strong>Gemini: Gem</strong></summary>
 
 1. Create a new Gem.
 2. Paste `instructions.md` into the Gem's instructions.
@@ -105,7 +105,7 @@ These blocks are **lifted verbatim** from each skill's emitted `adapters/<platfo
 </details>
 
 <details>
-<summary><strong>Microsoft Copilot — declarative agent</strong></summary>
+<summary><strong>Microsoft Copilot: declarative agent</strong></summary>
 
 1. Register a new declarative agent (Copilot Studio / agent manifest).
 2. Use `manifest.json` (declarative-agent schema 1.7) as the agent manifest.
@@ -130,9 +130,9 @@ For local testing and the full setup walkthrough, see [`docs/USER_MANUAL.md`](do
 
 ## 🧭 New here? Start with the guided router
 
-> 🧭 New here? Just run **/using-hse-skills** — describe your task in plain words, answer a few quick questions, and it points you to the right skill — and hands over your details so you don't retype them. No HSE-software expertise needed.
+> 🧭 New here? Just run **/using-hse-skills**: describe your task in plain words, answer a few quick questions, and it points you to the right skill, and hands over your details so you don't retype them. No HSE-software expertise needed.
 
-The router lives in the `hse-core` bundle, so installing the core pack (or `hse-all`) gives it to you. It is the easiest way in: you do not need to know which of the 94 skills you want — describe the job, and the router walks you to it and carries your context across.
+The router lives in the `hse-core` bundle, so installing the core pack (or `hse-all`) gives it to you. It is the easiest way in: you do not need to know which of the 94 skills you want. Describe the job, and the router walks you to it and carries your context across.
 
 ---
 
@@ -140,40 +140,40 @@ The router lives in the `hse-core` bundle, so installing the core pack (or `hse-
 
 📖 **Every one of the 94 skills is documented individually in the [Wiki manual](../../wiki).** The tables below are the summary; the Wiki is the full per-skill reference.
 
-The catalog is **94 skills**: **11 universal core skills** (including the `using-hse-skills` guided router), **15 sector and cross-sector packs** (the five original sector packs plus ten new v1.2 bundles — all presented as equal peers), and the `hse-skill-forge` contribution on-ramp. (`hse-all` installs 93 of the 94 — it now includes the `using-hse-skills` router so newcomers get the navigator, and omits only the `hse-skill-forge` authoring skill, which installs separately.) Every fact below is drawn from each skill's own `metadata`/`description` — nothing here is hand-classified. Don't know which skill you need? Run the [`using-hse-skills`](skills/using-hse-skills/) router above and it picks for you. Looking for one skill in depth? Open the [full manual](../../wiki) for a per-skill card — what it produces, when to use it, what to have ready.
+The catalog is **94 skills**: **11 universal core skills** (including the `using-hse-skills` guided router), **15 sector and cross-sector packs** (the five original sector packs plus ten new v1.2 bundles, all presented as equal peers), and the `hse-skill-forge` contribution on-ramp. (`hse-all` installs 93 of the 94; it now includes the `using-hse-skills` router so newcomers get the navigator, and omits only the `hse-skill-forge` authoring skill, which installs separately.) Every fact below is drawn from each skill's own `metadata`/`description`; nothing here is hand-classified. Don't know which skill you need? Run the [`using-hse-skills`](skills/using-hse-skills/) router above and it picks for you. Looking for one skill in depth? Open the [full manual](../../wiki) for a per-skill card: what it produces, when to use it, what to have ready.
 
 **Audience legend:** **M** = manager · **E** = executive · **F** = frontline · **C** = consultant. **Tier 1** = stable core.
 
-### Core skills — bundle `hse-core`
+### Core skills: bundle `hse-core`
 
 The 11 universal skills every install should start with. The first row is the guided router; the rest are the everyday artifact skills.
 
 | Skill | What it does | Audience | Jurisdiction | Tier |
 |---|---|---|---|---|
-| [`using-hse-skills`](skills/using-hse-skills/) | The guided router — describe your task in plain words and it points you to the right skill, handing over your captured context | M, E, F, C | All | 1 |
+| [`using-hse-skills`](skills/using-hse-skills/) | The guided router: describe your task in plain words and it points you to the right skill, handing over your captured context | M, E, F, C | All | 1 |
 | [`risk-assessment`](skills/risk-assessment/) | Site/task-specific risk assessment, hierarchy-of-controls-driven (the flagship) | M, C, F | All | 1 |
 | [`job-safety-analysis`](skills/job-safety-analysis/) | Step-by-step JSA/JHA for physical task work, per-step hazards + controls | M, F, C | All | 1 |
 | [`toolbox-talk`](skills/toolbox-talk/) | A < 2-minute, specific frontline safety briefing + sign-off sheet | F, M | All | 1 |
-| [`rams-builder`](skills/rams-builder/) | Construction RAMS — risk assessment + method statement, CDM/BOCW-aware | M, C | All | 1 |
+| [`rams-builder`](skills/rams-builder/) | Construction RAMS: risk assessment + method statement, CDM/BOCW-aware | M, C | All | 1 |
 | [`incident-investigation`](skills/incident-investigation/) | RCA-driven incident investigation (5-Whys/ICAM/SCAT…), de-id-first, CAPA-bearing | M, C | All | 1 |
 | [`safety-audit`](skills/safety-audit/) | Criteria-based safety audit, evidence-traced findings (ISO 45001 9.2) | M, F, C | All | 1 |
 | [`capa-manager`](skills/capa-manager/) | Corrective & preventive action lifecycle/register, cause-traced (ISO 45001 10.2) | M, C | All | 1 |
 | [`sop-writer`](skills/sop-writer/) | Literacy-level-targeted SOPs/SWPs with HoC embedded in steps (ISO 45001 8.1) | M, C | All | 1 |
-| [`board-safety-report`](skills/board-safety-report/) | Board/executive safety narrative with a HiPo/SIF lens — insight, not data | E | All | 1 |
+| [`board-safety-report`](skills/board-safety-report/) | Board/executive safety narrative with a HiPo/SIF lens: insight, not data | E | All | 1 |
 | [`incident-rate-calculator`](skills/incident-rate-calculator/) | Deterministic TRIR/LTIFR/DART rates (script-backed, single-threaded) | M, E | All | 1 |
 
-### Cross-sector consultant packs — equal-peer bundles
+### Cross-sector consultant packs: equal-peer bundles
 
-These two packs cut across industries — the management-system, leadership, and operations work that any sector needs. Install with `/plugin install <pack>@hse-leadership-skills`.
+These two packs cut across industries: the management-system, leadership, and operations work that any sector needs. Install with `/plugin install <pack>@hse-leadership-skills`.
 
 | Pack | What it adds | Focus |
 |---|---|---|
 | [`hse-operations`](skills/hse-operations/) | Operational management-system delivery: ISO 45001 gap analysis, ISO 22301 business-continuity, legal/compliance register, regulatory returns, contractor prequalification, emergency-response & induction packs, training-needs & psychosocial & occupational-health risk assessment | All sectors |
 | [`hse-leadership`](skills/hse-leadership/) | Leadership & culture: ISO 45001 clause-5.2 policy, balanced leading/lagging KPI framework, safety-culture assessment, behaviour-based-safety program design, leadership safety/gemba walks, and the annual ESG OH&S (GRI 403/SASB/ESRS) disclosure | All sectors |
 
-### Sector packs — equal-peer bundles
+### Sector packs: equal-peer bundles
 
-The original five domain packs plus the eight new v1.2 sector bundles — each adds the specialist artifacts for one industry. Install with `/plugin install <pack>@hse-leadership-skills`.
+The original five domain packs plus the eight new v1.2 sector bundles: each adds the specialist artifacts for one industry. Install with `/plugin install <pack>@hse-leadership-skills`.
 
 | Pack | What it adds | Focus |
 |---|---|---|
@@ -191,9 +191,9 @@ The original five domain packs plus the eight new v1.2 sector bundles — each a
 | [`hse-rail`](skills/hse-rail/) | Rail safety: ROGS rail Safety Management System, ORR safety-authorisation packs, level-crossing & track-worker safe systems of work, and management-of-change | Rail |
 | [`hse-renewables`](skills/hse-renewables/) | Renewables: wind-turbine work-at-height & rescue, weather-dynamic point-of-work risk assessment, arc-flash & live-working assessment, and lone-working assessment (INDG73/BS 8484) | Renewables / Wind |
 
-### Contribute a skill — `hse-skill-forge`
+### Contribute a skill: `hse-skill-forge`
 
-> Author a new conformant skill in minutes: [`hse-skill-forge`](skills/hse-skill-forge/) (bundle `hse-systems`) scaffolds the six-block contract, the structured intake, the orchestration/SME-sign-off roster, the de-identification block, and the eval scaffold — born linter- and eval-shaped. See [`CONTRIBUTING.md`](./CONTRIBUTING.md) and [`docs/AUTHORING_GUIDE.md`](./docs/AUTHORING_GUIDE.md).
+> Author a new conformant skill in minutes: [`hse-skill-forge`](skills/hse-skill-forge/) (bundle `hse-systems`) scaffolds the six-block contract, the structured intake, the orchestration/SME-sign-off roster, the de-identification block, and the eval scaffold, born linter- and eval-shaped. See [`CONTRIBUTING.md`](./CONTRIBUTING.md) and [`docs/AUTHORING_GUIDE.md`](./docs/AUTHORING_GUIDE.md).
 
 ### You need to… → use this skill → you get
 
@@ -211,15 +211,15 @@ Every row runs the same disciplined flow: a structured intake that refuses vague
 
 ### How every skill works
 
-The same five-step discipline runs inside every skill in the pack — it is the difference between generic safety text and a defensible draft.
+The same five-step discipline runs inside every skill in the pack; it is the difference between generic safety text and a defensible draft.
 
 | Step | What the skill does | Why it matters |
 |---|---|---|
-| **1 · Interrogate the task** | A structured, one-question-at-a-time intake captures the must-ask dimensions (task, site, exposed groups, evidence, jurisdiction, existing controls) and **refuses to proceed on a vague request** — echoing the captured facts back before any analysis. | No vague safety work — this is the elicitation coverage contract that forces specificity. |
+| **1 · Interrogate the task** | A structured, one-question-at-a-time intake captures the must-ask dimensions (task, site, exposed groups, evidence, jurisdiction, existing controls) and **refuses to proceed on a vague request**, echoing the captured facts back before any analysis. | No vague safety work: this is the elicitation coverage contract that forces specificity. |
 | **2 · De-identify first** | Personal and special-category health data is stripped or pseudonymised *before* drafting begins. | Privacy by design (GDPR Art. 9 / India DPDP / OSHA privacy-case aligned). |
 | **3 · Rank by the hierarchy of controls** | Elimination first; PPE-only treatments are flagged for justification, never accepted silently. | Defensible control selection a regulator can challenge. |
 | **4 · Trace to evidence + assign action** | Conclusions trace back to numbered evidence; every recommendation carries a named (role-label) owner, a due date, and a measure. | Action, not just prose. |
-| **5 · SME review & sign-off before output** | A domain-expert (subject-matter-expert) review pass runs over the draft *before it is shown to you* — it never claims your output is approved; it strengthens the draft and surfaces gaps. | An expert quality gate on every artifact, distinct from your accountable competent-person review. |
+| **5 · SME review & sign-off before output** | A domain-expert (subject-matter-expert) review pass runs over the draft *before it is shown to you*. It never claims your output is approved; it strengthens the draft and surfaces gaps. | An expert quality gate on every artifact, distinct from your accountable competent-person review. |
 
 ### Use cases by leadership level
 
@@ -235,27 +235,27 @@ The same five-step discipline runs inside every skill in the pack — it is the 
 
 ### What makes it different
 
-1. **It does not accept vague safety work.** It interrogates the task — refusing to draft until it has the exact task/site/asset context.
+1. **It does not accept vague safety work.** It interrogates the task, refusing to draft until it has the exact task/site/asset context.
 2. **It treats PPE as the last line of defence.** It pushes higher-order controls first.
 3. **It is privacy-aware by design.** De-identification runs *before* drafting.
-4. **It runs an expert sign-off before you see the draft.** A domain-expert (SME) review pass is built into every skill — a quality gate, not a substitute for your competent-person review.
+4. **It runs an expert sign-off before you see the draft.** A domain-expert (SME) review pass is built into every skill: a quality gate, not a substitute for your competent-person review.
 5. **It is evidence-oriented.** Investigations and audits trace conclusions back to numbered evidence.
 6. **It creates action, not just prose.** Actions require owners, dates, measures, and links.
 7. **It understands HSE workflows.** HIRA, JSA, toolbox talk, incident RCA, audit, SOP each have a distinct method.
 8. **It produces professional deliverables.** A structured `report.json` renders to branded PDF and DOCX.
-9. **It is open source and extensible.** Authors use `hse-skill-forge` and the authoring guide to add new workflows — born with the same intake and sign-off discipline.
+9. **It is open source and extensible.** Authors use `hse-skill-forge` and the authoring guide to add new workflows, born with the same intake and sign-off discipline.
 
-Not sure which of these to reach for? Describe the job in plain words and run **/using-hse-skills** — or let the router above pick for you.
+Not sure which of these to reach for? Describe the job in plain words and run **/using-hse-skills**, or let the router above pick for you.
 
 ---
 
 ## Completeness & Adversarial Review
 
-A defensible safety document is judged as much by what it *leaves out* as by what it says — a control that was never considered, a jurisdiction step that was never checked, a residual-risk figure that was quietly skipped. To guard against silent omissions, every skill's built-in SME review now runs an **omission pass** over its own draft. Acting as the domain-expert persona, the skill asks an open-ended question first — *for the artifact it is actually emitting, what would a competent consultant have included that is absent here?* — and only then checks the draft against that answer. It is deliberately **open-ended-then-check, never a fixed tick-box list**: a checklist can only ever find the gaps someone remembered to write down, and the omissions that sink a document are the ones no checklist anticipated.
+A defensible safety document is judged as much by what it *leaves out* as by what it says: a control that was never considered, a jurisdiction step that was never checked, a residual-risk figure that was quietly skipped. To guard against silent omissions, every skill's built-in SME review now runs an **omission pass** over its own draft. Acting as the domain-expert persona, the skill asks an open-ended question first (*for the artifact it is actually emitting, what would a competent consultant have included that is absent here?*) and only then checks the draft against that answer. It is deliberately **open-ended-then-check, never a fixed tick-box list**: a checklist can only ever find the gaps someone remembered to write down, and the omissions that sink a document are the ones no checklist anticipated.
 
-This behaviour is proven by a **completeness pair** in the quality harness: a complete reference deliverable scores high while a deliberately gutted probe of the same artifact — with sections and controls stripped out — scores low, evidence that the omission pass actually discriminates rather than rubber-stamping. The gate itself is simpler and stricter: every required floor item for the artifact's mode must be covered by the reference deliverable — by content or an honest `[GAP]` marker — and a silently missing floor item is a **hard, deterministic failure**. Both checks run on a keyless, local grader, so the result is reproducible rather than a subjective judgement.
+This behaviour is proven by a **completeness pair** in the quality harness: a complete reference deliverable scores high while a deliberately gutted probe of the same artifact (with sections and controls stripped out) scores low, evidence that the omission pass actually discriminates rather than rubber-stamping. The gate itself is simpler and stricter: every required floor item for the artifact's mode must be covered by the reference deliverable (by content or an honest `[GAP]` marker) and a silently missing floor item is a **hard, deterministic failure**. Both checks run on a keyless, local grader, so the result is reproducible rather than a subjective judgement.
 
-Crucially, the omission pass **surfaces gaps — it never fabricates to fill them.** When something required is missing or unverifiable, the skill records it as a literal `[GAP]` marker or a named deficiency in the draft, rather than inventing a form number, a measurement, or a citation to paper over the hole. This keeps the completeness discipline squarely within the decision-support boundary: it makes the missing work *visible* to your accountable competent-person review — it does not silently do that work for you.
+Crucially, the omission pass **surfaces gaps: it never fabricates to fill them.** When something required is missing or unverifiable, the skill records it as a literal `[GAP]` marker or a named deficiency in the draft, rather than inventing a form number, a measurement, or a citation to paper over the hole. This keeps the completeness discipline squarely within the decision-support boundary: it makes the missing work *visible* to your accountable competent-person review; it does not silently do that work for you.
 
 ---
 
@@ -269,11 +269,11 @@ A single pass on the flagship `risk-assessment` skill makes the core value concr
 Help me risk-assess confined-space entry to clean tank T-402 in Plant 3.
 ```
 
-**2 · The intake (the elicitation coverage contract in action).** The skill refuses to proceed on a vague request. It asks — one question at a time — the substance previously in the tank, the entry method, who enters (own workers? contractors?), the atmosphere and gas-testing regime, and any prior incidents. It echoes the captured facts back before any analysis.
+**2 · The intake (the elicitation coverage contract in action).** The skill refuses to proceed on a vague request. It asks, one question at a time, the substance previously in the tank, the entry method, who enters (own workers? contractors?), the atmosphere and gas-testing regime, and any prior incidents. It echoes the captured facts back before any analysis.
 
 **3 · The output (the value made visible):**
 - a **site/task-specific** finding set for *this* tank, not generic confined-space boilerplate;
-- every control **ranked by the hierarchy of controls** — elimination first, PPE-only treatments flagged;
+- every control **ranked by the hierarchy of controls**: elimination first, PPE-only treatments flagged;
 - **de-identified** throughout (role labels, no names);
 - every recommendation carrying a **named owner + due date**;
 - a **domain-expert (SME) sign-off pass** run over the draft before it is shown to you;
@@ -292,22 +292,22 @@ Help me risk-assess confined-space entry to clean tank T-402 in Plant 3.
 
 ## Trust & safety
 
-> **Disclaimer — decision-support only.**
+> **Disclaimer: decision-support only.**
 >
-> The HSE Leadership Skills pack is a **decision-support tool**. Its outputs are drafts to assist a qualified professional — **not** finished, authoritative, or approved deliverables. **Every output must be reviewed, validated, and signed off by a competent person** (a suitably qualified and experienced health, safety & environment professional) **before it is relied upon or acted on.**
+> The HSE Leadership Skills pack is a **decision-support tool**. Its outputs are drafts to assist a qualified professional, **not** finished, authoritative, or approved deliverables. **Every output must be reviewed, validated, and signed off by a competent person** (a suitably qualified and experienced health, safety & environment professional) **before it is relied upon or acted on.**
 
-The line above is quoted verbatim from [`DISCLAIMER.md`](./DISCLAIMER.md) — read it in full before using any output.
+The line above is quoted verbatim from [`DISCLAIMER.md`](./DISCLAIMER.md); read it in full before using any output.
 
-- **The built-in SME sign-off is a quality gate, not an approval.** Every skill runs a domain-expert review pass over its draft before output — it surfaces gaps and strengthens the draft, but it never claims the output is approved and it never replaces your accountable competent-person review.
-- **De-identification guarantee.** Every skill carries a mandatory de-identification step (GDPR Art. 9 / India DPDP / OSHA privacy-case aligned) — personal and special-category health data is stripped or pseudonymised *before* any output is shared.
+- **The built-in SME sign-off is a quality gate, not an approval.** Every skill runs a domain-expert review pass over its draft before output: it surfaces gaps and strengthens the draft, but it never claims the output is approved and it never replaces your accountable competent-person review.
+- **De-identification guarantee.** Every skill carries a mandatory de-identification step (GDPR Art. 9 / India DPDP / OSHA privacy-case aligned): personal and special-category health data is stripped or pseudonymised *before* any output is shared.
 - **Quality gate.** Every skill ships ≥ 3 evals, must score a weighted ≥ 4.0 with no hard-fail (a de-identification leak or an invented citation is an automatic fail), and passes a competent-person HSE review before it merges. Contributed skills pass the **same** gate.
-- **Grounded in** ISO 45001 / ISO 14001 / ISO 45003, OSHA, UK HSE, EU, and India legacy frameworks — referenced as peers, each to be verified against the current authoritative source for your jurisdiction.
+- **Grounded in** ISO 45001 / ISO 14001 / ISO 45003, OSHA, UK HSE, EU, and India legacy frameworks, referenced as peers, each to be verified against the current authoritative source for your jurisdiction.
 
 ---
 
 ## Customize & brand
 
-Make every output your own by editing **two files**: `brand.yaml` (your colours, logo, fonts — the visual theme) and `company-card.yaml` (your name, tagline, contact — the attribution). One edit re-brands the whole pack. It ships with the **Eyekyam default**, so it looks finished out of the box.
+Make every output your own by editing **two files**: `brand.yaml` (your colours, logo, fonts: the visual theme) and `company-card.yaml` (your name, tagline, contact: the attribution). One edit re-brands the whole pack. It ships with the **Eyekyam default**, so it looks finished out of the box.
 
 See [`docs/BRANDING.md`](docs/BRANDING.md) for the full how-to (the two-file override, the report-branding default, logo usage, and how to regenerate the visual assets).
 
@@ -325,14 +325,14 @@ For questions, custom skills, or training, contact [ashley@eyekyam.com](mailto:a
 
 ## Roadmap & community
 
-**The toolbox** is what shipped here — the **94 skills** (including the guided `using-hse-skills` router), the 15 sector and cross-sector packs, and the cross-platform adapters. **v2.0 ("HSE GStack")**, a process-driven workflow plugin, is explicitly deferred and out of scope for this milestone.
+**The toolbox** is what shipped here: the **94 skills** (including the guided `using-hse-skills` router), the 15 sector and cross-sector packs, and the cross-platform adapters. **v2.0 ("HSE GStack")**, a process-driven workflow plugin, is explicitly deferred and out of scope for this milestone.
 
-- 📖 **[Full skill manual (Wiki)](../../wiki)** — every skill, by pack, with when-to-use and what-you-get.
-- **Contribute in 5 minutes** with [`hse-skill-forge`](skills/hse-skill-forge/) — it scaffolds a born-conformant skill (intake, de-id, hierarchy-of-controls, and SME sign-off discipline included) so you can focus on the HSE content.
+- 📖 **[Full skill manual (Wiki)](../../wiki)**: every skill, by pack, with when-to-use and what-you-get.
+- **Contribute in 5 minutes** with [`hse-skill-forge`](skills/hse-skill-forge/): it scaffolds a born-conformant skill (intake, de-id, hierarchy-of-controls, and SME sign-off discipline included) so you can focus on the HSE content.
 - **Propose a skill** via the [new-skill-proposal issue template](.github/ISSUE_TEMPLATE/new_skill.md).
-- **Good first issues** — start with the [`good first issue`](https://github.com/ashley-eyekyam/hse-leadership-skills/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) label.
+- **Good first issues**: start with the [`good first issue`](https://github.com/ashley-eyekyam/hse-leadership-skills/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) label.
 - **Ask a question** in [GitHub Discussions](https://github.com/ashley-eyekyam/hse-leadership-skills/discussions).
-- **Featured community skills** — community-contributed skills that pass the quality gate are featured here as the pack grows.
+- **Featured community skills**: community-contributed skills that pass the quality gate are featured here as the pack grows.
 
 How it all fits together:
 
@@ -344,6 +344,6 @@ How it all fits together:
 
 ## License
 
-[Apache-2.0](./LICENSE) — Copyright 2026 Eyekyam.
+[Apache-2.0](./LICENSE). Copyright 2026 Eyekyam.
 
 Footer links: [`LICENSE`](./LICENSE) · [`DISCLAIMER.md`](./DISCLAIMER.md) · [`CONTRIBUTING.md`](./CONTRIBUTING.md) · [`docs/BRANDING.md`](docs/BRANDING.md) · [`docs/AUTHORING_GUIDE.md`](docs/AUTHORING_GUIDE.md)
