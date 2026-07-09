@@ -130,7 +130,7 @@ For local testing and the full setup walkthrough, see [`docs/USER_MANUAL.md`](do
 
 ## 🧭 New here? Start with the guided router
 
-> 🧭 New here? Just run **/using-hse-skills**: describe your task in plain words, answer a few quick questions, and it points you to the right skill, and hands over your details so you don't retype them. No HSE-software expertise needed.
+> 🧭 New here? Just run **/using-hse-skills**: describe your task in plain words, answer a few quick questions, and it points you to the right skill, handing over your details so you don't retype them. No HSE-software expertise needed.
 
 The router lives in the `hse-core` bundle, so installing the core pack (or `hse-all`) gives it to you. It is the easiest way in: you do not need to know which of the 94 skills you want. Describe the job, and the router walks you to it and carries your context across.
 
