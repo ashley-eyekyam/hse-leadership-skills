@@ -4,7 +4,7 @@
 
 # HSE Leadership Skills
 
-**Consultant-grade HSE documents — site- and task-specific, hierarchy-of-controls-driven, de-identified — drafted in minutes. Open-source Agent Skills for safety leaders.**
+**Consultant-grade HSE documents; site- and task-specific, hierarchy-of-controls-driven, de-identified; drafted in minutes. Open-source Agent Skills for safety leaders.**
 
 *Every skill interrogates your task before it drafts, and runs a domain-expert sign-off before it shows you anything. Build once, run anywhere — one portable `SKILL.md` per skill, rendered to each host by the adapter build.*
 
