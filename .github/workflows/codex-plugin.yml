@@ -1,0 +1,62 @@
+# codex-plugin.yml — native Codex plugin manifest gate (deterministic, no model calls).
+#
+# Guards `.codex-plugin/plugin.json` and the personal-marketplace installer:
+#   * manifest parses as JSON and honours the official Codex validator's field
+#     rules (replicated in scripts/tests/test_codex_manifest.py — the official
+#     validator ships inside a Codex install, not on PyPI, so CI runs the
+#     rule-replica instead);
+#   * version stays a clean release semver (a committed dev cachebuster
+#     suffix `+codex.local-...` fails the gate);
+#   * the exposed skill set matches gen_marketplace's canonical catalogue
+#     iteration (no second source of truth, no hard-coded skill count);
+#   * the installer keeps its safety contract (append-preserve, --update,
+#     --remove, --dry-run, absolute symlink, copy fallback).
+#
+# The job name `codex-manifest` is a NEW status-check identifier — it does not
+# touch the existing branch-protection contexts (lint, standard-validate,
+# pytest, marketplace, report-smoke, changed-skills-eval, deid-auto-fail,
+# sme-persona-review). Making it a required check is a repo-settings step.
+name: Codex Plugin
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - '.codex-plugin/**'
+      - 'skills/**'
+      - 'scripts/install_codex_marketplace.py'
+      - 'scripts/tests/test_codex_manifest.py'
+      - 'scripts/tests/test_install_codex_marketplace.py'
+      - '.github/workflows/codex-plugin.yml'
+  push:
+    paths:
+      - '.codex-plugin/**'
+      - 'skills/**'
+      - 'scripts/install_codex_marketplace.py'
+      - 'scripts/tests/test_codex_manifest.py'
+      - 'scripts/tests/test_install_codex_marketplace.py'
+      - '.github/workflows/codex-plugin.yml'
+
+jobs:
+  codex-manifest:
+    name: codex-manifest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install pyyaml pytest
+
+      - name: Manifest parses as JSON
+        run: python3 -m json.tool .codex-plugin/plugin.json >/dev/null
+
+      - name: Manifest + installer contract tests
+        run: |
+          python3 -m pytest -q \
+            scripts/tests/test_codex_manifest.py \
+            scripts/tests/test_install_codex_marketplace.py

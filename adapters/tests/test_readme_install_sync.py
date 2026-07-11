@@ -59,7 +59,8 @@ def test_chatgpt_install_block_lifted_verbatim(readme_text, install_text):
     assert install_steps, "No numbered steps found in the emitted INSTALL.md"
 
     # Isolate the README's ChatGPT <details> block so we compare like-for-like.
-    start = readme_text.find("ChatGPT — Custom GPT")
+    # (Heading punctuation follows the README's no-em-dash convention.)
+    start = readme_text.find("ChatGPT: Custom GPT")
     assert start != -1, "README is missing the ChatGPT install block heading"
     block = readme_text[start : readme_text.find("</details>", start)]
     readme_steps = _numbered_steps(block)

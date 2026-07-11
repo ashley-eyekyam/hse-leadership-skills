@@ -1,0 +1,41 @@
+{
+  "name": "hse-leadership-skills",
+  "version": "1.3.0",
+  "description": "Consultant-grade agent skills for health, safety and environmental leadership across multiple sectors and jurisdictions.",
+  "author": {
+    "name": "Eyekyam Risk Resolutions Pvt. Ltd.",
+    "email": "ashley@eyekyam.com",
+    "url": "https://github.com/ashley-eyekyam"
+  },
+  "homepage": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+  "repository": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+  "license": "Apache-2.0",
+  "keywords": [
+    "hse",
+    "safety-leadership",
+    "risk-assessment",
+    "incident-investigation",
+    "occupational-safety",
+    "environment",
+    "agent-skills"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "HSE Leadership Skills",
+    "shortDescription": "Consultant-grade HSE and safety leadership workflows",
+    "longDescription": "A comprehensive collection of agent skills for risk assessment, incident investigation, audits, safety leadership, process safety and sector-specific HSE work. Outputs are decision-support drafts requiring competent-person review.",
+    "developerName": "Eyekyam Risk Resolutions Pvt. Ltd.",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+    "defaultPrompt": [
+      "Help me choose the right HSE skill for my task.",
+      "Create a task-specific risk assessment.",
+      "Help me investigate a safety incident."
+    ],
+    "brandColor": "#008C8C"
+  }
+}
