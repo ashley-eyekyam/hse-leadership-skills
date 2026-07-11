@@ -40,7 +40,7 @@ def test_readme_quotes_disclaimer_trust_line_verbatim(readme_text, disclaimer_te
     # whitespace-normalised so a re-wrap doesn't break the byte check on intent.
     canonical = (
         "The HSE Leadership Skills pack is a **decision-support tool**. "
-        "Its outputs are drafts to assist a qualified professional — **not** finished, "
+        "Its outputs are drafts to assist a qualified professional, **not** finished, "
         "authoritative, or approved deliverables. **Every output must be reviewed, "
         "validated, and signed off by a competent person**"
     )

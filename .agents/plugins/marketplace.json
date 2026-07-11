@@ -1,0 +1,21 @@
+{
+  "_comment": "Codex-native marketplace catalog. When this repository (or a checkout of it) is added with `codex plugin marketplace add`, Codex reads THIS file and ignores .claude-plugin/marketplace.json (verified on codex-cli 0.142.5). Exactly one entry: Codex requires plugins[].name to match the .codex-plugin/plugin.json name at the entry's source, and this repo root carries one manifest, so the Claude bundle names (hse-all, hse-core, ...) must never be listed here. Guarded by scripts/tests/test_codex_marketplace_catalog.py.",
+  "name": "hse-leadership-skills",
+  "interface": {
+    "displayName": "HSE Leadership Skills"
+  },
+  "plugins": [
+    {
+      "name": "hse-leadership-skills",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

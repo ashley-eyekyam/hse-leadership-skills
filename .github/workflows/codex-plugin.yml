@@ -1,6 +1,9 @@
 # codex-plugin.yml — native Codex plugin manifest gate (deterministic, no model calls).
 #
-# Guards `.codex-plugin/plugin.json` and the personal-marketplace installer:
+# Guards `.codex-plugin/plugin.json`, the repo-root Codex marketplace catalog
+# (`.agents/plugins/marketplace.json` — its single entry name MUST match the
+# manifest name or `codex plugin add` refuses), and the personal-marketplace
+# installer:
 #   * manifest parses as JSON and honours the official Codex validator's field
 #     rules (replicated in scripts/tests/test_codex_manifest.py — the official
 #     validator ships inside a Codex install, not on PyPI, so CI runs the
@@ -23,18 +26,22 @@ on:
   pull_request:
     paths:
       - '.codex-plugin/**'
+      - '.agents/**'
       - 'skills/**'
       - 'scripts/install_codex_marketplace.py'
       - 'scripts/tests/test_codex_manifest.py'
       - 'scripts/tests/test_install_codex_marketplace.py'
+      - 'scripts/tests/test_codex_marketplace_catalog.py'
       - '.github/workflows/codex-plugin.yml'
   push:
     paths:
       - '.codex-plugin/**'
+      - '.agents/**'
       - 'skills/**'
       - 'scripts/install_codex_marketplace.py'
       - 'scripts/tests/test_codex_manifest.py'
       - 'scripts/tests/test_install_codex_marketplace.py'
+      - 'scripts/tests/test_codex_marketplace_catalog.py'
       - '.github/workflows/codex-plugin.yml'
 
 jobs:
@@ -52,11 +59,14 @@ jobs:
       - name: Install dependencies
         run: pip install pyyaml pytest
 
-      - name: Manifest parses as JSON
-        run: python3 -m json.tool .codex-plugin/plugin.json >/dev/null
+      - name: Manifest and catalog parse as JSON
+        run: |
+          python3 -m json.tool .codex-plugin/plugin.json >/dev/null
+          python3 -m json.tool .agents/plugins/marketplace.json >/dev/null
 
-      - name: Manifest + installer contract tests
+      - name: Manifest + catalog + installer contract tests
         run: |
           python3 -m pytest -q \
             scripts/tests/test_codex_manifest.py \
+            scripts/tests/test_codex_marketplace_catalog.py \
             scripts/tests/test_install_codex_marketplace.py

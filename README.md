@@ -14,7 +14,7 @@
 [![Eval](https://github.com/ashley-eyekyam/hse-leadership-skills/actions/workflows/eval.yml/badge.svg)](https://github.com/ashley-eyekyam/hse-leadership-skills/actions/workflows/eval.yml)
 [![Version](https://img.shields.io/badge/release-v1.3.0-success.svg)](https://github.com/ashley-eyekyam/hse-leadership-skills/releases)
 [![Skills](https://img.shields.io/badge/skills-94-informational.svg)](#whats-in-the-box-the-catalog)
-[![Platforms](https://img.shields.io/badge/runs_on-Claude_·_ChatGPT_·_Gemini_·_Copilot-0aa.svg)](#install-in-30-seconds)
+[![Platforms](https://img.shields.io/badge/runs_on-Claude_·_Codex_·_ChatGPT_·_Gemini_·_Copilot-0aa.svg)](#install-in-30-seconds)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 
 [Get started](#install-in-30-seconds) · [View skills](#whats-in-the-box-the-catalog) · [See it work](#a-60-second-try-it) · [Trust & safety](#trust--safety) · [Read the disclaimer](./DISCLAIMER.md) · [📖 Full skill manual](../../wiki)
@@ -82,7 +82,26 @@ Those two lines install the whole `hse-all` toolbox, **93 skills**: the **92 con
 
 The repository is also a **native Codex plugin**: one plugin, `hse-leadership-skills`, exposing the full catalog (all **94 skills**, including the `using-hse-skills` guided router) plus the knowledge base, deterministic engines, and report assets the skills depend on. Every output remains **decision-support only**; a competent person must review it before use (see [DISCLAIMER.md](DISCLAIMER.md)).
 
-The verified installation workflow is local-path based (tested with **codex-cli 0.142.5**; installing straight from a GitHub URL is *not* yet a supported path):
+Install straight from GitHub in two commands (verified with **codex-cli 0.142.5**):
+
+```bash
+# 1. Add this repository as a Codex marketplace
+codex plugin marketplace add https://github.com/ashley-eyekyam/hse-leadership-skills.git
+
+# 2. Install the plugin
+codex plugin add hse-leadership-skills@hse-leadership-skills
+codex plugin list   # should show: hse-leadership-skills  installed, enabled
+```
+
+**Then open a NEW Codex thread**: plugins and skills load when a thread starts, not into the thread that installed them. Start with the guided router: just ask *"Use the HSE skills to help me choose the right workflow for …"*, or invoke any skill directly (*"Use the risk-assessment skill for …"*).
+
+- **Update:** `codex plugin marketplace upgrade hse-leadership-skills` (refreshes the snapshot from GitHub), then re-run `codex plugin add hse-leadership-skills@hse-leadership-skills` and open a new thread.
+- **Uninstall:** `codex plugin remove hse-leadership-skills@hse-leadership-skills`, then optionally `codex plugin marketplace remove hse-leadership-skills`.
+- **Tip:** with many plugins enabled, Codex may shorten skill descriptions to fit its skills context budget; disable unused plugins to give the HSE skills more room.
+- **Note for Claude bundle users:** the per-pack bundles (`hse-all`, `hse-core`, sector packs) are Claude-only selectors. In Codex there is exactly one installable plugin, `hse-leadership-skills`, which already contains every skill.
+
+<details>
+<summary><strong>Alternative: install from a local clone (development / offline)</strong></summary>
 
 ```bash
 # 1. Clone the repository
@@ -100,11 +119,10 @@ codex plugin add hse-leadership-skills@personal
 codex plugin list   # should show: hse-leadership-skills  installed, enabled
 ```
 
-**Then open a NEW Codex thread**: plugins and skills load when a thread starts, not into the thread that installed them. Start with the guided router: just ask *"Use the HSE skills to help me choose the right workflow for …"*, or invoke any skill directly (*"Use the risk-assessment skill for …"*).
-
 - **Update:** `git pull` in the checkout, then re-run `codex plugin add hse-leadership-skills@personal` (it rebuilds the installed copy) and open a new thread. If you installed with `--copy`, first refresh the copy: `python3 scripts/install_codex_marketplace.py --update --copy`.
 - **Uninstall:** `codex plugin remove hse-leadership-skills@personal`, then `python3 scripts/install_codex_marketplace.py --remove` (removes only this plugin's marketplace entry and link, nothing else).
-- **Tip:** with many plugins enabled, Codex may shorten skill descriptions to fit its skills context budget; disable unused plugins to give the HSE skills more room.
+
+</details>
 
 ### Other platforms
 
