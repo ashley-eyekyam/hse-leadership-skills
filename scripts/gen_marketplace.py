@@ -1,15 +1,22 @@
 #!/usr/bin/env python3
-"""gen_marketplace.py — generate .claude-plugin/marketplace.json (A8 §4.7, QA-04).
+"""gen_marketplace.py — generate Claude + Cursor marketplace manifests (A8 §4.7).
 
-The marketplace manifest is GENERATED from each skill's `metadata.plugin`
+The marketplace manifests are GENERATED from each skill's `metadata.plugin`
 frontmatter — never hand-maintained (no duplication; a skill's bundle membership
 lives in exactly one place, its own SKILL.md). Each distinct `metadata.plugin`
 value becomes one plugin entry whose `skills` list is the folders that name it.
 
-  --check   regenerate BOTH the manifest and the router skill-index in memory and
-            DIFF each against its on-disk artifact; exit nonzero if EITHER drifts
-            (the CI gate — research §4.7; QUAL-04 index drift gate added Phase 17).
-  --write   rewrite the on-disk manifest AND the router skill-index from the skills.
+Emits:
+  * `.claude-plugin/marketplace.json` — Claude Code marketplace
+  * `.cursor-plugin/marketplace.json` — Cursor Team Marketplace (same membership)
+  * `skills/using-hse-skills/references/skill-index.yaml` — router index
+
+  --check   regenerate Claude + Cursor manifests and the router skill-index in
+            memory and DIFF each against its on-disk artifact; exit nonzero if
+            ANY drifts (the CI gate — research §4.7; QUAL-04 index drift;
+            Cursor parity drift).
+  --write   rewrite the on-disk Claude + Cursor manifests AND the router
+            skill-index from the skills.
 
 Stdlib + pyyaml only. Reuses the S2 main(argv)->int contract.
 """
@@ -28,6 +35,19 @@ import yaml
 SCRIPTS = Path(__file__).resolve().parent
 REPO = SCRIPTS.parent
 MANIFEST = REPO / ".claude-plugin" / "marketplace.json"
+CURSOR_MANIFEST = REPO / ".cursor-plugin" / "marketplace.json"
+
+# Cursor Team Marketplace constants (docs: https://cursor.com/docs/reference/plugins).
+# Version is read from `.codex-plugin/plugin.json` so Claude / Codex / Cursor stay
+# aligned on the same release semver without a third hard-coded constant.
+_REPO_URL = "https://github.com/ashley-eyekyam/hse-leadership-skills"
+_CURSOR_AUTHOR = {
+    "name": "Eyekyam Risk Resolutions Pvt. Ltd.",
+    "email": "ashley@eyekyam.com",
+}
+_CURSOR_SOURCE = "."
+_CURSOR_LOGO = "docs/assets/logo.svg"
+_CURSOR_CATEGORY = "Productivity"
 
 # The committed routable-skill index the `using-hse-skills` router reads at
 # runtime (ROUTE-02 / D-01). Emitted from the SAME _iter_skills/_frontmatter pass
@@ -196,6 +216,74 @@ def build_manifest(repo: Path = REPO) -> Dict[str, Any]:
     return manifest
 
 
+def _plugin_version(repo: Path) -> str:
+    """Release semver from `.codex-plugin/plugin.json` (single ship version)."""
+    path = repo / ".codex-plugin" / "plugin.json"
+    if path.is_file():
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            data = {}
+        version = data.get("version") if isinstance(data, dict) else None
+        if isinstance(version, str) and version.strip():
+            return version.strip()
+    return "0.0.0"
+
+
+def _cursor_keywords(bundle: str) -> List[str]:
+    """Stable discovery tags: shared base + the pack slug after the hse- prefix."""
+    tag = bundle[4:] if bundle.startswith("hse-") else bundle
+    return ["hse", "safety-leadership", "agent-skills", tag]
+
+
+def build_cursor_manifest(repo: Path = REPO) -> Dict[str, Any]:
+    """Cursor Team Marketplace derived from the SAME Claude bundle membership.
+
+    Maps each Claude plugin to a Cursor entry: copies name/description/skills,
+    adds version/author/license/homepage/repository/category/keywords/(logo),
+    sets source to ".", and strips Claude-only fields ($schema, _comment, strict).
+    Skill paths stay root-relative `./skills/<name>` (no `..`, no absolutes).
+    """
+    claude = build_manifest(repo)
+    version = _plugin_version(repo)
+    logo_path = repo / _CURSOR_LOGO
+    include_logo = logo_path.is_file()
+
+    plugins: List[Dict[str, Any]] = []
+    for entry in claude["plugins"]:
+        # Membership already deterministically sorted inside build_manifest.
+        plugin: Dict[str, Any] = {
+            "name": entry["name"],
+            "source": _CURSOR_SOURCE,
+            "description": entry["description"],
+            "version": version,
+            "author": dict(_CURSOR_AUTHOR),
+            "license": "Apache-2.0",
+            "homepage": _REPO_URL,
+            "repository": _REPO_URL,
+            "category": _CURSOR_CATEGORY,
+            "keywords": _cursor_keywords(entry["name"]),
+            "skills": list(entry["skills"]),
+        }
+        if include_logo:
+            plugin["logo"] = _CURSOR_LOGO
+        plugins.append(plugin)
+
+    return {
+        "name": "hse-leadership-skills",
+        "owner": {"name": "Eyekyam", "email": "ashley@eyekyam.com"},
+        "metadata": {
+            "description": claude.get(
+                "description",
+                "HSE Leadership Skills — consultant-grade health, safety & environment artifact tools",
+            ),
+            "version": version,
+        },
+        "plugins": plugins,
+    }
+
+
+
 def _serialize(manifest: Dict[str, Any]) -> str:
     # IN-02: pass sort_keys=True explicitly (the manifest keys are already stable, so this
     # is a no-op on current output) — making determinism explicit instead of relying on
@@ -294,51 +382,76 @@ def _write_skill_index(repo: Path = REPO) -> str:
 
 
 def main(argv: Optional[List[str]] = None) -> int:
-    p = argparse.ArgumentParser(description="Generate/check marketplace.json (A8 §4.7).")
+    p = argparse.ArgumentParser(
+        description="Generate/check Claude + Cursor marketplace manifests (A8 §4.7)."
+    )
     g = p.add_mutually_exclusive_group()
     g.add_argument("--check", action="store_true",
-                   help="diff the generated manifest against disk; nonzero on drift")
-    g.add_argument("--write", action="store_true", help="rewrite marketplace.json")
+                   help="diff generated Claude+Cursor manifests and skill-index against disk; nonzero on drift")
+    g.add_argument("--write", action="store_true",
+                   help="rewrite Claude + Cursor marketplace.json and skill-index")
     p.add_argument("--repo", default=str(REPO), help="repo root (default: inferred)")
     args = p.parse_args(argv)
     repo = Path(args.repo).resolve()
     manifest_path = repo / ".claude-plugin" / "marketplace.json"
+    cursor_path = repo / ".cursor-plugin" / "marketplace.json"
 
     generated = _serialize(build_manifest(repo))
+    generated_cursor = _serialize(build_cursor_manifest(repo))
 
     if args.write:
         manifest_path.parent.mkdir(parents=True, exist_ok=True)
         manifest_path.write_text(generated, encoding="utf-8")
         print(f"WROTE {manifest_path}")
+        cursor_path.parent.mkdir(parents=True, exist_ok=True)
+        cursor_path.write_text(generated_cursor, encoding="utf-8")
+        print(f"WROTE {cursor_path}")
         # ROUTE-02 / D-01: emit the routable-skill index in the SAME pass from the
-        # same _iter_skills source, so index + manifest can never drift. The
-        # `--check` index drift-diff gate is now wired in below (Phase 17, QUAL-04),
-        # so a fresh `--write` then `--check` is clean for BOTH artifacts.
+        # same _iter_skills source, so index + manifests can never drift. The
+        # `--check` drift-diff gate covers Claude, Cursor, and the index.
         index_path = repo / "skills" / "using-hse-skills" / "references" / "skill-index.yaml"
         _write_skill_index(repo)
         print(f"WROTE {index_path}")
         return 0
 
-    # --check (default): compare BOTH the manifest AND the router skill-index against
-    # disk. QUAL-04 / D-08 W3: a stale committed skill-index would mis-route the
-    # catalog at runtime (T-17-15), so the CI gate must catch index drift the same
-    # way it catches manifest drift. Both diffs are computed in-memory (no write);
-    # the gate fails (exit 1) if EITHER artifact is stale. EXCLUDE_FROM_INDEX /
-    # EXCLUDE_FROM_META are honored by build_skill_index/build_manifest, so the
-    # router and the forge stay out of the index and out of hse-all respectively.
+    # --check (default): compare Claude marketplace, Cursor marketplace, AND the
+    # router skill-index against disk. QUAL-04 / D-08 W3 + Cursor parity: a stale
+    # committed artifact would mis-route or break Team Marketplace import, so the
+    # CI gate must catch any of the three. Diffs are in-memory (no write); exit 1
+    # if ANY artifact is stale.
     import difflib
 
     drift = False
 
     on_disk = manifest_path.read_text(encoding="utf-8") if manifest_path.is_file() else ""
     if on_disk == generated:
-        print("OK: marketplace.json in sync with skill metadata.plugin")
+        print("OK: .claude-plugin/marketplace.json in sync with skill metadata.plugin")
     else:
         drift = True
-        print("DRIFT: marketplace.json is stale; run `gen_marketplace.py --write`", file=sys.stderr)
+        print(
+            "DRIFT: .claude-plugin/marketplace.json is stale; run `gen_marketplace.py --write`",
+            file=sys.stderr,
+        )
         for line in difflib.unified_diff(
             on_disk.splitlines(), generated.splitlines(),
-            fromfile="marketplace.json (on disk)", tofile="generated", lineterm="",
+            fromfile=".claude-plugin/marketplace.json (on disk)", tofile="generated",
+            lineterm="",
+        ):
+            print(line, file=sys.stderr)
+
+    on_disk_cursor = cursor_path.read_text(encoding="utf-8") if cursor_path.is_file() else ""
+    if on_disk_cursor == generated_cursor:
+        print("OK: .cursor-plugin/marketplace.json in sync with Claude bundle membership")
+    else:
+        drift = True
+        print(
+            "DRIFT: .cursor-plugin/marketplace.json is stale; run `gen_marketplace.py --write`",
+            file=sys.stderr,
+        )
+        for line in difflib.unified_diff(
+            on_disk_cursor.splitlines(), generated_cursor.splitlines(),
+            fromfile=".cursor-plugin/marketplace.json (on disk)", tofile="generated",
+            lineterm="",
         ):
             print(line, file=sys.stderr)
 

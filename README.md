@@ -14,7 +14,7 @@
 [![Eval](https://github.com/ashley-eyekyam/hse-leadership-skills/actions/workflows/eval.yml/badge.svg)](https://github.com/ashley-eyekyam/hse-leadership-skills/actions/workflows/eval.yml)
 [![Version](https://img.shields.io/badge/release-v1.3.0-success.svg)](https://github.com/ashley-eyekyam/hse-leadership-skills/releases)
 [![Skills](https://img.shields.io/badge/skills-94-informational.svg)](#whats-in-the-box-the-catalog)
-[![Platforms](https://img.shields.io/badge/runs_on-Claude_·_Codex_·_ChatGPT_·_Gemini_·_Copilot-0aa.svg)](#install-in-30-seconds)
+[![Platforms](https://img.shields.io/badge/runs_on-Claude_·_Cursor_·_Codex_·_ChatGPT_·_Gemini_·_Copilot-0aa.svg)](#install-in-30-seconds)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./CONTRIBUTING.md)
 
 [Get started](#install-in-30-seconds) · [View skills](#whats-in-the-box-the-catalog) · [See it work](#a-60-second-try-it) · [Trust & safety](#trust--safety) · [Read the disclaimer](./DISCLAIMER.md) · [📖 Full skill manual](../../wiki)
@@ -38,7 +38,7 @@ Each skill in this pack is built to push against exactly those failures. Before 
 
 ## Install in 30 seconds
 
-Every skill is one portable `SKILL.md`, rendered into each host's format by the adapter build, so the same skill installs on Claude, Codex, ChatGPT, Gemini, Copilot, or any open-standard tool.
+Every skill is one portable `SKILL.md`, rendered into each host's format by the adapter build, so the same skill installs on Claude, Cursor, Codex, ChatGPT, Gemini, Copilot, or any open-standard tool.
 
 ### Quick start: install the whole pack (Claude)
 
@@ -98,7 +98,7 @@ codex plugin list   # should show: hse-leadership-skills  installed, enabled
 - **Update:** `codex plugin marketplace upgrade hse-leadership-skills` (refreshes the snapshot from GitHub), then re-run `codex plugin add hse-leadership-skills@hse-leadership-skills` and open a new thread.
 - **Uninstall:** `codex plugin remove hse-leadership-skills@hse-leadership-skills`, then optionally `codex plugin marketplace remove hse-leadership-skills`.
 - **Tip:** with many plugins enabled, Codex may shorten skill descriptions to fit its skills context budget; disable unused plugins to give the HSE skills more room.
-- **Note for Claude bundle users:** the per-pack bundles (`hse-all`, `hse-core`, sector packs) are Claude-only selectors. In Codex there is exactly one installable plugin, `hse-leadership-skills`, which already contains every skill.
+- **Note for Claude / Cursor bundle users:** the per-pack bundles (`hse-all`, `hse-core`, sector packs) are Claude and Cursor marketplace selectors. In Codex there is exactly one installable plugin, `hse-leadership-skills`, which already contains every skill.
 
 <details>
 <summary><strong>Alternative: install from a local clone (development / offline)</strong></summary>
@@ -123,6 +123,26 @@ codex plugin list   # should show: hse-leadership-skills  installed, enabled
 - **Uninstall:** `codex plugin remove hse-leadership-skills@personal`, then `python3 scripts/install_codex_marketplace.py --remove` (removes only this plugin's marketplace entry and link, nothing else).
 
 </details>
+
+
+### Cursor (Team Marketplace)
+
+The repository ships a generated **`.cursor-plugin/marketplace.json`** for [Cursor Team Marketplace](https://cursor.com/docs/reference/plugins) Import-from-Repo. Plugin membership matches the Claude packs (prefer **`hse-all`**: 93 skills including the `using-hse-skills` router; excludes only `hse-skill-forge`).
+
+1. In Cursor: **Dashboard → Plugins → Team Marketplaces → Import from Repo**
+2. Repository: `https://github.com/ashley-eyekyam/hse-leadership-skills`
+3. Confirm parsed plugins (expect the HSE bundles, including `hse-all`)
+4. Set marketplace access / install mode for your team
+5. In **Customize**, install **`hse-all`** (or selective packs)
+
+Local test (developers):
+
+```bash
+ln -s /path/to/hse-leadership-skills ~/.cursor/plugins/local/hse-leadership-skills
+# Reload Window; confirm skills under Customize
+```
+
+Requires Teams/Enterprise for Team Marketplaces. Not listed on the public Cursor Marketplace catalog at time of writing. Claude and Codex manifests remain unchanged and continue to work side-by-side.
 
 ### Other platforms
 
