@@ -1,0 +1,636 @@
+{
+  "metadata": {
+    "description": "HSE Leadership Skills — consultant-grade health, safety & environment artifact tools",
+    "version": "1.3.0"
+  },
+  "name": "hse-leadership-skills",
+  "owner": {
+    "email": "ashley@eyekyam.com",
+    "name": "Eyekyam"
+  },
+  "plugins": [
+    {
+      "author": {
+        "email": "ashley@eyekyam.com",
+        "name": "Eyekyam Risk Resolutions Pvt. Ltd."
+      },
+      "category": "Productivity",
+      "description": "Install everything — the full HSE Leadership Skills toolbox (all consultant skills across hse-core plus the five sector packs).",
+      "homepage": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "keywords": [
+        "hse",
+        "safety-leadership",
+        "agent-skills",
+        "all"
+      ],
+      "license": "Apache-2.0",
+      "logo": "docs/assets/logo.svg",
+      "name": "hse-all",
+      "repository": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "skills": [
+        "./skills/arc-flash-assessment",
+        "./skills/aviation-change-safety-assessment",
+        "./skills/aviation-confidential-reporting",
+        "./skills/aviation-fdm-foqa-analysis",
+        "./skills/aviation-hazard-register",
+        "./skills/aviation-just-culture-policy",
+        "./skills/aviation-sms-builder",
+        "./skills/aviation-spi-spt-framework",
+        "./skills/aviation-srb-minutes",
+        "./skills/bbs-program-designer",
+        "./skills/board-safety-report",
+        "./skills/bocw-compliance",
+        "./skills/bowtie-builder",
+        "./skills/business-continuity-plan",
+        "./skills/capa-manager",
+        "./skills/chemical-exposure-register",
+        "./skills/chemical-transport-safety",
+        "./skills/comah-safety-report-assistant",
+        "./skills/construction-phase-plan",
+        "./skills/contractor-prequalification",
+        "./skills/dgms-statutory-pack",
+        "./skills/driver-fatigue-management",
+        "./skills/dropped-objects-prevention",
+        "./skills/electrical-permit-switching-program",
+        "./skills/emergency-response-plan",
+        "./skills/ergonomics-assessment",
+        "./skills/factories-act-returns",
+        "./skills/ghs-classification-sds-author",
+        "./skills/hazid-facilitator",
+        "./skills/hazop-facilitator",
+        "./skills/health-risk-assessment",
+        "./skills/health-safety-file",
+        "./skills/hse-annual-esg-report",
+        "./skills/hse-policy-generator",
+        "./skills/icmm-critical-control-management",
+        "./skills/incident-investigation",
+        "./skills/incident-rate-calculator",
+        "./skills/india-accident-notice",
+        "./skills/india-msihc-mah-pack",
+        "./skills/india-osh-code-pack",
+        "./skills/india-state-form-finder",
+        "./skills/induction-pack",
+        "./skills/infection-control-plan",
+        "./skills/iso45001-gap-analysis",
+        "./skills/job-safety-analysis",
+        "./skills/lab-biosafety-assessment",
+        "./skills/leading-lagging-kpi-framework",
+        "./skills/legal-compliance-register",
+        "./skills/level-crossing-track-worker-safety",
+        "./skills/lift-plan",
+        "./skills/live-working-risk-assessment",
+        "./skills/lone-working-assessment",
+        "./skills/lopa-worksheet",
+        "./skills/machine-guarding-assessment",
+        "./skills/management-of-change",
+        "./skills/marine-emergency-response",
+        "./skills/mechanical-integrity",
+        "./skills/mine-incident-investigation",
+        "./skills/mine-rescue-erp",
+        "./skills/mine-ventilation-strata-blasting-plan",
+        "./skills/noise-exposure-health-surveillance",
+        "./skills/offshore-safety-case",
+        "./skills/patient-handling-assessment",
+        "./skills/permit-to-work",
+        "./skills/peso-licensing-assistant",
+        "./skills/ppe-matrix",
+        "./skills/pre-construction-information",
+        "./skills/principal-hazard-management-plan",
+        "./skills/process-safety-kpi",
+        "./skills/psm-program-manager",
+        "./skills/psychosocial-risk-assessment",
+        "./skills/rail-safety-management-system",
+        "./skills/rams-builder",
+        "./skills/reactive-dust-explosion-assessment",
+        "./skills/regulatory-returns",
+        "./skills/risk-assessment",
+        "./skills/safety-audit",
+        "./skills/safety-authorisation",
+        "./skills/safety-culture-assessment",
+        "./skills/safety-walk-gemba",
+        "./skills/sharps-needlestick-management",
+        "./skills/sop-writer",
+        "./skills/tank-farm-bunding-controls",
+        "./skills/toolbox-talk",
+        "./skills/toxic-release-dispersion-scenario",
+        "./skills/traffic-management-plan",
+        "./skills/training-needs-analysis",
+        "./skills/using-hse-skills",
+        "./skills/warehouse-racking-mhe-safety",
+        "./skills/weather-dynamic-risk-assessment",
+        "./skills/whatif-facilitator",
+        "./skills/wind-turbine-work-at-height-rescue",
+        "./skills/workplace-violence-prevention"
+      ],
+      "source": ".",
+      "version": "1.3.0"
+    },
+    {
+      "author": {
+        "email": "ashley@eyekyam.com",
+        "name": "Eyekyam Risk Resolutions Pvt. Ltd."
+      },
+      "category": "Productivity",
+      "description": "Aviation SMS pack — SMS builder, hazard register, SPI/SPT framework, FDM/FOQA analysis, just-culture policy, confidential reporting, change safety assessment, and SRB minutes.",
+      "homepage": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "keywords": [
+        "hse",
+        "safety-leadership",
+        "agent-skills",
+        "aviation"
+      ],
+      "license": "Apache-2.0",
+      "logo": "docs/assets/logo.svg",
+      "name": "hse-aviation",
+      "repository": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "skills": [
+        "./skills/aviation-change-safety-assessment",
+        "./skills/aviation-confidential-reporting",
+        "./skills/aviation-fdm-foqa-analysis",
+        "./skills/aviation-hazard-register",
+        "./skills/aviation-just-culture-policy",
+        "./skills/aviation-sms-builder",
+        "./skills/aviation-spi-spt-framework",
+        "./skills/aviation-srb-minutes"
+      ],
+      "source": ".",
+      "version": "1.3.0"
+    },
+    {
+      "author": {
+        "email": "ashley@eyekyam.com",
+        "name": "Eyekyam Risk Resolutions Pvt. Ltd."
+      },
+      "category": "Productivity",
+      "description": "Chemicals & major-accident-hazard pack — GHS/SDS authoring, chemical exposure & transport, dust-explosion and toxic-release assessment, tank-farm bunding, India MSIHC/MAH, plus shared PHA tools.",
+      "homepage": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "keywords": [
+        "hse",
+        "safety-leadership",
+        "agent-skills",
+        "chemicals"
+      ],
+      "license": "Apache-2.0",
+      "logo": "docs/assets/logo.svg",
+      "name": "hse-chemicals",
+      "repository": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "skills": [
+        "./skills/bowtie-builder",
+        "./skills/chemical-exposure-register",
+        "./skills/chemical-transport-safety",
+        "./skills/ghs-classification-sds-author",
+        "./skills/hazid-facilitator",
+        "./skills/hazop-facilitator",
+        "./skills/india-msihc-mah-pack",
+        "./skills/lopa-worksheet",
+        "./skills/reactive-dust-explosion-assessment",
+        "./skills/tank-farm-bunding-controls",
+        "./skills/toxic-release-dispersion-scenario",
+        "./skills/whatif-facilitator"
+      ],
+      "source": ".",
+      "version": "1.3.0"
+    },
+    {
+      "author": {
+        "email": "ashley@eyekyam.com",
+        "name": "Eyekyam Risk Resolutions Pvt. Ltd."
+      },
+      "category": "Productivity",
+      "description": "HSE Leadership Skills bundle: hse-construction.",
+      "homepage": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "keywords": [
+        "hse",
+        "safety-leadership",
+        "agent-skills",
+        "construction"
+      ],
+      "license": "Apache-2.0",
+      "logo": "docs/assets/logo.svg",
+      "name": "hse-construction",
+      "repository": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "skills": [
+        "./skills/bocw-compliance",
+        "./skills/construction-phase-plan",
+        "./skills/health-safety-file",
+        "./skills/lift-plan",
+        "./skills/permit-to-work",
+        "./skills/pre-construction-information",
+        "./skills/risk-assessment",
+        "./skills/toolbox-talk",
+        "./skills/traffic-management-plan"
+      ],
+      "source": ".",
+      "version": "1.3.0"
+    },
+    {
+      "author": {
+        "email": "ashley@eyekyam.com",
+        "name": "Eyekyam Risk Resolutions Pvt. Ltd."
+      },
+      "category": "Productivity",
+      "description": "Core HSE skills — risk assessments, JSAs, toolbox talks, incident investigations, safety audits, CAPAs, SOPs, RAMS, board reports, and incident-rate calculators.",
+      "homepage": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "keywords": [
+        "hse",
+        "safety-leadership",
+        "agent-skills",
+        "core"
+      ],
+      "license": "Apache-2.0",
+      "logo": "docs/assets/logo.svg",
+      "name": "hse-core",
+      "repository": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "skills": [
+        "./skills/board-safety-report",
+        "./skills/capa-manager",
+        "./skills/incident-investigation",
+        "./skills/incident-rate-calculator",
+        "./skills/job-safety-analysis",
+        "./skills/rams-builder",
+        "./skills/risk-assessment",
+        "./skills/safety-audit",
+        "./skills/sop-writer",
+        "./skills/toolbox-talk",
+        "./skills/using-hse-skills"
+      ],
+      "source": ".",
+      "version": "1.3.0"
+    },
+    {
+      "author": {
+        "email": "ashley@eyekyam.com",
+        "name": "Eyekyam Risk Resolutions Pvt. Ltd."
+      },
+      "category": "Productivity",
+      "description": "HSE Leadership Skills bundle: hse-healthcare.",
+      "homepage": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "keywords": [
+        "hse",
+        "safety-leadership",
+        "agent-skills",
+        "healthcare"
+      ],
+      "license": "Apache-2.0",
+      "logo": "docs/assets/logo.svg",
+      "name": "hse-healthcare",
+      "repository": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "skills": [
+        "./skills/infection-control-plan",
+        "./skills/lab-biosafety-assessment",
+        "./skills/patient-handling-assessment",
+        "./skills/psychosocial-risk-assessment",
+        "./skills/sharps-needlestick-management",
+        "./skills/workplace-violence-prevention"
+      ],
+      "source": ".",
+      "version": "1.3.0"
+    },
+    {
+      "author": {
+        "email": "ashley@eyekyam.com",
+        "name": "Eyekyam Risk Resolutions Pvt. Ltd."
+      },
+      "category": "Productivity",
+      "description": "India compliance pack — state accident notices, Factories Act returns, BOCW, OSH Code, and the legacy-first state-form finder (mandatory state detection).",
+      "homepage": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "keywords": [
+        "hse",
+        "safety-leadership",
+        "agent-skills",
+        "india"
+      ],
+      "license": "Apache-2.0",
+      "logo": "docs/assets/logo.svg",
+      "name": "hse-india",
+      "repository": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "skills": [
+        "./skills/bocw-compliance",
+        "./skills/factories-act-returns",
+        "./skills/india-accident-notice",
+        "./skills/india-osh-code-pack",
+        "./skills/india-state-form-finder"
+      ],
+      "source": ".",
+      "version": "1.3.0"
+    },
+    {
+      "author": {
+        "email": "ashley@eyekyam.com",
+        "name": "Eyekyam Risk Resolutions Pvt. Ltd."
+      },
+      "category": "Productivity",
+      "description": "HSE Leadership Skills bundle: hse-leadership.",
+      "homepage": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "keywords": [
+        "hse",
+        "safety-leadership",
+        "agent-skills",
+        "leadership"
+      ],
+      "license": "Apache-2.0",
+      "logo": "docs/assets/logo.svg",
+      "name": "hse-leadership",
+      "repository": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "skills": [
+        "./skills/bbs-program-designer",
+        "./skills/hse-annual-esg-report",
+        "./skills/hse-policy-generator",
+        "./skills/leading-lagging-kpi-framework",
+        "./skills/safety-culture-assessment",
+        "./skills/safety-walk-gemba"
+      ],
+      "source": ".",
+      "version": "1.3.0"
+    },
+    {
+      "author": {
+        "email": "ashley@eyekyam.com",
+        "name": "Eyekyam Risk Resolutions Pvt. Ltd."
+      },
+      "category": "Productivity",
+      "description": "HSE Leadership Skills bundle: hse-logistics-transport.",
+      "homepage": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "keywords": [
+        "hse",
+        "safety-leadership",
+        "agent-skills",
+        "logistics-transport"
+      ],
+      "license": "Apache-2.0",
+      "logo": "docs/assets/logo.svg",
+      "name": "hse-logistics-transport",
+      "repository": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "skills": [
+        "./skills/chemical-transport-safety",
+        "./skills/driver-fatigue-management",
+        "./skills/warehouse-racking-mhe-safety"
+      ],
+      "source": ".",
+      "version": "1.3.0"
+    },
+    {
+      "author": {
+        "email": "ashley@eyekyam.com",
+        "name": "Eyekyam Risk Resolutions Pvt. Ltd."
+      },
+      "category": "Productivity",
+      "description": "HSE Leadership Skills bundle: hse-manufacturing.",
+      "homepage": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "keywords": [
+        "hse",
+        "safety-leadership",
+        "agent-skills",
+        "manufacturing"
+      ],
+      "license": "Apache-2.0",
+      "logo": "docs/assets/logo.svg",
+      "name": "hse-manufacturing",
+      "repository": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "skills": [
+        "./skills/chemical-exposure-register",
+        "./skills/ergonomics-assessment",
+        "./skills/health-risk-assessment",
+        "./skills/machine-guarding-assessment",
+        "./skills/noise-exposure-health-surveillance",
+        "./skills/permit-to-work",
+        "./skills/ppe-matrix"
+      ],
+      "source": ".",
+      "version": "1.3.0"
+    },
+    {
+      "author": {
+        "email": "ashley@eyekyam.com",
+        "name": "Eyekyam Risk Resolutions Pvt. Ltd."
+      },
+      "category": "Productivity",
+      "description": "HSE Leadership Skills bundle: hse-marine-offshore.",
+      "homepage": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "keywords": [
+        "hse",
+        "safety-leadership",
+        "agent-skills",
+        "marine-offshore"
+      ],
+      "license": "Apache-2.0",
+      "logo": "docs/assets/logo.svg",
+      "name": "hse-marine-offshore",
+      "repository": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "skills": [
+        "./skills/dropped-objects-prevention",
+        "./skills/emergency-response-plan",
+        "./skills/marine-emergency-response",
+        "./skills/offshore-safety-case",
+        "./skills/permit-to-work"
+      ],
+      "source": ".",
+      "version": "1.3.0"
+    },
+    {
+      "author": {
+        "email": "ashley@eyekyam.com",
+        "name": "Eyekyam Risk Resolutions Pvt. Ltd."
+      },
+      "category": "Productivity",
+      "description": "Mining pack — DGMS statutory pack, ICMM critical-control management, principal-hazard management plans, mine incident investigation, mine rescue ERP, and ventilation/strata/blasting plans.",
+      "homepage": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "keywords": [
+        "hse",
+        "safety-leadership",
+        "agent-skills",
+        "mining"
+      ],
+      "license": "Apache-2.0",
+      "logo": "docs/assets/logo.svg",
+      "name": "hse-mining",
+      "repository": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "skills": [
+        "./skills/bowtie-builder",
+        "./skills/dgms-statutory-pack",
+        "./skills/icmm-critical-control-management",
+        "./skills/mine-incident-investigation",
+        "./skills/mine-rescue-erp",
+        "./skills/mine-ventilation-strata-blasting-plan",
+        "./skills/principal-hazard-management-plan"
+      ],
+      "source": ".",
+      "version": "1.3.0"
+    },
+    {
+      "author": {
+        "email": "ashley@eyekyam.com",
+        "name": "Eyekyam Risk Resolutions Pvt. Ltd."
+      },
+      "category": "Productivity",
+      "description": "HSE Leadership Skills bundle: hse-operations.",
+      "homepage": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "keywords": [
+        "hse",
+        "safety-leadership",
+        "agent-skills",
+        "operations"
+      ],
+      "license": "Apache-2.0",
+      "logo": "docs/assets/logo.svg",
+      "name": "hse-operations",
+      "repository": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "skills": [
+        "./skills/business-continuity-plan",
+        "./skills/construction-phase-plan",
+        "./skills/contractor-prequalification",
+        "./skills/emergency-response-plan",
+        "./skills/health-risk-assessment",
+        "./skills/induction-pack",
+        "./skills/iso45001-gap-analysis",
+        "./skills/legal-compliance-register",
+        "./skills/psychosocial-risk-assessment",
+        "./skills/regulatory-returns",
+        "./skills/training-needs-analysis"
+      ],
+      "source": ".",
+      "version": "1.3.0"
+    },
+    {
+      "author": {
+        "email": "ashley@eyekyam.com",
+        "name": "Eyekyam Risk Resolutions Pvt. Ltd."
+      },
+      "category": "Productivity",
+      "description": "Process-safety pack — HAZOP, HAZID, What-If, LOPA, bow-tie, permit-to-work, management-of-change, mechanical integrity, PSM program, PESO licensing, and process-safety KPIs.",
+      "homepage": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "keywords": [
+        "hse",
+        "safety-leadership",
+        "agent-skills",
+        "process"
+      ],
+      "license": "Apache-2.0",
+      "logo": "docs/assets/logo.svg",
+      "name": "hse-process",
+      "repository": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "skills": [
+        "./skills/bowtie-builder",
+        "./skills/comah-safety-report-assistant",
+        "./skills/hazid-facilitator",
+        "./skills/hazop-facilitator",
+        "./skills/lopa-worksheet",
+        "./skills/management-of-change",
+        "./skills/mechanical-integrity",
+        "./skills/permit-to-work",
+        "./skills/peso-licensing-assistant",
+        "./skills/process-safety-kpi",
+        "./skills/psm-program-manager",
+        "./skills/whatif-facilitator"
+      ],
+      "source": ".",
+      "version": "1.3.0"
+    },
+    {
+      "author": {
+        "email": "ashley@eyekyam.com",
+        "name": "Eyekyam Risk Resolutions Pvt. Ltd."
+      },
+      "category": "Productivity",
+      "description": "HSE Leadership Skills bundle: hse-rail.",
+      "homepage": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "keywords": [
+        "hse",
+        "safety-leadership",
+        "agent-skills",
+        "rail"
+      ],
+      "license": "Apache-2.0",
+      "logo": "docs/assets/logo.svg",
+      "name": "hse-rail",
+      "repository": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "skills": [
+        "./skills/level-crossing-track-worker-safety",
+        "./skills/management-of-change",
+        "./skills/rail-safety-management-system",
+        "./skills/safety-authorisation"
+      ],
+      "source": ".",
+      "version": "1.3.0"
+    },
+    {
+      "author": {
+        "email": "ashley@eyekyam.com",
+        "name": "Eyekyam Risk Resolutions Pvt. Ltd."
+      },
+      "category": "Productivity",
+      "description": "HSE Leadership Skills bundle: hse-renewables.",
+      "homepage": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "keywords": [
+        "hse",
+        "safety-leadership",
+        "agent-skills",
+        "renewables"
+      ],
+      "license": "Apache-2.0",
+      "logo": "docs/assets/logo.svg",
+      "name": "hse-renewables",
+      "repository": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "skills": [
+        "./skills/arc-flash-assessment",
+        "./skills/live-working-risk-assessment",
+        "./skills/lone-working-assessment",
+        "./skills/weather-dynamic-risk-assessment",
+        "./skills/wind-turbine-work-at-height-rescue"
+      ],
+      "source": ".",
+      "version": "1.3.0"
+    },
+    {
+      "author": {
+        "email": "ashley@eyekyam.com",
+        "name": "Eyekyam Risk Resolutions Pvt. Ltd."
+      },
+      "category": "Productivity",
+      "description": "Build-time tooling — hse-skill-forge, the scaffolder that authors born-conformant HSE skills (for contributors, not a consultant artifact bundle).",
+      "homepage": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "keywords": [
+        "hse",
+        "safety-leadership",
+        "agent-skills",
+        "systems"
+      ],
+      "license": "Apache-2.0",
+      "logo": "docs/assets/logo.svg",
+      "name": "hse-systems",
+      "repository": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "skills": [
+        "./skills/hse-skill-forge"
+      ],
+      "source": ".",
+      "version": "1.3.0"
+    },
+    {
+      "author": {
+        "email": "ashley@eyekyam.com",
+        "name": "Eyekyam Risk Resolutions Pvt. Ltd."
+      },
+      "category": "Productivity",
+      "description": "HSE Leadership Skills bundle: hse-utilities-power.",
+      "homepage": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "keywords": [
+        "hse",
+        "safety-leadership",
+        "agent-skills",
+        "utilities-power"
+      ],
+      "license": "Apache-2.0",
+      "logo": "docs/assets/logo.svg",
+      "name": "hse-utilities-power",
+      "repository": "https://github.com/ashley-eyekyam/hse-leadership-skills",
+      "skills": [
+        "./skills/arc-flash-assessment",
+        "./skills/electrical-permit-switching-program",
+        "./skills/emergency-response-plan",
+        "./skills/live-working-risk-assessment"
+      ],
+      "source": ".",
+      "version": "1.3.0"
+    }
+  ]
+}
